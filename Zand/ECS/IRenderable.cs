@@ -8,6 +8,6 @@ namespace Zand
 {
     internal interface IRenderable
     {
-        public void Draw()
+        public void Draw();
     }
 }
