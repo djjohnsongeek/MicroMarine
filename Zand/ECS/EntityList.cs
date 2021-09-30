@@ -12,8 +12,7 @@ namespace Zand
         private List<Entity> _entitiesToAdd;
         private List<Entity> _entitiesToRemove;
 
-
-        public void UpdateEntityLists()
+        private void UpdateEntityLists()
         {
             HandleRemovals();
             HandleAdditions();
@@ -25,6 +24,8 @@ namespace Zand
             {
                 entity.Update();
             }
+
+            UpdateEntityLists();
         }
 
         private void HandleRemovals()
