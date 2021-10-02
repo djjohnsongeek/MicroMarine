@@ -4,9 +4,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Xna.Framework;
+
+using Zand.Utils;
+
 namespace Zand
 {
-    class Scene
+    public class Scene
     {
+        private EntityList Entities;
+        public ZandContentManager Content;
+
+        public Scene()
+        {
+            Entities = new EntityList(this);
+            Content = new ZandContentManager(Core._instance.Services, Core._instance.Content.RootDirectory);
+        }
+
+        // Add Entity
+        public Entity CreateEntity(string name, Vector2 position)
+        {
+            var Entity = new Entity(name, position);
+            return AddEntity(Entity);
+        }
+
+
+        public Entity AddEntity(Entity entity)
+        {
+            if (Entities.Contains(entity))
+            {
+                throw new ArgumentException("Attempt to add Entity to a scene in which it already exists");
+            }
+
+            Entities.Add(entity);
+            entity.Scene = this;
+
+            return entity;
+        }
     }
 }

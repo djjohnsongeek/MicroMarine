@@ -11,6 +11,15 @@ namespace Zand
         private List<Entity> _entities;
         private List<Entity> _entitiesToAdd;
         private List<Entity> _entitiesToRemove;
+        public Scene Scene;
+
+        public EntityList(Scene scene)
+        {
+            Scene = scene;
+            _entities = new List<Entity>();
+            _entitiesToAdd = new List<Entity>();
+            _entitiesToRemove = new List<Entity>();
+        }
 
         private void UpdateEntityLists()
         {
@@ -26,6 +35,16 @@ namespace Zand
             }
 
             UpdateEntityLists();
+        }
+
+        public void Add(Entity entity)
+        {
+            _entitiesToAdd.Add(entity);
+        }
+
+        public bool Contains(Entity entity)
+        {
+            return _entities.Contains(entity) || _entitiesToAdd.Contains(entity);
         }
 
         private void HandleRemovals()

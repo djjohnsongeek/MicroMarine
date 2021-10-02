@@ -3,15 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.Xna.Framework;
 namespace Zand
 {
-    class Entity : IUpdateable
+    public class Entity : IUpdateable
     {
         private uint Id { get; }
         private bool Enabled { get; set; }
+        public Vector2 Position;
         public string Name { get; set; }
+        public Scene Scene;
         private ComponentList Components { get; }
+
+        public Entity(string name, Vector2 position)
+        {
+            Name = name;
+            Position = position;
+        }
 
         public void Update() => Components.Update();
 

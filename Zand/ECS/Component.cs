@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Zand
 {
-    class Component
+    public class Component
     {
         public Entity Entity { get; set; }
         private int UpdateOrder { get; set; }
