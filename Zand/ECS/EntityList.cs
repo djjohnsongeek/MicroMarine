@@ -18,7 +18,7 @@ namespace Zand
             get => _entities.Count;
         }
 
-        public EntityList(Scene scene)
+        internal EntityList(Scene scene)
         {
             Scene = scene;
             _entities = new List<Entity>();

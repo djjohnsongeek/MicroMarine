@@ -21,6 +21,16 @@ namespace Zand
             get => _components.Count;
         }
 
+        internal ComponentList(Entity entity)
+        {
+            _components = new List<Component>();
+            _componentsToAdd = new List<Component>();
+            _componentsToRemove = new List<Component>();
+            _renderableComponents = new List<IRenderable>();
+            _updatableComponents = new List<IUpdateable>();
+            Entity = entity;
+        }
+
         public void Add(Component component)
         {
             _componentsToAdd.Add(component);
