@@ -21,17 +21,11 @@ namespace Zand
             _entitiesToRemove = new List<Entity>();
         }
 
-        private void UpdateEntityLists()
-        {
-            HandleRemovals();
-            HandleAdditions();
-        }
-
         public void Update()
         {
-            foreach (var entity in _entities)
+            for (int i = 0; i < _entities.Count; i++)
             {
-                entity.Update();
+                _entities[i].Update();
             }
 
             UpdateEntityLists();
@@ -47,13 +41,20 @@ namespace Zand
             return _entities.Contains(entity) || _entitiesToAdd.Contains(entity);
         }
 
+        internal void UpdateEntityLists()
+        {
+            HandleRemovals();
+            HandleAdditions();
+        }
+
+
         private void HandleRemovals()
         {
             if (_entitiesToRemove.Count > 0)
             {
-                foreach (var entity in _entitiesToRemove)
+                for (int i = 0; i < _entitiesToRemove.Count; i++)
                 {
-                    _entities.Remove(entity);
+                    _entities.Remove(_entitiesToRemove[i]);
                 }
             }
 
@@ -67,9 +68,9 @@ namespace Zand
         {
             if (_entitiesToAdd.Count > 0)
             {
-                foreach(var entity in _entitiesToAdd)
+                for (int i = 0; i < _entitiesToAdd.Count; i++)
                 {
-                    _entities.Add(entity);
+                    _entities.Add(_entitiesToAdd[i]);
                 }
             }
 

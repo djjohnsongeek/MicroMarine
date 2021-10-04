@@ -35,17 +35,17 @@ namespace Zand
 
         public void Update()
         {
-            foreach (var component in _updatableComponents)
+            for (int i = 0; i < _updatableComponents.Count; i ++)
             {
-                component.Update();
+                _updatableComponents[i].Update();
             }
         }
 
         public void Draw()
         {
-            foreach (var component in _renderableComponents)
+            for (int i = 0; i < _renderableComponents.Count; i++)
             {
-                component.Draw();
+                _renderableComponents[i].Draw();
             }
         }
 
@@ -53,19 +53,19 @@ namespace Zand
         {
             if (_componentsToRemove.Count > 0)
             {
-                foreach (var component in _componentsToRemove)
+                for (int i = 0; i <  _componentsToRemove.Count; i ++)
                 {
-                    if (component is IUpdateable)
+                    if (_componentsToRemove[i] is IUpdateable)
                     {
-                        _updatableComponents.Remove(component as IUpdateable);
+                        _updatableComponents.Remove(_componentsToRemove[i] as IUpdateable);
                     }
 
-                    if (component is IRenderable)
+                    if (_componentsToRemove[i] is IRenderable)
                     {
-                        _renderableComponents.Remove(component as IRenderable);
+                        _renderableComponents.Remove(_componentsToRemove[i] as IRenderable);
                     }
 
-                    component.Entity = null;
+                    _componentsToRemove[i].Entity = null;
                 }
 
                 _componentsToRemove.Clear();
@@ -76,18 +76,18 @@ namespace Zand
         {
             if (_componentsToAdd.Count > 0)
             {
-                foreach (var component in _componentsToAdd)
+                for (int i = 0; i < _componentsToAdd.Count; i++)
                 {
-                    component.Entity = Entity;
+                    _componentsToAdd[i].Entity = Entity;
 
-                    if (component is IUpdateable)
+                    if (_componentsToAdd[i] is IUpdateable)
                     {
-                        _updatableComponents.Add(component as IUpdateable);
+                        _updatableComponents.Add(_componentsToAdd[i] as IUpdateable);
                     }
 
-                    if (component is IRenderable)
+                    if (_componentsToAdd[i] is IRenderable)
                     {
-                        _renderableComponents.Add(component as IRenderable);
+                        _renderableComponents.Add(_componentsToAdd[i] as IRenderable);
                     }
                 }
 
