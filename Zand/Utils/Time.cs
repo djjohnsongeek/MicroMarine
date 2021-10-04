@@ -8,11 +8,11 @@ namespace Zand
 {
     public static class Time
     {
-        public static double deltaTime;
+        public static double DeltaTime;
 
         public static void Update(double dt)
         {
-            deltaTime = dt;
+            DeltaTime = dt;
         }
 
     }
