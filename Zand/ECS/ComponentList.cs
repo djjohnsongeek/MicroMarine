@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Zand
 {
@@ -10,10 +11,15 @@ namespace Zand
     {
         public Entity Entity;
 
+        private List<Component> _components;
         private List<Component> _componentsToAdd;
         private List<Component> _componentsToRemove;
         private List<IRenderable> _renderableComponents;
         private List<IUpdateable> _updatableComponents;
+        internal int Count
+        {
+            get => _components.Count;
+        }
 
         public void Add(Component component)
         {
@@ -41,11 +47,11 @@ namespace Zand
             }
         }
 
-        public void Draw()
+        public void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < _renderableComponents.Count; i++)
             {
-                _renderableComponents[i].Draw();
+                _renderableComponents[i].Draw(spriteBatch);
             }
         }
 

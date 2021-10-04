@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 using Zand.Utils;
 
@@ -50,6 +51,10 @@ namespace Zand
         public void Draw()
         {
 
+            Entities.Draw();
+            // Draw Effects
+            // Draw UI
+;
         }
     }
 }

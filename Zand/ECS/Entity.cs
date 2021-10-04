@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
 namespace Zand
 {
     public class Entity : IUpdateable
@@ -26,6 +28,11 @@ namespace Zand
         public void AddComponent(Component component)
         {
             Components.Add(component);
+        }
+
+        internal void Draw(SpriteBatch spriteBatch)
+        {
+            Components.Draw(spriteBatch);
         }
 
     }

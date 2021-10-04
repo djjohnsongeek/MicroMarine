@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,10 @@ namespace Zand
         private List<Entity> _entitiesToAdd;
         private List<Entity> _entitiesToRemove;
         public Scene Scene;
+        public int Count
+        {
+            get => _entities.Count;
+        }
 
         public EntityList(Scene scene)
         {
@@ -39,6 +44,17 @@ namespace Zand
         public bool Contains(Entity entity)
         {
             return _entities.Contains(entity) || _entitiesToAdd.Contains(entity);
+        }
+
+        internal void Draw()
+        {
+            SpriteBatch spriteBatch = new SpriteBatch(Core.GraphicsDevice);
+            spriteBatch.Begin();
+            for (int i = 0; i < _entities.Count; i++)
+            {
+                _entities[i].Draw(spriteBatch);
+            }
+            spriteBatch.End();
         }
 
         internal void UpdateEntityLists()
