@@ -39,7 +39,7 @@ namespace Zand
 
         public static void Update()
         {
-            Move(getVelocity(Time.deltaTime));
+            Move(getVelocity(Time.DeltaTime));
         }
 
         public static Matrix GetTransformation()
