@@ -64,9 +64,9 @@ namespace Zand
 
         protected override void Draw(GameTime gameTime)
         {
-            base.GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code her;
+            // TODO: Add your drawing code here
             CurrentScene.Draw();
             // Effects.Draw();
             // UI.Draw();
