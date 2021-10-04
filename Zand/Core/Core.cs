@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Zand.Utils;
 
 namespace Zand
 {
@@ -13,9 +14,10 @@ namespace Zand
     {
         public static GraphicsDeviceManager GraphicsManager;
         public static new GraphicsDevice GraphicsDevice;
+        public static ZandContentManager GlobalContent;
 
         private SpriteBatch _spriteBatch;
-        public Scene scene;
+        public Scene CurrentScene;
 
         internal static Core _instance;
 
@@ -26,6 +28,7 @@ namespace Zand
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             _instance = this;
+            GlobalContent = new ZandContentManager(Services, Content.RootDirectory);
         }
 
         #region Game Overrides
@@ -33,6 +36,7 @@ namespace Zand
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            CurrentScene = new Scene();
 
             base.Initialize();
         }
@@ -53,7 +57,6 @@ namespace Zand
             {
                 Exit();
             }
-
             Camera.Update();
 
             base.Update(gameTime);
@@ -63,7 +66,10 @@ namespace Zand
         {
             base.GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            // TODO: Add your drawing code her;
+            CurrentScene.Draw();
+            // Effects.Draw();
+            // UI.Draw();
 
             base.Draw(gameTime);
         }
