@@ -40,9 +40,9 @@ namespace Zand.Utils
 
             using (FileStream stream = File.OpenRead(name))
             {
-                Texture2D texture = Texture2D.FromStream(Core.GraphicsDevice, stream);
+                Texture2D texture = Texture2D.FromStream(Core._instance.GraphicsDevice, stream);
                 texture.Name = name;
-                LoadedAssets[name] = texture;
+                _loadedAssets[name] = texture;
                 _disposableAssets.Add(texture);
 
                 return texture;
