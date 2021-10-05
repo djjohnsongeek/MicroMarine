@@ -13,7 +13,7 @@ namespace Zand
     public class Core : Game
     {
         public static GraphicsDeviceManager GraphicsManager;
-        public static new GraphicsDevice GraphicsDevice;
+        //public static new GraphicsDevice GraphicsDevice;
         public static ZandContentManager GlobalContent;
 
         private SpriteBatch _spriteBatch;
@@ -24,7 +24,6 @@ namespace Zand
         public Core()
         {
             GraphicsManager = new GraphicsDeviceManager(this);
-            GraphicsDevice = base.GraphicsDevice;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             _instance = this;
@@ -64,7 +63,7 @@ namespace Zand
 
         protected override void Draw(GameTime gameTime)
         {
-            base.GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
             CurrentScene.Draw();
