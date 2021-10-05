@@ -48,7 +48,7 @@ namespace Zand
 
         internal void Draw()
         {
-            SpriteBatch spriteBatch = new SpriteBatch(Core.GraphicsDevice);
+            SpriteBatch spriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);
             spriteBatch.Begin();
             for (int i = 0; i < _entities.Count; i++)
             {
