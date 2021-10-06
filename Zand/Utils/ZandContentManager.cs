@@ -21,12 +21,12 @@ namespace Zand.Utils
         }
 
         #region  Loading Assets
-        public Texture2D LoadTexture(string name)
+        public Texture2D LoadTexture(string name, string path)
         {
-            // let monogame handle stuff compressed by pipline
-            if (string.IsNullOrEmpty(Path.GetExtension(name)))
+            // let monogame handle compressed assets
+            if (string.IsNullOrEmpty(Path.GetExtension(path)))
             {
-                return LoadTexture(name);
+                return Load<Texture2D>(path);
             }
 
             // check to see if this asset is already loaded
@@ -38,7 +38,7 @@ namespace Zand.Utils
                 }
             }
 
-            using (FileStream stream = File.OpenRead(name))
+            using (FileStream stream = File.OpenRead(path))
             {
                 Texture2D texture = Texture2D.FromStream(Core._instance.GraphicsDevice, stream);
                 texture.Name = name;
@@ -47,7 +47,6 @@ namespace Zand.Utils
 
                 return texture;
             }
-            
         }
 
         // load sound effects
