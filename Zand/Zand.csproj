@@ -8,7 +8,6 @@
     <Folder Include="Debug\" />
     <Folder Include="AI\" />
     <Folder Include="Collision\" />
-    <Folder Include="ECS\Components\" />
     <Folder Include="Graphics\Lighting\" />
     <Folder Include="Audio\" />
     <Folder Include="Physics\" />
