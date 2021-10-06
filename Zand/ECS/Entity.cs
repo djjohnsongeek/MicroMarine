@@ -21,6 +21,8 @@ namespace Zand
         {
             Name = name;
             Position = position;
+            Enabled = true;
+            Components = new ComponentList(this);
         }
 
         public void Update() => Components.Update();
