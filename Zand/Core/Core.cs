@@ -15,8 +15,6 @@ namespace Zand
         public static GraphicsDeviceManager GraphicsManager;
         //public static new GraphicsDevice GraphicsDevice;
         public static ZandContentManager GlobalContent;
-
-        private SpriteBatch _spriteBatch;
         public Scene CurrentScene;
 
         internal static Core _instance;
@@ -35,16 +33,13 @@ namespace Zand
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            CurrentScene = new Scene();
+            CurrentScene = new SimpleScene();
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(base.GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
@@ -57,6 +52,7 @@ namespace Zand
                 Exit();
             }
             Camera.Update();
+            CurrentScene.Update();
 
             base.Update(gameTime);
         }
