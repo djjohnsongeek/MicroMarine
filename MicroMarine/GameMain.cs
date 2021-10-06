@@ -1,7 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Zand;
+﻿using Zand;
+using MicroMarine.Scenes;
 
 namespace MicroMarine
 {
@@ -9,6 +7,7 @@ namespace MicroMarine
     {
         protected override void Initialize()
         {
+            CurrentScene = new SimpleScene();
             base.Initialize();
         }
     }
