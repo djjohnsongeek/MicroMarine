@@ -40,6 +40,7 @@ namespace Zand
 
         protected override void LoadContent()
         {
+            CurrentScene.Load();
         }
 
         protected override void Update(GameTime gameTime)
