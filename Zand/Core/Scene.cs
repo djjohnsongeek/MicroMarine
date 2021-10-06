@@ -21,7 +21,6 @@ namespace Zand
         {
             Entities = new EntityList(this);
             Content = new ZandContentManager(Core._instance.Services, Core._instance.Content.RootDirectory);
-            Load();
         }
 
         public virtual void Load()
