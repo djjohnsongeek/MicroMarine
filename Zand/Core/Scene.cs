@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Zand.Utils;
+using Zand.ECS.Components;
 
 namespace Zand
 {
@@ -20,6 +21,13 @@ namespace Zand
         {
             Entities = new EntityList(this);
             Content = new ZandContentManager(Core._instance.Services, Core._instance.Content.RootDirectory);
+            Load();
+        }
+
+        public virtual void Load()
+        {
+            // TODO: use this.Content to load your game content here
+
         }
 
         // Create entity for this scene
