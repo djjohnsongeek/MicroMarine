@@ -55,6 +55,8 @@ namespace Zand
             {
                 _updatableComponents[i].Update();
             }
+
+            UpdateComponentLists();
         }
 
         public void Draw(SpriteBatch spriteBatch)
