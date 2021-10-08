@@ -49,7 +49,11 @@ namespace Zand
         {
             for (int i = 0; i < _updatableComponents.Count; i ++)
             {
-                _updatableComponents[i].Update();
+                if(_updatableComponents[i].Enabled)
+                {
+                    _updatableComponents[i].Update();
+                }
+
             }
 
             UpdateComponentLists();
@@ -59,7 +63,10 @@ namespace Zand
         {
             for (int i = 0; i < _renderableComponents.Count; i++)
             {
-                _renderableComponents[i].Draw(spriteBatch);
+                if (_renderableComponents[i].Enabled)
+                {
+                    _renderableComponents[i].Draw(spriteBatch);
+                }
             }
         }
 

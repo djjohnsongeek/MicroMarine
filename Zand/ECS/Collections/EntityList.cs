@@ -26,7 +26,10 @@ namespace Zand
         {
             for (int i = 0; i < _entities.Count; i++)
             {
-                _entities[i].Update();
+                if (_entities[i].Enabled)
+                {
+                    _entities[i].Update();
+                }
             }
 
             UpdateEntityLists();
@@ -48,7 +51,11 @@ namespace Zand
             spriteBatch.Begin();
             for (int i = 0; i < _entities.Count; i++)
             {
-                _entities[i].Draw(spriteBatch);
+                if (_entities[i].Enabled)
+                {
+                    _entities[i].Draw(spriteBatch);
+                }
+
             }
             spriteBatch.End();
         }
@@ -58,7 +65,6 @@ namespace Zand
             HandleRemovals();
             HandleAdditions();
         }
-
 
         private void HandleRemovals()
         {

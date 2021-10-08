@@ -18,7 +18,7 @@ namespace MicroMarine.Scenes
 
             Entity ball = CreateEntity("ball", Vector2.Zero);
             var texture = Content.LoadTexture("ball", "Content/ball.png");
-            var sprite = new SpriteComponent(texture, Vector2.Zero);
+            var sprite = new SimpleSprite(texture, ball);
             ball.AddComponent(sprite);
         }
     }

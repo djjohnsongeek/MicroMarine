@@ -3,20 +3,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Zand.ECS.Components
 {
-    public class SpriteComponent : Component, IRenderable
+    public class SimpleSprite : Component, IRenderable
     {
         private Texture2D _texture;
-        private Vector2 _position;
+        private Entity _entity;
 
-        public SpriteComponent(Texture2D texture, Vector2 position)
+        public SimpleSprite(Texture2D texture, Entity entity)
         {
             _texture = texture;
-            _position = position;
+            _entity = entity;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, _position, Color.White); 
+            spriteBatch.Draw(_texture, _entity.Position, Color.White); 
         }
     }
 }

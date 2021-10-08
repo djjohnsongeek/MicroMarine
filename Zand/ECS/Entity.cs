@@ -6,7 +6,13 @@ namespace Zand
     public class Entity : IUpdateable
     {
         private uint Id { get; }
-        private bool Enabled { get; set; }
+        private bool _enabled = true;
+        public bool Enabled
+        {
+            get => _enabled;
+            set => SetEnabled(value);
+        }
+
         public Vector2 Position;
         public string Name { get; set; }
         public Scene Scene;
@@ -16,7 +22,6 @@ namespace Zand
         {
             Name = name;
             Position = position;
-            Enabled = true;
             Components = new ComponentList(this);
         }
 
@@ -31,6 +36,24 @@ namespace Zand
         {
             Components.Draw(spriteBatch);
         }
+
+        #region Helpers, Getters, Settings
+
+        public void Disable()
+        {
+            SetEnabled(false);
+        }
+        public void Enable()
+        {
+            SetEnabled(true);
+        }
+        private void SetEnabled(bool value)
+        {
+            _enabled = value;
+        }
+
+     
+        #endregion
 
     }
 }
