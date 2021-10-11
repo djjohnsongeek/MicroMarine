@@ -28,7 +28,6 @@ namespace Zand
             return AddEntity(entity);
         }
 
-
         public Entity AddEntity(Entity entity)
         {
             if (Entities.Contains(entity))
