@@ -23,7 +23,7 @@ namespace Zand
             GlobalContent = new ZandContentManager(Services, Content.RootDirectory);
         }
 
-        #region Game Overrides
+        #region Game Loop Overrides
 
         protected override void Initialize()
         {
