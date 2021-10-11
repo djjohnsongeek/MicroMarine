@@ -16,7 +16,7 @@ namespace Zand.ECS.Components
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, _entity.Position, Color.White); 
+            spriteBatch.Draw(_texture, _entity.Position, Color.White);
         }
     }
 }
