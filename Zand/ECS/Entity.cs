@@ -30,6 +30,7 @@ namespace Zand
         public void AddComponent(Component component)
         {
             Components.Add(component);
+            component.Entity = this;
         }
 
         internal void Draw(SpriteBatch spriteBatch)

@@ -13,8 +13,7 @@ namespace Zand.Assets
         private Texture2D _texture;
         private Rectangle _soureRect;
 
-
-        Sprite(Texture2D texture, Rectangle sourceRect)
+        public Sprite(Texture2D texture, Rectangle sourceRect)
         {
             _texture = texture;
             _soureRect = sourceRect;
