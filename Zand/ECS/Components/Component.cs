@@ -7,7 +7,6 @@
         public bool Enabled
         {
             get => _enabled;
-            set => SetEnabled(value);
         }
         private bool _enabled = true;
 
