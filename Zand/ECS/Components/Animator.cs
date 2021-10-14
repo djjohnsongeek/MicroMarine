@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +16,19 @@ namespace Zand.ECS.Components
         private Rectangle _currentFrame;
         private int _currentIndex = 0;
         private int _finalIndex = 0;
+        private int _fps;
+        private double _updateTarget;
+        private double _elapsedTime;
 
-        public Animator(Entity entity)
+        public Animator(int fps = 24)
         {
-            Entity = entity;
+            _animations = new Dictionary<Enum, Animation>();
+            _fps = fps;
+            _updateTarget = 1d / _fps;
+            _elapsedTime = 0d;
         }
 
-        public void AddAnimation(Animation animation, Enum name)
+        public void AddAnimation(Enum name, Animation animation)
         {
             _animations.Add(name, animation);
         }
@@ -40,14 +47,25 @@ namespace Zand.ECS.Components
 
         public void Update()
         {
+            _elapsedTime += Time.DeltaTime;
             _currentFrame = _currentAnimation[_currentIndex];
-            _currentIndex++;
+
+            if (_elapsedTime >= _updateTarget)
+            {
+                _currentIndex++;
+                _elapsedTime = 0d;
+            }
 
             // looping animation
             if (_currentIndex == _finalIndex)
             {
                 _currentIndex = 0;
             }
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(_currentAnimation.Texture, Entity.Position, _currentFrame, Color.White);
         }
     }
 }
