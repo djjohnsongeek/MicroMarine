@@ -12,7 +12,12 @@ namespace Zand.Assets
 {
     public class Animation
     {
+        // todo define a framerate, option loop delay, etc
         private Texture2D _textureAtlas;
+        public Texture2D Texture
+        {
+            get => _textureAtlas;
+        }
         private Rectangle[] _frames;
         public int Length
         {
