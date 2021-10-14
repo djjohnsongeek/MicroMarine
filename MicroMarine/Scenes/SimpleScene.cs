@@ -14,19 +14,36 @@ namespace MicroMarine.Scenes
 {
     class SimpleScene : Scene
     {
+        public enum MarineAnimation
+        {
+            IdleSouth,
+        }
+
         public override void Load()
         {
             base.Load();
 
-            //Entity ball = CreateEntity("ball", Vector2.Zero);
-            //Texture2D texture = Content.LoadTexture("ball", "Content/ball.png");
-            //var sprite = new SimpleSprite(texture);
-            //ball.AddComponent(sprite);
 
             Entity marine = CreateEntity("marine", Vector2.Zero);
             Texture2D marineSheet = Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
             var spriteSheet = new SpriteSheet(marineSheet, 32, 32);
-            marine.AddComponent(spriteSheet);
+            var animator = new Animator(16);
+            // add this logic to the "marine" enitity
+            var idleSouthAnimation = new Animation(marineSheet, new Rectangle[]
+            {
+                spriteSheet[8],
+                spriteSheet[9],
+                spriteSheet[10],
+                spriteSheet[11],
+                spriteSheet[12],
+                spriteSheet[13],
+                spriteSheet[14],
+                spriteSheet[15],
+            });
+
+            animator.AddAnimation(MarineAnimation.IdleSouth, idleSouthAnimation);
+            animator.SetAnimation(MarineAnimation.IdleSouth);
+            marine.AddComponent(animator);
         }
     }
 }
