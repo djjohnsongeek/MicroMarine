@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Zand.Assets
 {
-    public class SpriteSheet : Component, IRenderable
+    public class SpriteSheet : Component
     {
         Rectangle[] _sprites;
         Texture2D _texture;
@@ -17,6 +17,11 @@ namespace Zand.Assets
         {
             _texture = texture;
             _sprites = ParseSprites(spriteWidth, spriteHeight);
+        }
+
+        public Rectangle this[int index]
+        {
+            get => _sprites[index];
         }
 
         private Rectangle[] ParseSprites(int spriteWidth, int spriteHeight)
@@ -41,13 +46,6 @@ namespace Zand.Assets
             return sprites;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            Random rnd = new Random();
-            int index = rnd.Next(0, 4);
-            spriteBatch.Draw(_texture, Entity.Position, _sprites[index], Color.White);
-        }
 
-        
     }
 }
