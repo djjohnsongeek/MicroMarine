@@ -27,11 +27,12 @@ namespace MicroMarine.Scenes
             Entity marine = CreateEntity("marine", Vector2.Zero);
             Texture2D marineSheet = Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
             var spriteSheet = new SpriteSheet(marineSheet, 32, 32);
-            var animator = new Animator(16);
+            var animator = new Animator();
             // add this logic to the "marine" enitity
-            var idleSouthAnimation = new Animation(marineSheet, new Rectangle[]
+
+            Rectangle[] frames = new Rectangle[]
             {
-                spriteSheet[8],
+                 spriteSheet[8],
                 spriteSheet[9],
                 spriteSheet[10],
                 spriteSheet[11],
@@ -39,7 +40,8 @@ namespace MicroMarine.Scenes
                 spriteSheet[13],
                 spriteSheet[14],
                 spriteSheet[15],
-            });
+            };
+            var idleSouthAnimation = new Animation(marineSheet, frames, 8);
 
             animator.AddAnimation(MarineAnimation.IdleSouth, idleSouthAnimation);
             animator.SetAnimation(MarineAnimation.IdleSouth);

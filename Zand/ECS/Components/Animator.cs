@@ -16,15 +16,12 @@ namespace Zand.ECS.Components
         private Rectangle _currentFrame;
         private int _currentIndex = 0;
         private int _finalIndex = 0;
-        private int _fps;
         private double _updateTarget;
         private double _elapsedTime;
 
-        public Animator(int fps = 24)
+        public Animator()
         {
             _animations = new Dictionary<Enum, Animation>();
-            _fps = fps;
-            _updateTarget = 1d / _fps;
             _elapsedTime = 0d;
         }
 
@@ -43,6 +40,7 @@ namespace Zand.ECS.Components
             _currentAnimation = _animations[name];
             _finalIndex = _currentAnimation.Length - 1;
             _currentIndex = 0;
+            _updateTarget = 1d / _currentAnimation.FrameRate;
         }
 
         public void Update()
