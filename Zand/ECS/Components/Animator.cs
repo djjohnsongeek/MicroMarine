@@ -18,7 +18,6 @@ namespace Zand.ECS.Components
         private int _finalIndex = 0;
         private double _updateTarget;
         private double _elapsedTime;
-
         private bool _suppressUpdate = false;
         private float _suppressDuration = 0;
 
