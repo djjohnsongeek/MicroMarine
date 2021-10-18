@@ -19,6 +19,10 @@ namespace Zand.ECS.Components
         private double _updateTarget;
         private double _elapsedTime;
 
+        private bool _suppressUpdate = false;
+        private float _suppressDuration = 0;
+
+
         public Animator()
         {
             _animations = new Dictionary<Enum, Animation>();
@@ -46,8 +50,22 @@ namespace Zand.ECS.Components
         public void Update()
         {
             _elapsedTime += Time.DeltaTime;
-            _currentFrame = _currentAnimation[_currentIndex];
 
+            // loop delay
+            if (_suppressUpdate)
+            {
+                if (_elapsedTime < _suppressDuration)
+                {
+                    return;
+                }
+
+                _elapsedTime = 0d;
+                _suppressUpdate = false;
+                _suppressDuration = 0f;
+            }
+
+            // Main animation update
+            _currentFrame = _currentAnimation[_currentIndex];
             if (_elapsedTime >= _updateTarget)
             {
                 _currentIndex++;
@@ -58,12 +76,24 @@ namespace Zand.ECS.Components
             if (_currentIndex == _finalIndex)
             {
                 _currentIndex = 0;
+                _elapsedTime = 0d;
+
+                if (_currentAnimation.LoopDelay > 0)
+                {
+                    SuppressUpdate(_currentAnimation.LoopDelay);
+                }
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_currentAnimation.Texture, Entity.Position, _currentFrame, Color.White);
+        }
+
+        private void SuppressUpdate(float timeLength)
+        {
+            _suppressDuration = timeLength;
+            _suppressUpdate = true;
         }
     }
 }

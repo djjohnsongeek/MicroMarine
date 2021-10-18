@@ -19,14 +19,8 @@ namespace Zand.Assets
             get => _textureAtlas;
         }
 
-        private int _frameRate;
-        public int FrameRate
-        {
-            get => _frameRate;
-            set => _frameRate = value;
-        }
-
-
+        public int FrameRate;
+        public float LoopDelay;
 
         private Rectangle[] _frames;
         public int Length
@@ -34,11 +28,12 @@ namespace Zand.Assets
             get => _frames.Length;
         }
 
-        public Animation(Texture2D texture, Rectangle[] frames, int frameRate = 24)
+        public Animation(Texture2D texture, Rectangle[] frames, int frameRate = 24, float loopDelay = 0)
         {
             _textureAtlas = texture;
             _frames = frames;
             FrameRate = frameRate;
+            LoopDelay = loopDelay;
         }
 
         public Rectangle this[int index]

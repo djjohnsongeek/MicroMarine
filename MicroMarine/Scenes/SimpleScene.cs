@@ -28,11 +28,11 @@ namespace MicroMarine.Scenes
             Texture2D marineSheet = Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
             var spriteSheet = new SpriteSheet(marineSheet, 32, 32);
             var animator = new Animator();
-            // add this logic to the "marine" enitity
+            // add this logic to a "marine" entity
 
             Rectangle[] frames = new Rectangle[]
             {
-                 spriteSheet[8],
+                spriteSheet[8],
                 spriteSheet[9],
                 spriteSheet[10],
                 spriteSheet[11],
