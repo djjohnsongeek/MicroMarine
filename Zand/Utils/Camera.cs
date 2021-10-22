@@ -2,41 +2,50 @@
 
 namespace Zand
 {
-    public static class Camera
+    public class Camera
     {
-        public static Matrix Transform;
-        public static Vector2 Position = new Vector2(1920 / 2, 1080 / 2);
-        public static int Width = 960;
-        public static int Height = 540;
+        public Matrix Transform;
+        public Vector2 Position;
+        public int Width;
+        public int Height;
 
-        private static float _rotation = 0.0f;
-        private static float _zoom = 1.0f;
-        private static float _speed = 399.0f;
-        private static int _edgeBuffer = 60;
+        private Scene _scene;
+        private float _rotation = 0.0f;
+        private float _zoom = 1.0f;
+        private float _speed = 399.0f;
+        private int _edgeBuffer = 60;
 
-        public static float Zoom
+        public Camera(Vector2 position, Scene scene, int width = 960, int height = 540)
+        {
+            Height = height;
+            Width = width;
+            Position = position;
+            _scene = scene;
+        }
+
+        public float Zoom
         {
             get { return _zoom; }
             set { _zoom = value; if (_zoom < 0.1f) _zoom = 0.1f; }
         }
 
-        public static float Rotation
+        public float Rotation
         {
             get { return _rotation; }
             set { _rotation = value; }
         }
 
-        public static void Move(Vector2 distance)
+        public void Move(Vector2 distance)
         {
             Position += distance;
         }
 
-        public static void Update()
+        public void Update()
         {
             Move(getVelocity(Time.DeltaTime));
         }
 
-        public static Matrix GetTransformation()
+        public Matrix GetTransformation()
         {
             Transform = Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0)) *
                 Matrix.CreateRotationZ(Rotation) *
@@ -46,17 +55,17 @@ namespace Zand
             return Transform;
         }
 
-        public static Vector2 GetWorldLocation(Vector2 screenLocation)
+        public Vector2 GetWorldLocation(Vector2 screenLocation)
         {
             return Vector2.Transform(screenLocation, Matrix.Invert(GetTransformation()));
         }
 
-        public static Vector2 GetScreenLocation(Vector2 worldLocation)
+        public Vector2 GetScreenLocation(Vector2 worldLocation)
         {
             return Vector2.Transform(worldLocation, GetTransformation());
         }
 
-        private static Vector2 getVelocity(double dt)
+        private Vector2 getVelocity(double dt)
         {
             double dx = 0f;
             double dy = 0f;
