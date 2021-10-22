@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
 namespace Zand
@@ -48,7 +49,16 @@ namespace Zand
         internal void Draw()
         {
             SpriteBatch spriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);
-            spriteBatch.Begin();
+            Matrix? matrix = Scene.Camera == null ? null : Scene.Camera.GetTransformation();
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                null,
+                null,
+                null,
+                null,
+                matrix
+            );
             for (int i = 0; i < _entities.Count; i++)
             {
                 if (_entities[i].Enabled)

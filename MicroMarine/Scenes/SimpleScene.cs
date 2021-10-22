@@ -19,6 +19,11 @@ namespace MicroMarine.Scenes
             IdleSouth,
         }
 
+        public SimpleScene() : base()
+        {
+            Camera = new Camera(new Vector2(800, 400), this, 800, 400);
+        }
+
         public override void Load()
         {
             base.Load();
@@ -46,6 +51,12 @@ namespace MicroMarine.Scenes
             animator.AddAnimation(MarineAnimation.IdleSouth, idleSouthAnimation);
             animator.SetAnimation(MarineAnimation.IdleSouth);
             marine.AddComponent(animator);
+        }
+
+        public override void Update()
+        {
+            Camera.Update();
+            base.Update();
         }
     }
 }

@@ -44,7 +44,6 @@ namespace Zand
             {
                 Exit();
             }
-            Camera.Update();
             CurrentScene.Update();
 
             base.Update(gameTime);
@@ -56,8 +55,6 @@ namespace Zand
 
             // TODO: Add your drawing code here
             CurrentScene.Draw();
-            // Effects.Draw();
-            // UI.Draw();
 
             base.Draw(gameTime);
         }

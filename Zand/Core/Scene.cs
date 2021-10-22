@@ -8,6 +8,7 @@ namespace Zand
     {
         private EntityList Entities;
         public ZandContentManager Content;
+        public Camera Camera = null;
 
         public Scene()
         {
@@ -41,7 +42,7 @@ namespace Zand
             return entity;
         }
 
-        public void Update()
+        public virtual void Update()
         {
             Entities.Update();
         }
