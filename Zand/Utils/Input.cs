@@ -4,52 +4,52 @@ namespace Zand
 {
     public static class Input
     {
-        public static MouseState mState;
-        public static KeyboardState kState;
+        private static MouseState _mouseState;
+        private static KeyboardState _keyBoardState;
 
-        public static MouseState prevMState;
-        public static KeyboardState prevKState;
+        private static MouseState _prevMouseState;
+        private static KeyboardState _prevKeyBoardState;
 
         public static void Update()
         {
-            prevKState = kState;
-            prevMState = mState;
+            _prevKeyBoardState = _keyBoardState;
+            _prevMouseState = _mouseState;
 
-            mState = Mouse.GetState();
-            kState = Keyboard.GetState();
+            _mouseState = Mouse.GetState();
+            _keyBoardState = Keyboard.GetState();
         }
 
         public static bool KeyWasReleased(Keys key)
         {
-            return prevKState.IsKeyDown(key) && kState.IsKeyUp(key);
+            return _prevKeyBoardState.IsKeyDown(key) && _keyBoardState.IsKeyUp(key);
         }
 
         public static bool KeyWasPressed(Keys key)
         {
-            return prevKState.IsKeyUp(key) && kState.IsKeyDown(key);
+            return _prevKeyBoardState.IsKeyUp(key) && _keyBoardState.IsKeyDown(key);
         }
 
         public static bool KeyIsDown(Keys key)
         {
-            return kState.IsKeyDown(key);
+            return _keyBoardState.IsKeyDown(key);
         }
 
         public static bool LeftMouseWasPressed()
         {
-            return prevMState.LeftButton == ButtonState.Pressed && mState.LeftButton == ButtonState.Released;
+            return _prevMouseState.LeftButton == ButtonState.Pressed && _mouseState.LeftButton == ButtonState.Released;
         }
 
         public static bool RightMouseWasPressed()
         {
-            return prevMState.RightButton == ButtonState.Pressed && mState.RightButton == ButtonState.Released;
+            return _prevMouseState.RightButton == ButtonState.Pressed && _mouseState.RightButton == ButtonState.Released;
         }
 
         public static bool LeftMouseIsPressed()
         {
-            return mState.LeftButton == ButtonState.Pressed && prevMState.LeftButton == ButtonState.Pressed;
+            return _mouseState.LeftButton == ButtonState.Pressed && _prevMouseState.LeftButton == ButtonState.Pressed;
         }
 
-        public static bool RightClick()
+        public static bool RightClickOccured()
         {
             return RightMouseWasPressed() && !KeyIsDown(Keys.LeftShift);
         }
