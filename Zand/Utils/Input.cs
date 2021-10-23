@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace Zand
 {
@@ -10,6 +11,8 @@ namespace Zand
         private static MouseState _prevMouseState;
         private static KeyboardState _prevKeyBoardState;
 
+        public static Vector2 MousePosition;
+
         public static void Update()
         {
             _prevKeyBoardState = _keyBoardState;
@@ -17,6 +20,9 @@ namespace Zand
 
             _mouseState = Mouse.GetState();
             _keyBoardState = Keyboard.GetState();
+
+            MousePosition.X = _mouseState.X;
+            MousePosition.Y = _mouseState.Y;
         }
 
         public static bool KeyWasReleased(Keys key)

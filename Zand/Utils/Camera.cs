@@ -71,25 +71,25 @@ namespace Zand
             double dy = 0f;
 
             // left scroll
-            if (Input._mouseState.X < _edgeBuffer)
+            if (Input.MousePosition.X < _edgeBuffer)
             {
                 dx = -(_speed * dt);
             }
 
             // right scroll
-            if (Input._mouseState.X > Width - _edgeBuffer)
+            if (Input.MousePosition.X > Width - _edgeBuffer)
             {
                 dx = _speed * dt;
             }
 
             // down scroll
-            if (Input._mouseState.Y > Height - _edgeBuffer)
+            if (Input.MousePosition.Y > Height - _edgeBuffer)
             {
                 dy = _speed * dt;
             }
 
             // scroll up
-            if (Input._mouseState.Y < _edgeBuffer)
+            if (Input.MousePosition.Y < _edgeBuffer)
             {
                 dy = -(_speed * dt);
             }
