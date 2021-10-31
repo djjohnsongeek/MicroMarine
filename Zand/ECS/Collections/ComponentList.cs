@@ -37,6 +37,19 @@ namespace Zand
             _componentsToRemove.Remove(component);
         }
 
+        public T GetComponent<T>() where T : Component
+        {
+            for (int i = 0; i < _components.Count; i ++)
+            {
+                if (_components[i] is T)
+                {
+                    return _components[i] as T;
+                }
+            }
+
+            return null;
+        }
+
         public void UpdateComponentLists()
         {
             HandleRemovals();

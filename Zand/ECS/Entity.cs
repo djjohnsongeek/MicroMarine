@@ -31,6 +31,12 @@ namespace Zand
         {
             Components.Add(component);
             component.Entity = this;
+            component.Scene = Scene;
+        }
+
+        public T GetComponent<T>() where T: Component
+        {
+            return Components.GetComponent<T>();
         }
 
         internal void Draw(SpriteBatch spriteBatch)
