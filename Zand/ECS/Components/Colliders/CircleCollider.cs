@@ -9,14 +9,5 @@ namespace Zand.ECS.Components
     public class CircleCollider : Collider
     {
         public float Radius;
-
-        public void Update()
-        {
-            Origin = Entity.Position;
-
-            // Grab near by colliders
-            // check for collisions
-            // resolve collisions
-        }
     }
 }

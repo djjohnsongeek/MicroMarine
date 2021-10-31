@@ -9,7 +9,12 @@ namespace Zand.ECS.Components
 {
     public class Collider : Component, IUpdateable
     {
-        public Vector2 Origin;
+        public Vector2 Position;
+
+        public void Update()
+        {
+            Position = Entity.Position;
+        }
 
     }
 }

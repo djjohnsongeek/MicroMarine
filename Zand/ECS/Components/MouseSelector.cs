@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Zand.ECS.Components
 {
-    class MouseSelector : Collider
+    class MouseSelector : BoxCollider
     {
-        
-        public void Update()
-        {
-            Origin = Entity.Position;
 
-            // check mouse inputs
+        public new void Update()
+        {
+            base.Update();
+
         }
+
     }
 }

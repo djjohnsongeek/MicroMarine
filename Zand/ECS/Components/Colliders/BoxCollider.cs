@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
 
 namespace Zand.ECS.Components
 {
     public class BoxCollider : Collider
     {
-        public float Width { get; private set; }
-        public float Height { get; private set; }
+        public Rectangle HitBox { get; private set; }
 
-
-        public void Update()
+        public BoxCollider(Rectangle hitBox)
         {
-            Origin = Entity.Position;
+            HitBox = hitBox;
+        }
 
-            // find nearby collision objects
-            // check for collisions & resolve
+        public BoxCollider(Vector2 position, int width, int height)
+        {
+            var rect = new Rectangle((int)position.X, (int)position.Y, width, height);
         }
     }
 }
