@@ -86,7 +86,16 @@ namespace Zand.ECS.Components
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_currentAnimation.Texture, Entity.Position, _currentFrame, Color.White);
+            // TEMP SELECTION INDICATION CODE (NOT WORKING ATM)
+            Color entityColor = Color.White;
+            MouseSelector selector = Entity.GetComponent<MouseSelector>();
+            if (selector != null && selector.Selected)
+            {
+                entityColor = Color.OrangeRed;
+            }
+            
+
+            spriteBatch.Draw(_currentAnimation.Texture, Entity.Position, _currentFrame, entityColor);
         }
 
         private void SuppressUpdate(float timeLength)
