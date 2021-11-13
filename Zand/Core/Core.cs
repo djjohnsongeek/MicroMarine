@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using Zand.Utils;
 
 namespace Zand
@@ -27,6 +28,12 @@ namespace Zand
 
         protected override void Initialize()
         {
+            if (CurrentScene == null)
+            {
+                throw new NullReferenceException("Scene Cannot be Null");
+            }
+
+            CurrentScene.Initialize();
             base.Initialize();
         }
 
@@ -58,6 +65,9 @@ namespace Zand
 
             base.Draw(gameTime);
         }
+        #endregion
+
+        #region Utilities
         #endregion
     }
 }
