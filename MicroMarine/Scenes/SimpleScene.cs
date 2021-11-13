@@ -21,19 +21,26 @@ namespace MicroMarine.Scenes
 
         public SimpleScene() : base()
         {
-            Camera = new Camera(new Vector2(800, 400), this, 800, 400);
+            
+        }
+
+        public override void Initialize()
+        {
+            SetWindowSize(1280, 720);
+            Camera = new Camera(new Vector2(ScreenWidth / 2, ScreenHeight / 2), this, ScreenWidth, ScreenHeight);
+
+            base.Initialize();
         }
 
         public override void Load()
         {
             base.Load();
 
-
             Entity marine = CreateEntity("marine", Vector2.Zero);
             Texture2D marineSheet = Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
             var spriteSheet = new SpriteSheet(marineSheet, 32, 32);
             var animator = new Animator();
-            // add this logic to a "marine" entity
+            // Add this logic to a "marine" entity
 
             Rectangle[] frames = new Rectangle[]
             {
