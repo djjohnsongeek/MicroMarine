@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Debug\" />
     <Folder Include="AI\" />
     <Folder Include="Collision\" />
     <Folder Include="Graphics\Lighting\" />
