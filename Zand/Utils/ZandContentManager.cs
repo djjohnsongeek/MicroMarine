@@ -45,6 +45,23 @@ namespace Zand.Utils
             }
         }
 
+        public SpriteFont LoadFont(string name, string path)
+        {
+            SpriteFont font = Load<SpriteFont>(path);
+
+            // check to see if this asset is already loaded
+            if (_loadedAssets.TryGetValue(name, out var asset))
+            {
+                if (asset is SpriteFont sFont)
+                {
+                    return sFont;
+                }
+            }
+
+            _loadedAssets[name] = font;
+            return font;
+        }
+
         // load sound effects
 
         #endregion
