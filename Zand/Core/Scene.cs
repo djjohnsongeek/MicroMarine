@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Zand.Debug;
 using Zand.Utils;
 
 namespace Zand
@@ -9,6 +11,10 @@ namespace Zand
         private EntityList Entities;
         public ZandContentManager Content;
         public Camera Camera = null;
+        internal DebugConsole DebugConsole;
+
+        public int ScreenWidth;
+        public int ScreenHeight;
 
         public Scene()
         {
@@ -16,16 +22,24 @@ namespace Zand
             Content = new ZandContentManager(Core._instance.Services, Core._instance.Content.RootDirectory);
         }
 
+        public virtual void Initialize()
+        {
+            
+            // Init logic goes here
+        }
+
         public virtual void Load()
         {
             // TODO: use this.Content to load your game content here
-
+            SpriteFont debugFont = Content.LoadFont("DebugFont", "Debug");
+            DebugConsole = new DebugConsole(this, debugFont);
         }
 
         // Create entity for this scene
         public Entity CreateEntity(string name, Vector2 position)
         {
             var entity = new Entity(name, position);
+            DebugConsole.AddMessage("Created Entity");
             return AddEntity(entity);
         }
 
@@ -45,6 +59,11 @@ namespace Zand
         public virtual void Update()
         {
             Entities.Update();
+
+            if (DebugConsole.Enabled)
+            {
+                DebugConsole.Update();
+            }
         }
 
         public void Draw()
@@ -53,7 +72,21 @@ namespace Zand
             Entities.Draw();
             // Draw Effects
             // Draw UI
-;
+            if (DebugConsole.Enabled)
+            {
+                DebugConsole.Draw();
+            }
+        }
+
+        public void SetWindowSize(int width, int height)
+        {
+            Core.GraphicsManager.PreferredBackBufferHeight = height;
+            ScreenHeight = height;
+
+            Core.GraphicsManager.PreferredBackBufferWidth = width;
+            ScreenWidth = width;
+
+            Core.GraphicsManager.ApplyChanges();
         }
     }
 }
