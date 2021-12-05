@@ -11,10 +11,14 @@ namespace Zand.ECS.Components
     {
         public Vector2 Position;
 
-        public void Update()
+        public virtual void Update()
         {
             Position = Entity.Position;
         }
+
+        // colliders are added as components
+        // but then registerd to the phyics sustem by the scene/ entity later
+        // Physics handles the collisions, component handles update logic
 
     }
 }

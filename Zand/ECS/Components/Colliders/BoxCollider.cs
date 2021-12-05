@@ -4,7 +4,7 @@ namespace Zand.ECS.Components
 {
     public class BoxCollider : Collider
     {
-        public Rectangle HitBox { get; private set; }
+        public Rectangle HitBox;
 
         public BoxCollider(Rectangle hitBox)
         {
@@ -13,7 +13,14 @@ namespace Zand.ECS.Components
 
         public BoxCollider(Vector2 position, int width, int height)
         {
-            var rect = new Rectangle((int)position.X, (int)position.Y, width, height);
+            HitBox = new Rectangle((int)position.X, (int)position.Y, width, height);
+        }
+
+        public override void Update()
+        {
+            base.Update();
+            HitBox.Location = Position.ToPoint();
         }
     }
 }
+
