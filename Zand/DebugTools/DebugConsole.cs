@@ -27,7 +27,7 @@ namespace Zand.Debug
             _messages = new Queue<string>();
             _textRenderer = new TextRenderer(font);
             _background = new SolidRectangle(
-                Core._instance.GraphicsDevice,
+                _scene.DebugPixelTexture,
                 new Point(0, _scene.ScreenHeight - 100),
                 new Point(_scene.ScreenWidth, 100),
                 new Color(45, 45, 45, 180)

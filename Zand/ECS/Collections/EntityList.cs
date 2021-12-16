@@ -53,7 +53,7 @@ namespace Zand
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
                 BlendState.AlphaBlend,
-                null,
+                SamplerState.PointClamp,
                 null,
                 null,
                 null,

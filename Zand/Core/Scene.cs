@@ -12,6 +12,7 @@ namespace Zand
         public ZandContentManager Content;
         public Camera Camera = null;
         internal DebugConsole DebugConsole;
+        public Texture2D DebugPixelTexture;
 
         public int ScreenWidth;
         public int ScreenHeight;
@@ -31,6 +32,8 @@ namespace Zand
         public virtual void Load()
         {
             // TODO: use this.Content to load your game content here
+            DebugPixelTexture = new Texture2D(Core._instance.GraphicsDevice, 1, 1);
+            DebugPixelTexture.SetData(new Color[] { Color.White});
             SpriteFont debugFont = Content.LoadFont("DebugFont", "Debug");
             DebugConsole = new DebugConsole(this, debugFont);
         }

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Zand.Debug
 {
     class SolidRectangle
     {
+        public bool Enabled;
         private Texture2D _texture;
         private Color _color;
         private Rectangle _rectangle;
@@ -23,9 +18,9 @@ namespace Zand.Debug
             }
         }
 
-        public SolidRectangle(GraphicsDevice graphics, Point position, Point size, Color color)
+        public SolidRectangle(Texture2D texture, Point position, Point size, Color color)
         {
-            _texture = new Texture2D(graphics, 1, 1);
+            _texture = texture;
             _texture.SetData(new Color[] { color });
             _rectangle = new Rectangle(position, size);
             _color = color;
