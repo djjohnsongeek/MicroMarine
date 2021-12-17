@@ -8,7 +8,7 @@ using Zand.Physics;
 
 namespace Zand.ECS.Components
 {
-    public class MouseSelector : BoxCollider
+    public class MouseSelector : BoxCollider, IUpdateable
     {
         public bool Selected = false;
 
@@ -16,10 +16,12 @@ namespace Zand.ECS.Components
         {
             base.Update();
 
-            if (Collisions.RectangleToPoint(HitBox, Scene.Camera.GetWorldLocation(Input.MousePosition)) && Input.LeftMouseWasPressed())
+            Rectangle rect = Scene.Camera.GetScreenLocation(HitBox);
+
+            if (Collisions.RectangleToPoint(rect, Input.MousePosition) && Input.LeftMouseWasPressed())
             {
                 Selected = true;
-                Scene.DebugConsole.AddMessage("Box collider clicked");
+                Scene.DebugTools.Log("Box collider clicked");
             }
         }
 

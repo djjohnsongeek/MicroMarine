@@ -19,7 +19,7 @@ namespace Zand.Debug
         private Vector2 _feedPosition;
         private float _messageLife = 2f;
 
-        public bool Enabled { get; } = true;
+        public bool Enabled { get; set; }
 
         public DebugConsole(Scene scene, SpriteFont font)
         {
@@ -58,12 +58,8 @@ namespace Zand.Debug
         }
 
 
-        public void Draw()
+        public void Draw(SpriteBatch spriteBatch)
         {
-            // Need to move this to a global? ui object
-            SpriteBatch spriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);
-            spriteBatch.Begin();
-
             // Draw Background
             _background.Draw(spriteBatch);
 
@@ -82,8 +78,6 @@ namespace Zand.Debug
 
                 linePosition.Y += 16;
             }
-
-            spriteBatch.End();
         }
     }
 }

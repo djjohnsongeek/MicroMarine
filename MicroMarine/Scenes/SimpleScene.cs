@@ -58,7 +58,9 @@ namespace MicroMarine.Scenes
             animator.AddAnimation(MarineAnimation.IdleSouth, idleSouthAnimation);
             animator.SetAnimation(MarineAnimation.IdleSouth);
             marine.AddComponent(animator);
-            marine.AddComponent(new MouseSelector(new Rectangle(marine.Position.ToPoint(), new Point(32, 32))));
+            MouseSelector mouseCollider = new MouseSelector(new Rectangle(marine.Position.ToPoint(), new Point(32, 32)));
+            marine.AddComponent(mouseCollider);
+            RegisterCollider(mouseCollider);
         }
 
         public override void Update()

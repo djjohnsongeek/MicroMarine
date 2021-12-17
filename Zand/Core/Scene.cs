@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Zand.Debug;
+using Zand.ECS.Components;
+using Zand.Physics;
 using Zand.Utils;
 
 namespace Zand
@@ -11,8 +13,9 @@ namespace Zand
         private EntityList Entities;
         public ZandContentManager Content;
         public Camera Camera = null;
-        internal DebugConsole DebugConsole;
         public Texture2D DebugPixelTexture;
+        public bool Debug = true;
+        public DebugTools DebugTools;
 
         public int ScreenWidth;
         public int ScreenHeight;
@@ -25,8 +28,9 @@ namespace Zand
 
         public virtual void Initialize()
         {
-            
+
             // Init logic goes here
+            
         }
 
         public virtual void Load()
@@ -35,14 +39,14 @@ namespace Zand
             DebugPixelTexture = new Texture2D(Core._instance.GraphicsDevice, 1, 1);
             DebugPixelTexture.SetData(new Color[] { Color.White});
             SpriteFont debugFont = Content.LoadFont("DebugFont", "Debug");
-            DebugConsole = new DebugConsole(this, debugFont);
+            DebugTools = new DebugTools(this, debugFont);
         }
 
         // Create entity for this scene
         public Entity CreateEntity(string name, Vector2 position)
         {
             var entity = new Entity(name, position);
-            DebugConsole.AddMessage("Created Entity");
+            DebugTools.Log("Created Entity");
             return AddEntity(entity);
         }
 
@@ -62,23 +66,23 @@ namespace Zand
         public virtual void Update()
         {
             Entities.Update();
-
-            if (DebugConsole.Enabled)
-            {
-                DebugConsole.Update();
-            }
+            DebugTools.Update();
         }
 
         public void Draw()
         {
-
             Entities.Draw();
             // Draw Effects
             // Draw UI
-            if (DebugConsole.Enabled)
+            if (Debug)
             {
-                DebugConsole.Draw();
+                DebugTools.Draw();
             }
+        }
+
+        public void RegisterCollider(Collider collider)
+        {
+            PhysicsManager.AddCollider(collider);
         }
 
         public void SetWindowSize(int width, int height)

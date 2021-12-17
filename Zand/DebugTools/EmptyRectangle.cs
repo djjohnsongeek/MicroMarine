@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Zand.DebugTools
+namespace Zand.Debug
 {
     public class EmptyRectangle: IRenderable
     {

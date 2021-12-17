@@ -65,6 +65,12 @@ namespace Zand
             return Vector2.Transform(worldLocation, GetTransformation());
         }
 
+        public Rectangle GetScreenLocation(Rectangle worldRect)
+        {
+            Vector2 screenLocation = Vector2.Transform(new Vector2(worldRect.X, worldRect.Y), GetTransformation());
+            return new Rectangle((int)screenLocation.X, (int)screenLocation.Y, worldRect.Width, worldRect.Height);
+        }
+
         private Vector2 getVelocity(double dt)
         {
             double dx = 0f;

@@ -4,7 +4,7 @@ using Zand.Graphics;
 
 namespace Zand.ECS.Components
 {
-    public class BoxCollider : Collider, IRenderable
+    public class BoxCollider : Collider
     {
         public Rectangle HitBox;
 
@@ -24,10 +24,10 @@ namespace Zand.ECS.Components
             HitBox.Location = Position.ToPoint();
         }
 
-        // Need to move this to a "primitive" draw
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
-            Shapes.DrawRectangle(spriteBatch, Scene.DebugPixelTexture, HitBox, Color.White);
+            Rectangle rect = Scene.Camera.GetScreenLocation(HitBox);
+            Shapes.DrawRectangle(spriteBatch, Scene.DebugPixelTexture, rect, Color.White);
         }
     }
 }
