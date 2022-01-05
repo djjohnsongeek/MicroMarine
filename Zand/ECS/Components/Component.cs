@@ -5,24 +5,12 @@
         public Entity Entity { get; set; }
         public Scene Scene { get; set; }
         private int UpdateOrder { get; set; }
-        public bool Enabled
-        {
-            get => _enabled;
-        }
-        private bool _enabled = true;
 
-        public void Disable()
-        {
-            SetEnabled(false);
-        }
-        public void Enable()
-        {
-            SetEnabled(true);
-        }
+        public bool Enabled { get; set; } = true;
 
-        private void SetEnabled(bool value)
+        public virtual void OnAddedToEntity()
         {
-            _enabled = value;
+
         }
     }
 }
