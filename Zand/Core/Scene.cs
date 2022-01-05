@@ -17,6 +17,8 @@ namespace Zand
         public bool Debug = true;
         public DebugTools DebugTools;
 
+        public SpriteBatch SpriteBatch;
+
         public int ScreenWidth;
         public int ScreenHeight;
 
@@ -24,6 +26,7 @@ namespace Zand
         {
             Entities = new EntityList(this);
             Content = new ZandContentManager(Core._instance.Services, Core._instance.Content.RootDirectory);
+            SpriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);
         }
 
         public virtual void Initialize()
@@ -35,17 +38,15 @@ namespace Zand
 
         public virtual void Load()
         {
-            // TODO: use this.Content to load your game content here
             DebugPixelTexture = new Texture2D(Core._instance.GraphicsDevice, 1, 1);
             DebugPixelTexture.SetData(new Color[] { Color.White});
             SpriteFont debugFont = Content.LoadFont("DebugFont", "Debug");
             DebugTools = new DebugTools(this, debugFont);
         }
 
-        // Create entity for this scene
         public Entity CreateEntity(string name, Vector2 position)
         {
-            var entity = new Entity(name, position);
+            var entity = new Entity(name, position, new Point(32, 32));
             DebugTools.Log("Created Entity");
             return AddEntity(entity);
         }
@@ -54,7 +55,7 @@ namespace Zand
         {
             if (Entities.Contains(entity))
             {
-                throw new ArgumentException("Attempt to add Entity to a scene in which it already exists.");
+                throw new ArgumentException("Attempted to add Entity to a scene in which it already exists.");
             }
 
             Entities.Add(entity);
