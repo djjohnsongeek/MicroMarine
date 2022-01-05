@@ -14,14 +14,17 @@ namespace Zand
         }
 
         public Vector2 Position;
+        public Point Dimensions;
+
         public string Name { get; set; }
         public Scene Scene;
         private ComponentList Components { get; }
 
-        public Entity(string name, Vector2 position)
+        public Entity(string name, Vector2 position, Point dimensions)
         {
             Name = name;
             Position = position;
+            Dimensions = dimensions;
             Components = new ComponentList(this);
         }
 
@@ -32,6 +35,7 @@ namespace Zand
             Components.Add(component);
             component.Entity = this;
             component.Scene = Scene;
+            component.OnAddedToEntity();
         }
 
         public T GetComponent<T>() where T: Component
