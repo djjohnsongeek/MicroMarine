@@ -26,13 +26,11 @@ namespace Zand.Debug
 
         public void Draw()
         {
-            SpriteBatch spriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);
-            spriteBatch.Begin();
+            _scene.SpriteBatch.Begin();
+            _debugConsole.Draw(_scene.SpriteBatch);
+            PhysicsManager.Draw(_scene.SpriteBatch);
 
-            _debugConsole.Draw(spriteBatch);
-            PhysicsManager.Draw(spriteBatch);
-
-            spriteBatch.End();
+            _scene.SpriteBatch.End();
         }
 
         public void Log(string message)
