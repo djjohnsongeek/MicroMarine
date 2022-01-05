@@ -62,6 +62,11 @@ namespace Zand.Utils
             return font;
         }
 
+        public T GetContent<T>(string contentName)
+        {
+            return (T)_loadedAssets[contentName];
+        }
+
         // load sound effects
 
         #endregion
