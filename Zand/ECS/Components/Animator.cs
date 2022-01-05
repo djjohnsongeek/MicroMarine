@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zand;
 using Zand.Assets;
 
 namespace Zand.ECS.Components
@@ -86,16 +87,7 @@ namespace Zand.ECS.Components
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            // TEMP SELECTION INDICATION CODE (NOT WORKING ATM)
-            Color entityColor = Color.White;
-            MouseSelector selector = Entity.GetComponent<MouseSelector>();
-            if (selector != null && selector.Selected)
-            {
-                entityColor = Color.OrangeRed;
-            }
-            
-
-            spriteBatch.Draw(_currentAnimation.Texture, Entity.Position, _currentFrame, entityColor);
+            spriteBatch.Draw(_currentAnimation.Texture, Entity.Position, _currentFrame, Color.Red);
         }
 
         private void SuppressUpdate(float timeLength)
