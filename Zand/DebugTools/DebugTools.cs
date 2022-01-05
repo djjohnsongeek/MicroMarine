@@ -21,16 +21,21 @@ namespace Zand.Debug
 
         public void Update()
         {
-            _debugConsole.Update();
+            if (_scene.Debug)
+            {
+                _debugConsole.Update();
+            }
         }
 
         public void Draw()
         {
-            _scene.SpriteBatch.Begin();
-            _debugConsole.Draw(_scene.SpriteBatch);
-            PhysicsManager.Draw(_scene.SpriteBatch);
-
-            _scene.SpriteBatch.End();
+            if (_scene.Debug)
+            {
+                _scene.SpriteBatch.Begin();
+                _debugConsole.Draw(_scene.SpriteBatch);
+                PhysicsManager.Draw(_scene.SpriteBatch);
+                _scene.SpriteBatch.End();
+            }
         }
 
         public void Log(string message)

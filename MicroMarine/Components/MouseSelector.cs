@@ -22,6 +22,7 @@ namespace MicroMarine.Components
 
             if (Collisions.RectangleToPoint(rect, Input.MousePosition) && Input.LeftMouseWasPressed())
             {
+                Scene.DebugTools.Log("Marine Entity Clicked");
                 Selected = !Selected;
                 Entity.GetComponent<Health>().Visible = Selected;
             }

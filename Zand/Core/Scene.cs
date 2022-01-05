@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Zand.Debug;
 using Zand.ECS.Components;
 using Zand.Physics;
@@ -14,7 +15,7 @@ namespace Zand
         public ZandContentManager Content;
         public Camera Camera = null;
         public Texture2D DebugPixelTexture;
-        public bool Debug = true;
+        public bool Debug = false;
         public DebugTools DebugTools;
 
         public SpriteBatch SpriteBatch;
@@ -68,6 +69,12 @@ namespace Zand
         {
             Entities.Update();
             DebugTools.Update();
+
+            // Toggle Debug
+            if (Input.KeyIsDown(Keys.LeftControl) && Input.KeyWasPressed(Keys.D))
+            {
+                Debug = !Debug;
+            }
         }
 
         public void Draw()
@@ -75,10 +82,7 @@ namespace Zand
             Entities.Draw();
             // Draw Effects
             // Draw UI
-            if (Debug)
-            {
-                DebugTools.Draw();
-            }
+            DebugTools.Draw();
         }
 
         public void RegisterCollider(Collider collider)
