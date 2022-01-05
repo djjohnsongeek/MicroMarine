@@ -13,7 +13,7 @@ namespace Zand.Debug
 
         }
 
-        public bool Enabled { get;  }
+        public bool Enabled { get; }
 
         public void Draw(SpriteBatch sbatch)
         {
