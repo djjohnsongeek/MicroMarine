@@ -48,9 +48,8 @@ namespace Zand
 
         internal void Draw()
         {
-            SpriteBatch spriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);
             Matrix? matrix = Scene.Camera == null ? null : Scene.Camera.GetTransformation();
-            spriteBatch.Begin(
+            Scene.SpriteBatch.Begin(
                 SpriteSortMode.Deferred,
                 BlendState.AlphaBlend,
                 SamplerState.PointClamp,
@@ -63,11 +62,11 @@ namespace Zand
             {
                 if (_entities[i].Enabled)
                 {
-                    _entities[i].Draw(spriteBatch);
+                    _entities[i].Draw(Scene.SpriteBatch);
                 }
 
             }
-            spriteBatch.End();
+            Scene.SpriteBatch.End();
         }
 
         internal void UpdateEntityLists()
