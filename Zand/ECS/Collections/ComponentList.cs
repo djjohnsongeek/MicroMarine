@@ -100,6 +100,7 @@ namespace Zand
                     }
 
                     _componentsToRemove[i].Entity = null;
+                    _components.Remove(_componentsToRemove[i]);
                 }
 
                 _componentsToRemove.Clear();
@@ -123,6 +124,8 @@ namespace Zand
                     {
                         _renderableComponents.Add(_componentsToAdd[i] as IRenderable);
                     }
+
+                    _components.Add(_componentsToAdd[i]);
                 }
 
                 _componentsToAdd.Clear();
