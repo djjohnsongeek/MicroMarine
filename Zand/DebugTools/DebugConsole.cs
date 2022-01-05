@@ -57,7 +57,6 @@ namespace Zand.Debug
             }
         }
 
-
         public void Draw(SpriteBatch spriteBatch)
         {
             // Draw Background
