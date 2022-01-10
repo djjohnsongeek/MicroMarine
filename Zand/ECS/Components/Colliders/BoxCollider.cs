@@ -27,7 +27,7 @@ namespace Zand.ECS.Components
         public override void Draw(SpriteBatch spriteBatch)
         {
             Rectangle rect = Scene.Camera.GetScreenLocation(HitBox);
-            Shapes.DrawRectangle(spriteBatch, Scene.DebugPixelTexture, rect, Color.White);
+            Shapes.DrawEmptyRect(spriteBatch, Scene.DebugPixelTexture, rect, Color.White);
         }
     }
 }
