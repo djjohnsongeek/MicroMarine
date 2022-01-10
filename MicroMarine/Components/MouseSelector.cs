@@ -16,16 +16,9 @@ namespace MicroMarine.Components
 
         public MouseSelector(Rectangle hitBox) : base(hitBox) { }
 
-        public new void Update()
+        public Rectangle GetScreenLocation()
         {
-            Rectangle rect = Scene.Camera.GetScreenLocation(HitBox);
-
-            if (Collisions.RectangleToPoint(rect, Input.MousePosition) && Input.LeftMouseWasPressed())
-            {
-                Scene.DebugTools.Log("Marine Entity Clicked");
-                Selected = !Selected;
-                Entity.GetComponent<Health>().Visible = Selected;
-            }
+            return Scene.Camera.GetScreenLocation(HitBox);
         }
     }
 }
