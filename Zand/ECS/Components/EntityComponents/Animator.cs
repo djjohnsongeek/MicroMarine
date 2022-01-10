@@ -87,7 +87,7 @@ namespace Zand.ECS.Components
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_currentAnimation.Texture, Entity.Position, _currentFrame, Color.Red);
+            spriteBatch.Draw(_currentAnimation.Texture, Entity.Position, _currentFrame, Color.White);
         }
 
         private void SuppressUpdate(float timeLength)
