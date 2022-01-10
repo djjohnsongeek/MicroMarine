@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -12,6 +13,7 @@ namespace Zand
     public class Scene
     {
         private EntityList Entities;
+        public List<SceneComponent> SceneComponents;
         public ZandContentManager Content;
         public Camera Camera = null;
         public Texture2D DebugPixelTexture;
@@ -28,6 +30,7 @@ namespace Zand
             Entities = new EntityList(this);
             Content = new ZandContentManager(Core._instance.Services, Core._instance.Content.RootDirectory);
             SpriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);
+            SceneComponents = new List<SceneComponent>();
         }
 
         public virtual void Initialize()
@@ -65,8 +68,31 @@ namespace Zand
             return entity;
         }
 
+        public SceneComponent AddSceneComponent(SceneComponent component)
+        {
+            SceneComponents.Add(component);
+            return component;
+        }
+
+        public T GetSceneComponent<T>() where T : SceneComponent
+        {
+            for (int i = 0; i < SceneComponents.Count; i ++)
+            {
+                if (SceneComponents[i] is T)
+                {
+                    return SceneComponents[i] as T;
+                }
+            }
+            return null;
+        }
+
         public virtual void Update()
         {
+            for (int i = 0; i < SceneComponents.Count; i ++)
+            {
+                SceneComponents[i].Update();
+            }
+
             Entities.Update();
             DebugTools.Update();
 
