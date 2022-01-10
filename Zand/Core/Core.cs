@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Diagnostics;
+using System.Threading;
 using Zand.UI;
 using Zand.Utils;
 
@@ -18,6 +20,7 @@ namespace Zand
         private ulong _frameCount;
         private double _frameSeconds;
         private TextRenderer _fpsRenderer;
+        public static Stopwatch timer = new Stopwatch();
 
         internal static Core _instance;
 
@@ -55,6 +58,8 @@ namespace Zand
 
         protected override void Update(GameTime gameTime)
         {
+            timer.Restart();
+
             Time.Update(gameTime.ElapsedGameTime.TotalSeconds);
             Input.Update();
 
@@ -71,12 +76,13 @@ namespace Zand
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            base.Draw(gameTime);
             // TODO: Add your drawing code here
             CurrentScene.Draw();
             DrawFPS();
 
-            base.Draw(gameTime);
+            timer.Stop();
+            Window.Title = $"MicroMarine - ms: {timer.ElapsedMilliseconds}";
         }
         #endregion
 
@@ -97,10 +103,10 @@ namespace Zand
         {
             Vector2 position = new Vector2(CurrentScene.ScreenWidth - 75, 0);
 
-            SpriteBatch spriteBatch = new SpriteBatch(GraphicsDevice);
-            spriteBatch.Begin();
-            _fpsRenderer.DrawString(spriteBatch, $"FPS: {FPS}", position, Color.Yellow, 1, false); 
-            spriteBatch.End();
+            
+            CurrentScene.SpriteBatch.Begin();
+            _fpsRenderer.DrawString(CurrentScene.SpriteBatch, $"FPS: {FPS}", position, Color.Yellow, 1, false);
+            CurrentScene.SpriteBatch.End();
         }
         #endregion
     }
