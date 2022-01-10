@@ -10,7 +10,7 @@ namespace Zand.Graphics
 {
     public static class Shapes
     {
-        public static void DrawRectangle(SpriteBatch sBatch, Texture2D texture, Rectangle rectangle, Color color)
+        public static void DrawEmptyRect(SpriteBatch sBatch, Texture2D texture, Rectangle rectangle, Color color)
         {
             sBatch.Draw(texture, new Rectangle(rectangle.Left, rectangle.Top, rectangle.Width, 1), color);
             sBatch.Draw(texture, new Rectangle(rectangle.Right, rectangle.Top, 1, rectangle.Height), color);
@@ -18,7 +18,7 @@ namespace Zand.Graphics
             sBatch.Draw(texture, new Rectangle(rectangle.Left, rectangle.Top, 1, rectangle.Height), color);
         }
 
-        public static void DrawLine(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, Vector2 end, int width, Color color)
+        public static void DrawRect(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, Vector2 end, int width, Color color)
         {
             Vector2 edge = end - start;
             float angle = (float)Math.Atan2(edge.Y, edge.X);

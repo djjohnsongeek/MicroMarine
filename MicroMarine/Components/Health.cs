@@ -38,7 +38,7 @@ namespace MicroMarine.Components
             {
                 Vector2 start = new Vector2(HealthBar.X, HealthBar.Y);
                 Vector2 end = new Vector2(HealthBar.Right, HealthBar.Top);
-                Shapes.DrawLine(sbatch, Scene.DebugPixelTexture, start, end, 2, Color.White);
+                Shapes.DrawRect(sbatch, Scene.DebugPixelTexture, start, end, 2, Color.White);
             }
         }
     }
