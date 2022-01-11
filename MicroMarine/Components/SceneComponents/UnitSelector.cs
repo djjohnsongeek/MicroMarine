@@ -76,7 +76,11 @@ namespace MicroMarine.Components
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Shapes.DrawEmptyRect(spriteBatch, Scene.DebugPixelTexture, selectBox, Color.White);
+            Shapes.DrawEmptyRect(
+                spriteBatch,
+                Scene.DebugPixelTexture,
+                selectBox,
+                Color.Green);
         }
     }
 }
