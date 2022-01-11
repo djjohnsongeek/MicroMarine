@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Zand.ECS.Components;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Zand.ECS.Collections
 {
@@ -28,7 +29,11 @@ namespace Zand.ECS.Collections
 
         public void Draw()
         {
-            Scene.SpriteBatch.Begin();
+            Scene.SpriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                null, null, null, null, null
+            );
 
             for (int i = 0; i < _components.Count; i++)
             {
