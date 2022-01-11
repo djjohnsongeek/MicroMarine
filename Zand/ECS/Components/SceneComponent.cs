@@ -25,5 +25,9 @@ namespace Zand.ECS.Components
         {
 
         }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+        }
     }
 }

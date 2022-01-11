@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Zand.Debug;
+using Zand.ECS.Collections;
 using Zand.ECS.Components;
 using Zand.Physics;
 using Zand.Utils;
@@ -13,12 +14,11 @@ namespace Zand
     public class Scene
     {
         private EntityList Entities;
-        public List<SceneComponent> SceneComponents;
+        public SceneComponentList SceneComponents;
         public ZandContentManager Content;
         public Camera Camera = null;
         public Texture2D DebugPixelTexture;
         public bool Debug = false;
-        public DebugTools DebugTools;
 
         public SpriteBatch SpriteBatch;
 
@@ -30,7 +30,7 @@ namespace Zand
             Entities = new EntityList(this);
             Content = new ZandContentManager(Core._instance.Services, Core._instance.Content.RootDirectory);
             SpriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);
-            SceneComponents = new List<SceneComponent>();
+            SceneComponents = new SceneComponentList(this);
         }
 
         public virtual void Initialize()
@@ -45,13 +45,13 @@ namespace Zand
             DebugPixelTexture = new Texture2D(Core._instance.GraphicsDevice, 1, 1);
             DebugPixelTexture.SetData(new Color[] { Color.White});
             SpriteFont debugFont = Content.LoadFont("DebugFont", "Debug");
-            DebugTools = new DebugTools(this, debugFont);
+            SceneComponents.AddComponent(new DebugTools(this, debugFont));
         }
 
         public Entity CreateEntity(string name, Vector2 position)
         {
             var entity = new Entity(name, position, new Point(32, 32));
-            DebugTools.Log("Created Entity");
+            SceneComponents.GetSceneComponent<DebugTools>().Log("Created Entity");
             return AddEntity(entity);
         }
 
@@ -68,47 +68,30 @@ namespace Zand
             return entity;
         }
 
-        public SceneComponent AddSceneComponent(SceneComponent component)
-        {
-            SceneComponents.Add(component);
-            return component;
-        }
-
-        public T GetSceneComponent<T>() where T : SceneComponent
-        {
-            for (int i = 0; i < SceneComponents.Count; i ++)
-            {
-                if (SceneComponents[i] is T)
-                {
-                    return SceneComponents[i] as T;
-                }
-            }
-            return null;
-        }
-
         public virtual void Update()
         {
-            for (int i = 0; i < SceneComponents.Count; i ++)
-            {
-                SceneComponents[i].Update();
-            }
-
-            Entities.Update();
-            DebugTools.Update();
-
             // Toggle Debug
             if (Input.KeyIsDown(Keys.LeftControl) && Input.KeyWasPressed(Keys.D))
             {
                 Debug = !Debug;
             }
+
+
+            SceneComponents.Update();
+            Entities.Update();
         }
 
-        public void Draw()
+        public virtual void Draw()
         {
-            Entities.Draw();
-            // Draw Effects
             // Draw UI
-            DebugTools.Draw();
+
+
+            // Game Objects/ Entities
+            Entities.Draw();
+
+            SceneComponents.Draw();
+
+            // Draw Effects
         }
 
         public void RegisterCollider(Collider collider)

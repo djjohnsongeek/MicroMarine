@@ -26,14 +26,14 @@ namespace MicroMarine.Scenes
             base.Load();
 
             // Add Scene Components
-            var selector = (UnitSelector) AddSceneComponent(new UnitSelector(this));
+            var unitSelector = (UnitSelector) SceneComponents.AddComponent(new UnitSelector(this));
 
             // Add Entities
-            for (int i = 0; i < 320; i += 32)
+            for (int i = 0; i < 640; i += 32)
             {
                 Entity marine = CreateEntity("marine", new Vector2(i, 5));
                 marine.AddComponent(new Marine());
-                selector.AddUnit(marine);
+                unitSelector.AddUnit(marine);
             }
         }
 

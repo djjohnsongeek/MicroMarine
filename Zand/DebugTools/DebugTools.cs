@@ -4,22 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zand.ECS.Components;
 using Zand.Physics;
 
 namespace Zand.Debug
 {
-    public class DebugTools
+    public class DebugTools : SceneComponent
     {
         private DebugConsole _debugConsole;
         private Scene _scene;
 
-        public DebugTools (Scene scene, SpriteFont font)
+        public DebugTools (Scene scene, SpriteFont font) : base (scene)
         {
             _debugConsole = new DebugConsole(scene, font);
             _scene = scene;
         }
 
-        public void Update()
+        public override void Update()
         {
             if (_scene.Debug)
             {
@@ -27,14 +28,12 @@ namespace Zand.Debug
             }
         }
 
-        public void Draw()
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if (_scene.Debug)
             {
-                _scene.SpriteBatch.Begin();
-                _debugConsole.Draw(_scene.SpriteBatch);
-                PhysicsManager.Draw(_scene.SpriteBatch);
-                _scene.SpriteBatch.End();
+                _debugConsole.Draw(spriteBatch);
+                PhysicsManager.Draw(spriteBatch);
             }
         }
 
