@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using Zand;
 using Zand.ECS.Components;
@@ -33,9 +34,9 @@ namespace MicroMarine.Components
                     SelectBoxOrigin = Input.MousePosition;
                 }
 
-                selectBox = new Rectangle(SelectBoxOrigin.ToPoint(), (SelectBoxOrigin - Input.MousePosition).ToPoint());
+                selectBox = new Rectangle(SelectBoxOrigin.ToPoint(), CalculateSelectBxSize());
+                AdjustSelectBxPosition(ref selectBox);
             }
-
 
             if (Input.LeftMouseWasPressed())
             {
@@ -80,7 +81,30 @@ namespace MicroMarine.Components
                 spriteBatch,
                 Scene.DebugPixelTexture,
                 selectBox,
-                Color.Green);
+                Color.WhiteSmoke);
+        }
+
+        private Point CalculateSelectBxSize()
+        {
+            return AbsoluteVector((SelectBoxOrigin - Input.MousePosition)).ToPoint();
+        }
+
+        private Vector2 AbsoluteVector(Vector2 vector)
+        {
+            return new Vector2(Math.Abs(vector.X), Math.Abs(vector.Y));
+        }
+
+        private void AdjustSelectBxPosition(ref Rectangle selectBox)
+        {
+            if (Input.MousePosition.X < SelectBoxOrigin.X)
+            {
+                selectBox.X -= (int)(SelectBoxOrigin.X - Input.MousePosition.X);
+            }
+
+            if (Input.MousePosition.Y < SelectBoxOrigin.Y)
+            {
+                selectBox.Y -= (int)(SelectBoxOrigin.Y - Input.MousePosition.Y);
+            }
         }
     }
 }
