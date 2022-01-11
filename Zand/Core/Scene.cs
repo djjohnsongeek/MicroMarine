@@ -88,7 +88,6 @@ namespace Zand
 
             // Game Objects/ Entities
             Entities.Draw();
-
             SceneComponents.Draw();
 
             // Draw Effects
