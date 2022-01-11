@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Zand.Debug
-{
+{ // TODO: refactor this class out
     class SolidRectangle
     {
         public bool Enabled;
@@ -21,7 +21,6 @@ namespace Zand.Debug
         public SolidRectangle(Texture2D texture, Point position, Point size, Color color)
         {
             _texture = texture;
-            _texture.SetData(new Color[] { color });
             _rectangle = new Rectangle(position, size);
             _color = color;
         }
@@ -33,7 +32,12 @@ namespace Zand.Debug
                 _texture,
                 new Vector2(_rectangle.X, _rectangle.Y),
                 _rectangle,
-                _color
+                _color,
+                0f,
+                Vector2.Zero,
+                1,
+                SpriteEffects.None,
+                1F
             );
         }
     }
