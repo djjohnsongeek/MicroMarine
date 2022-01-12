@@ -48,5 +48,10 @@ namespace Zand.Graphics
                 1
            );
         }
+
+        public static void DrawRect(SpriteBatch spriteBatch, Texture2D texure, Rectangle rect, Color color)
+        {
+            spriteBatch.Draw(texure, rect, color);
+        }
     }
 }
