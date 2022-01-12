@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Zand.UI;
+using Zand.Graphics;
 
 namespace Zand.Debug
 {
     class DebugConsole : IUpdateable
     {
-        SolidRectangle _background;
+        private Rectangle _background;
+        private Color _bgColor;
         private Scene _scene;
         private Queue<string> _messages;
         private TextRenderer _textRenderer;
@@ -26,13 +28,8 @@ namespace Zand.Debug
             _scene = scene;
             _messages = new Queue<string>();
             _textRenderer = new TextRenderer(font);
-            _background = new SolidRectangle(
-                _scene.DebugPixelTexture,
-                new Point(0, _scene.ScreenHeight - 100),
-                new Point(_scene.ScreenWidth, 100),
-                new Color(45, 45, 45, 180)
-            );
-            _feedPosition = _background.Position;
+            _background = new Rectangle(0, _scene.ScreenHeight - 100, _scene.ScreenWidth, 100);
+            _feedPosition = new Vector2(_background.X, _background.Y);
         }
 
         public void AddMessage(string msg)
@@ -60,7 +57,7 @@ namespace Zand.Debug
         public void Draw(SpriteBatch spriteBatch)
         {
             // Draw Background
-            _background.Draw(spriteBatch);
+            Shapes.DrawRect(spriteBatch, _scene.DebugPixelTexture, _background, new Color(45, 45, 45, 130));
 
             // Draw Messages
             Vector2 linePosition = _feedPosition;
