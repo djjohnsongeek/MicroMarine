@@ -27,6 +27,7 @@ namespace MicroMarine.Components
 
         public override void Update()
         {
+            // Define Select Box
             if (Input.LeftMouseIsPressed())
             {
                 if (SelectBoxOrigin == Vector2.Zero)
@@ -38,8 +39,9 @@ namespace MicroMarine.Components
                 AdjustSelectBxPosition(ref selectBox);
             }
 
+            // Clear Select Box and Select Units
             if (Input.LeftMouseWasPressed() && selectBox != Rectangle.Empty)
-            { 
+            {
                 DeselectAll();
                 for (int i = 0; i < _units.Count; i++)
                 {
@@ -54,8 +56,9 @@ namespace MicroMarine.Components
 
                 selectBox = Rectangle.Empty;
                 SelectBoxOrigin = Vector2.Zero;
-
             }
+
+            // Select Single Unit with click
             else if (Input.LeftMouseWasPressed())
             {
                 for (int i = 0; i < _units.Count; i++)
@@ -73,10 +76,11 @@ namespace MicroMarine.Components
                 }
             }
 
-
-
-
-
+            // Select All Hotkey
+            if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.Tab))
+            {
+                SelectAll();
+            }
         }
 
         private void DeselectAll()
@@ -88,6 +92,18 @@ namespace MicroMarine.Components
             }
 
             _selectedUnits.Clear();
+        }
+
+        private void SelectAll()
+        {
+            DeselectAll();
+
+            for (int i = 0; i < _units.Count; i++)
+            {
+                _units[i].GetComponent<MouseSelector>().Selected = true;
+                _units[i].GetComponent<Health>().Visible = true;
+                _selectedUnits.Add(_units[i]);
+            }
         }
 
         public void AddUnit(Entity entity)
