@@ -38,11 +38,26 @@ namespace MicroMarine.Components
                 AdjustSelectBxPosition(ref selectBox);
             }
 
-            if (Input.LeftMouseWasPressed())
-            {
+            if (Input.LeftMouseWasPressed() && selectBox != Rectangle.Empty)
+            { 
+                DeselectAll();
+                for (int i = 0; i < _units.Count; i++)
+                {
+                    MouseSelector unitSelector = _units[i].GetComponent<MouseSelector>();
+                    if (selectBox.Intersects(unitSelector.GetScreenLocation()))
+                    {
+                        unitSelector.Selected = true;
+                        _selectedUnits.Add(_units[i]);
+                        _units[i].GetComponent<Health>().Visible = true;
+                    }
+                }
+
                 selectBox = Rectangle.Empty;
                 SelectBoxOrigin = Vector2.Zero;
 
+            }
+            else if (Input.LeftMouseWasPressed())
+            {
                 for (int i = 0; i < _units.Count; i++)
                 {
                     DeselectAll();
@@ -57,6 +72,11 @@ namespace MicroMarine.Components
                     }
                 }
             }
+
+
+
+
+
         }
 
         private void DeselectAll()
