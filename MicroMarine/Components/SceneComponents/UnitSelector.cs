@@ -57,7 +57,6 @@ namespace MicroMarine.Components
                 selectBox = Rectangle.Empty;
                 SelectBoxOrigin = Vector2.Zero;
             }
-
             // Select Single Unit with click
             else if (Input.LeftMouseWasPressed())
             {
