@@ -18,7 +18,6 @@ namespace MicroMarine.Components
         {
             MouseSelector unitSelection = Entity.GetComponent<MouseSelector>();
 
-
             if (unitSelection.Selected && Input.RightMouseWasPressed() && Input.KeyIsDown(Keys.LeftShift))
             {
                 _waypoints.Enqueue(Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
@@ -27,6 +26,7 @@ namespace MicroMarine.Components
             else if (unitSelection.Selected && Input.RightMouseWasPressed())
             {
                 _waypoints.Clear();
+                Entity.GetComponent<UnitMovement>().StopMovement();
                 _waypoints.Enqueue(Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
             }
         }
