@@ -12,6 +12,7 @@ namespace MicroMarine.Components
     {
         private float _speed;
         private Vector2? _currentWaypoint;
+
         public Vector2 Velocity;
 
         public UnitMovement(float speed)
@@ -28,7 +29,7 @@ namespace MicroMarine.Components
         public void Update()
         {
             WaypointNav waypoints = Entity.GetComponent<WaypointNav>();
-            if (waypoints.HasWaypoints())
+            if (waypoints.HasWaypoints() && !_currentWaypoint.HasValue)
             {
                 _currentWaypoint = waypoints.NextWayPoint();
             }
@@ -38,7 +39,20 @@ namespace MicroMarine.Components
                 Velocity = _currentWaypoint.Value - Entity.Position;
                 Velocity.Normalize();
                 Entity.Position += Vector2.Multiply(Velocity, _speed * (float)Time.DeltaTime);
+                float distance = Vector2.Distance(Entity.Position, _currentWaypoint.Value);
+
+                if (distance < .5f)
+                {
+                    Entity.Position = _currentWaypoint.Value;
+                    StopMovement();
+                }
             }
+        }
+
+        public void StopMovement()
+        {
+            _currentWaypoint = null;
+            Velocity = Vector2.Zero;
         }
     }
 }
