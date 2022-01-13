@@ -18,15 +18,27 @@ namespace MicroMarine.Components
         {
             MouseSelector unitSelection = Entity.GetComponent<MouseSelector>();
 
-            if (unitSelection.Selected && Input.RightMouseWasPressed())
+
+            if (unitSelection.Selected && Input.RightMouseWasPressed() && Input.KeyIsDown(Keys.LeftShift))
+            {
+                _waypoints.Enqueue(Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+                
+            }
+            else if (unitSelection.Selected && Input.RightMouseWasPressed())
             {
                 _waypoints.Clear();
-                _waypoints.Enqueue(Input.MousePosition);
+                _waypoints.Enqueue(Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
             }
-            else if (unitSelection.Selected && Input.RightMouseWasPressed() && Input.KeyIsDown(Keys.LeftShift))
-            {
-                _waypoints.Enqueue(Input.MousePosition);
-            }
+        }
+
+        public bool HasWaypoints()
+        {
+            return _waypoints.Count > 0;
+        }
+
+        public Vector2 NextWayPoint()
+        {
+            return _waypoints.Dequeue();
         }
     }
 }
