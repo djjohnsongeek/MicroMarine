@@ -88,12 +88,7 @@ namespace Zand.ECS.Components
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            DebugTools debug = Entity.Scene.SceneComponents.GetSceneComponent<DebugTools>();
             Vector2 screenPos = Entity.Scene.Camera.GetScreenLocation(Entity.Position);
-
-
-
-            debug.Log($"Entity Position: x: {screenPos.X} y: {screenPos.Y}");
             spriteBatch.Draw(
                 _currentAnimation.Texture,
                 Vector2.Floor(Entity.Position),
@@ -103,7 +98,7 @@ namespace Zand.ECS.Components
                 Vector2.Zero,
                 1,
                 SpriteEffects.None,
-                screenPos.Y * 0.00001f
+                MathUtil.CalculateLayerDepth(screenPos.X, Entity.Dimensions.Y)
            );
         }
 
