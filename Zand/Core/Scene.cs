@@ -18,7 +18,10 @@ namespace Zand
         public ZandContentManager Content;
         public Camera Camera = null;
         public Texture2D DebugPixelTexture;
-        public bool Debug = false;
+        public bool ShowDebug = false;
+        public DebugTools Debug;
+        public bool GameIsActive => Core._instance.IsActive;
+
 
         public SpriteBatch SpriteBatch;
 
@@ -45,7 +48,7 @@ namespace Zand
             DebugPixelTexture = new Texture2D(Core._instance.GraphicsDevice, 1, 1);
             DebugPixelTexture.SetData(new Color[] { Color.White});
             SpriteFont debugFont = Content.LoadFont("DebugFont", "Debug");
-            SceneComponents.AddComponent(new DebugTools(this, debugFont));
+            Debug = (DebugTools)SceneComponents.AddComponent(new DebugTools(this, debugFont));
         }
 
         public Entity CreateEntity(string name, Vector2 position)
@@ -73,7 +76,7 @@ namespace Zand
             // Toggle Debug
             if (Input.KeyIsDown(Keys.LeftControl) && Input.KeyWasPressed(Keys.D))
             {
-                Debug = !Debug;
+                ShowDebug = !ShowDebug;
             }
 
 
