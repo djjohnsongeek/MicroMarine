@@ -30,12 +30,13 @@ namespace MicroMarine.Scenes
             int y = 0;
 
             // Add Entities
-            for (int i = 0; i < 640; i += 32)
+            for (int i = 0; i < 640; i += 16)
             {
                 Entity marine = CreateEntity("marine", new Vector2(i, y));
                 marine.AddComponent(new Marine());
                 unitSelector.AddUnit(marine);
-                y += 8;
+                y += 32;
+                break;
             }
         }
 
