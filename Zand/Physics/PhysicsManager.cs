@@ -23,7 +23,7 @@ namespace Zand.Physics
 
         public static void Draw(SpriteBatch sBatch)
         {
-            if (Core._instance.CurrentScene.Debug)
+            if (Core._instance.CurrentScene.ShowDebug)
             {
                 foreach (var collider in _colliders)
                 {
