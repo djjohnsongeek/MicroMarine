@@ -12,6 +12,7 @@ namespace Zand
         private List<Component> _componentsToRemove;
         private List<IRenderable> _renderableComponents;
         private List<IUpdateable> _updatableComponents;
+
         internal int Count
         {
             get => _components.Count;
