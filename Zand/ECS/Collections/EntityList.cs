@@ -50,7 +50,7 @@ namespace Zand
         {
             Matrix? matrix = Scene.Camera == null ? null : Scene.Camera.GetTransformation();
             Scene.SpriteBatch.Begin(
-                SpriteSortMode.Deferred,
+                SpriteSortMode.FrontToBack,
                 BlendState.AlphaBlend,
                 SamplerState.PointClamp,
                 null,
