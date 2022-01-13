@@ -29,7 +29,8 @@ namespace MicroMarine.Components
 
         public void Update()
         {
-
+            HealthBar.X = (int)Entity.Position.X;
+            HealthBar.Y = (int)Entity.Position.Y;
         }
 
         public void Draw(SpriteBatch sbatch)
