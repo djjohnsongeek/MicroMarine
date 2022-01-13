@@ -22,7 +22,7 @@ namespace Zand.Debug
 
         public override void Update()
         {
-            if (_scene.Debug)
+            if (_scene.ShowDebug)
             {
                 _debugConsole.Update();
             }
@@ -30,7 +30,7 @@ namespace Zand.Debug
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (_scene.Debug)
+            if (_scene.ShowDebug)
             {
                 _debugConsole.Draw(spriteBatch);
                 PhysicsManager.Draw(spriteBatch);
