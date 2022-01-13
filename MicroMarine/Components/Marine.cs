@@ -42,6 +42,8 @@ namespace MicroMarine.Components
             Scene.RegisterCollider(mouseCollider);
 
             Entity.AddComponent(new Health(100));
+            Entity.AddComponent(new WaypointNav());
+            Entity.AddComponent(new UnitMovement(100));
         }
     }
 }
