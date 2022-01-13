@@ -42,7 +42,10 @@ namespace Zand
 
         public void Update()
         {
-            Move(getVelocity(Time.DeltaTime));
+            if (_scene.GameIsActive)
+            {
+                Move(getVelocity(Time.DeltaTime));
+            }
         }
 
         public Matrix GetTransformation()
