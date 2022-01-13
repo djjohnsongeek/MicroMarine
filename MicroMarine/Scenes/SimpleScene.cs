@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Zand;
 using MicroMarine.Components;
-using System.Collections.Generic;
-using Zand.ECS.Components;
 
 namespace MicroMarine.Scenes
 
