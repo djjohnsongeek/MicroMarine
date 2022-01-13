@@ -11,7 +11,7 @@ namespace Zand
         private static MouseState _prevMouseState;
         private static KeyboardState _prevKeyBoardState;
 
-        public static Vector2 MousePosition;
+        public static Vector2 MouseScreenPosition;
 
         public static void Update()
         {
@@ -21,8 +21,8 @@ namespace Zand
             _mouseState = Mouse.GetState();
             _keyBoardState = Keyboard.GetState();
 
-            MousePosition.X = _mouseState.X;
-            MousePosition.Y = _mouseState.Y;
+            MouseScreenPosition.X = _mouseState.X;
+            MouseScreenPosition.Y = _mouseState.Y;
         }
 
         public static bool KeyWasReleased(Keys key)
