@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Zand;
+using Zand.Utils;
 using Zand.Assets;
+using Zand.Debug;
 
 namespace Zand.ECS.Components
 {
@@ -87,17 +88,23 @@ namespace Zand.ECS.Components
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            DebugTools debug = Entity.Scene.SceneComponents.GetSceneComponent<DebugTools>();
+            Vector2 screenPos = Entity.Scene.Camera.GetScreenLocation(Entity.Position);
+
+
+
+            debug.Log($"Entity Position: x: {screenPos.X} y: {screenPos.Y}");
             spriteBatch.Draw(
                 _currentAnimation.Texture,
-                Entity.Position,
+                Vector2.Floor(Entity.Position),
                 _currentFrame,
                 Color.White,
                 0,
                 Vector2.Zero,
                 1,
                 SpriteEffects.None,
-                Entity.Position.Y * .001F // layer depth
-            );
+                screenPos.Y * 0.00001f
+           );
         }
 
         private void SuppressUpdate(float timeLength)
