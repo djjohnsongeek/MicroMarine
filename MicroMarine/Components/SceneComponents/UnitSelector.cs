@@ -32,7 +32,7 @@ namespace MicroMarine.Components
             {
                 if (SelectBoxOrigin == Vector2.Zero)
                 {
-                    SelectBoxOrigin = Input.MousePosition;
+                    SelectBoxOrigin = Input.MouseScreenPosition;
                 }
 
                 selectBox = new Rectangle(SelectBoxOrigin.ToPoint(), CalculateSelectBxSize());
@@ -65,7 +65,7 @@ namespace MicroMarine.Components
                     DeselectAll();
                     MouseSelector selector = _units[i].GetComponent<MouseSelector>();
 
-                    if (Collisions.RectangleToPoint(selector.GetScreenLocation(), Input.MousePosition.ToPoint()))
+                    if (Collisions.RectangleToPoint(selector.GetScreenLocation(), Input.MouseScreenPosition.ToPoint()))
                     {
                         selector.Selected = true;
                         _selectedUnits.Add(_units[i]);
@@ -121,7 +121,7 @@ namespace MicroMarine.Components
 
         private Point CalculateSelectBxSize()
         {
-            return AbsoluteVector((SelectBoxOrigin - Input.MousePosition)).ToPoint();
+            return AbsoluteVector((SelectBoxOrigin - Input.MouseScreenPosition)).ToPoint();
         }
 
         private Vector2 AbsoluteVector(Vector2 vector)
@@ -131,14 +131,14 @@ namespace MicroMarine.Components
 
         private void AdjustSelectBxPosition(ref Rectangle selectBox)
         {
-            if (Input.MousePosition.X < SelectBoxOrigin.X)
+            if (Input.MouseScreenPosition.X < SelectBoxOrigin.X)
             {
-                selectBox.X -= (int)(SelectBoxOrigin.X - Input.MousePosition.X);
+                selectBox.X -= (int)(SelectBoxOrigin.X - Input.MouseScreenPosition.X);
             }
 
-            if (Input.MousePosition.Y < SelectBoxOrigin.Y)
+            if (Input.MouseScreenPosition.Y < SelectBoxOrigin.Y)
             {
-                selectBox.Y -= (int)(SelectBoxOrigin.Y - Input.MousePosition.Y);
+                selectBox.Y -= (int)(SelectBoxOrigin.Y - Input.MouseScreenPosition.Y);
             }
         }
     }
