@@ -25,6 +25,11 @@ namespace MicroMarine.Components
             }
             else if (unitSelection.Selected && Input.RightMouseWasPressed())
             {
+                if (Input.MouseScreenPosition == Scene.Camera.GetScreenLocation(Entity.Position))
+                {
+                    return;
+                }
+
                 _waypoints.Clear();
                 Entity.GetComponent<UnitMovement>().StopMovement();
                 _waypoints.Enqueue(Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
