@@ -16,6 +16,13 @@ namespace MicroMarine.Components
     {
         public override void OnAddedToEntity()
         {
+            Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
+            Entity.AddComponent(new Health(100));
+            Entity.AddComponent(new WaypointNav());
+            Entity.AddComponent(new UnitMovement(100));
+
+
+
             Texture2D marineSheet = Scene.Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
             var spriteSheet = new SpriteSheet(marineSheet, 32, 32);
             var animator = new Animator();
@@ -37,13 +44,11 @@ namespace MicroMarine.Components
             animator.SetAnimation(MarineAnimation.IdleSouth);
             Entity.AddComponent(animator);
 
-            MouseSelector mouseCollider = new MouseSelector(new Rectangle(Entity.Position.ToPoint(), new Point(32, 32)));
+            MouseSelector mouseCollider = new MouseSelector(new Rectangle((Entity.Position - Entity.Origin).ToPoint(), new Point(20, 26)), new Vector2(6f, 4));
             Entity.AddComponent(mouseCollider);
             Scene.RegisterCollider(mouseCollider);
 
-            Entity.AddComponent(new Health(100));
-            Entity.AddComponent(new WaypointNav());
-            Entity.AddComponent(new UnitMovement(100));
+
         }
     }
 }
