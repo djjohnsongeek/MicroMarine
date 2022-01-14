@@ -47,6 +47,9 @@ namespace MicroMarine.Components
                     StopMovement();
                 }
             }
+
+            Vector2 screenPosition = Scene.Camera.GetScreenLocation(Entity.Position);
+            Entity.layerDepth = MathUtil.CalculateLayerDepth(screenPosition.Y, Entity.Dimensions.Y);
         }
 
         public void StopMovement()
