@@ -8,9 +8,10 @@ namespace Zand.ECS.Components
     {
         public Rectangle HitBox;
 
-        public BoxCollider(Rectangle hitBox)
+        public BoxCollider(Rectangle hitBox, Vector2 offset)
         {
             HitBox = hitBox;
+            Offset = offset;
         }
 
         public BoxCollider(Vector2 position, int width, int height)

@@ -11,10 +11,11 @@ namespace Zand.ECS.Components
     public class Collider : Component, IUpdateable
     {
         public Vector2 Position;
+        public Vector2 Offset;
 
         public virtual void Update()
         {
-            Position = Entity.Position;
+            Position = Entity.Position - Entity.Origin + Offset;
         }
 
         // colliders are added as components
