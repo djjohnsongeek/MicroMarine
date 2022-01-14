@@ -88,17 +88,16 @@ namespace Zand.ECS.Components
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Vector2 screenPos = Entity.Scene.Camera.GetScreenLocation(Entity.Position);
             spriteBatch.Draw(
                 _currentAnimation.Texture,
                 Vector2.Floor(Entity.Position),
                 _currentFrame,
                 Color.White,
                 0,
-                Vector2.Zero,
+                Entity.Origin,
                 1,
                 SpriteEffects.None,
-                MathUtil.CalculateLayerDepth(screenPos.X, Entity.Dimensions.Y)
+                Entity.layerDepth
            );
         }
 
