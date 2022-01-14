@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Zand;
 using Zand.ECS.Components;
 using Zand.Graphics;
@@ -48,32 +49,32 @@ namespace MicroMarine.Components
                     MouseSelector unitSelector = _units[i].GetComponent<MouseSelector>();
                     if (selectBox.Intersects(unitSelector.GetScreenLocation()))
                     {
-                        unitSelector.Selected = true;
-                        _selectedUnits.Add(_units[i]);
-                        _units[i].GetComponent<Health>().Visible = true;
+                        SelectUnit(_units[i], unitSelector);
                     }
                 }
 
                 selectBox = Rectangle.Empty;
                 SelectBoxOrigin = Vector2.Zero;
             }
-            // Select Single Unit with click
-            else if (Input.LeftMouseWasPressed())
-            {
-                for (int i = 0; i < _units.Count; i++)
-                {
-                    DeselectAll();
-                    MouseSelector selector = _units[i].GetComponent<MouseSelector>();
+            // Select Single Unit with click (not working as intended TODO for later)
+            //else if (Input.LeftMouseWasPressed())
+            //{
+            //    DeselectAll();
+            //    List<Entity> candidates = new List<Entity>();
+            //    //MouseSelector selectCollider;
+            //    for (int i = 0; i < _units.Count; i++)
+            //    {
+            //        var selectCollider = _units[i].GetComponent<MouseSelector>();
+            //        if (Collisions.RectangleToPoint(selectCollider.GetScreenLocation(), Input.MouseScreenPosition.ToPoint()))
+            //        {
+            //            //candidates.Add(_units[i]);
+            //            SelectUnit(_units[i], selectCollider);
+            //            break;
+            //        }
+            //    }
 
-                    if (Collisions.RectangleToPoint(selector.GetScreenLocation(), Input.MouseScreenPosition.ToPoint()))
-                    {
-                        selector.Selected = true;
-                        _selectedUnits.Add(_units[i]);
-                        _units[i].GetComponent<Health>().Visible = true;
-                        break;
-                    }
-                }
-            }
+            //    // SelectClosest(candidates);
+            //}
 
             // Select All Hotkey
             if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.Tab))
@@ -84,8 +85,9 @@ namespace MicroMarine.Components
 
         private void DeselectAll()
         {
-            for (int i = 0; i < _selectedUnits.Count; i ++)
+            for (int i = 0; i < _selectedUnits.Count; i++)
             {
+                // lets try and eliminate the need to do this
                 _selectedUnits[i].GetComponent<MouseSelector>().Selected = false;
                 _selectedUnits[i].GetComponent<Health>().Visible = false;
             }
@@ -96,13 +98,18 @@ namespace MicroMarine.Components
         private void SelectAll()
         {
             DeselectAll();
-
             for (int i = 0; i < _units.Count; i++)
             {
-                _units[i].GetComponent<MouseSelector>().Selected = true;
-                _units[i].GetComponent<Health>().Visible = true;
-                _selectedUnits.Add(_units[i]);
+                MouseSelector selector = _units[i].GetComponent<MouseSelector>();
+                SelectUnit(_units[i], selector);
             }
+        }
+
+        private void SelectUnit(Entity entity, MouseSelector selector)
+        {
+            selector.Selected = true;
+            _selectedUnits.Add(entity);
+            entity.GetComponent<Health>().Visible = true;
         }
 
         public void AddUnit(Entity entity)
@@ -116,7 +123,8 @@ namespace MicroMarine.Components
                 spriteBatch,
                 Scene.DebugPixelTexture,
                 selectBox,
-                Color.WhiteSmoke);
+                Color.WhiteSmoke
+            );
         }
 
         private Point CalculateSelectBxSize()
