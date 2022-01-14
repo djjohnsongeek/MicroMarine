@@ -14,7 +14,9 @@ namespace Zand
         }
 
         public Vector2 Position;
+        public Vector2 Origin;
         public Point Dimensions;
+        public float layerDepth = 0;
 
         public string Name { get; set; }
         public Scene Scene;
@@ -25,6 +27,7 @@ namespace Zand
             Name = name;
             Position = position;
             Dimensions = dimensions;
+            Origin = Vector2.Zero;
             Components = new ComponentList(this);
         }
 
