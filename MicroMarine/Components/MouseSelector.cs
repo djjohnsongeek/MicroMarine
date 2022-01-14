@@ -14,7 +14,7 @@ namespace MicroMarine.Components
     {
         public bool Selected = false;
 
-        public MouseSelector(Rectangle hitBox) : base(hitBox) { }
+        public MouseSelector(Rectangle hitBox, Vector2 offset) : base(hitBox, offset) { }
 
         public Rectangle GetScreenLocation()
         {
