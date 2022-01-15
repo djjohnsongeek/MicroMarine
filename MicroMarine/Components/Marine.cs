@@ -44,7 +44,7 @@ namespace MicroMarine.Components
             animator.SetAnimation(MarineAnimation.IdleSouth);
             Entity.AddComponent(animator);
 
-            MouseSelector mouseCollider = new MouseSelector(new Rectangle((Entity.Position - Entity.Origin).ToPoint(), new Point(20, 26)), new Vector2(6f, 4));
+            MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle((Entity.Position - Entity.Origin).ToPoint(), new Point(20, 26)), new Vector2(6f, 4));
             Entity.AddComponent(mouseCollider);
             Scene.RegisterCollider(mouseCollider);
 

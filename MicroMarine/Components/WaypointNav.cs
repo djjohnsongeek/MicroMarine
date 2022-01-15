@@ -17,7 +17,7 @@ namespace MicroMarine.Components
 
         public void Update()
         {
-            MouseSelector unitSelection = Entity.GetComponent<MouseSelector>();
+            MouseSelectCollider unitSelection = Entity.GetComponent<MouseSelectCollider>();
 
             if (unitSelection.Selected && Input.RightMouseWasPressed())
             {
