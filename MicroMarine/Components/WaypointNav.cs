@@ -19,21 +19,26 @@ namespace MicroMarine.Components
         {
             MouseSelector unitSelection = Entity.GetComponent<MouseSelector>();
 
-            if (unitSelection.Selected && Input.RightMouseWasPressed() && Input.KeyIsDown(Keys.LeftShift))
+            if (unitSelection.Selected && Input.RightMouseWasPressed())
             {
-                AddWayPoint(Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
-                
-            }
-            else if (unitSelection.Selected && Input.RightMouseWasPressed())
-            {
-                if (Input.MouseScreenPosition == Scene.Camera.GetScreenLocation(Entity.Position))
+                Vector2 destination = Scene.Camera.GetWorldLocation(Input.MouseScreenPosition);
+                // If this waypoint was just inserted, ignore it
+                if (_lastInserted.HasValue && _lastInserted == destination)
                 {
                     return;
                 }
-
-                _waypoints.Clear();
-                Entity.GetComponent<UnitMovement>().StopMovement();
-                AddWayPoint(Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+                // Shift click == queue command
+                if (Input.KeyIsDown(Keys.LeftShift))
+                {
+                    AddWayPoint(destination);
+                }
+                // Otherwise overwrite previsous commands
+                else if (destination != Scene.Camera.GetScreenLocation(Entity.Position))
+                {
+                    _waypoints.Clear();
+                    Entity.GetComponent<UnitMovement>().StopMovement();
+                    AddWayPoint(destination);
+                }
             }
         }
 
