@@ -52,7 +52,7 @@ namespace MicroMarine.Components
             return _waypoints.Dequeue();
         }
 
-        public void AddWayPoint(Vector2 wp)
+        private void AddWayPoint(Vector2 wp)
         {
             _lastInserted = wp;
             _waypoints.Enqueue(wp);
