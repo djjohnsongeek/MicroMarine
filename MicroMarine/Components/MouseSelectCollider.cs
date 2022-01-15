@@ -10,11 +10,11 @@ using Zand.Physics;
 
 namespace MicroMarine.Components
 {
-    public class MouseSelector : BoxCollider, Zand.IUpdateable
+    public class MouseSelectCollider : BoxCollider, Zand.IUpdateable
     {
         public bool Selected = false;
 
-        public MouseSelector(Rectangle hitBox, Vector2 offset) : base(hitBox, offset) { }
+        public MouseSelectCollider(Rectangle hitBox, Vector2 offset) : base(hitBox, offset) { }
 
         public Rectangle GetScreenLocation()
         {
