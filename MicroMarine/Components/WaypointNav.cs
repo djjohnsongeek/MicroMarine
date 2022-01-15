@@ -8,10 +8,11 @@ namespace MicroMarine.Components
     class WaypointNav : Component, Zand.IUpdateable
     {
         private Queue<Vector2> _waypoints;
-
+        private Vector2? _lastInserted;
         public WaypointNav()
         {
             _waypoints = new Queue<Vector2>();
+            _lastInserted = null;
         }
 
         public void Update()
@@ -20,7 +21,7 @@ namespace MicroMarine.Components
 
             if (unitSelection.Selected && Input.RightMouseWasPressed() && Input.KeyIsDown(Keys.LeftShift))
             {
-                _waypoints.Enqueue(Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+                AddWayPoint(Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
                 
             }
             else if (unitSelection.Selected && Input.RightMouseWasPressed())
@@ -32,7 +33,7 @@ namespace MicroMarine.Components
 
                 _waypoints.Clear();
                 Entity.GetComponent<UnitMovement>().StopMovement();
-                _waypoints.Enqueue(Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+                AddWayPoint(Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
             }
         }
 
@@ -44,6 +45,12 @@ namespace MicroMarine.Components
         public Vector2 NextWayPoint()
         {
             return _waypoints.Dequeue();
+        }
+
+        public void AddWayPoint(Vector2 wp)
+        {
+            _lastInserted = wp;
+            _waypoints.Enqueue(wp);
         }
     }
 }
