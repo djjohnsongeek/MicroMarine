@@ -46,10 +46,10 @@ namespace MicroMarine.Components
                 DeselectAll();
                 for (int i = 0; i < _units.Count; i++)
                 {
-                    MouseSelector unitSelector = _units[i].GetComponent<MouseSelector>();
-                    if (selectBox.Intersects(unitSelector.GetScreenLocation()))
+                    MouseSelectCollider selectCollider = _units[i].GetComponent<MouseSelectCollider>();
+                    if (selectBox.Intersects(selectCollider.GetScreenLocation()))
                     {
-                        SelectUnit(_units[i], unitSelector);
+                        SelectUnit(_units[i], selectCollider);
                     }
                 }
 
@@ -88,7 +88,7 @@ namespace MicroMarine.Components
             for (int i = 0; i < _selectedUnits.Count; i++)
             {
                 // lets try and eliminate the need to do this
-                _selectedUnits[i].GetComponent<MouseSelector>().Selected = false;
+                _selectedUnits[i].GetComponent<MouseSelectCollider>().Selected = false;
                 _selectedUnits[i].GetComponent<Health>().Visible = false;
             }
 
@@ -100,12 +100,12 @@ namespace MicroMarine.Components
             DeselectAll();
             for (int i = 0; i < _units.Count; i++)
             {
-                MouseSelector selector = _units[i].GetComponent<MouseSelector>();
+                MouseSelectCollider selector = _units[i].GetComponent<MouseSelectCollider>();
                 SelectUnit(_units[i], selector);
             }
         }
 
-        private void SelectUnit(Entity entity, MouseSelector selector)
+        private void SelectUnit(Entity entity, MouseSelectCollider selector)
         {
             selector.Selected = true;
             _selectedUnits.Add(entity);
