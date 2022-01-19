@@ -10,6 +10,8 @@ namespace Zand.Graphics
 {
     public static class Shapes
     {
+        private static Dictionary<int, Texture2D> _circleTextures = new Dictionary<int, Texture2D>();
+
         public static void DrawEmptyRect(SpriteBatch sBatch, Texture2D texture, Rectangle rectangle, Color color)
         {
             DrawZeroSlopeLine(sBatch, texture, new Rectangle(rectangle.Left, rectangle.Top, rectangle.Width, 1), color);
@@ -53,5 +55,44 @@ namespace Zand.Graphics
         {
             spriteBatch.Draw(texure, rect, color);
         }
+        public static Texture2D CreateCircleTexture(int diameter)
+        {
+            if (Shapes._circleTextures.ContainsKey(diameter))
+            {
+                return _circleTextures[diameter];
+            }
+
+
+            Texture2D texture = new Texture2D(Core._instance.GraphicsDevice, diameter, diameter);
+            Color[] colorData = new Color[diameter * diameter];
+
+            float radius = diameter / 2f;
+            float radiusSq = radius * radius;
+
+            for (int x = 0; x < diameter; x++)
+            {
+                for (int y = 0; y < diameter; y++)
+                {
+                    int index = x * diameter + y;
+                    Vector2 pos = new Vector2(x - radius, y - radius);
+                    if (pos.LengthSquared() <= radiusSq)
+                    {
+                        colorData[index] = Color.White;
+                    }
+                    else
+                    {
+                        colorData[index] = Color.Transparent;
+                    }
+                }
+            }
+
+            texture.SetData(colorData);
+
+            Shapes._circleTextures.Add(diameter, texture);
+
+            return texture;
+        }
+
+        
     }
 }
