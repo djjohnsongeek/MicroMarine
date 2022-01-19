@@ -32,7 +32,7 @@ namespace MicroMarine.Components
                 {
                     AddWayPoint(destination);
                 }
-                // Otherwise overwrite previsous commands
+                // Otherwise overwrite previous commands
                 else if (destination != Scene.Camera.GetScreenLocation(Entity.Position))
                 {
                     _waypoints.Clear();
