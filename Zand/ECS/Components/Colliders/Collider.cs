@@ -15,7 +15,7 @@ namespace Zand.ECS.Components
 
         public virtual void Update()
         {
-            Position = Entity.Position - Entity.Origin + Offset;
+            Position = Entity.ScreenPosition + Offset;
         }
 
         // colliders are added as components

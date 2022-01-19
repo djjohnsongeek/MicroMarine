@@ -21,8 +21,6 @@ namespace MicroMarine.Components
             Entity.AddComponent(new WaypointNav());
             Entity.AddComponent(new UnitMovement(100));
 
-
-
             Texture2D marineSheet = Scene.Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
             var spriteSheet = new SpriteSheet(marineSheet, 32, 32);
             var animator = new Animator();
@@ -44,7 +42,7 @@ namespace MicroMarine.Components
             animator.SetAnimation(MarineAnimation.IdleSouth);
             Entity.AddComponent(animator);
 
-            MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle((Entity.Position - Entity.Origin).ToPoint(), new Point(20, 26)), new Vector2(6f, 4));
+            MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle(Entity.ScreenPosition.ToPoint(), new Point(20, 26)), new Vector2(6f, 4));
             Entity.AddComponent(mouseCollider);
             Scene.RegisterCollider(mouseCollider);
 
