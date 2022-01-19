@@ -15,6 +15,7 @@ namespace Zand.ECS.Components
 
         public virtual void Update()
         {
+            // Update Each Collider's position
             Position = Entity.ScreenPosition + Offset;
         }
 
@@ -24,7 +25,6 @@ namespace Zand.ECS.Components
 
         public virtual void Draw(SpriteBatch sBatch)
         {
-
         }
 
     }
