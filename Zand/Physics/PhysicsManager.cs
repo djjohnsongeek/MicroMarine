@@ -18,7 +18,10 @@ namespace Zand.Physics
 
         public static void Update()
         {
-
+            foreach (var collider in _colliders)
+            {
+                collider.Update();
+            }
         }
 
         public static void Draw(SpriteBatch sBatch)
