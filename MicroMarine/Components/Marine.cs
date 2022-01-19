@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Zand;
 using Zand.Assets;
 using Zand.ECS.Components;
+using Zand.Graphics;
 
 namespace MicroMarine.Components
 {
@@ -46,7 +47,11 @@ namespace MicroMarine.Components
             Entity.AddComponent(mouseCollider);
             Scene.RegisterCollider(mouseCollider);
 
+            Texture2D circleTex = Shapes.CreateCircleTexture(18);
 
+            CircleCollider circle = new CircleCollider(circleTex, 10, new Vector2(7, 11));
+            Entity.AddComponent(circle);
+            Scene.RegisterCollider(circle);
         }
     }
 }
