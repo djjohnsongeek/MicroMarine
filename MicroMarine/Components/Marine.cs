@@ -43,13 +43,13 @@ namespace MicroMarine.Components
             animator.SetAnimation(MarineAnimation.IdleSouth);
             Entity.AddComponent(animator);
 
-            MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle(Entity.ScreenPosition.ToPoint(), new Point(20, 26)), new Vector2(6f, 4));
+            MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle(Entity.Position.ToPoint(), new Point(19, 26)), new Vector2(-9, -13)); // new Vector2(6, 4)
             Entity.AddComponent(mouseCollider);
             Scene.RegisterCollider(mouseCollider);
 
             Texture2D circleTex = Shapes.CreateCircleTexture(18);
 
-            CircleCollider circle = new CircleCollider(circleTex, 10, new Vector2(7, 11));
+            CircleCollider circle = new CircleCollider(circleTex, 9, new Vector2(0, 6));
             Entity.AddComponent(circle);
             Scene.RegisterCollider(circle);
         }
