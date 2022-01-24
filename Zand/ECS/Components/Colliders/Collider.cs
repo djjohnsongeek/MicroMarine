@@ -10,13 +10,13 @@ namespace Zand.ECS.Components
 {
     public class Collider : Component, IUpdateable
     {
-        public Vector2 Position;
+        public Vector2 Origin;
         public Vector2 Offset;
+        public Vector2 Center => Scene.Camera.GetScreenLocation(Entity.Position) + Offset;
+        public Color Tint = Color.White;
 
         public virtual void Update()
         {
-            // Update Each Collider's position
-            Position = Entity.ScreenPosition + Offset;
         }
 
         // colliders are added as components
