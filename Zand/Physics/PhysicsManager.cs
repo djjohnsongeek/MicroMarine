@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Zand.ECS.Components;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+
 namespace Zand.Physics
 {
     public static class PhysicsManager
@@ -18,10 +20,14 @@ namespace Zand.Physics
 
         public static void Update()
         {
-            foreach (var collider in _colliders)
+            for (int i = 0; i < _colliders.Count; i++)
             {
-                collider.Update();
+                for (int j = 0; j < _colliders.Count; j++)
+                {
+
+                }
             }
+
         }
 
         public static void Draw(SpriteBatch sBatch)
