@@ -21,14 +21,13 @@ namespace Zand.ECS.Components
 
         public override void Update()
         {
-            base.Update();
-            HitBox.Location = Position.ToPoint();
+            HitBox.Location = Entity.Position.ToPoint() + Offset.ToPoint();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             Rectangle rect = Scene.Camera.GetScreenLocation(HitBox);
-            Shapes.DrawEmptyRect(spriteBatch, Scene.DebugPixelTexture, rect, Color.White);
+            Shapes.DrawRect(spriteBatch, Scene.DebugPixelTexture, rect, new Color(180, 255, 0, 175));
         }
     }
 }
