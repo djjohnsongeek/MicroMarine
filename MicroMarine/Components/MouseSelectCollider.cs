@@ -1,12 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zand;
 using Zand.ECS.Components;
-using Zand.Physics;
 
 namespace MicroMarine.Components
 {
@@ -20,5 +14,6 @@ namespace MicroMarine.Components
         {
             return Scene.Camera.GetScreenLocation(HitBox);
         }
+
     }
 }
