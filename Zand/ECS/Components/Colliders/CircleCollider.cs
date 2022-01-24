@@ -22,14 +22,14 @@ namespace Zand.ECS.Components
         {
             Radius = radius;
             _texture = texture;
+            Origin = new Vector2(radius, radius);
             Offset = offset;
         }
 
 
         public override void Draw(SpriteBatch sbatch)
         {
-            Vector2 screenPos = Scene.Camera.GetScreenLocation(Position);
-            sbatch.Draw(_texture, screenPos, null, Color.White);
+            sbatch.Draw(_texture, Center, null, Tint, 0, Origin, 1, SpriteEffects.None, 0);
         }
     }
 }
