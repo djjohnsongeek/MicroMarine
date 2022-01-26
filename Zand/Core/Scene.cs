@@ -79,11 +79,12 @@ namespace Zand
                 ShowDebug = !ShowDebug;
             }
 
+            PhysicsManager.Update();
 
             SceneComponents.Update();
 
             Entities.Update();
-            PhysicsManager.Update();
+
         }
 
         public virtual void Draw()
