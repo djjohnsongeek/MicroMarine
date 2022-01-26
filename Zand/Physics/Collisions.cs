@@ -14,7 +14,7 @@ namespace Zand.Physics
         public static bool CircleToCircle(CircleCollider circle1, CircleCollider circle2)
         {
             float maxDistance = circle1.Radius + circle2.Radius;
-            return Vector2.DistanceSquared(circle1.Entity.Position, circle2.Entity.Position) < maxDistance * maxDistance;
+            return Vector2.DistanceSquared(circle1.Center, circle2.Center) < maxDistance * maxDistance;
         }
 
         public static bool CircleToPoint(CircleCollider circle, Vector2 point)
