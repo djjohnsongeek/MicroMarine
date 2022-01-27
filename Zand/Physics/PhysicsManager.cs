@@ -11,6 +11,7 @@ namespace Zand.Physics
 {
     public static class PhysicsManager
     {
+        private const float UnitRepelMangitude = 0.08F;
         private static List<Collider> _colliders = new List<Collider>();
 
         public static void AddCollider(Collider collider)
@@ -27,16 +28,20 @@ namespace Zand.Physics
             {
                 for (int j = 0; j < _colliders.Count; j++)
                 {
+                    // skip collision check with self
                     if (j == i) continue;
-                    if (_colliders[i] is CircleCollider && _colliders[j] is CircleCollider)
+
+                    if (AreCircleColliders(_colliders[i], _colliders[j]))
                     {
-                        if (OverLaps(_colliders[i] as CircleCollider, _colliders[j] as CircleCollider))
+                        if (CircleCollision(_colliders[i] as CircleCollider, _colliders[j] as CircleCollider))
                         {
                             _colliders[i].Tint = Color.Red;
+                            _colliders[j].Tint = Color.Red;
+
                             var angle = GetAngle(_colliders[i], _colliders[j]);
-                            float force = 0.1f;
                             float repelPower = GetRepelPower(_colliders[i] as CircleCollider, _colliders[j] as CircleCollider);
-                            ApplyRepel(_colliders[i].Entity, _colliders[j].Entity, angle, force, repelPower);
+
+                            ApplyRepel(_colliders[i].Entity, _colliders[j].Entity, angle, repelPower);
                         }
                     }
                 }
@@ -62,15 +67,14 @@ namespace Zand.Physics
             }
         }
 
-        private static bool IsCloseEnough(Collider collider1, Collider collider2)
+        private static bool AreCircleColliders(Collider collider1, Collider collider2)
         {
-            return Math.Abs(collider1.Entity.ScreenPosition.X - collider2.Entity.ScreenPosition.X) <= 45
-                && Math.Abs(collider1.Entity.ScreenPosition.Y - collider2.Entity.ScreenPosition.Y) <= 45;
+            return collider1 is CircleCollider && collider2 is CircleCollider;
         }
 
-        private static bool OverLaps(CircleCollider collider1, CircleCollider collider2)
+        private static bool CircleCollision(CircleCollider collider1, CircleCollider collider2)
         {
-            return Vector2.Distance(collider1.Entity.ScreenPosition, collider2.Entity.ScreenPosition) <= (collider1.Radius + collider2.Radius);
+            return Vector2.Distance(collider1.Entity.ScreenPosition, collider2.Entity.ScreenPosition) <= collider1.Radius + collider2.Radius;
         }
 
         private static double GetAngle(Collider collider1, Collider collider2)
@@ -85,12 +89,29 @@ namespace Zand.Physics
             return collider1.Radius + collider2.Radius + Vector2.Distance(collider1.Entity.Position, collider2.Entity.Position) / collider1.Radius + collider2.Radius;
         }
 
-        private static void ApplyRepel(Entity entity1, Entity entity2, double angle, float force, float power)
+        private static void ApplyRepel(Entity entity1, Entity entity2, double angle, float power)
         {
-            entity1.Position.X += (float) Math.Cos(angle) * power * force;
-            entity1.Position.Y += (float) Math.Sin(angle) * power * force;
-            entity2.Position.X -= (float) Math.Cos(angle) * power * force;
-            entity2.Position.Y -= (float) Math.Sin(angle) * power * force;
+            var repelVelocity1 = new Vector2(RepelX(angle, power), RepelY(angle, power));
+            var repelVelocity2 = Vector2.Multiply(repelVelocity1, -1);
+
+            entity1.GetComponent<WaypointMovement>().ApplyVelocity(repelVelocity1);
+            entity2.GetComponent<WaypointMovement>().ApplyVelocity(repelVelocity2);
+
+
+            //entity1.Position.X += (float)Math.Cos(angle) * power * UnitRepelMangitude;
+            //entity1.Position.Y += (float)Math.Sin(angle) * power * UnitRepelMangitude;
+            //entity2.Position.X -= (float)Math.Cos(angle) * power * UnitRepelMangitude;
+            //entity2.Position.Y -= (float)Math.Sin(angle) * power * UnitRepelMangitude;
+        }
+
+        private static float RepelX(double angle, float power)
+        {
+            return (float)Math.Cos(angle) * power * UnitRepelMangitude;
+        }
+
+        private static float RepelY(double angle, float power)
+        {
+            return (float)Math.Sin(angle) * power * UnitRepelMangitude;
         }
     }
 }
