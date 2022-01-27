@@ -41,9 +41,9 @@ namespace Zand.ECS.Components
 
         private Vector2 CalculateStepVelocity()
         {
-           Vector2 difference = Vector2.Subtract(_currentWaypoint.Value, Entity.Position);
-           difference.Normalize();
-           return difference;
+           Vector2 stepVelocity = Vector2.Subtract(_currentWaypoint.Value, Entity.Position);
+           stepVelocity.Normalize();
+           return stepVelocity;
         }
 
         public void ApplyVelocity(Vector2 velocity)
