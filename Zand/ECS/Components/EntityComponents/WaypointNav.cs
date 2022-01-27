@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Zand;
 
-namespace MicroMarine.Components
+namespace Zand.ECS.Components
 {
-    class WaypointNav : Component, Zand.IUpdateable
+    public class WaypointNav : Component, Zand.IUpdateable
     {
         private Queue<Vector2> _waypoints;
         private Vector2? _lastInserted;
@@ -36,7 +36,7 @@ namespace MicroMarine.Components
                 else if (destination != Scene.Camera.GetScreenLocation(Entity.Position))
                 {
                     _waypoints.Clear();
-                    Entity.GetComponent<UnitMovement>().StopMovement();
+                    Entity.GetComponent<WaypointMovement>().StopMovement();
                     AddWayPoint(destination);
                 }
             }

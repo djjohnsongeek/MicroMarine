@@ -2,7 +2,7 @@
 using Zand;
 using Zand.ECS.Components;
 
-namespace MicroMarine.Components
+namespace Zand.ECS.Components
 {
     public class MouseSelectCollider : BoxCollider, Zand.IUpdateable
     {
