@@ -170,22 +170,22 @@ namespace MicroMarine.Components
 
             if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.W))
             {
-                animator.SetAnimation(MarineAnimation.IdleNorth);
+                animator.SetAnimation(MarineAnimation.WalkNorth);
             }
 
             if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.S))
             {
-                animator.SetAnimation(MarineAnimation.IdleSouth);
+                animator.SetAnimation(MarineAnimation.WalkSouth);
             }
 
             if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.D))
             {
-                animator.SetAnimation(MarineAnimation.IdleEast);
+                animator.SetAnimation(MarineAnimation.WalkEast);
             }
 
             if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.A))
             {
-                animator.SetAnimation(MarineAnimation.IdleWest);
+                animator.SetAnimation(MarineAnimation.WalkWest);
             }
         }
     }
