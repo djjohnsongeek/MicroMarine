@@ -39,7 +39,7 @@ namespace Zand.ECS.Components
         {
             if (!_animations.ContainsKey(name))
             {
-                throw new IndexOutOfRangeException($"The animation {name.ToString()} does not exist!");
+                throw new IndexOutOfRangeException($"The animation {name} does not exist!");
             }
 
             _currentAnimation = _animations[name];
@@ -90,7 +90,7 @@ namespace Zand.ECS.Components
         {
             spriteBatch.Draw(
                 _currentAnimation.Texture,
-                Vector2.Floor(Entity.Position),
+                Entity.Position,
                 _currentFrame,
                 Color.White,
                 0,
