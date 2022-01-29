@@ -23,19 +23,18 @@ namespace MicroMarine.Scenes
         {
             base.Load();
 
+            int entityCount = 1;
+
             // Add Scene Components
             var unitSelector = (UnitSelector) SceneComponents.AddComponent(new UnitSelector(this));
 
             //Add Entities
-            for (int y = 0; y < 512; y += 32)
-            {
-                for (int x = 0; x < 512; x += 32)
+                for (int x = 0; x < entityCount; x += 32)
                 {
-                    Entity marine = CreateEntity("marine", new Vector2(x, y));
+                    Entity marine = CreateEntity("marine", new Vector2(x, 0));
                     marine.AddComponent(new Marine());
                     unitSelector.AddUnit(marine);
                 }
-            }
         }
 
         public override void Update()
