@@ -94,8 +94,8 @@ namespace Zand.Physics
             var repelVelocity1 = new Vector2(RepelX(angle, power), RepelY(angle, power));
             var repelVelocity2 = Vector2.Multiply(repelVelocity1, -1);
 
-            entity1.GetComponent<WaypointMovement>().ApplyVelocity(repelVelocity1);
-            entity2.GetComponent<WaypointMovement>().ApplyVelocity(repelVelocity2);
+            entity1.GetComponent<WaypointMovement>().Nudge(repelVelocity1);
+            entity2.GetComponent<WaypointMovement>().Nudge(repelVelocity2);
 
 
             //entity1.Position.X += (float)Math.Cos(angle) * power * UnitRepelMangitude;
