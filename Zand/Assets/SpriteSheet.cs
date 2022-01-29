@@ -24,6 +24,26 @@ namespace Zand.Assets
             get => _sprites[index];
         }
 
+        public Rectangle[] GetFrames(int start, int end)
+        {
+            if (end < start)
+            {
+                throw new ArgumentException("The 'start' parameter cannot be larger then 'end' parameter", "start");
+            }
+
+            int size = end - start + 1;
+            Rectangle[] frames = new Rectangle[size];
+
+            int i = 0;
+            for (int spriteIndex = start; spriteIndex <= end; spriteIndex++)
+            {
+                frames[i] = _sprites[spriteIndex];
+                i++;
+            }
+
+            return frames;
+        }
+
         private Rectangle[] ParseSprites(int spriteWidth, int spriteHeight)
         {
             // This is a pretty fragile method that expects square sprite sheets, no padding, and exact demensions
