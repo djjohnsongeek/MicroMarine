@@ -29,7 +29,8 @@ namespace Zand.ECS.Components
 
             if (_currentWaypoint.HasValue)
             {
-                ApplyVelocity(CalculateStepVelocity());
+                CalculateVelocity();
+                ApplyVelocity();
                 if (ArrivedAtWaypoint())
                 {
                     Arrive();
@@ -39,16 +40,20 @@ namespace Zand.ECS.Components
             UpdateEntityLayerDepth();
         }
 
-        private Vector2 CalculateStepVelocity()
+        private void CalculateVelocity()
         {
-           Vector2 stepVelocity = Vector2.Subtract(_currentWaypoint.Value, Entity.Position);
-           stepVelocity.Normalize();
-           return stepVelocity;
+           Velocity = Vector2.Subtract(_currentWaypoint.Value, Entity.Position);
+           Velocity.Normalize();
         }
 
-        public void ApplyVelocity(Vector2 velocity)
+        public void ApplyVelocity()
         {
-            Entity.Position += Vector2.Multiply(Velocity + velocity, _speed * (float)Time.DeltaTime);
+            Entity.Position += Vector2.Multiply(Velocity, _speed * (float)Time.DeltaTime);
+        }
+
+        public void Nudge(Vector2 velocity)
+        {
+            Entity.Position += velocity;
         }
 
         private void Arrive()
