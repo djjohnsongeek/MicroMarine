@@ -106,5 +106,10 @@ namespace Zand.ECS.Components
             _suppressDuration = timeLength;
             _suppressUpdate = true;
         }
+
+        public bool AnimationIsRunning(Enum name)
+        {
+            return  _currentAnimation == _animations[name];
+        }
     }
 }
