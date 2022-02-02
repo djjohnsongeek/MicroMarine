@@ -75,44 +75,47 @@ namespace MicroMarine.Components
                 {
                     if (velocity.Y < 0)
                     {
-                        animator.SetAnimation(MarineAnimation.WalkNorth);
+                        if (!animator.AnimationIsRunning(MarineAnimation.WalkNorth))
+                        {
+                            animator.SetAnimation(MarineAnimation.WalkNorth);
+                        }
+;
                     }
                     else if (velocity.Y > 0)
                     {
-                        animator.SetAnimation(MarineAnimation.WalkSouth);
+                        if (!animator.AnimationIsRunning(MarineAnimation.WalkSouth))
+                        {
+                            animator.SetAnimation(MarineAnimation.WalkSouth);
+                        }
                     }
                 }
                 // close to 1 traveling more horizontal
+                if (dot < -0.5 || dot > 0.5F)
+                {
+                    if (velocity.X > 0)
+                    {
+                        if (!animator.AnimationIsRunning(MarineAnimation.WalkEast))
+                        {
+                            animator.SetAnimation(MarineAnimation.WalkEast);
+                        }
+
+                    }
+                    else if (velocity.X < 0)
+                    {
+                        if (!animator.AnimationIsRunning(MarineAnimation.WalkWest))
+                        {
+                            animator.SetAnimation(MarineAnimation.WalkWest);
+                        }
+                    }
+                }
             }
             else
             {
-                animator.SetAnimation(MarineAnimation.IdleSouth);
+                if (!animator.AnimationIsRunning(MarineAnimation.IdleSouth))
+                {
+                    animator.SetAnimation(MarineAnimation.IdleSouth);
+                }
             }
-
-
-
-            // dot product of unit vectors
-            // parallel being 1 or -1 and perpendicular being 0
-
-            //if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.W))
-            //{
-            //    animator.SetAnimation(MarineAnimation.WalkNorth);
-            //}
-
-            //if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.S))
-            //{
-            //    animator.SetAnimation(MarineAnimation.WalkSouth);
-            //}
-
-            //if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.D))
-            //{
-            //    animator.SetAnimation(MarineAnimation.WalkEast);
-            //}
-
-            //if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.A))
-            //{
-            //    animator.SetAnimation(MarineAnimation.WalkWest);
-            //}
         }
     }
 }
