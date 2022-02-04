@@ -53,7 +53,7 @@ namespace Zand.ECS.Components
 
         public void Nudge(Vector2 velocity)
         {
-            Entity.Position += velocity;
+            Entity.Position += Vector2.Multiply(velocity, (float)Time.DeltaTime);
         }
 
         private void Arrive()
