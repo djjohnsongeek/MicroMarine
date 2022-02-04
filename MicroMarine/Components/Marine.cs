@@ -60,7 +60,14 @@ namespace MicroMarine.Components
             Scene.RegisterCollider(circle);
         }
 
+
+
         public void Update()
+        {
+            UpdateMarineAnimation();
+        }
+
+        private void UpdateMarineAnimation()
         {
             Animator animator = Entity.GetComponent<Animator>();
             Vector2 velocity = Entity.GetComponent<WaypointMovement>().Velocity;
@@ -79,7 +86,6 @@ namespace MicroMarine.Components
                         {
                             animator.SetAnimation(MarineAnimation.WalkNorth);
                         }
-;
                     }
                     else if (velocity.Y > 0)
                     {
