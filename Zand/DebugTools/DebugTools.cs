@@ -30,7 +30,7 @@ namespace Zand.Debug
             if (_scene.ShowDebug)
             {
                 _debugConsole.Draw(spriteBatch);
-                PhysicsManager.Draw(spriteBatch);
+                _scene.Physics.Draw(spriteBatch);
             }
         }
 

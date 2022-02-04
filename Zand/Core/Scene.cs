@@ -20,6 +20,7 @@ namespace Zand
         public Texture2D DebugPixelTexture;
         public bool ShowDebug = false;
         public DebugTools Debug;
+        public PhysicsManager Physics;
         public bool GameIsActive => Core._instance.IsActive;
 
 
@@ -33,6 +34,7 @@ namespace Zand
             Entities = new EntityList(this);
             Content = new ZandContentManager(Core._instance.Services, Core._instance.Content.RootDirectory);
             SpriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);
+            Physics = new PhysicsManager(this);
             SceneComponents = new SceneComponentList(this);
         }
 
@@ -79,7 +81,7 @@ namespace Zand
                 ShowDebug = !ShowDebug;
             }
 
-            PhysicsManager.Update();
+            Physics.Update();
 
             SceneComponents.Update();
 
@@ -101,7 +103,7 @@ namespace Zand
 
         public void RegisterCollider(Collider collider)
         {
-            PhysicsManager.AddCollider(collider);
+            Physics.AddCollider(collider);
         }
 
         public void SetWindowSize(int width, int height)
