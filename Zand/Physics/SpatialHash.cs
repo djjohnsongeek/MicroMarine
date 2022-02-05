@@ -47,10 +47,12 @@ namespace Zand.Physics
             AddToBucket(BucketKey(topLeft), collider);
             AddToBucket(BucketKey(topRight), collider);
             AddToBucket(BucketKey(bottomLeft), collider);
+            // need to handle negatives?
         }
 
         private void AddToBucket(int key, CircleCollider collider)
         {
+            // need to handle entites that have edges int the negative
             if (!ExistsInBucket(key, collider))
             {
                 _buckets[key].Add(collider);
