@@ -14,43 +14,50 @@ namespace Zand.Physics
         private Scene _scene;
         private SpatialHash _spatialHash;
         private const float UnitRepelMangitude = .63F;
-        private List<Collider> _colliders = new List<Collider>();
+        private List<Collider> _colliders;
+        private List<CircleCollider> _circleColliders;
 
         public PhysicsManager(Scene scene)
         {
             _scene = scene;
             _spatialHash = new SpatialHash(_scene.ScreenWidth, _scene.ScreenHeight, 64);
+            _colliders = new List<Collider>();
+            _circleColliders = new List<CircleCollider>();
         }
 
         public void AddCollider(Collider collider)
         {
             _colliders.Add(collider);
+            if (collider is CircleCollider)
+            {
+                _circleColliders.Add(collider as CircleCollider);
+            }
         }
 
         public void Update()
         {
-            ResetCollisionColors();
+            UpdateCircleCollidersState();
 
-            // we are collider with our "self"
-            for (int i = 0; i < _colliders.Count; i++)
+            for (int i = 0; i < _circleColliders.Count; i++)
             {
-                for (int j = 0; j < _colliders.Count; j++)
+                IReadOnlyCollection<CircleCollider> possibles = _spatialHash.GetNearby(_circleColliders[i].Entity.ScreenPosition);
+
+                for (int j = 0; j < possibles.Count; j++)
                 {
-                    // skip collision check with self
-                    if (j == i) continue;
-
-                    if (AreCircleColliders(_colliders[i], _colliders[j]))
+                    if (possibles.ElementAt(j) == _circleColliders[i])
                     {
-                        if (CircleCollision(_colliders[i] as CircleCollider, _colliders[j] as CircleCollider))
-                        {
-                            _colliders[i].Tint = Color.Red;
-                            _colliders[j].Tint = Color.Red;
+                        continue;
+                    }
 
-                            var angle = GetAngle(_colliders[i], _colliders[j]);
-                            float repelPower = GetRepelPower(_colliders[i] as CircleCollider, _colliders[j] as CircleCollider);
+                    if (CircleCollision(_circleColliders[i], possibles.ElementAt(j)))
+                    {
+                        _circleColliders[i].Tint = Color.Red;
+                        possibles.ElementAt(j).Tint = Color.Red;
 
-                            ApplyRepel(_colliders[i].Entity, _colliders[j].Entity, angle, repelPower);
-                        }
+                        var angle = GetAngle(_circleColliders[i], possibles.ElementAt(j));
+                        float repelPower = GetRepelPower(_circleColliders[i], possibles.ElementAt(j));
+
+                        ApplyRepel(_circleColliders[i].Entity, possibles.ElementAt(j).Entity, angle, repelPower);
                     }
                 }
             }
@@ -67,11 +74,11 @@ namespace Zand.Physics
             }
         }
 
-        private void ResetCollisionColors()
+        private void UpdateCircleCollidersState()
         {
-            for (int i = 0; i < _colliders.Count; i++)
+            for (int i = 0; i < _circleColliders.Count; i++)
             {
-                _spatialHash.AddCollider(_colliders[i]);
+                _spatialHash.AddCollider(_circleColliders[i]);
                 _colliders[i].Tint = Color.White;
             }
         }
