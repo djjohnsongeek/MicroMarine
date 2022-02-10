@@ -53,7 +53,7 @@ namespace Zand.Physics
             AddToBucket(BucketKey(bottomLeft), collider);
         }
 
-        public void Clear()
+        public void Reset()
         {
             _buckets.Clear();
             InitBuckets();

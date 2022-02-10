@@ -76,7 +76,7 @@ namespace Zand.Physics
 
         private void UpdateCircleCollidersState()
         {
-            _spatialHash.Clear();
+            _spatialHash.Reset();
             for (int i = 0; i < _circleColliders.Count; i++)
             {
                 _spatialHash.AddCollider(_circleColliders[i]);
