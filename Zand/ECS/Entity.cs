@@ -5,7 +5,7 @@ namespace Zand
 {
     public class Entity : IUpdateable
     {
-        private uint Id { get; }
+        public uint Id { get; set;  }
         private bool _enabled = true;
         public bool Enabled
         {
