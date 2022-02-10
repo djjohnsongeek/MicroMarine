@@ -75,8 +75,6 @@ namespace MicroMarine.Components
             if (velocity != Vector2.Zero)
             {
                 float dot = Vector2.Dot(Vector2.UnitX, velocity);
-                Scene.Debug.Log($"dot {dot}, velocty {velocity.X}, {velocity.Y}");
-
                 // close to zero, traveling up or down
                 if (dot > -0.5F && dot < 0.5F)
                 {
