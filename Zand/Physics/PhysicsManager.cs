@@ -20,7 +20,7 @@ namespace Zand.Physics
         public PhysicsManager(Scene scene)
         {
             _scene = scene;
-            _spatialHash = new SpatialHash(_scene.ScreenWidth, _scene.ScreenHeight, 64);
+            _spatialHash = new SpatialHash(_scene, 64);
             _colliders = new List<Collider>();
             _circleColliders = new List<CircleCollider>();
         }
@@ -40,7 +40,7 @@ namespace Zand.Physics
 
             for (int i = 0; i < _circleColliders.Count; i++)
             {
-                IReadOnlyCollection<CircleCollider> possibles = _spatialHash.GetNearby(_circleColliders[i].Entity.ScreenPosition);
+                IReadOnlyCollection<CircleCollider> possibles = _spatialHash.GetNearby(_circleColliders[i].Center);
 
                 for (int j = 0; j < possibles.Count; j++)
                 {
@@ -76,6 +76,7 @@ namespace Zand.Physics
 
         private void UpdateCircleCollidersState()
         {
+            _spatialHash.Clear();
             for (int i = 0; i < _circleColliders.Count; i++)
             {
                 _spatialHash.AddCollider(_circleColliders[i]);
@@ -112,12 +113,6 @@ namespace Zand.Physics
 
             entity1.GetComponent<WaypointMovement>().Nudge(repelVelocity1);
             entity2.GetComponent<WaypointMovement>().Nudge(repelVelocity2);
-
-
-            //entity1.Position.X += (float)Math.Cos(angle) * power * UnitRepelMangitude;
-            //entity1.Position.Y += (float)Math.Sin(angle) * power * UnitRepelMangitude;
-            //entity2.Position.X -= (float)Math.Cos(angle) * power * UnitRepelMangitude;
-            //entity2.Position.Y -= (float)Math.Sin(angle) * power * UnitRepelMangitude;
         }
 
         private float RepelX(double angle, float power)
