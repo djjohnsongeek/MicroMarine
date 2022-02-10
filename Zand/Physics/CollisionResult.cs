@@ -12,7 +12,7 @@ namespace Zand.Physics
         public float Distance;
         public float SafeDistance;
         public float RepelStrength;
-        public double Angle;
+        public float Angle;
 
         public void SetRepelPower()
         {

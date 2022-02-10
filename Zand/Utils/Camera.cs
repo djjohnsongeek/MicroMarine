@@ -44,7 +44,7 @@ namespace Zand
         {
             if (_scene.GameIsActive)
             {
-                Move(getVelocity(Time.DeltaTime));
+                Move(GetCameraVelocity(Time.DeltaTime));
             }
         }
 
@@ -74,7 +74,7 @@ namespace Zand
             return new Rectangle((int)screenLocation.X, (int)screenLocation.Y, worldRect.Width, worldRect.Height);
         }
 
-        private Vector2 getVelocity(double dt)
+        private Vector2 GetCameraVelocity(double dt)
         {
             double dx = 0f;
             double dy = 0f;
