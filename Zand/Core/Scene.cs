@@ -13,6 +13,7 @@ namespace Zand
 {
     public class Scene
     {
+        private uint _idPool = 0;
         private EntityList Entities;
         public SceneComponentList SceneComponents;
         public ZandContentManager Content;
@@ -56,7 +57,6 @@ namespace Zand
         public Entity CreateEntity(string name, Vector2 position)
         {
             var entity = new Entity(name, position, new Point(32, 32));
-            SceneComponents.GetSceneComponent<DebugTools>().Log("Created Entity");
             return AddEntity(entity);
         }
 
@@ -69,6 +69,8 @@ namespace Zand
 
             Entities.Add(entity);
             entity.Scene = this;
+            entity.Id = _idPool;
+            _idPool++;
 
             return entity;
         }
