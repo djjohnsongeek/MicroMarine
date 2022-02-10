@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +16,13 @@ namespace Zand.Physics
         private int _cols;
         private int _rows;
         private double _conversionFactor;
+        private Scene _scene;
 
-        public SpatialHash(int screenWidth, int screenHeight, int cellSize)
+        public SpatialHash(Scene scene, int cellSize)
         {
-            _cols = screenWidth / cellSize;
-            _rows = screenHeight / cellSize;
+            _scene = scene;
+            _cols = _scene.ScreenWidth / cellSize;
+            _rows = _scene.ScreenHeight / cellSize;
             _conversionFactor = 1d / cellSize;
             _buckets = new Dictionary<int, List<CircleCollider>>(_cols * _rows);
             InitBuckets();
@@ -27,17 +30,18 @@ namespace Zand.Physics
 
         public IReadOnlyCollection<CircleCollider> GetNearby(Vector2 position)
         {
-            return _buckets[BucketKey(position)].AsReadOnly();
-        }
+            int key = BucketKey(position);
+            if (KeyOutOfRange(key))
+            {
+                return new Collection<CircleCollider>();
+            }
 
-        public void Clear()
-        {
-            _buckets.Clear();
+            return _buckets[BucketKey(position)].AsReadOnly();
         }
 
         public void AddCollider(CircleCollider collider)
         {
-            Vector2 screenPos = collider.Entity.ScreenPosition;
+            Vector2 screenPos = collider.Center;
             Vector2 bottomRight = new Vector2(screenPos.X + collider.Radius, screenPos.Y + collider.Radius);
             Vector2 topLeft = new Vector2(screenPos.X - collider.Radius, screenPos.Y - collider.Radius);
             Vector2 topRight = new Vector2(bottomRight.X, topLeft.Y);
@@ -47,21 +51,35 @@ namespace Zand.Physics
             AddToBucket(BucketKey(topLeft), collider);
             AddToBucket(BucketKey(topRight), collider);
             AddToBucket(BucketKey(bottomLeft), collider);
-            // need to handle negatives?
+        }
+
+        public void Clear()
+        {
+            _buckets.Clear();
+            InitBuckets();
         }
 
         private void AddToBucket(int key, CircleCollider collider)
         {
-            // need to handle entites that have edges int the negative
+            if (KeyOutOfRange(key))
+            {
+                return;
+            }
+
             if (!ExistsInBucket(key, collider))
             {
                 _buckets[key].Add(collider);
             }
         }
 
-        private bool ExistsInBucket(int index, CircleCollider circleCollider)
+        private bool ExistsInBucket(int key, CircleCollider circleCollider)
         {
-            foreach (var collider in _buckets[index])
+            if (KeyOutOfRange(key))
+            {
+                return false;
+            }
+
+            foreach (var collider in _buckets[key])
             {
                 if (collider == circleCollider)
                 {
@@ -84,6 +102,11 @@ namespace Zand.Physics
             {
                 _buckets.Add(i, new List<CircleCollider>(8));
             }
+        }
+
+        private bool KeyOutOfRange(int k)
+        {
+            return k < 0 || k > _cols * _rows - 1;
         }
     }
 
