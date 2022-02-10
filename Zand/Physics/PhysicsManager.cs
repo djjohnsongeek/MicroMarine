@@ -13,7 +13,7 @@ namespace Zand.Physics
     {
         private Scene _scene;
         private SpatialHash _spatialHash;
-        private const float UnitRepelMangitude = .73F;
+        private const float UnitRepelMangitude = 5F; // 73
         private List<Collider> _colliders;
         private List<CircleCollider> _circleColliders;
 
