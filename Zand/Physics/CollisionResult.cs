@@ -14,7 +14,7 @@ namespace Zand.Physics
         public float RepelStrength;
         public float Angle;
 
-        public void SetRepelPower()
+        public void SetRepelStrength()
         {
             RepelStrength = SafeDistance + (Distance / SafeDistance);
         }

@@ -92,7 +92,7 @@ namespace Zand.Physics
             };
 
             result.Collides = result.Distance <= result.SafeDistance;
-            result.SetRepelPower();
+            result.SetRepelStrength();
 
             return result;
         }
@@ -114,13 +114,13 @@ namespace Zand.Physics
             var repelVelocity2 = Vector2.Multiply(repelVelocity1, -1);
 
             // adjust
-            var entityMovement = entity1.GetComponent<WaypointMovement>();
+            var entity1Movement = entity1.GetComponent<WaypointMovement>();
             var entity2Movement = entity1.GetComponent<WaypointMovement>();
 
-            if (entityMovement.Velocity != Vector2.Zero && entity2Movement.Velocity != Vector2.Zero)
+            if (entity1Movement.Velocity != Vector2.Zero && entity2Movement.Velocity != Vector2.Zero)
             {
-              //  repelVelocity1 = Vector2.Multiply(repelVelocity1, 1.5F);
-                repelVelocity2 = Vector2.Multiply(repelVelocity2, 1.5F);
+                //repelVelocity1 = Vector2.Multiply(repelVelocity1, 1.5F);
+                repelVelocity2 = Vector2.Multiply(repelVelocity2, 2.5F);
             }
 
             entity1.GetComponent<WaypointMovement>().Nudge(repelVelocity1);
