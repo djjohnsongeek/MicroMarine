@@ -9,6 +9,10 @@ using Zand.ECS.Components;
 
 namespace Zand.Physics
 {
+    // hash by world position (so that it is not constantly changing)
+    // only update the collisions that are moving (those that are still need no update)
+    // will need to manually remove from its old buckts
+
     class SpatialHash
     {
         private Dictionary<int, List<CircleCollider>> _buckets;
