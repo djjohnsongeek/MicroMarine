@@ -13,7 +13,7 @@ namespace Zand.Physics
     {
         private Scene _scene;
         private SpatialHash _spatialHash;
-        private const float UnitRepelMangitude = 1F; // 73
+        private const float UnitRepelMangitude = 2F;
         private List<Collider> _colliders;
         private List<CircleCollider> _circleColliders;
 
@@ -92,16 +92,18 @@ namespace Zand.Physics
             };
 
             result.Collides = result.Distance <= result.SafeDistance;
-            result.SetRepelPower();
+            result.SetRepelStrength();
 
             return result;
         }
 
         private static float GetAngle(Collider collider1, Collider collider2)
         {
-            return (float)Math.Atan2(
+            var angle =  (float)Math.Atan2(
                 collider1.Entity.Position.Y - collider2.Entity.Position.Y,
                 collider1.Entity.Position.X - collider2.Entity.Position.X);
+
+            return angle;
         }
 
         private static void ApplyRepel(Entity entity1, Entity entity2, CollisionResult collision)
@@ -112,6 +114,16 @@ namespace Zand.Physics
             );
 
             var repelVelocity2 = Vector2.Multiply(repelVelocity1, -1);
+
+            // adjust
+            var entity1Movement = entity1.GetComponent<WaypointMovement>();
+            var entity2Movement = entity1.GetComponent<WaypointMovement>();
+
+            if (entity1Movement.Velocity != Vector2.Zero && entity2Movement.Velocity != Vector2.Zero)
+            {
+                //repelVelocity1 = Vector2.Multiply(repelVelocity1, 1.5F);
+                repelVelocity2 = Vector2.Multiply(repelVelocity2, 2.5F);
+            }
 
             entity1.GetComponent<WaypointMovement>().Nudge(repelVelocity1);
             entity2.GetComponent<WaypointMovement>().Nudge(repelVelocity2);
