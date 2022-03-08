@@ -11,6 +11,9 @@ namespace Zand.Physics
 {
     class SpatialHash
     {
+
+        // use world cordinates, add remove as needed (not for static units)
+        // JIT init?
         private Dictionary<int, List<CircleCollider>> _buckets;
 
         private int _cols;
@@ -30,13 +33,13 @@ namespace Zand.Physics
 
         public IReadOnlyCollection<CircleCollider> GetNearby(Vector2 position)
         {
-            int key = BucketKey(position);
-            if (KeyOutOfRange(key))
+            int key = GetBucketKey(position);
+            if (IsKeyOutOfRange(key))
             {
                 return new Collection<CircleCollider>();
             }
 
-            return _buckets[BucketKey(position)].AsReadOnly();
+            return _buckets[GetBucketKey(position)].AsReadOnly();
         }
 
         public void AddCollider(CircleCollider collider)
@@ -47,10 +50,10 @@ namespace Zand.Physics
             Vector2 topRight = new Vector2(bottomRight.X, topLeft.Y);
             Vector2 bottomLeft = new Vector2(topLeft.X, bottomRight.Y);
 
-            AddToBucket(BucketKey(bottomRight), collider);
-            AddToBucket(BucketKey(topLeft), collider);
-            AddToBucket(BucketKey(topRight), collider);
-            AddToBucket(BucketKey(bottomLeft), collider);
+            AddToBucket(GetBucketKey(bottomRight), collider);
+            AddToBucket(GetBucketKey(topLeft), collider);
+            AddToBucket(GetBucketKey(topRight), collider);
+            AddToBucket(GetBucketKey(bottomLeft), collider);
         }
 
         public void Reset()
@@ -61,7 +64,7 @@ namespace Zand.Physics
 
         private void AddToBucket(int key, CircleCollider collider)
         {
-            if (KeyOutOfRange(key))
+            if (IsKeyOutOfRange(key))
             {
                 return;
             }
@@ -74,7 +77,7 @@ namespace Zand.Physics
 
         private bool ExistsInBucket(int key, CircleCollider circleCollider)
         {
-            if (KeyOutOfRange(key))
+            if (IsKeyOutOfRange(key))
             {
                 return false;
             }
@@ -90,7 +93,7 @@ namespace Zand.Physics
             return false;
         }
 
-        private int BucketKey(Vector2 vector)
+        private int GetBucketKey(Vector2 vector)
         {
             double key =  Math.Floor(vector.X * _conversionFactor) + Math.Floor(vector.Y * _conversionFactor) * _cols;
             return (int)key;
@@ -104,7 +107,7 @@ namespace Zand.Physics
             }
         }
 
-        private bool KeyOutOfRange(int k)
+        private bool IsKeyOutOfRange(int k)
         {
             return k < 0 || k > _cols * _rows - 1;
         }
