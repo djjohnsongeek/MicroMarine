@@ -23,8 +23,8 @@ namespace MicroMarine.Scenes
         {
             base.Load();
 
-            int marineRows = 25;
-            int marineCols = 25;
+            int marineRows = 1;
+            int marineCols = 2;
             int spacing = 32;
 
             // Add Scene Components

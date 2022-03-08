@@ -99,9 +99,11 @@ namespace Zand.Physics
 
         private static float GetAngle(Collider collider1, Collider collider2)
         {
-            return (float)Math.Atan2(
+            var angle =  (float)Math.Atan2(
                 collider1.Entity.Position.Y - collider2.Entity.Position.Y,
                 collider1.Entity.Position.X - collider2.Entity.Position.X);
+
+            return angle;
         }
 
         private static void ApplyRepel(Entity entity1, Entity entity2, CollisionResult collision)
