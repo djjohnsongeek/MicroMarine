@@ -5,9 +5,9 @@ using MicroMarine.Components;
 namespace MicroMarine.Scenes
 
 {
-    class SimpleScene : Scene
+    class SampleScene : Scene
     {
-        public SimpleScene() : base()
+        public SampleScene() : base()
         {
             
         }
@@ -23,8 +23,8 @@ namespace MicroMarine.Scenes
         {
             base.Load();
 
-            int marineRows = 1;
-            int marineCols = 2;
+            int marineRows = 20;
+            int marineCols = 20;
             int spacing = 32;
 
             // Add Scene Components
@@ -40,7 +40,6 @@ namespace MicroMarine.Scenes
                     unitSelector.AddUnit(marine);
                 }
             }
-
         }
 
         public override void Update()
