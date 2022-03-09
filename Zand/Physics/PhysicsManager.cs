@@ -20,7 +20,7 @@ namespace Zand.Physics
         public PhysicsManager(Scene scene)
         {
             _scene = scene;
-            _spatialHash = new SpatialHash(_scene, 64);
+            _spatialHash = new SpatialHash(64);
             _colliders = new List<Collider>();
             _circleColliders = new List<CircleCollider>();
         }
@@ -41,21 +41,23 @@ namespace Zand.Physics
             for (int i = 0; i < _circleColliders.Count; i++)
             {
                 IReadOnlyCollection<CircleCollider> possibles = _spatialHash.GetNearby(_circleColliders[i].Center);
+                // _circleColliders[i].PrevCollisionCenter = _circleColliders[i].Center;
 
                 for (int j = 0; j < possibles.Count; j++)
                 {
+                    // Don't Collide with self
                     if (possibles.ElementAt(j) == _circleColliders[i])
                     {
                         continue;
                     }
 
-                    CollisionResult collision = CircleCollision(_circleColliders[i], possibles.ElementAt(j));
+                    CollisionResult result = CircleCollision(_circleColliders[i], possibles.ElementAt(j));
 
-                    if (collision.Collides)
+                    if (result.Collides)
                     {
-                        _circleColliders[i].Tint = Color.Red;
-                        possibles.ElementAt(j).Tint = Color.Red;
-                        ApplyRepel(_circleColliders[i].Entity, possibles.ElementAt(j).Entity, collision);
+                        //_circleColliders[i].Tint = Color.Red;
+                        //possibles.ElementAt(j).Tint = Color.Red;
+                        ApplyRepel(_circleColliders[i].Entity, possibles.ElementAt(j).Entity, result);
                     }
                 }
             }
@@ -74,9 +76,9 @@ namespace Zand.Physics
 
         private void UpdateCircleCollidersState()
         {
-            _spatialHash.Reset();
             for (int i = 0; i < _circleColliders.Count; i++)
             {
+                _spatialHash.RemoveCollider(_circleColliders[i]);
                 _spatialHash.AddCollider(_circleColliders[i]);
                 _colliders[i].Tint = Color.White;
             }
