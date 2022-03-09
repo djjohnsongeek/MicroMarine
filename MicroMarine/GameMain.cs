@@ -7,7 +7,7 @@ namespace MicroMarine
     {
         protected override void Initialize()
         {
-            CurrentScene = new SimpleScene();
+            CurrentScene = new SampleScene();
             base.Initialize();
         }
     }
