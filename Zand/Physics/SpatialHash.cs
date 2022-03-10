@@ -9,10 +9,6 @@ using Zand.ECS.Components;
 
 namespace Zand.Physics
 {
-    // hash by world position (so that it is not constantly changing)
-    // only update the collisions that are moving (those that are still need no update)
-    // will need to manually remove from its old buckts
-
     class SpatialHash
     {
         private Dictionary<long, List<CircleCollider>> _grid;
@@ -28,25 +24,28 @@ namespace Zand.Physics
 
         public IReadOnlyCollection<CircleCollider> GetNearby(Vector2 position)
         {
-            long cellHash = GetCallHash(position);
-            if (!_grid.ContainsKey(cellHash))
+            long cellHash = GetCellHash(position);
+            if (!CellExists(cellHash))
             {
                 return new Collection<CircleCollider>();
             }
-            return _grid[GetCallHash(position)].AsReadOnly();
+            return _grid[cellHash].AsReadOnly();
         }
 
         public void AddCollider(CircleCollider collider)
         {
-            Vector2 bottomRight = new Vector2(collider.Center.X + collider.Radius, collider.Center.Y + collider.Radius);
-            Vector2 topLeft = new Vector2(collider.Center.X - collider.Radius, collider.Center.Y - collider.Radius);
+            // store pos to reduce excess math
+            Vector2 pos = collider.Center;
+
+            Vector2 bottomRight = new Vector2(pos.X + collider.Radius, pos.Y + collider.Radius);
+            Vector2 topLeft = new Vector2(pos.X - collider.Radius, pos.Y - collider.Radius);
             Vector2 topRight = new Vector2(bottomRight.X, topLeft.Y);
             Vector2 bottomLeft = new Vector2(topLeft.X, bottomRight.Y);
 
-            AddToCell(GetCallHash(bottomRight), collider);
-            AddToCell(GetCallHash(topLeft), collider);
-            AddToCell(GetCallHash(topRight), collider);
-            AddToCell(GetCallHash(bottomLeft), collider);
+            AddToCell(GetCellHash(bottomRight), collider);
+            AddToCell(GetCellHash(topLeft), collider);
+            AddToCell(GetCellHash(topRight), collider);
+            AddToCell(GetCellHash(bottomLeft), collider);
         }
 
         private void AddToCell(long cellHash, CircleCollider collider)
@@ -83,7 +82,7 @@ namespace Zand.Physics
                 return;
             }
 
-            // Remove from previous positions
+            // Remove from previous cells
             foreach (var cellCoord in _entityCoordinates[collider.Entity.Id])
             {
                 _grid[cellCoord].Remove(collider);
@@ -110,7 +109,7 @@ namespace Zand.Physics
             return _grid.ContainsKey(cellHash);
         }
 
-        private long GetCallHash(Vector2 vector)
+        private long GetCellHash(Vector2 vector)
         {
             int x = (int)Math.Floor(vector.X * _conversionFactor);
             int y = (int)Math.Floor(vector.Y * _conversionFactor);
