@@ -11,15 +11,13 @@ namespace Zand.Physics
 {
     public  class PhysicsManager
     {
-        private Scene _scene;
         private SpatialHash _spatialHash;
         private const float UnitRepelMangitude = 2F;
         private List<Collider> _colliders;
         private List<CircleCollider> _circleColliders;
 
-        public PhysicsManager(Scene scene)
+        public PhysicsManager()
         {
-            _scene = scene;
             _spatialHash = new SpatialHash(64);
             _colliders = new List<Collider>();
             _circleColliders = new List<CircleCollider>();
@@ -36,31 +34,8 @@ namespace Zand.Physics
 
         public void Update()
         {
-            UpdateCircleCollidersState();
-
-            for (int i = 0; i < _circleColliders.Count; i++)
-            {
-                IReadOnlyCollection<CircleCollider> possibles = _spatialHash.GetNearby(_circleColliders[i].Center);
-                // _circleColliders[i].PrevCollisionCenter = _circleColliders[i].Center;
-
-                for (int j = 0; j < possibles.Count; j++)
-                {
-                    // Don't Collide with self
-                    if (possibles.ElementAt(j) == _circleColliders[i])
-                    {
-                        continue;
-                    }
-
-                    CollisionResult result = CircleCollision(_circleColliders[i], possibles.ElementAt(j));
-
-                    if (result.Collides)
-                    {
-                        //_circleColliders[i].Tint = Color.Red;
-                        //possibles.ElementAt(j).Tint = Color.Red;
-                        ApplyRepel(_circleColliders[i].Entity, possibles.ElementAt(j).Entity, result);
-                    }
-                }
-            }
+            UpdateSpatialHash();
+            ResolveCollisions();
         }
 
         public void Draw(SpriteBatch sBatch)
@@ -74,8 +49,9 @@ namespace Zand.Physics
             }
         }
 
-        private void UpdateCircleCollidersState()
+        private void UpdateSpatialHash()
         {
+            // Further optimization: only reset colliders that are in motion
             for (int i = 0; i < _circleColliders.Count; i++)
             {
                 _spatialHash.RemoveCollider(_circleColliders[i]);
@@ -83,8 +59,30 @@ namespace Zand.Physics
                 _colliders[i].Tint = Color.White;
             }
         }
+        private void ResolveCollisions()
+        {
+            for (int i = 0; i < _circleColliders.Count; i++)
+            {
+                IReadOnlyCollection<CircleCollider> possibles = _spatialHash.GetNearby(_circleColliders[i].Center);
+                for (int j = 0; j < possibles.Count; j++)
+                {
+                    // Don't Collide with self
+                    if (possibles.ElementAt(j) == _circleColliders[i])
+                    {
+                        continue;
+                    }
 
-        private static CollisionResult CircleCollision(CircleCollider collider1, CircleCollider collider2)
+                    CollisionResult result = ResolveCollision(_circleColliders[i], possibles.ElementAt(j));
+
+                    if (result.Collides)
+                    {
+                        ApplyRepel(_circleColliders[i].Entity, possibles.ElementAt(j).Entity, result);
+                    }
+                }
+            }
+        }
+
+        private CollisionResult ResolveCollision(CircleCollider collider1, CircleCollider collider2)
         {
             var result = new CollisionResult
             {
@@ -99,7 +97,7 @@ namespace Zand.Physics
             return result;
         }
 
-        private static float GetAngle(Collider collider1, Collider collider2)
+        private float GetAngle(Collider collider1, Collider collider2)
         {
             var angle =  (float)Math.Atan2(
                 collider1.Entity.Position.Y - collider2.Entity.Position.Y,
@@ -108,35 +106,25 @@ namespace Zand.Physics
             return angle;
         }
 
-        private static void ApplyRepel(Entity entity1, Entity entity2, CollisionResult collision)
+        private void ApplyRepel(Entity entity1, Entity entity2, CollisionResult collision)
         {
             var repelVelocity1 = new Vector2(
-                RepelX(collision.Angle, collision.RepelStrength),
-                RepelY(collision.Angle, collision.RepelStrength)
+                GetRepelX(collision.Angle, collision.RepelStrength),
+                GetRepelY(collision.Angle, collision.RepelStrength)
             );
 
             var repelVelocity2 = Vector2.Multiply(repelVelocity1, -1);
-
-            // adjust
-            var entity1Movement = entity1.GetComponent<WaypointMovement>();
-            var entity2Movement = entity1.GetComponent<WaypointMovement>();
-
-            if (entity1Movement.Velocity != Vector2.Zero && entity2Movement.Velocity != Vector2.Zero)
-            {
-                //repelVelocity1 = Vector2.Multiply(repelVelocity1, 1.5F);
-                repelVelocity2 = Vector2.Multiply(repelVelocity2, 2.5F);
-            }
 
             entity1.GetComponent<WaypointMovement>().Nudge(repelVelocity1);
             entity2.GetComponent<WaypointMovement>().Nudge(repelVelocity2);
         }
 
-        private static float RepelX(double angle, float power)
+        private float GetRepelX(double angle, float power)
         {
             return (float)Math.Cos(angle) * power * UnitRepelMangitude;
         }
 
-        private static float RepelY(double angle, float power)
+        private float GetRepelY(double angle, float power)
         {
             return (float)Math.Sin(angle) * power * UnitRepelMangitude;
         }
