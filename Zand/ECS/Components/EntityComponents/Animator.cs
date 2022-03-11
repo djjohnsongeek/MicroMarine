@@ -13,7 +13,7 @@ namespace Zand.ECS.Components
 {
     public class Animator : Component, IRenderable, IUpdateable
     {
-        private Dictionary<int, Animation> _animations;
+        private Dictionary<string, Animation> _animations;
         private Animation _currentAnimation;
         private Rectangle _currentFrame;
         private int _currentIndex = 0;
@@ -26,16 +26,16 @@ namespace Zand.ECS.Components
 
         public Animator()
         {
-            _animations = new Dictionary<int, Animation>();
+            _animations = new Dictionary<string, Animation>();
             _elapsedTime = 0d;
         }
 
-        public void AddAnimation(int name, Animation animation)
+        public void AddAnimation(string name, Animation animation)
         {
             _animations.Add(name, animation);
         }
 
-        public void SetAnimation(int name)
+        public void SetAnimation(string name)
         {
             if (!_animations.ContainsKey(name))
             {
@@ -107,7 +107,7 @@ namespace Zand.ECS.Components
             _suppressUpdate = true;
         }
 
-        public bool AnimationIsRunning(int name)
+        public bool AnimationIsRunning(string name)
         {
             return  _currentAnimation == _animations[name];
         }
