@@ -5,8 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Collision\**" />
+    <EmbeddedResource Remove="Collision\**" />
+    <None Remove="Collision\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="AI\" />
-    <Folder Include="Collision\" />
     <Folder Include="ECS\Components\SceneComponents\" />
     <Folder Include="Graphics\Lighting\" />
     <Folder Include="Audio\" />

@@ -29,7 +29,7 @@ namespace Zand.Physics
             {
                 return new Collection<CircleCollider>();
             }
-            return _grid[cellHash].AsReadOnly();
+            return _grid[cellHash];
         }
 
         public void AddCollider(CircleCollider collider)
