@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zand.ECS.Components;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
@@ -12,7 +10,7 @@ namespace Zand.Physics
     public  class PhysicsManager
     {
         private SpatialHash _spatialHash;
-        private const float UnitRepelMangitude = 2F;
+        private const float UnitRepelMangitude = 2.5F;
         private List<Collider> _colliders;
         private List<CircleCollider> _circleColliders;
 
@@ -115,8 +113,24 @@ namespace Zand.Physics
 
             var repelVelocity2 = Vector2.Multiply(repelVelocity1, -1);
 
-            entity1.GetComponent<WaypointMovement>().Nudge(repelVelocity1);
-            entity2.GetComponent<WaypointMovement>().Nudge(repelVelocity2);
+            var entity1Movement = entity1.GetComponent<WaypointMovement>();
+            var entity2Movement = entity2.GetComponent<WaypointMovement>();
+
+            if (entity1Movement.CurrentWayPoint == null && entity2Movement.CurrentWayPoint != null)
+            {
+                entity1Movement.Nudge(repelVelocity1);
+            }
+            else if (entity2Movement.CurrentWayPoint == null && entity1Movement.CurrentWayPoint != null)
+            {
+                entity2Movement.Nudge(repelVelocity2);
+            }
+            else if ((entity1Movement.CurrentWayPoint != null && entity2Movement.CurrentWayPoint != null)
+                ||
+                    (entity1Movement.CurrentWayPoint == null && entity2Movement.CurrentWayPoint == null))
+            {
+                entity1Movement.Nudge(repelVelocity1);
+                entity2Movement.Nudge(repelVelocity2);
+            }
         }
 
         private float GetRepelX(double angle, float power)
