@@ -6,13 +6,13 @@ namespace Zand.ECS.Components
     {
         private float _speed;
         private const float _arrivalDiff = 1F;
-        public Vector2? _currentWaypoint;
+        public Vector2? CurrentWayPoint;
 
         public Vector2 Velocity;
 
         public WaypointMovement(float speed)
         {
-            _currentWaypoint = null;
+            CurrentWayPoint = null;
             _speed = speed;
             Velocity = Vector2.Zero;
         }
@@ -21,7 +21,7 @@ namespace Zand.ECS.Components
         {
             UpdateCurrentWaypoint();
 
-            if (_currentWaypoint.HasValue)
+            if (CurrentWayPoint.HasValue)
             {
                 CalculateVelocity();
                 ApplyVelocity();
@@ -36,7 +36,7 @@ namespace Zand.ECS.Components
 
         private void CalculateVelocity()
         {
-           Velocity = Vector2.Subtract(_currentWaypoint.Value, Entity.Position);
+           Velocity = Vector2.Subtract(CurrentWayPoint.Value, Entity.Position);
            Velocity.Normalize();
         }
 
@@ -52,28 +52,28 @@ namespace Zand.ECS.Components
 
         private void Arrive()
         {
-            Entity.Position = _currentWaypoint.Value;
+            Entity.Position = CurrentWayPoint.Value;
             StopMovement();
         }
 
         public void StopMovement()
         {
-            _currentWaypoint = null;
+            CurrentWayPoint = null;
             Velocity = Vector2.Zero;
         }
 
         private bool ArrivedAtWaypoint()
         {
-            float distance = Vector2.DistanceSquared(Entity.Position, _currentWaypoint.Value);
+            float distance = Vector2.DistanceSquared(Entity.Position, CurrentWayPoint.Value);
             return distance < _arrivalDiff * _arrivalDiff;
         }
 
         private void UpdateCurrentWaypoint()
         {
             WaypointNav waypoints = Entity.GetComponent<WaypointNav>();
-            if (waypoints.HasWaypoints() && !_currentWaypoint.HasValue)
+            if (waypoints.HasWaypoints() && !CurrentWayPoint.HasValue)
             {
-                _currentWaypoint = waypoints.NextWayPoint();
+                CurrentWayPoint = waypoints.NextWayPoint();
             }
         }
 
