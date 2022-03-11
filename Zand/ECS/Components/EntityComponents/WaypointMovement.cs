@@ -1,18 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Zand;
 
 namespace Zand.ECS.Components
 {
     public class WaypointMovement : Component, Zand.IUpdateable
     {
         private float _speed;
-        private const float _arrivalDiff = 0.5F;
-        private Vector2? _currentWaypoint;
+        private const float _arrivalDiff = 1F;
+        public Vector2? _currentWaypoint;
 
         public Vector2 Velocity;
 
