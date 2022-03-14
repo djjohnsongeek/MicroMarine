@@ -7,7 +7,7 @@ namespace Zand.ECS.Components
     {
         public Vector2 Origin;
         public Vector2 Offset;
-        public Vector2 Center => Scene.Camera.GetScreenLocation(Entity.Position) + Offset;
+        public Vector2 Center => Entity.Position + Offset;
         public Color Tint = Color.White;
 
         public virtual void Update()

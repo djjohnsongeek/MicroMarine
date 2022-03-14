@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Zand.ECS.Components
 {
@@ -29,7 +24,7 @@ namespace Zand.ECS.Components
 
         public override void Draw(SpriteBatch sbatch)
         {
-            sbatch.Draw(_texture, Center, null, Tint, 0, Origin, 1, SpriteEffects.None, 0);
+            sbatch.Draw(_texture, Entity.Scene.Camera.GetScreenLocation(Center), null, Tint, 0, Origin, 1, SpriteEffects.None, 0);
         }
     }
 }

@@ -7,18 +7,6 @@ using Zand.Graphics;
 
 namespace MicroMarine.Components
 {
-    public enum MarineAnimation
-    {
-        IdleNorth,
-        IdleSouth,
-        IdleEast,
-        IdleWest,
-        WalkNorth,
-        WalkSouth,
-        WalkEast,
-        WalkWest,
-    }
-    
     // Acts as 'Loading Component' for a Marine
     class Marine : Component, Zand.IUpdateable
     {
@@ -35,18 +23,18 @@ namespace MicroMarine.Components
 
             #region Setup Animation
 
-            animator.AddAnimation(MarineAnimation.IdleNorth, new Animation(marineSheet, spriteSheet.GetFrames(0, 7), 8));
-            animator.AddAnimation(MarineAnimation.IdleSouth, new Animation(marineSheet, spriteSheet.GetFrames(8, 15), 8));
-            animator.AddAnimation(MarineAnimation.IdleEast, new Animation(marineSheet, spriteSheet.GetFrames(16, 23), 8));
-            animator.AddAnimation(MarineAnimation.IdleWest, new Animation(marineSheet, spriteSheet.GetFrames(24, 31), 8));
-            animator.AddAnimation(MarineAnimation.WalkNorth, new Animation(marineSheet, spriteSheet.GetFrames(32, 39)));
-            animator.AddAnimation(MarineAnimation.WalkSouth, new Animation(marineSheet, spriteSheet.GetFrames(40, 47)));
-            animator.AddAnimation(MarineAnimation.WalkEast, new Animation(marineSheet, spriteSheet.GetFrames(48, 55)));
-            animator.AddAnimation(MarineAnimation.WalkWest, new Animation(marineSheet, spriteSheet.GetFrames(56, 63)));
+            animator.AddAnimation("IdleNorth", new Animation(marineSheet, spriteSheet.GetFrames(0, 7), 8));
+            animator.AddAnimation("IdleSouth", new Animation(marineSheet, spriteSheet.GetFrames(8, 15), 8));
+            animator.AddAnimation("IdleEast", new Animation(marineSheet, spriteSheet.GetFrames(16, 23), 8));
+            animator.AddAnimation("IdleWest", new Animation(marineSheet, spriteSheet.GetFrames(24, 31), 8));
+            animator.AddAnimation("WalkNorth", new Animation(marineSheet, spriteSheet.GetFrames(32, 39)));
+            animator.AddAnimation("WalkSouth", new Animation(marineSheet, spriteSheet.GetFrames(40, 47)));
+            animator.AddAnimation("WalkEast", new Animation(marineSheet, spriteSheet.GetFrames(48, 55)));
+            animator.AddAnimation("WalkWest", new Animation(marineSheet, spriteSheet.GetFrames(56, 63)));
 
             #endregion
 
-            animator.SetAnimation(MarineAnimation.IdleSouth);
+            animator.SetAnimation("IdleSouth");
             Entity.AddComponent(animator);
 
             MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle(Entity.Position.ToPoint(), new Point(19, 26)), new Vector2(-9, -13)); // new Vector2(6, 4)
@@ -80,16 +68,16 @@ namespace MicroMarine.Components
                 {
                     if (velocity.Y < 0)
                     {
-                        if (!animator.AnimationIsRunning(MarineAnimation.WalkNorth))
+                        if (!animator.AnimationIsRunning("WalkNorth"))
                         {
-                            animator.SetAnimation(MarineAnimation.WalkNorth);
+                            animator.SetAnimation("WalkNorth");
                         }
                     }
                     else if (velocity.Y > 0)
                     {
-                        if (!animator.AnimationIsRunning(MarineAnimation.WalkSouth))
+                        if (!animator.AnimationIsRunning("WalkSouth"))
                         {
-                            animator.SetAnimation(MarineAnimation.WalkSouth);
+                            animator.SetAnimation("WalkSouth");
                         }
                     }
                 }
@@ -98,26 +86,26 @@ namespace MicroMarine.Components
                 {
                     if (velocity.X > 0)
                     {
-                        if (!animator.AnimationIsRunning(MarineAnimation.WalkEast))
+                        if (!animator.AnimationIsRunning("WalkEast"))
                         {
-                            animator.SetAnimation(MarineAnimation.WalkEast);
+                            animator.SetAnimation("WalkEast");
                         }
 
                     }
                     else if (velocity.X < 0)
                     {
-                        if (!animator.AnimationIsRunning(MarineAnimation.WalkWest))
+                        if (!animator.AnimationIsRunning("WalkWest"))
                         {
-                            animator.SetAnimation(MarineAnimation.WalkWest);
+                            animator.SetAnimation("WalkWest");
                         }
                     }
                 }
             }
             else
             {
-                if (!animator.AnimationIsRunning(MarineAnimation.IdleSouth))
+                if (!animator.AnimationIsRunning("IdleSouth"))
                 {
-                    animator.SetAnimation(MarineAnimation.IdleSouth);
+                    animator.SetAnimation("IdleSouth");
                 }
             }
         }

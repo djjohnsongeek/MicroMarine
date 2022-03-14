@@ -41,7 +41,7 @@ namespace Zand
 
         public virtual void Initialize()
         {
-            Physics = new PhysicsManager(this);
+            Physics = new PhysicsManager();
             // Init logic goes here
 
         }

@@ -5,9 +5,9 @@ using MicroMarine.Components;
 namespace MicroMarine.Scenes
 
 {
-    class SimpleScene : Scene
+    class SampleScene : Scene
     {
-        public SimpleScene() : base()
+        public SampleScene() : base()
         {
             
         }
@@ -40,7 +40,6 @@ namespace MicroMarine.Scenes
                     unitSelector.AddUnit(marine);
                 }
             }
-
         }
 
         public override void Update()
