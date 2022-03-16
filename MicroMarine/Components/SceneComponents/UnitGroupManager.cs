@@ -12,10 +12,12 @@ namespace MicroMarine.Components
     public class UnitGroupManager : SceneComponent
     {
         private SortedList<uint, UnitGroup> UnitGroups;
+        private List<uint> GroupIds;
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
             UnitGroups = new SortedList<uint, UnitGroup>();
+            GroupIds = new List<uint>();
         }
 
         public override void Update()
@@ -32,11 +34,12 @@ namespace MicroMarine.Components
                 // TODO Replace group if it already exists
                 var group = new UnitGroup(unitSelector.GetSelectedUnits(), Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
                 UnitGroups.Add(group.Id, group);
+                GroupIds.Add(group.Id);
             }
 
-            for (uint i = 0; i < UnitGroups.Count; i++ )
+            for (int i = 0; i < GroupIds.Count; i++ )
             {
-                UnitGroups[i].Update();
+                UnitGroups[GroupIds[i]].Update();
             }
         }
     }
@@ -46,8 +49,11 @@ namespace MicroMarine.Components
         public List<Entity> Units;
         public uint Id;
         public Queue<Vector2> Waypoints;
-        private static int _dissensionFactor = 100;
-        private static int _baseUnitSpeed = 100;
+
+        private static float _cohesionFactor = .05f;
+        private static float _avoidFactor = .05f;
+        private static int _maxDistanceSqrd = 1296; // 36 * 36
+        private static float _unitSpeed = 200;
 
         public UnitGroup(List<Entity> units, Vector2 destination)
         {
@@ -67,50 +73,65 @@ namespace MicroMarine.Components
 
         public void Update()
         {
-            var (centerOfMass, neighborVelocity) = GetVelocities();
+            var (centerOfMass, neighborVelocity) = GetNeigborVelocity();
             for (int i = 0; i < Units.Count; i++)
             {
                 Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], centerOfMass);
                 Vector2 avoidanceVelocity = GetAvoidanceVelocity(Units[i]);
-                Vector2 neighborVelocity = GetNeighborVelocity(Units[i]);
                 Vector2 destinationVelocity = GetDestinationVelocity(Units[i]);
+
+                Units[i].GetComponent<Mover>().Velocity += cohesionVelocity + neighborVelocity + avoidanceVelocity + destinationVelocity;
             }
         }
 
-        private (Vector2 centerOfMass, Vector2 neighborV) GetVelocities()
+        private (Vector2 centerOfMass, Vector2 neighborV) GetNeigborVelocity()
         {
             var centerOfMass = Vector2.Zero;
             var neighborV = Vector2.Zero;
 
             for (int i = 0; i < Units.Count; i++)
             {
-                centerOfMass += Units[i].ScreenPosition;
-                neighborV += Units[i].GetComponent<WaypointMovement>().Velocity;
+                centerOfMass += Units[i].GetComponent<CircleCollider>().Center;
+                neighborV += Units[i].GetComponent<Mover>().Velocity;
             }
 
-            return (Vector2.Divide(centerOfMass, Units.Count), neighborV);
+            neighborV = Vector2.Divide(neighborV, Units.Count);
+            centerOfMass = Vector2.Divide(centerOfMass, Units.Count);
+
+            return (centerOfMass, neighborV);
         }
 
         private Vector2 GetCohesionVelocity(Entity unit, Vector2 centerOfMass)
         {
-            return Vector2.Divide((centerOfMass - unit.ScreenPosition), _dissensionFactor);
+            var unitPos = unit.GetComponent<CircleCollider>().Center;
+            return (centerOfMass - unitPos) * _cohesionFactor;
         }
 
         private Vector2 GetAvoidanceVelocity(Entity unit)
         {
-            return Vector2.Zero;
-        }
+            var avoidV = Vector2.Zero;
+            Vector2 unitPos = unit.GetComponent<CircleCollider>().Center;
+            for (int i = 0; i < Units.Count; i++)
+            {
+                Vector2 unitIPos = Units[i].GetComponent<CircleCollider>().Center;
+                if (unit != Units[i])
+                {
+                    float distanceSqrd = Vector2.DistanceSquared(unitPos, unitIPos);
+                    if (distanceSqrd < (_maxDistanceSqrd))
+                    {
+                        avoidV -= (unitPos - unitIPos);
+                    }
+                }
+            }
 
-        private Vector2 GetNeighborVelocity(Entity unit)
-        {
-            return Vector2.Zero;
-            for (int i = 0; i < Units.Count; i ++)
-            // average group velocity
+            return avoidV * _avoidFactor;
         }
 
         private Vector2 GetDestinationVelocity(Entity unit)
         {
-            return Vector2.Zero;
+            var destinationV = unit.GetComponent<CircleCollider>().Center - Waypoints.Peek();
+            destinationV.Normalize();
+            return destinationV * ((float)Time.DeltaTime * _unitSpeed);
         }
     }
 }

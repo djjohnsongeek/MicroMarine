@@ -7,30 +7,25 @@ using Microsoft.Xna.Framework;
 
 namespace Zand.ECS.Components
 {
-    class Mover : Component, IUpdateable
+    public class Mover : Component, IUpdateable
     {
-        private Entity _entity;
-        private float _speed;
-        private Vector2 _velocity;
+        private float maxSpeed;
+        public Vector2 Velocity;
 
-        public Mover (Entity entity, float baseSpeed)
+        public Mover (float maxSpeed)
         {
-            _speed = baseSpeed;
-            _entity = entity;
-            _velocity = Vector2.Zero;
-        }
-
-        public Mover (Entity entity, float baseSpeed, Vector2 startingVelocity) : this(entity, baseSpeed)
-        {
-            _velocity = startingVelocity;
+            this.maxSpeed = maxSpeed;
+            Velocity = Vector2.Zero;
         }
 
         public void Update()
         {
-            _velocity.X = _velocity.X + (_speed * (float)Time.DeltaTime);
-            _velocity.Y = _velocity.Y + (_speed * (float)Time.DeltaTime);
+            Entity.Position += Velocity;
+        }
 
-            _entity.Position = _entity.Position + _velocity;
+        public void Nudge(Vector2 velocity)
+        {
+            Entity.Position += Vector2.Multiply(velocity, (float)Time.DeltaTime);
         }
     }
 }

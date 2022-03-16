@@ -14,8 +14,9 @@ namespace MicroMarine.Components
         {
             Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
             Entity.AddComponent(new Health(100));
-            Entity.AddComponent(new WaypointNav());
-            Entity.AddComponent(new WaypointMovement(100));
+            //Entity.AddComponent(new WaypointNav());
+            //Entity.AddComponent(new WaypointMovement(100));
+            Entity.AddComponent(new Mover(100));
 
             Texture2D marineSheet = Scene.Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
             var spriteSheet = new SpriteSheet(marineSheet, 32, 32);
@@ -58,7 +59,7 @@ namespace MicroMarine.Components
         private void UpdateMarineAnimation()
         {
             Animator animator = Entity.GetComponent<Animator>();
-            Vector2 velocity = Entity.GetComponent<WaypointMovement>().Velocity;
+            Vector2 velocity = Entity.GetComponent<Mover>().Velocity;
 
             if (velocity != Vector2.Zero)
             {
