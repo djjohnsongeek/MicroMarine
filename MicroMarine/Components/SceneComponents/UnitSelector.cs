@@ -56,25 +56,6 @@ namespace MicroMarine.Components
                 selectBox = Rectangle.Empty;
                 SelectBoxOrigin = Vector2.Zero;
             }
-            // Select Single Unit with click (not working as intended TODO for later)
-            //else if (Input.LeftMouseWasPressed())
-            //{
-            //    DeselectAll();
-            //    List<Entity> candidates = new List<Entity>();
-            //    //MouseSelector selectCollider;
-            //    for (int i = 0; i < _units.Count; i++)
-            //    {
-            //        var selectCollider = _units[i].GetComponent<MouseSelector>();
-            //        if (Collisions.RectangleToPoint(selectCollider.GetScreenLocation(), Input.MouseScreenPosition.ToPoint()))
-            //        {
-            //            //candidates.Add(_units[i]);
-            //            SelectUnit(_units[i], selectCollider);
-            //            break;
-            //        }
-            //    }
-
-            //    // SelectClosest(candidates);
-            //}
 
             // Select All Hotkey
             if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.Tab))
@@ -125,6 +106,11 @@ namespace MicroMarine.Components
                 selectBox,
                 Color.WhiteSmoke
             );
+        }
+
+        public List<Entity> GetSelectedUnits()
+        {
+            return _selectedUnits.GetRange(0, _selectedUnits.Count);
         }
 
         private Point CalculateSelectBxSize()

@@ -103,6 +103,11 @@ namespace Zand
             // Draw Effects
         }
 
+        public T GetComponent<T>() where T : SceneComponent
+        {
+            return SceneComponents.GetSceneComponent<T>();
+        }
+
         public void RegisterCollider(Collider collider)
         {
             Physics.AddCollider(collider);
