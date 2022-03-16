@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Zand.Physics
 {
-    public  class PhysicsManager
+    public class PhysicsManager
     {
         private SpatialHash _spatialHash;
         private const float UnitRepelMangitude = 2.5F;
@@ -116,21 +116,39 @@ namespace Zand.Physics
             var entity1Movement = entity1.GetComponent<WaypointMovement>();
             var entity2Movement = entity2.GetComponent<WaypointMovement>();
 
-            if (entity1Movement.CurrentWayPoint == null && entity2Movement.CurrentWayPoint != null)
-            {
-                entity1Movement.Nudge(repelVelocity1);
-            }
-            else if (entity2Movement.CurrentWayPoint == null && entity1Movement.CurrentWayPoint != null)
-            {
-                entity2Movement.Nudge(repelVelocity2);
-            }
-            else if ((entity1Movement.CurrentWayPoint != null && entity2Movement.CurrentWayPoint != null)
-                ||
-                    (entity1Movement.CurrentWayPoint == null && entity2Movement.CurrentWayPoint == null))
-            {
-                entity1Movement.Nudge(repelVelocity1);
-                entity2Movement.Nudge(repelVelocity2);
-            }
+            // adjustments
+            //if (entity1Movement.CurrentWayPoint == null && entity2Movement.CurrentWayPoint != null)
+            //{
+            //    repelVelocity1 = Vector2.Multiply(repelVelocity1, 3);
+            //}
+
+            //if (entity2Movement.CurrentWayPoint == null && entity1Movement.CurrentWayPoint != null)
+            //{
+            //    repelVelocity2 = Vector2.Multiply(repelVelocity2, 3);
+            //}
+
+            entity1Movement.Nudge(repelVelocity1);
+            entity2Movement.Nudge(repelVelocity2);
+
+
+
+            //if (entity1Movement.CurrentWayPoint == null && entity2Movement.CurrentWayPoint != null)
+            //{
+            //    entity1Movement.Nudge(repelVelocity1);
+            //}
+            //else if (entity2Movement.CurrentWayPoint == null && entity1Movement.CurrentWayPoint != null)
+            //{
+            //    entity2Movement.Nudge(repelVelocity2);
+            //}
+            //else if ((entity1Movement.CurrentWayPoint != null && entity2Movement.CurrentWayPoint != null)
+            //    ||
+            //        (entity1Movement.CurrentWayPoint == null && entity2Movement.CurrentWayPoint == null))
+            //{
+            //    entity1Movement.Nudge(repelVelocity1);
+            //    entity2Movement.Nudge(repelVelocity2);
+            //}
+
+
         }
 
         private float GetRepelX(double angle, float power)
