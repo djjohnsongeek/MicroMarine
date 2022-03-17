@@ -33,6 +33,7 @@ namespace MicroMarine.Components
 
                 // TODO Replace group if it already exists
                 var group = new UnitGroup(unitSelector.GetSelectedUnits(), Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+                UnitGroups.Remove(group.Id);
                 UnitGroups.Add(group.Id, group);
                 GroupIds.Add(group.Id);
             }
@@ -53,7 +54,9 @@ namespace MicroMarine.Components
         private static float _cohesionFactor = .05f;
         private static float _avoidFactor = .05f;
         private static int _maxDistanceSqrd = 1296; // 36 * 36
-        private static float _unitSpeed = 200;
+        private static float _unitSpeed = .1F;
+        private static float _arrivalThreshold = 1F;
+        private static float _destinationFactor = 10F;
 
         public UnitGroup(List<Entity> units, Vector2 destination)
         {
@@ -80,7 +83,11 @@ namespace MicroMarine.Components
                 Vector2 avoidanceVelocity = GetAvoidanceVelocity(Units[i]);
                 Vector2 destinationVelocity = GetDestinationVelocity(Units[i]);
 
-                Units[i].GetComponent<Mover>().Velocity += cohesionVelocity + neighborVelocity + avoidanceVelocity + destinationVelocity;
+                // avoidanceVelocity
+                var finalV = cohesionVelocity + neighborVelocity + destinationVelocity + avoidanceVelocity;
+                finalV = LimitVelocity(finalV);
+
+                Units[i].GetComponent<Mover>().Velocity += finalV;
             }
         }
 
@@ -129,9 +136,24 @@ namespace MicroMarine.Components
 
         private Vector2 GetDestinationVelocity(Entity unit)
         {
-            var destinationV = unit.GetComponent<CircleCollider>().Center - Waypoints.Peek();
+            var destinationV = Waypoints.Peek() - unit.GetComponent<CircleCollider>().Center;
+            if (destinationV.Length() <= _arrivalThreshold)
+            {
+                return Vector2.Zero;
+            }
+
             destinationV.Normalize();
-            return destinationV * ((float)Time.DeltaTime * _unitSpeed);
+            return destinationV * _destinationFactor;
+        }
+
+        private Vector2 LimitVelocity(Vector2 currentVelocity)
+        {
+            if (currentVelocity.Length() > _unitSpeed)
+            {
+                return Vector2.Normalize(currentVelocity) * _unitSpeed;
+            }
+
+            return currentVelocity;
         }
     }
 }

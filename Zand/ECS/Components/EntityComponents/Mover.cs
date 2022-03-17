@@ -20,7 +20,7 @@ namespace Zand.ECS.Components
 
         public void Update()
         {
-            Entity.Position += Velocity;
+            Entity.Position += Velocity * (float)Time.DeltaTime;
         }
 
         public void Nudge(Vector2 velocity)
