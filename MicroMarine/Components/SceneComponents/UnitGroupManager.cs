@@ -18,24 +18,17 @@ namespace MicroMarine.Components
         {
             UnitGroups = new SortedList<uint, UnitGroup>();
             GroupIds = new List<uint>();
+
+            // TODO initialize a unit group "pool"
         }
 
         public override void Update()
         {
-            // Remove 'stale' units groups
-            // TODO
+            // TODO remove stale unit groups
 
-            // Add new unit groups
             if (Input.RightMouseWasPressed())
             {
-                // Add Units Groups
-                var unitSelector = Scene.GetComponent<UnitSelector>();
-
-                // TODO Replace group if it already exists
-                var group = new UnitGroup(unitSelector.GetSelectedUnits(), Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
-                UnitGroups.Remove(group.Id);
-                UnitGroups.Add(group.Id, group);
-                GroupIds.Add(group.Id);
+                CreateNewUnitGroup();
             }
 
             for (int i = 0; i < GroupIds.Count; i++ )
@@ -43,25 +36,36 @@ namespace MicroMarine.Components
                 UnitGroups[GroupIds[i]].Update();
             }
         }
+
+        private void CreateNewUnitGroup()
+        {
+            List<Entity> units = Scene.GetComponent<UnitSelector>().GetSelectedUnits();
+            var group = new UnitGroup(units, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+            UnitGroups.Remove(group.Id);
+            UnitGroups.Add(group.Id, group);
+            GroupIds.Add(group.Id);
+        }
     }
 
     public class UnitGroup
     {
-        public List<Entity> Units;
         public uint Id;
+        public List<Entity> Units;
         public Queue<Vector2> Waypoints;
+        public Vector2? CurrentWaypoint;
 
         private static float _cohesionFactor = .05f;
         private static float _avoidFactor = .05f;
         private static int _maxDistanceSqrd = 1296; // 36 * 36
         private static float _unitSpeed = .1F;
-        private static float _arrivalThreshold = 1F;
-        private static float _destinationFactor = 10F;
+        private static float _arrivalThreshold = 100;
+        private static float _destinationFactor = 100F;
 
         public UnitGroup(List<Entity> units, Vector2 destination)
         {
             Waypoints = new Queue<Vector2>();
             Waypoints.Enqueue(destination);
+            CurrentWaypoint = null;
             Units = units;
             SetGroupId();
         }
@@ -76,18 +80,32 @@ namespace MicroMarine.Components
 
         public void Update()
         {
+            if (CurrentWaypoint == null && Waypoints.Count > 0)
+            {
+                CurrentWaypoint = Waypoints.Dequeue();
+            }
+            else
+            {
+                return;
+            }
+
             var (centerOfMass, neighborVelocity) = GetNeigborVelocity();
             for (int i = 0; i < Units.Count; i++)
             {
-                Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], centerOfMass);
+                // Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], centerOfMass);
                 Vector2 avoidanceVelocity = GetAvoidanceVelocity(Units[i]);
                 Vector2 destinationVelocity = GetDestinationVelocity(Units[i]);
 
-                // avoidanceVelocity
-                var finalV = cohesionVelocity + neighborVelocity + destinationVelocity + avoidanceVelocity;
-                finalV = LimitVelocity(finalV);
+                var finalV = destinationVelocity + avoidanceVelocity;
 
-                Units[i].GetComponent<Mover>().Velocity += finalV;
+                var distance = Vector2.DistanceSquared(centerOfMass, CurrentWaypoint.Value);
+                if (distance <= _arrivalThreshold)
+                {
+                    finalV = Vector2.Zero;
+                    CurrentWaypoint = null;
+                }
+
+                Units[i].GetComponent<Mover>().Velocity = finalV;
             }
         }
 
@@ -136,14 +154,13 @@ namespace MicroMarine.Components
 
         private Vector2 GetDestinationVelocity(Entity unit)
         {
-            var destinationV = Waypoints.Peek() - unit.GetComponent<CircleCollider>().Center;
-            if (destinationV.Length() <= _arrivalThreshold)
+            if (CurrentWaypoint == null)
             {
                 return Vector2.Zero;
             }
 
-            destinationV.Normalize();
-            return destinationV * _destinationFactor;
+            var destinationV = CurrentWaypoint.Value - unit.Position;
+            return Vector2.Normalize(destinationV) * _destinationFactor;
         }
 
         private Vector2 LimitVelocity(Vector2 currentVelocity)
