@@ -41,6 +41,7 @@ namespace MicroMarine.Components
         {
             List<Entity> units = Scene.GetComponent<UnitSelector>().GetSelectedUnits();
             var group = new UnitGroup(units, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+            group._scene = Scene;
             UnitGroups.Remove(group.Id);
             UnitGroups.Add(group.Id, group);
             GroupIds.Add(group.Id);
@@ -49,6 +50,11 @@ namespace MicroMarine.Components
 
     public class UnitGroup
     {
+        // JUST FOR DEBUG
+        public Scene _scene;
+        public int i = 0;
+
+
         public uint Id;
         public List<Entity> Units;
         public Queue<Vector2> Waypoints;
@@ -58,7 +64,7 @@ namespace MicroMarine.Components
         private static float _avoidFactor = .05f;
         private static int _maxDistanceSqrd = 1296; // 36 * 36
         private static float _unitSpeed = .1F;
-        private static float _arrivalThreshold = 100;
+        private static float _arrivalThreshold = 150;
         private static float _destinationFactor = 100F;
 
         public UnitGroup(List<Entity> units, Vector2 destination)
@@ -80,26 +86,29 @@ namespace MicroMarine.Components
 
         public void Update()
         {
+            i++;
             if (CurrentWaypoint == null && Waypoints.Count > 0)
             {
                 CurrentWaypoint = Waypoints.Dequeue();
             }
-            else
+            else if(CurrentWaypoint == null && Waypoints.Count == 0)
             {
                 return;
             }
 
-            var (centerOfMass, neighborVelocity) = GetNeigborVelocity();
+            var (centerOfMass, neighborVelocity) = GetNeigborVelocity(); // neightbor velocity is SOOO large
+            var groupDistance = Vector2.DistanceSquared(centerOfMass, CurrentWaypoint.Value);
+
             for (int i = 0; i < Units.Count; i++)
             {
+
                 // Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], centerOfMass);
                 Vector2 avoidanceVelocity = GetAvoidanceVelocity(Units[i]);
                 Vector2 destinationVelocity = GetDestinationVelocity(Units[i]);
 
                 var finalV = destinationVelocity + avoidanceVelocity;
 
-                var distance = Vector2.DistanceSquared(centerOfMass, CurrentWaypoint.Value);
-                if (distance <= _arrivalThreshold)
+                if (groupDistance <= _arrivalThreshold)
                 {
                     finalV = Vector2.Zero;
                     CurrentWaypoint = null;
@@ -107,6 +116,10 @@ namespace MicroMarine.Components
 
                 Units[i].GetComponent<Mover>().Velocity = finalV;
             }
+
+            //_scene.Debug.Log($"{i}Center Of Mass -  X: {centerOfMass.X} Y: {centerOfMass.Y}");
+            //_scene.Debug.Log($"{i}Destination -  X: {CurrentWaypoint.Value.X} Y: {CurrentWaypoint.Value.Y}");
+            //_scene.Debug.Log($"{i}Distance Squared Diff = {distance}");
         }
 
         private (Vector2 centerOfMass, Vector2 neighborV) GetNeigborVelocity()
