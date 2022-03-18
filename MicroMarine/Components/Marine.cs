@@ -63,7 +63,9 @@ namespace MicroMarine.Components
 
             if (velocity != Vector2.Zero)
             {
+                velocity.Normalize();
                 float dot = Vector2.Dot(Vector2.UnitX, velocity);
+
                 // close to zero, traveling up or down
                 if (dot > -0.5F && dot < 0.5F)
                 {

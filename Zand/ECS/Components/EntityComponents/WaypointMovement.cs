@@ -79,7 +79,8 @@ namespace Zand.ECS.Components
 
         private void UpdateEntityLayerDepth()
         {
-            Entity.layerDepth = MathUtil.CalculateLayerDepth(Entity.Position.Y, Entity.Dimensions.Y);
+            Vector2 screenPos = Scene.Camera.GetScreenLocation(Entity.Position);
+            Entity.layerDepth = MathUtil.CalculateLayerDepth(screenPos.Y, Entity.Dimensions.Y);
         }
     }
 }

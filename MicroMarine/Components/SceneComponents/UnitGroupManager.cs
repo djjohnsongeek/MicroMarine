@@ -60,9 +60,10 @@ namespace MicroMarine.Components
         public Queue<Vector2> Waypoints;
         public Vector2? CurrentWaypoint;
 
+        private static float _matchFactor = 0.125f;
         private static float _cohesionFactor = .05f;
-        private static float _avoidFactor = .05f;
-        private static int _maxDistanceSqrd = 1296; // 36 * 36
+        private static float _avoidFactor = .8f; // .5
+        private static int _maxDistanceSqrd = 25 * 25;
         private static float _unitSpeed = .1F;
         private static float _arrivalThreshold = 150;
         private static float _destinationFactor = 100F;
@@ -91,22 +92,24 @@ namespace MicroMarine.Components
             {
                 CurrentWaypoint = Waypoints.Dequeue();
             }
-            else if(CurrentWaypoint == null && Waypoints.Count == 0)
+            else if (CurrentWaypoint == null && Waypoints.Count == 0)
             {
                 return;
             }
 
-            var (centerOfMass, neighborVelocity) = GetNeigborVelocity(); // neightbor velocity is SOOO large
+            var (centerOfMass, neighborVelocity) = GetNeigborVelocity();
             var groupDistance = Vector2.DistanceSquared(centerOfMass, CurrentWaypoint.Value);
 
             for (int i = 0; i < Units.Count; i++)
             {
 
                 // Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], centerOfMass);
-                Vector2 avoidanceVelocity = GetAvoidanceVelocity(Units[i]);
+                // Vector2 avoidanceVelocity = GetAvoidanceVelocity(Units[i]);
                 Vector2 destinationVelocity = GetDestinationVelocity(Units[i]);
 
-                var finalV = destinationVelocity + avoidanceVelocity;
+                var finalV = destinationVelocity + Vector2.Zero + Vector2.Zero; // + avoidanceVelocity;
+
+                // var distance = Vector2.DistanceSquared(centerOfMass, CurrentWaypoint.Value);
 
                 if (groupDistance <= _arrivalThreshold)
                 {
@@ -133,7 +136,7 @@ namespace MicroMarine.Components
                 neighborV += Units[i].GetComponent<Mover>().Velocity;
             }
 
-            neighborV = Vector2.Divide(neighborV, Units.Count);
+            neighborV = Vector2.Divide(neighborV, Units.Count) * _matchFactor;
             centerOfMass = Vector2.Divide(centerOfMass, Units.Count);
 
             return (centerOfMass, neighborV);
@@ -149,20 +152,21 @@ namespace MicroMarine.Components
         {
             var avoidV = Vector2.Zero;
             Vector2 unitPos = unit.GetComponent<CircleCollider>().Center;
+
             for (int i = 0; i < Units.Count; i++)
             {
                 Vector2 unitIPos = Units[i].GetComponent<CircleCollider>().Center;
                 if (unit != Units[i])
                 {
                     float distanceSqrd = Vector2.DistanceSquared(unitPos, unitIPos);
-                    if (distanceSqrd < (_maxDistanceSqrd))
+                    if (distanceSqrd < _maxDistanceSqrd)
                     {
-                        avoidV -= (unitPos - unitIPos);
+                        avoidV = avoidV - (unitPos - unitIPos);
                     }
                 }
             }
 
-            return avoidV * _avoidFactor;
+            return avoidV;
         }
 
         private Vector2 GetDestinationVelocity(Entity unit)
