@@ -39,6 +39,7 @@ namespace MicroMarine.Components
 
         private void CreateNewUnitGroup()
         {
+            // TODO remove units in this group from all other groups
             List<Entity> units = Scene.GetComponent<UnitSelector>().GetSelectedUnits();
             var group = new UnitGroup(units, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
             group._scene = Scene;
@@ -112,17 +113,16 @@ namespace MicroMarine.Components
                 return;
             }
 
-            var (centerOfMass, neighborVelocity) = GetNeigborVelocity();
+            Vector2 centerOfMass = GetCenterOfMass();
             var leaderDistance = Vector2.DistanceSquared(Leader.Position, CurrentWaypoint.Value);
 
             for (int i = 0; i < Units.Count; i++)
             {
 
                 Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], centerOfMass);
-                // Vector2 avoidanceVelocity = GetAvoidanceVelocity(Units[i]);
                 Vector2 destinationVelocity = GetDestinationVelocity(Units[i]);
 
-                var finalV = destinationVelocity + cohesionVelocity + Vector2.Zero; // + avoidanceVelocity;
+                var finalV = destinationVelocity + cohesionVelocity; // + avoidanceVelocity, neighborVelocity;
 
                 // var distance = Vector2.DistanceSquared(centerOfMass, CurrentWaypoint.Value);
 
@@ -130,6 +130,7 @@ namespace MicroMarine.Components
                 {
                     finalV = Vector2.Zero;
                     CurrentWaypoint = null;
+                    // after arriving, if there is no other waypoint "collapse" (basically perform chohesion only)
                 }
 
                 Units[i].GetComponent<Mover>().Velocity = finalV;
@@ -148,24 +149,6 @@ namespace MicroMarine.Components
                 center += Units[i].Position;
             }
             return Vector2.Divide(center, Units.Count);
-        }
-
-        private (Vector2 centerOfMass, Vector2 neighborV) GetNeigborVelocity()
-        {
-            var centerOfMass = Vector2.Zero;
-            var neighborV = Vector2.Zero;
-
-            for (int i = 0; i < Units.Count; i++)
-            {
-                centerOfMass += Units[i].Position;
-                    // GetComponent<CircleCollider>().Center;
-                neighborV += Units[i].GetComponent<Mover>().Velocity;
-            }
-
-            neighborV = Vector2.Divide(neighborV, Units.Count) * _matchFactor;
-            centerOfMass = Vector2.Divide(centerOfMass, Units.Count);
-
-            return (centerOfMass, neighborV);
         }
 
         private Vector2 GetCohesionVelocity(Entity unit, Vector2 centerOfMass)
