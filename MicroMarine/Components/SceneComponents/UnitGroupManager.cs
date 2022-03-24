@@ -52,42 +52,57 @@ namespace MicroMarine.Components
     {
         // JUST FOR DEBUG
         public Scene _scene;
-        public int i = 0;
 
 
         public uint Id;
         public List<Entity> Units;
+        public Entity Leader = null;
         public Queue<Vector2> Waypoints;
         public Vector2? CurrentWaypoint;
 
         private static float _matchFactor = 0.125f;
-        private static float _cohesionFactor = .05f;
+        private static float _cohesionFactor = .2f;
         private static float _avoidFactor = .8f; // .5
         private static int _maxDistanceSqrd = 25 * 25;
         private static float _unitSpeed = .1F;
-        private static float _arrivalThreshold = 150;
+        private static float _arrivalThreshold = 1;
         private static float _destinationFactor = 100F;
 
         public UnitGroup(List<Entity> units, Vector2 destination)
         {
+            // TODO: use a pool?
             Waypoints = new Queue<Vector2>();
             Waypoints.Enqueue(destination);
             CurrentWaypoint = null;
             Units = units;
-            SetGroupId();
+            InitGroup();
         }
 
-        private void SetGroupId()
+        private void InitGroup()
         {
+            // Determine the group leader and ID
+            Leader = null;
+            Vector2 centerOfMass = GetCenterOfMass();
+            float distance = float.MaxValue;
+
+            // Init group
             for (int i = 0; i < Units.Count; i++)
             {
+                // determine group leader
+                float unitDistance = Vector2.Distance(Units[i].Position, centerOfMass);
+                if (unitDistance < distance)
+                {
+                    Leader = Units[i];
+                    distance = unitDistance;
+                }
+
+                // TODO: this id will NOT be unique, need a new method
                 Id += Units[i].Id;
             }
         }
 
         public void Update()
         {
-            i++;
             if (CurrentWaypoint == null && Waypoints.Count > 0)
             {
                 CurrentWaypoint = Waypoints.Dequeue();
@@ -98,20 +113,20 @@ namespace MicroMarine.Components
             }
 
             var (centerOfMass, neighborVelocity) = GetNeigborVelocity();
-            var groupDistance = Vector2.DistanceSquared(centerOfMass, CurrentWaypoint.Value);
+            var leaderDistance = Vector2.DistanceSquared(Leader.Position, CurrentWaypoint.Value);
 
             for (int i = 0; i < Units.Count; i++)
             {
 
-                // Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], centerOfMass);
+                Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], centerOfMass);
                 // Vector2 avoidanceVelocity = GetAvoidanceVelocity(Units[i]);
                 Vector2 destinationVelocity = GetDestinationVelocity(Units[i]);
 
-                var finalV = destinationVelocity + Vector2.Zero + Vector2.Zero; // + avoidanceVelocity;
+                var finalV = destinationVelocity + cohesionVelocity + Vector2.Zero; // + avoidanceVelocity;
 
                 // var distance = Vector2.DistanceSquared(centerOfMass, CurrentWaypoint.Value);
 
-                if (groupDistance <= _arrivalThreshold)
+                if (leaderDistance <= _arrivalThreshold)
                 {
                     finalV = Vector2.Zero;
                     CurrentWaypoint = null;
@@ -125,6 +140,16 @@ namespace MicroMarine.Components
             //_scene.Debug.Log($"{i}Distance Squared Diff = {distance}");
         }
 
+        private Vector2 GetCenterOfMass()
+        {
+            var center = Vector2.Zero;
+            for (int i = 0; i < Units.Count; i++)
+            {
+                center += Units[i].Position;
+            }
+            return Vector2.Divide(center, Units.Count);
+        }
+
         private (Vector2 centerOfMass, Vector2 neighborV) GetNeigborVelocity()
         {
             var centerOfMass = Vector2.Zero;
@@ -132,7 +157,8 @@ namespace MicroMarine.Components
 
             for (int i = 0; i < Units.Count; i++)
             {
-                centerOfMass += Units[i].GetComponent<CircleCollider>().Center;
+                centerOfMass += Units[i].Position;
+                    // GetComponent<CircleCollider>().Center;
                 neighborV += Units[i].GetComponent<Mover>().Velocity;
             }
 
@@ -176,7 +202,7 @@ namespace MicroMarine.Components
                 return Vector2.Zero;
             }
 
-            var destinationV = CurrentWaypoint.Value - unit.Position;
+            var destinationV = CurrentWaypoint.Value - Leader.Position; // unit.Position
             return Vector2.Normalize(destinationV) * _destinationFactor;
         }
 
