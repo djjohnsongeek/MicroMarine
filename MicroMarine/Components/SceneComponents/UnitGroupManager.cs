@@ -1,9 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zand;
 using Zand.ECS.Components;
 
@@ -12,36 +8,43 @@ namespace MicroMarine.Components
     public class UnitGroupManager : SceneComponent
     {
         private SortedList<uint, UnitGroup> UnitGroups;
-        private List<uint> GroupIds;
         private uint IdPool;
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
+            // TODO implement unitgroup pool?
             UnitGroups = new SortedList<uint, UnitGroup>();
-            GroupIds = new List<uint>();
             IdPool = 0;
-
-            // TODO initialize a unit group "pool"
         }
 
         public override void Update()
         {
-            // TODO remove stale unit groups
-
             if (Input.RightMouseWasPressed())
             {
                 CreateNewUnitGroup();
             }
 
-            for (int i = 0; i < GroupIds.Count; i++ )
+            UpdateUnitGroups();
+        }
+
+        private void UpdateUnitGroups()
+        {
+            for (int i = UnitGroups.Count - 1; i >= 0; i--)
             {
-                UnitGroups[GroupIds[i]].Update();
+                // Cull empty or stale unit groups
+                if (UnitGroups.Values[i].State == UnitGroupState.Arrived || UnitGroups.Values[i].Units.Count == 0)
+                {
+                    UnitGroups.RemoveAt(i);
+                    continue;
+                }
+
+                UnitGroups.Values[i].Update();
             }
         }
 
         private void CreateNewUnitGroup()
         {
-            // TODO remove units in this group from all other groups
+            // TODO reuse a unit group if it's exactly the same? (just need to update the destination)
             List<Entity> units = Scene.GetComponent<UnitSelector>().GetSelectedUnits();
             Vector2 destination = Scene.Camera.GetWorldLocation(Input.MouseScreenPosition);
             RegisterGroup(new UnitGroup(units, destination));
@@ -52,7 +55,6 @@ namespace MicroMarine.Components
             AssignId(group);
             StealUnits(group);
             UnitGroups.Add(group.Id, group);
-            GroupIds.Add(group.Id);
 
             // really only for debug
             group._scene = Scene;
@@ -82,12 +84,19 @@ namespace MicroMarine.Components
         }
     }
 
+    public enum UnitGroupState
+    {
+        Moving,
+        Arrived,
+    }
+
     public class UnitGroup
     {
         // JUST FOR DEBUG
         public Scene _scene;
 
 
+        public UnitGroupState State;
         public uint Id;
         public List<Entity> Units;
         public Entity Leader = null;
@@ -95,7 +104,7 @@ namespace MicroMarine.Components
         public Vector2? CurrentWaypoint;
 
         private static float _matchFactor = 0.125f;
-        private static float _cohesionFactor = .2f;
+        private static float _cohesionFactor = .5f; //.2
         private static float _avoidFactor = .8f; // .5
         private static int _maxDistanceSqrd = 25 * 25;
         private static float _unitSpeed = .1F;
@@ -117,6 +126,7 @@ namespace MicroMarine.Components
             Units = units;
             Leader = null;
             AssignNewLeader();
+            State = UnitGroupState.Moving;
         }
 
         public void AssignNewLeader()
@@ -143,10 +153,12 @@ namespace MicroMarine.Components
             }
             else if (CurrentWaypoint == null && Waypoints.Count == 0)
             {
+                State = UnitGroupState.Arrived;
                 return;
             }
 
             Vector2 centerOfMass = GetCenterOfMass();
+            // keep on having a null leader position
             var leaderDistance = Vector2.DistanceSquared(Leader.Position, CurrentWaypoint.Value);
 
             for (int i = 0; i < Units.Count; i++)
