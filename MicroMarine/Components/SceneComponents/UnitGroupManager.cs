@@ -13,11 +13,13 @@ namespace MicroMarine.Components
     {
         private SortedList<uint, UnitGroup> UnitGroups;
         private List<uint> GroupIds;
+        private uint IdPool;
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
             UnitGroups = new SortedList<uint, UnitGroup>();
             GroupIds = new List<uint>();
+            IdPool = 0;
 
             // TODO initialize a unit group "pool"
         }
@@ -41,11 +43,40 @@ namespace MicroMarine.Components
         {
             // TODO remove units in this group from all other groups
             List<Entity> units = Scene.GetComponent<UnitSelector>().GetSelectedUnits();
-            var group = new UnitGroup(units, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+            Vector2 destination = Scene.Camera.GetWorldLocation(Input.MouseScreenPosition);
+            RegisterGroup(new UnitGroup(units, destination));
+        }
+
+        private void RegisterGroup(UnitGroup group)
+        {
+            AssignId(group);
             group._scene = Scene;
-            UnitGroups.Remove(group.Id);
+            StealUnits(group);
             UnitGroups.Add(group.Id, group);
             GroupIds.Add(group.Id);
+        }
+
+        private void StealUnits(UnitGroup group)
+        {
+            // nieve implementation
+            for (int i = 0; i < group.Units.Count; i ++)
+            {
+                for (int j = 0; j < UnitGroups.Count; j++)
+                {
+                    if (UnitGroups.Values[j].Units.Contains(group.Units[i]))
+                    {
+                        UnitGroups.Values[j].Units.Remove(group.Units[i]);
+                        UnitGroups.Values[j].AssignNewLeader();
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void AssignId(UnitGroup group)
+        {
+            IdPool++;
+            group.Id = IdPool;
         }
     }
 
@@ -75,30 +106,31 @@ namespace MicroMarine.Components
             Waypoints = new Queue<Vector2>();
             Waypoints.Enqueue(destination);
             CurrentWaypoint = null;
-            Units = units;
-            InitGroup();
+            InitGroup(units);
         }
 
-        private void InitGroup()
+        private void InitGroup(List<Entity> units)
         {
-            // Determine the group leader and ID
+            // Init properties
+            Units = units;
             Leader = null;
+
+            AssignNewLeader();
+        }
+
+        public void AssignNewLeader()
+        {
             Vector2 centerOfMass = GetCenterOfMass();
             float distance = float.MaxValue;
 
-            // Init group
             for (int i = 0; i < Units.Count; i++)
             {
-                // determine group leader
                 float unitDistance = Vector2.Distance(Units[i].Position, centerOfMass);
                 if (unitDistance < distance)
                 {
                     Leader = Units[i];
                     distance = unitDistance;
                 }
-
-                // TODO: this id will NOT be unique, need a new method
-                Id += Units[i].Id;
             }
         }
 
