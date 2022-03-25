@@ -7,13 +7,13 @@ namespace MicroMarine.Components
 {
     public class UnitGroupManager : SceneComponent
     {
-        private SortedList<uint, UnitGroup> UnitGroups;
+        private List<UnitGroup> UnitGroups;
         private uint IdPool;
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
             // TODO implement unitgroup pool?
-            UnitGroups = new SortedList<uint, UnitGroup>();
+            UnitGroups = new List<UnitGroup>();
             IdPool = 0;
         }
 
@@ -32,13 +32,13 @@ namespace MicroMarine.Components
             for (int i = UnitGroups.Count - 1; i >= 0; i--)
             {
                 // Cull empty or stale unit groups
-                if (UnitGroups.Values[i].State == UnitGroupState.Arrived || UnitGroups.Values[i].Units.Count == 0)
+                if (UnitGroups[i].State == UnitGroupState.Arrived || UnitGroups[i].Units.Count == 0)
                 {
                     UnitGroups.RemoveAt(i);
                     continue;
                 }
 
-                UnitGroups.Values[i].Update();
+                UnitGroups[i].Update();
             }
         }
 
@@ -54,7 +54,7 @@ namespace MicroMarine.Components
         {
             AssignId(group);
             StealUnits(group);
-            UnitGroups.Add(group.Id, group);
+            UnitGroups.Add(group);
 
             // really only for debug
             group._scene = Scene;
@@ -67,10 +67,10 @@ namespace MicroMarine.Components
             {
                 for (int j = 0; j < UnitGroups.Count; j++)
                 {
-                    if (UnitGroups.Values[j].Units.Contains(group.Units[i]))
+                    if (UnitGroups[j].Units.Contains(group.Units[i]))
                     {
-                        UnitGroups.Values[j].Units.Remove(group.Units[i]);
-                        UnitGroups.Values[j].AssignNewLeader();
+                        UnitGroups[j].Units.Remove(group.Units[i]);
+                        UnitGroups[j].AssignNewLeader();
                         break;
                     }
                 }
