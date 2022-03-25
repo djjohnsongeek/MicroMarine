@@ -110,6 +110,7 @@ namespace MicroMarine.Components
         private static float _unitSpeed = .1F;
         private static float _arrivalThreshold = 1;
         private static float _destinationFactor = 100F;
+        private static float _cohesionVelocityLimit = 20F;
 
         public UnitGroup(List<Entity> units, Vector2 destination)
         {
@@ -159,10 +160,11 @@ namespace MicroMarine.Components
 
             Vector2 centerOfMass = GetCenterOfMass();
             // keep on having a null leader position
-            var leaderDistance = Vector2.DistanceSquared(Leader.Position, CurrentWaypoint.Value);
+            float leaderDistance = Vector2.DistanceSquared(Leader.Position, CurrentWaypoint.Value);
 
             for (int i = 0; i < Units.Count; i++)
             {
+                // float unitDistance = Vector2.DistanceSquared(Units[i].Position, CurrentWaypoint.Value);
 
                 Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], centerOfMass);
                 Vector2 destinationVelocity = GetDestinationVelocity(Units[i]);
@@ -199,7 +201,8 @@ namespace MicroMarine.Components
         private Vector2 GetCohesionVelocity(Entity unit, Vector2 centerOfMass)
         {
             var unitPos = unit.GetComponent<CircleCollider>().Center;
-            return (centerOfMass - unitPos) * _cohesionFactor;
+            Vector2 cohVelocity = (centerOfMass - unitPos) * _cohesionFactor;
+            return LimitVelocity(cohVelocity, _cohesionVelocityLimit);
         }
 
         private Vector2 GetAvoidanceVelocity(Entity unit)
@@ -234,11 +237,12 @@ namespace MicroMarine.Components
             return Vector2.Normalize(destinationV) * _destinationFactor;
         }
 
-        private Vector2 LimitVelocity(Vector2 currentVelocity)
+        private Vector2 LimitVelocity(Vector2 currentVelocity, float maxDistance)
         {
-            if (currentVelocity.Length() > _unitSpeed)
+            _scene.Debug.Log($"{currentVelocity.Length()}");
+            if (currentVelocity.Length() > maxDistance)
             {
-                return Vector2.Normalize(currentVelocity) * _unitSpeed;
+                return Vector2.Normalize(currentVelocity) * maxDistance;
             }
 
             return currentVelocity;
