@@ -50,15 +50,17 @@ namespace MicroMarine.Components
         private void RegisterGroup(UnitGroup group)
         {
             AssignId(group);
-            group._scene = Scene;
             StealUnits(group);
             UnitGroups.Add(group.Id, group);
             GroupIds.Add(group.Id);
+
+            // really only for debug
+            group._scene = Scene;
         }
 
         private void StealUnits(UnitGroup group)
         {
-            // nieve implementation
+            // a rather nieve implementation
             for (int i = 0; i < group.Units.Count; i ++)
             {
                 for (int j = 0; j < UnitGroups.Count; j++)
@@ -114,7 +116,6 @@ namespace MicroMarine.Components
             // Init properties
             Units = units;
             Leader = null;
-
             AssignNewLeader();
         }
 
