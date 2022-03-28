@@ -103,9 +103,11 @@ namespace MicroMarine.Components
         public Queue<Vector2> Waypoints;
         public Vector2? CurrentWaypoint;
 
+        private int _followLeaderDist = 0;
+        private static int _followLeaderBase = 255;
         private static float _matchFactor = 0.125f;
-        private static float _cohesionFactor = .5f; //.2
-        private static float _avoidFactor = .8f; // .5
+        private static float _cohesionFactor = .5f;
+        private static float _avoidFactor = .8f;
         private static int _maxDistanceSqrd = 25 * 25;
         private static float _unitSpeed = .1F;
         private static float _arrivalThreshold = 1;
@@ -144,6 +146,8 @@ namespace MicroMarine.Components
                     distance = unitDistance;
                 }
             }
+
+            SetFollowLeaderDistance();
         }
 
         public void Update()
@@ -167,11 +171,11 @@ namespace MicroMarine.Components
                 // float unitDistance = Vector2.DistanceSquared(Units[i].Position, CurrentWaypoint.Value);
 
                 Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], centerOfMass);
-                Vector2 destinationVelocity = GetDestinationVelocity(Units[i]);
+                Vector2 destinationVelocity = GetDestinationVelocity(Units[i], centerOfMass);
 
                 var finalV = destinationVelocity + cohesionVelocity; // + avoidanceVelocity, neighborVelocity;
 
-                // var distance = Vector2.DistanceSquared(centerOfMass, CurrentWaypoint.Value);
+                // var distance  Vector2.DistanceSquared(centerOfMass, CurrentWaypoint.Value);
 
                 if (leaderDistance <= _arrivalThreshold)
                 {
@@ -226,15 +230,27 @@ namespace MicroMarine.Components
             return avoidV;
         }
 
-        private Vector2 GetDestinationVelocity(Entity unit)
+        private Vector2 GetDestinationVelocity(Entity unit, Vector2 centerOfMass)
         {
+            Vector2 velocity = Vector2.Zero;
             if (CurrentWaypoint == null)
             {
-                return Vector2.Zero;
+                return velocity;
             }
 
-            var destinationV = CurrentWaypoint.Value - Leader.Position; // unit.Position
-            return Vector2.Normalize(destinationV) * _destinationFactor;
+            float distanceFromLeader = Vector2.DistanceSquared(Leader.Position, unit.Position);
+
+            if (distanceFromLeader > _followLeaderDist)
+            {
+                velocity = CurrentWaypoint.Value - unit.Position;
+            }
+            else
+            {
+                velocity = CurrentWaypoint.Value - Leader.Position; // Leader.Position
+            }
+
+            
+            return Vector2.Normalize(velocity) * _destinationFactor;
         }
 
         private Vector2 LimitVelocity(Vector2 currentVelocity, float maxDistance)
@@ -246,6 +262,11 @@ namespace MicroMarine.Components
             }
 
             return currentVelocity;
+        }
+
+        private void SetFollowLeaderDistance()
+        {
+            _followLeaderDist = _followLeaderBase * Units.Count;
         }
     }
 }
