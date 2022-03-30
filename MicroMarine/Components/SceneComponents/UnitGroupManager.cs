@@ -32,7 +32,7 @@ namespace MicroMarine.Components
             for (int i = UnitGroups.Count - 1; i >= 0; i--)
             {
                 // Cull empty or stale unit groups
-                if (UnitGroups[i].State == UnitGroupState.Arrived || UnitGroups[i].Units.Count == 0)
+                if (UnitGroups[i].CurrentState == UnitGroupState.Arrived || UnitGroups[i].Units.Count == 0)
                 {
                     UnitGroups.RemoveAt(i);
                     continue;
@@ -88,6 +88,8 @@ namespace MicroMarine.Components
     {
         Moving,
         Arrived,
+        Grouping,
+        Idle,
     }
 
     public class UnitGroup
@@ -96,7 +98,7 @@ namespace MicroMarine.Components
         public Scene _scene;
 
 
-        public UnitGroupState State;
+        public UnitGroupState CurrentState;
         public uint Id;
         public List<Entity> Units;
         public Entity Leader = null;
@@ -129,7 +131,10 @@ namespace MicroMarine.Components
             Units = units;
             Leader = null;
             AssignNewLeader();
-            State = UnitGroupState.Moving;
+            if (GetNextWaypoint())
+            {
+                CurrentState = UnitGroupState.Moving;
+            }
         }
 
         public void AssignNewLeader()
@@ -145,6 +150,8 @@ namespace MicroMarine.Components
                     Leader = Units[i];
                     distance = unitDistance;
                 }
+
+                Units[i].GetComponent<UnitState>().CurrentState = UnitStates.Running;
             }
 
             SetFollowLeaderDistance();
@@ -152,44 +159,80 @@ namespace MicroMarine.Components
 
         public void Update()
         {
-            if (CurrentWaypoint == null && Waypoints.Count > 0)
+            switch(CurrentState)
+            {
+                case UnitGroupState.Moving:
+                    Vector2 centerOfMass = GetCenterOfMass();
+                    float leaderDistance = Vector2.DistanceSquared(Leader.Position, CurrentWaypoint.Value);
+                    int unitsInMotion = 0;
+
+                    for (int i = 0; i < Units.Count; i++)
+                    {
+                        // Skip units who have "arrived"
+                        UnitState unitState = Units[i].GetComponent<UnitState>();
+                        if (unitState.CurrentState == UnitStates.Idle)
+                        {
+                            continue;
+                        }
+
+                        // Gather velocities and distances
+                        float unitDistance = Vector2.DistanceSquared(Units[i].Position, CurrentWaypoint.Value);
+                        Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], centerOfMass);
+                        Vector2 destinationVelocity = GetDestinationVelocity(Units[i], centerOfMass);
+                        var unitVelocity = destinationVelocity + cohesionVelocity; // + avoidanceVelocity, neighborVelocity;
+
+                        // Check if units has arrived
+                        if (leaderDistance <= _arrivalThreshold || unitDistance <= _arrivalThreshold)
+                        {
+                            unitVelocity = Vector2.Zero;
+                            unitState.CurrentState = UnitStates.Idle;
+                        }
+
+                        // Update unit's velocity
+                        Units[i].GetComponent<Mover>().Velocity = unitVelocity;
+
+                        // Track number of units currently in motion
+                        unitsInMotion++;
+                    }
+
+                    // All units have arrived
+                    if (unitsInMotion == 0)
+                    {
+                        CurrentState = UnitGroupState.Arrived;
+                    }
+
+                    break;
+                case UnitGroupState.Arrived:
+                    if (GetNextWaypoint())
+                    {
+                        CurrentState = UnitGroupState.Moving;
+                    }
+                    else
+                    {
+                        CurrentState = UnitGroupState.Grouping;
+                        CurrentWaypoint = null;
+                    }
+                    break;
+                case UnitGroupState.Grouping:
+                    break;
+                case UnitGroupState.Idle:
+                    if (GetNextWaypoint())
+                    {
+                        CurrentState = UnitGroupState.Moving;
+                    }
+                    break;
+            }
+        }
+
+        private bool GetNextWaypoint()
+        {
+            if (Waypoints.Count > 0)
             {
                 CurrentWaypoint = Waypoints.Dequeue();
-            }
-            else if (CurrentWaypoint == null && Waypoints.Count == 0)
-            {
-                State = UnitGroupState.Arrived;
-                return;
+                return true;
             }
 
-            Vector2 centerOfMass = GetCenterOfMass();
-            // keep on having a null leader position
-            float leaderDistance = Vector2.DistanceSquared(Leader.Position, CurrentWaypoint.Value);
-
-            for (int i = 0; i < Units.Count; i++)
-            {
-                // float unitDistance = Vector2.DistanceSquared(Units[i].Position, CurrentWaypoint.Value);
-
-                Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], centerOfMass);
-                Vector2 destinationVelocity = GetDestinationVelocity(Units[i], centerOfMass);
-
-                var finalV = destinationVelocity + cohesionVelocity; // + avoidanceVelocity, neighborVelocity;
-
-                // var distance  Vector2.DistanceSquared(centerOfMass, CurrentWaypoint.Value);
-
-                if (leaderDistance <= _arrivalThreshold)
-                {
-                    finalV = Vector2.Zero;
-                    CurrentWaypoint = null;
-                    // after arriving, if there is no other waypoint "collapse" (basically perform chohesion only)
-                }
-
-                Units[i].GetComponent<Mover>().Velocity = finalV;
-            }
-
-            //_scene.Debug.Log($"{i}Center Of Mass -  X: {centerOfMass.X} Y: {centerOfMass.Y}");
-            //_scene.Debug.Log($"{i}Destination -  X: {CurrentWaypoint.Value.X} Y: {CurrentWaypoint.Value.Y}");
-            //_scene.Debug.Log($"{i}Distance Squared Diff = {distance}");
+            return false;
         }
 
         private Vector2 GetCenterOfMass()
