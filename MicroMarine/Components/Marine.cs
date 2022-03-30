@@ -47,6 +47,8 @@ namespace MicroMarine.Components
             CircleCollider circle = new CircleCollider(circleTex, 9, new Vector2(0, 6));
             Entity.AddComponent(circle);
             Scene.RegisterCollider(circle);
+
+            Entity.AddComponent(new UnitState(UnitStates.Idle));
         }
 
 
