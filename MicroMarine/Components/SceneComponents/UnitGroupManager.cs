@@ -8,20 +8,20 @@ namespace MicroMarine.Components
     public class UnitGroupManager : SceneComponent
     {
         private List<UnitGroup> UnitGroups;
-        private uint IdPool;
+        private HashSet<string> GroupIds;
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
             // TODO implement unitgroup pool?
-            UnitGroups = new List<UnitGroup>();
-            IdPool = 0;
+            UnitGroups = new List<UnitGroup>(10);
+            GroupIds = new HashSet<string>(10);
         }
 
         public override void Update()
         {
             if (Input.RightMouseWasPressed())
             {
-                CreateNewUnitGroup();
+                CreateOrAssignUnitGroup();
             }
 
             UpdateUnitGroups();
@@ -32,8 +32,9 @@ namespace MicroMarine.Components
             for (int i = UnitGroups.Count - 1; i >= 0; i--)
             {
                 // Cull empty or stale unit groups
-                if (UnitGroups[i].CurrentState == UnitGroupState.Arrived || UnitGroups[i].Units.Count == 0)
+                if (UnitGroups[i].CurrentState == UnitGroupState.Idle || UnitGroups[i].Units.Count == 0)
                 {
+                    GroupIds.Remove(UnitGroups[i].Id);
                     UnitGroups.RemoveAt(i);
                     continue;
                 }
@@ -42,22 +43,45 @@ namespace MicroMarine.Components
             }
         }
 
-        private void CreateNewUnitGroup()
+        private void CreateOrAssignUnitGroup()
         {
             // TODO reuse a unit group if it's exactly the same? (just need to update the destination)
             List<Entity> units = Scene.GetComponent<UnitSelector>().GetSelectedUnits();
             Vector2 destination = Scene.Camera.GetWorldLocation(Input.MouseScreenPosition);
-            RegisterGroup(new UnitGroup(units, destination));
+            string groupId = GetGroupId(units);
+
+            if (GroupIds.Contains(groupId))
+            {
+                ReuseUnitGroup(groupId, destination);
+            }
+            else
+            {
+                RegisterNewGroup(groupId, new UnitGroup(units, destination));
+            }
         }
 
-        private void RegisterGroup(UnitGroup group)
+        private void RegisterNewGroup(string groupId, UnitGroup group)
         {
-            AssignId(group);
+            group.Id = groupId;
             StealUnits(group);
             UnitGroups.Add(group);
+            GroupIds.Add(group.Id);
 
             // really only for debug
             group._scene = Scene;
+        }
+        private void ReuseUnitGroup(string groupId, Vector2 destination)
+        {
+            UnitGroup group = GetUnitGroupById(groupId);
+            if (Input.RightShiftClickOccured())
+            {
+                group.Waypoints.Enqueue(destination);
+            }
+            else
+            {
+                group.Waypoints.Clear();
+                group.CurrentWaypoint = destination;
+            }
         }
 
         private void StealUnits(UnitGroup group)
@@ -77,10 +101,46 @@ namespace MicroMarine.Components
             }
         }
 
-        private void AssignId(UnitGroup group)
+        private string GetGroupId(List<Entity> entities)
         {
-            IdPool++;
-            group.Id = IdPool;
+            entities.Sort(CompareEntites);
+            var builder = new System.Text.StringBuilder();
+            for (int i = 0; i < entities.Count; i ++)
+            {
+                builder.Append(entities[i].Id);
+            }
+
+            return builder.ToString();
+        }
+
+        private UnitGroup GetUnitGroupById(string id)
+        {
+            for (int i = 0; i < UnitGroups.Count; i++)
+            {
+                if (UnitGroups[i].Id == id)
+                {
+                    return UnitGroups[i];
+                }
+            }
+
+            return null;
+        }
+
+        private static int CompareEntites(Entity x, Entity y)
+        {
+            if (x.Id == y.Id)
+            {
+                return 0;
+            }
+
+            if (x.Id > y.Id)
+            {
+                return 1;
+            }
+            else
+            {
+                return -1;
+            }
         }
     }
 
@@ -99,7 +159,7 @@ namespace MicroMarine.Components
 
 
         public UnitGroupState CurrentState;
-        public uint Id;
+        public string Id;
         public List<Entity> Units;
         public Entity Leader = null;
         public Queue<Vector2> Waypoints;
@@ -205,7 +265,7 @@ namespace MicroMarine.Components
                 case UnitGroupState.Arrived:
                     if (GetNextWaypoint())
                     {
-                        CurrentState = UnitGroupState.Moving;
+                        SetStateToMoving();
                     }
                     else
                     {
@@ -214,11 +274,18 @@ namespace MicroMarine.Components
                     }
                     break;
                 case UnitGroupState.Grouping:
+                    // TODO grouping logic
+                    bool grouped = true;
+
+                    if (grouped)
+                    {
+                        CurrentState = UnitGroupState.Idle;
+                    }
                     break;
                 case UnitGroupState.Idle:
                     if (GetNextWaypoint())
                     {
-                        CurrentState = UnitGroupState.Moving;
+                        SetStateToMoving();
                     }
                     break;
             }
@@ -298,7 +365,6 @@ namespace MicroMarine.Components
 
         private Vector2 LimitVelocity(Vector2 currentVelocity, float maxDistance)
         {
-            _scene.Debug.Log($"{currentVelocity.Length()}");
             if (currentVelocity.Length() > maxDistance)
             {
                 return Vector2.Normalize(currentVelocity) * maxDistance;
@@ -310,6 +376,15 @@ namespace MicroMarine.Components
         private void SetFollowLeaderDistance()
         {
             _followLeaderDist = _followLeaderBase * Units.Count;
+        }
+
+        private void SetStateToMoving()
+        {
+            CurrentState = UnitGroupState.Moving;
+            for (int i = 0; i < Units.Count; i++)
+            {
+                Units[i].GetComponent<UnitState>().CurrentState = UnitStates.Running;
+            }
         }
     }
 }
