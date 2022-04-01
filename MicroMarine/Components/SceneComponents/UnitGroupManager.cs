@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using Zand;
 using Zand.ECS.Components;
@@ -176,6 +177,9 @@ namespace MicroMarine.Components
         private static float _destinationFactor = 100F;
         private static float _cohesionVelocityLimit = 20F;
         private static int _groupingFrameLimit = 10;
+        private static float _circlePackingConst = 1.1026577908435840990226529966259F;
+
+        private float StopDistance = 0;
 
         public UnitGroup(List<Entity> units, Vector2 destination)
         {
@@ -264,12 +268,11 @@ namespace MicroMarine.Components
                         {
                             SetStateToMoving();
                         }
+                        // Group up
                         else
                         {
-                            CurrentState = UnitGroupState.Grouping;
-                            SetUnitsToRunning();
+                            SetStateToGrouping();
                         }
-
                     }
 
                     break;
@@ -278,17 +281,32 @@ namespace MicroMarine.Components
                         CurrentWaypoint = null;
                     break;
                 case UnitGroupState.Grouping:
-                    // TODO grouping logic
-                    bool grouped = false;
- 
-                    //for (int i = 0; i < Units.Count; i++)
-                    //{
-                    //    Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], Leader.Position);
-                    //    Units[i].GetComponent<Mover>().Velocity = cohesionVelocity;
-                    //}
+                    int unitsGrouping = 0;
 
-                    grouped = true;
-                    if (grouped)
+                    for (int i = 0; i < Units.Count; i++)
+                    {
+                        // Skips units who have arrived
+                        if (Units[i].GetComponent<UnitState>().CurrentState == UnitStates.Idle)
+                        {
+                            continue;
+                        }
+
+                        float distanceToLeader = Vector2.Distance(Leader.Position, Units[i].Position);
+                        if (distanceToLeader > StopDistance)
+                        {
+                            Vector2 cohesionVelocity = GetGroupingVelocity(Units[i]);
+                            Units[i].GetComponent<Mover>().Velocity = cohesionVelocity;
+                            unitsGrouping ++;
+                        }
+                        else
+                        {
+                            Units[i].GetComponent<Mover>().Velocity = Vector2.Zero;
+                            Units[i].GetComponent<UnitState>().CurrentState = UnitStates.Idle;
+                        }
+
+                    }
+
+                    if (unitsGrouping == 0)
                     {
                         CurrentState = UnitGroupState.Idle;
                     }
@@ -367,11 +385,16 @@ namespace MicroMarine.Components
             }
             else
             {
-                velocity = CurrentWaypoint.Value - Leader.Position; // Leader.Position
+                velocity = CurrentWaypoint.Value - Leader.Position;
             }
 
             
             return Vector2.Normalize(velocity) * _destinationFactor;
+        }
+
+        private Vector2 GetGroupingVelocity(Entity unit)
+        {
+            return Leader.Position - unit.Position;
         }
 
         private Vector2 LimitVelocity(Vector2 currentVelocity, float maxDistance)
@@ -395,12 +418,28 @@ namespace MicroMarine.Components
             SetUnitsToRunning();
         }
 
+        private void SetStateToGrouping()
+        {
+            CurrentState = UnitGroupState.Grouping;
+            CurrentWaypoint = null;
+            StopDistance = GetStopDistance();
+            SetUnitsToRunning();
+        }
+
         private void SetUnitsToRunning()
         {
             for (int i = 0; i < Units.Count; i++)
             {
                 Units[i].GetComponent<UnitState>().CurrentState = UnitStates.Running;
             }
+        }
+
+        private float GetStopDistance()
+        {
+            int c = Units.Count;
+            double r = Math.Pow(Units[0].GetComponent<CircleCollider>().Radius, 2);
+
+            return (float)Math.Sqrt(c * r * _circlePackingConst);
         }
     }
 }
