@@ -175,6 +175,7 @@ namespace MicroMarine.Components
         private static float _arrivalThreshold = 1;
         private static float _destinationFactor = 100F;
         private static float _cohesionVelocityLimit = 20F;
+        private static int _groupingFrameLimit = 10;
 
         public UnitGroup(List<Entity> units, Vector2 destination)
         {
@@ -258,25 +259,35 @@ namespace MicroMarine.Components
                     // All units have arrived
                     if (unitsInMotion == 0)
                     {
-                        CurrentState = UnitGroupState.Arrived;
+                        // Follow the next waypoint
+                        if (GetNextWaypoint())
+                        {
+                            SetStateToMoving();
+                        }
+                        else
+                        {
+                            CurrentState = UnitGroupState.Grouping;
+                            SetUnitsToRunning();
+                        }
+
                     }
 
                     break;
                 case UnitGroupState.Arrived:
-                    if (GetNextWaypoint())
-                    {
-                        SetStateToMoving();
-                    }
-                    else
-                    {
                         CurrentState = UnitGroupState.Grouping;
                         CurrentWaypoint = null;
-                    }
                     break;
                 case UnitGroupState.Grouping:
                     // TODO grouping logic
-                    bool grouped = true;
+                    bool grouped = false;
+ 
+                    //for (int i = 0; i < Units.Count; i++)
+                    //{
+                    //    Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], Leader.Position);
+                    //    Units[i].GetComponent<Mover>().Velocity = cohesionVelocity;
+                    //}
 
+                    grouped = true;
                     if (grouped)
                     {
                         CurrentState = UnitGroupState.Idle;
@@ -381,6 +392,11 @@ namespace MicroMarine.Components
         private void SetStateToMoving()
         {
             CurrentState = UnitGroupState.Moving;
+            SetUnitsToRunning();
+        }
+
+        private void SetUnitsToRunning()
+        {
             for (int i = 0; i < Units.Count; i++)
             {
                 Units[i].GetComponent<UnitState>().CurrentState = UnitStates.Running;
