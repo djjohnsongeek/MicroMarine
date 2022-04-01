@@ -439,7 +439,7 @@ namespace MicroMarine.Components
             int c = Units.Count;
             double r = Math.Pow(Units[0].GetComponent<CircleCollider>().Radius, 2);
 
-            return (float)Math.Sqrt(c * r * _circlePackingConst);
+            return (float)Math.Sqrt(c * r * _circlePackingConst) + 5;
         }
     }
 }
