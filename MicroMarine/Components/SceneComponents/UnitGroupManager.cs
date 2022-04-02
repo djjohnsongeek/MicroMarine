@@ -82,6 +82,8 @@ namespace MicroMarine.Components
             {
                 group.Waypoints.Clear();
                 group.CurrentWaypoint = destination;
+                // TODO prefer enque over  setting
+                //group.Waypoints.Enqueue(destination);
             }
         }
 
@@ -168,7 +170,7 @@ namespace MicroMarine.Components
         public Queue<Vector2> Waypoints;
         public Vector2? CurrentWaypoint;
 
-        private int _followLeaderDist = 0;
+        private float _followLeaderDist = 0;
         private static int _followLeaderBase = 255;
         private static float _matchFactor = 0.125f;
         private static float _cohesionFactor = .5f;
@@ -281,6 +283,12 @@ namespace MicroMarine.Components
                         CurrentWaypoint = null;
                     break;
                 case UnitGroupState.Grouping:
+                    // TODO clean this up
+                    if (CurrentWaypoint != null || Waypoints.Count > 0)
+                    {
+                        SetStateToMoving();
+                    }
+
                     int unitsGrouping = 0;
 
                     for (int i = 0; i < Units.Count; i++)
