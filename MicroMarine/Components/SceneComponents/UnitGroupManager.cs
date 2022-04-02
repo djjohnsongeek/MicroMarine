@@ -104,6 +104,8 @@ namespace MicroMarine.Components
 
         private string GetGroupId(List<Entity> entities)
         {
+            // hash with prime numbrtd
+            // or bit map
             entities.Sort(CompareEntites);
             var builder = new System.Text.StringBuilder();
             for (int i = 0; i < entities.Count; i ++)
