@@ -178,7 +178,8 @@ namespace MicroMarine.Components
         private static float _arrivalThreshold = 1;
         private static float _destinationFactor = 100F;
         private static float _cohesionVelocityLimit = 20F;
-        private static int _groupingFrameLimit = 10;
+        private static float _allGroupingTimeLimit = .2F;
+        private static float _allGroupingClock = 0;
         private static float _circlePackingConst = 1.1026577908435840990226529966259F;
 
         private float StopDistance = 0;
@@ -243,13 +244,10 @@ namespace MicroMarine.Components
                         }
 
                         // Gather velocities and distances
-                        float unitDistance = Vector2.DistanceSquared(Units[i].Position, CurrentWaypoint.Value);
-                        Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], centerOfMass);
-                        Vector2 destinationVelocity = GetDestinationVelocity(Units[i], centerOfMass);
-                        var unitVelocity = destinationVelocity + cohesionVelocity; // + avoidanceVelocity, neighborVelocity;
+                        var unitVelocity = GetDestinationVelocity(Units[i]) + GetCohesionVelocity(Units[i], centerOfMass);
 
                         // Check if units has arrived
-                        if (leaderDistance <= _arrivalThreshold || unitDistance <= _arrivalThreshold)
+                        if (leaderDistance <= _arrivalThreshold)
                         {
                             unitVelocity = Vector2.Zero;
                             unitState.CurrentState = UnitStates.Idle;
@@ -288,30 +286,32 @@ namespace MicroMarine.Components
                     for (int i = 0; i < Units.Count; i++)
                     {
                         // Skips units who have arrived
-                        if (Units[i].GetComponent<UnitState>().CurrentState == UnitStates.Idle)
+                        if (Units[i].GetComponent<UnitState>().CurrentState == UnitStates.Idle || Units[i].Id == Leader.Id)
                         {
                             continue;
                         }
 
                         float distanceToLeader = Vector2.Distance(Leader.Position, Units[i].Position);
-                        if (distanceToLeader > StopDistance)
+                        if (distanceToLeader > StopDistance || IsAllGroupingPhase())
                         {
-                            Vector2 cohesionVelocity = GetGroupingVelocity(Units[i]);
-                            Units[i].GetComponent<Mover>().Velocity = cohesionVelocity;
-                            unitsGrouping ++;
+                            Units[i].GetComponent<Mover>().Velocity = GetGroupingVelocity(Units[i]);
+                            unitsGrouping++;
                         }
                         else
                         {
                             Units[i].GetComponent<Mover>().Velocity = Vector2.Zero;
                             Units[i].GetComponent<UnitState>().CurrentState = UnitStates.Idle;
                         }
-
                     }
 
                     if (unitsGrouping == 0)
                     {
                         CurrentState = UnitGroupState.Idle;
+                        RemoveStatic(Leader);
+                        _allGroupingClock = 0;
                     }
+
+                    _allGroupingClock += (float)Time.DeltaTime;
                     break;
                 case UnitGroupState.Idle:
                     if (GetNextWaypoint())
@@ -350,28 +350,7 @@ namespace MicroMarine.Components
             return LimitVelocity(cohVelocity, _cohesionVelocityLimit);
         }
 
-        private Vector2 GetAvoidanceVelocity(Entity unit)
-        {
-            var avoidV = Vector2.Zero;
-            Vector2 unitPos = unit.GetComponent<CircleCollider>().Center;
-
-            for (int i = 0; i < Units.Count; i++)
-            {
-                Vector2 unitIPos = Units[i].GetComponent<CircleCollider>().Center;
-                if (unit != Units[i])
-                {
-                    float distanceSqrd = Vector2.DistanceSquared(unitPos, unitIPos);
-                    if (distanceSqrd < _maxDistanceSqrd)
-                    {
-                        avoidV = avoidV - (unitPos - unitIPos);
-                    }
-                }
-            }
-
-            return avoidV;
-        }
-
-        private Vector2 GetDestinationVelocity(Entity unit, Vector2 centerOfMass)
+        private Vector2 GetDestinationVelocity(Entity unit)
         {
             Vector2 velocity = Vector2.Zero;
             if (CurrentWaypoint == null)
@@ -426,6 +405,7 @@ namespace MicroMarine.Components
             CurrentWaypoint = null;
             StopDistance = GetStopDistance();
             SetUnitsToRunning();
+            SetUnitStatic(Leader);
         }
 
         private void SetUnitsToRunning()
@@ -438,10 +418,31 @@ namespace MicroMarine.Components
 
         private float GetStopDistance()
         {
+            if (Units.Count < 4)
+            {
+                return 19;
+            }
+
             int c = Units.Count;
             double r = Math.Pow(Units[0].GetComponent<CircleCollider>().Radius, 2);
 
-            return (float)Math.Sqrt(c * r * _circlePackingConst) + 5;
+            return (float)Math.Sqrt(c * r * _circlePackingConst);
+        }
+
+        private void SetUnitStatic(Entity unit)
+        {
+            unit.GetComponent<CircleCollider>().Static = true;
+            unit.GetComponent<UnitState>().CurrentState = UnitStates.Idle;
+        }
+
+        private void RemoveStatic(Entity unit)
+        {
+            unit.GetComponent<CircleCollider>().Static = false;
+        }
+
+        private bool IsAllGroupingPhase()
+        {
+            return _allGroupingClock < _allGroupingTimeLimit;
         }
     }
 }
