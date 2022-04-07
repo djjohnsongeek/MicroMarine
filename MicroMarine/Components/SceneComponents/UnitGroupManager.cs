@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Zand;
 using Zand.ECS.Components;
-using MicroMarine.Components.Units;
+using MicroMarine.Components.UnitGroups;
 
 namespace MicroMarine.Components
 {
