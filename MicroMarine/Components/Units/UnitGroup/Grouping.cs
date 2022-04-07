@@ -20,6 +20,8 @@ namespace MicroMarine.Components.UnitGroups
 
         public override void Exit()
         {
+            _context.RemoveStatic(_context.Leader);
+            UnitGroup._allGroupingClock = 0;
         }
 
         public override void Update()
@@ -49,9 +51,7 @@ namespace MicroMarine.Components.UnitGroups
 
             if (unitsGrouping == 0)
             {
-                _context.CurrentState = UnitGroupState.Idle;
-                _context.RemoveStatic(_context.Leader);
-                UnitGroup._allGroupingClock = 0;
+                _machine.ChangeState<Idle>();
             }
 
             UnitGroup._allGroupingClock += (float)Time.DeltaTime;

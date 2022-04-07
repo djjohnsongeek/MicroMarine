@@ -7,6 +7,7 @@ namespace Zand.AI
     {
         protected T _context;
         protected State<T> _currentState;
+        public State<T> CurrentState => _currentState;
         private Dictionary<Type, State<T>> _definedStates;
         private Stack<State<T>> _states;
 

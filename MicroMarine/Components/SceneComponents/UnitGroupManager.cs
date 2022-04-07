@@ -14,7 +14,7 @@ namespace MicroMarine.Components
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
-            // TODO implement unitgroup pool?
+            // TODO implement UnitGroup pool?
             UnitGroups = new List<UnitGroup>(10);
             GroupIds = new HashSet<string>(10);
         }
@@ -34,7 +34,7 @@ namespace MicroMarine.Components
             for (int i = UnitGroups.Count - 1; i >= 0; i--)
             {
                 // Cull empty or stale unit groups
-                if (UnitGroups[i].CurrentState == UnitGroupState.Idle || UnitGroups[i].Units.Count == 0)
+                if (UnitGroups[i].IsStale())
                 {
                     GroupIds.Remove(UnitGroups[i].Id);
                     UnitGroups.RemoveAt(i);
@@ -47,7 +47,6 @@ namespace MicroMarine.Components
 
         private void CreateOrAssignUnitGroup()
         {
-            // TODO reuse a unit group if it's exactly the same? (just need to update the destination)
             List<Entity> units = Scene.GetComponent<UnitSelector>().GetSelectedUnits();
             Vector2 destination = Scene.Camera.GetWorldLocation(Input.MouseScreenPosition);
             string groupId = GetGroupId(units);
@@ -148,13 +147,5 @@ namespace MicroMarine.Components
                 return -1;
             }
         }
-    }
-
-    public enum UnitGroupState
-    {
-        Moving,
-        Arrived,
-        Grouping,
-        Idle,
     }
 }

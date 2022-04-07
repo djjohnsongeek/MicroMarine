@@ -11,9 +11,6 @@ namespace MicroMarine.Components.UnitGroups
     {
         // JUST FOR DEBUG
         public Scene _scene;
-
-
-        public UnitGroupState CurrentState;
         public string Id;
         public List<Entity> Units;
         public Entity Leader = null;
@@ -84,6 +81,11 @@ namespace MicroMarine.Components.UnitGroups
         public void Update()
         {
             _stateMachine.Update();
+        }
+
+        public bool IsStale()
+        {
+            return _stateMachine.CurrentState is Idle || Units.Count == 0;
         }
 
         internal bool GetNextWaypoint()
