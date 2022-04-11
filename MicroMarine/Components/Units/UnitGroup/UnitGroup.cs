@@ -28,7 +28,8 @@ namespace MicroMarine.Components.UnitGroups
         private static float _destinationFactor = 100F;
         private static float _cohesionVelocityLimit = 20F;
         private static float _allGroupingTimeLimit = .2F;
-        internal static float _allGroupingClock = 0;
+        internal static float _groupingTimeLimit = 2F;
+        internal float _groupingClock = 0;
         private static float _circlePackingConst = 1.1026577908435840990226529966259F;
 
         internal float StopDistance = 0;
@@ -193,7 +194,17 @@ namespace MicroMarine.Components.UnitGroups
 
         internal bool IsAllGroupingPhase()
         {
-            return _allGroupingClock < _allGroupingTimeLimit;
+            return _groupingClock < _allGroupingTimeLimit;
+        }
+
+        internal bool ReachedGroupingTimeLimit()
+        {
+            return _groupingClock >= _groupingTimeLimit;
+        }
+
+        internal bool ShouldGroup(float distanceToLeader)
+        {
+            return (distanceToLeader > StopDistance || IsAllGroupingPhase()) && !ReachedGroupingTimeLimit();
         }
     }
 }

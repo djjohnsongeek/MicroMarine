@@ -21,13 +21,12 @@ namespace MicroMarine.Components.UnitGroups
         public override void Exit()
         {
             _context.RemoveStatic(_context.Leader);
-            UnitGroup._allGroupingClock = 0;
+            _context._groupingClock = 0;
         }
 
         public override void Update()
         {
             int unitsGrouping = 0;
-
             if (_context.Waypoints.Count > 0)
             {
                 _machine.ChangeState<Moving>();
@@ -42,7 +41,7 @@ namespace MicroMarine.Components.UnitGroups
                 }
 
                 float distanceToLeader = Vector2.Distance(_context.Leader.Position, _context.Units[i].Position);
-                if (distanceToLeader > _context.StopDistance || _context.IsAllGroupingPhase())
+                if (_context.ShouldGroup(distanceToLeader))
                 {
                     _context.Units[i].GetComponent<Mover>().Velocity = _context.GetGroupingVelocity(_context.Units[i]);
                     unitsGrouping++;
@@ -59,7 +58,7 @@ namespace MicroMarine.Components.UnitGroups
                 _machine.ChangeState<Idle>();
             }
 
-            UnitGroup._allGroupingClock += (float)Time.DeltaTime;
+            _context._groupingClock += (float)Time.DeltaTime;
         }
     }
 }
