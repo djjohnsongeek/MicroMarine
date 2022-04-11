@@ -7,30 +7,31 @@ using Microsoft.Xna.Framework;
 
 namespace Zand.ECS.Components
 {
-    class Mover : Component, IUpdateable
+    public class Mover : Component, IUpdateable
     {
-        private Entity _entity;
-        private float _speed;
-        private Vector2 _velocity;
+        private float maxSpeed;
+        public Vector2 Velocity = Vector2.Zero;
 
-        public Mover (Entity entity, float baseSpeed)
+        public Mover (float maxSpeed)
         {
-            _speed = baseSpeed;
-            _entity = entity;
-            _velocity = Vector2.Zero;
-        }
-
-        public Mover (Entity entity, float baseSpeed, Vector2 startingVelocity) : this(entity, baseSpeed)
-        {
-            _velocity = startingVelocity;
+            this.maxSpeed = maxSpeed;
         }
 
         public void Update()
         {
-            _velocity.X = _velocity.X + (_speed * (float)Time.DeltaTime);
-            _velocity.Y = _velocity.Y + (_speed * (float)Time.DeltaTime);
+            Entity.Position += Velocity * (float)Time.DeltaTime;
+            UpdateEntityLayerDepth();
+        }
 
-            _entity.Position = _entity.Position + _velocity;
+        public void Nudge(Vector2 velocity)
+        {
+            Entity.Position += velocity * (float)Time.DeltaTime;
+        }
+
+        private void UpdateEntityLayerDepth()
+        {
+            Vector2 screenPos = Scene.Camera.GetScreenLocation(Entity.Position);
+            Entity.layerDepth = MathUtil.CalculateLayerDepth(screenPos.Y, Entity.Dimensions.Y);
         }
     }
 }

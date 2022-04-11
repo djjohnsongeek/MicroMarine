@@ -1,116 +1,152 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zand;
 using Zand.ECS.Components;
+using MicroMarine.Components.UnitGroups;
 
 namespace MicroMarine.Components
 {
     public class UnitGroupManager : SceneComponent
     {
-        private SortedList<uint, UnitGroup> UnitGroups;
+        private List<UnitGroup> UnitGroups;
+        private HashSet<string> GroupIds;
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
-            UnitGroups = new SortedList<uint, UnitGroup>();
+            // TODO implement UnitGroup pool?
+            UnitGroups = new List<UnitGroup>(10);
+            GroupIds = new HashSet<string>(10);
         }
 
         public override void Update()
         {
-            // Remove 'stale' units groups
-            // TODO
-
-            // Add new unit groups
             if (Input.RightMouseWasPressed())
             {
-                // Add Units Groups
-                var unitSelector = Scene.GetComponent<UnitSelector>();
-
-                // TODO Replace group if it already exists
-                var group = new UnitGroup(unitSelector.GetSelectedUnits(), Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
-                UnitGroups.Add(group.Id, group);
+                CreateOrAssignUnitGroup();
             }
 
-            for (uint i = 0; i < UnitGroups.Count; i++ )
+            UpdateUnitGroups();
+        }
+
+        private void UpdateUnitGroups()
+        {
+            for (int i = UnitGroups.Count - 1; i >= 0; i--)
             {
+                // Cull empty or stale unit groups
+                if (UnitGroups[i].IsStale())
+                {
+                    GroupIds.Remove(UnitGroups[i].Id);
+                    UnitGroups.RemoveAt(i);
+                    continue;
+                }
+
                 UnitGroups[i].Update();
             }
         }
-    }
 
-    public class UnitGroup
-    {
-        public List<Entity> Units;
-        public uint Id;
-        public Queue<Vector2> Waypoints;
-        private static int _dissensionFactor = 100;
-        private static int _baseUnitSpeed = 100;
-
-        public UnitGroup(List<Entity> units, Vector2 destination)
+        private void CreateOrAssignUnitGroup()
         {
-            Waypoints = new Queue<Vector2>();
-            Waypoints.Enqueue(destination);
-            Units = units;
-            SetGroupId();
-        }
+            List<Entity> units = Scene.GetComponent<UnitSelector>().GetSelectedUnits();
+            Vector2 destination = Scene.Camera.GetWorldLocation(Input.MouseScreenPosition);
+            string groupId = GetGroupId(units);
 
-        private void SetGroupId()
-        {
-            for (int i = 0; i < Units.Count; i++)
+            if (GroupIds.Contains(groupId))
             {
-                Id += Units[i].Id;
+                ReuseUnitGroup(groupId, destination);
+            }
+            else
+            {
+                RegisterNewGroup(groupId, new UnitGroup(units, destination));
             }
         }
 
-        public void Update()
+        private void RegisterNewGroup(string groupId, UnitGroup group)
         {
-            var (centerOfMass, neighborVelocity) = GetVelocities();
-            for (int i = 0; i < Units.Count; i++)
+            group.Id = groupId;
+            StealUnits(group);
+            UnitGroups.Add(group);
+            GroupIds.Add(group.Id);
+
+            // really only for debug
+            group._scene = Scene;
+        }
+        private void ReuseUnitGroup(string groupId, Vector2 destination)
+        {
+            UnitGroup group = GetUnitGroupById(groupId);
+            if (Input.RightShiftClickOccured())
             {
-                Vector2 cohesionVelocity = GetCohesionVelocity(Units[i], centerOfMass);
-                Vector2 avoidanceVelocity = GetAvoidanceVelocity(Units[i]);
-                Vector2 neighborVelocity = GetNeighborVelocity(Units[i]);
-                Vector2 destinationVelocity = GetDestinationVelocity(Units[i]);
+                group.Waypoints.Enqueue(destination);
+            }
+            else
+            {
+                group.Waypoints.Clear();
+                group.Waypoints.Enqueue(destination);
+                group.CurrentWaypoint = null;
             }
         }
 
-        private (Vector2 centerOfMass, Vector2 neighborV) GetVelocities()
+        private void StealUnits(UnitGroup group)
         {
-            var centerOfMass = Vector2.Zero;
-            var neighborV = Vector2.Zero;
-
-            for (int i = 0; i < Units.Count; i++)
+            // a rather nieve implementation
+            for (int i = 0; i < group.Units.Count; i ++)
             {
-                centerOfMass += Units[i].ScreenPosition;
-                neighborV += Units[i].GetComponent<WaypointMovement>().Velocity;
+                for (int j = 0; j < UnitGroups.Count; j++)
+                {
+                    if (UnitGroups[j].Units.Contains(group.Units[i]))
+                    {
+                        UnitGroups[j].Units.Remove(group.Units[i]);
+                        UnitGroups[j].AssignNewLeader();
+                        break;
+                    }
+                }
             }
 
-            return (Vector2.Divide(centerOfMass, Units.Count), neighborV);
+            // TODO: update the unit group id as well
         }
 
-        private Vector2 GetCohesionVelocity(Entity unit, Vector2 centerOfMass)
+        private string GetGroupId(List<Entity> entities)
         {
-            return Vector2.Divide((centerOfMass - unit.ScreenPosition), _dissensionFactor);
+            // hash with prime numbrtd
+            // or bit map
+            entities.Sort(CompareEntites);
+            var builder = new System.Text.StringBuilder();
+            for (int i = 0; i < entities.Count; i ++)
+            {
+                builder.Append(entities[i].Id);
+            }
+
+            return builder.ToString();
         }
 
-        private Vector2 GetAvoidanceVelocity(Entity unit)
+        private UnitGroup GetUnitGroupById(string id)
         {
-            return Vector2.Zero;
+            for (int i = 0; i < UnitGroups.Count; i++)
+            {
+                if (UnitGroups[i].Id == id)
+                {
+                    return UnitGroups[i];
+                }
+            }
+
+            return null;
         }
 
-        private Vector2 GetNeighborVelocity(Entity unit)
+        private static int CompareEntites(Entity x, Entity y)
         {
-            return Vector2.Zero;
-            for (int i = 0; i < Units.Count; i ++)
-            // average group velocity
-        }
+            if (x.Id == y.Id)
+            {
+                return 0;
+            }
 
-        private Vector2 GetDestinationVelocity(Entity unit)
-        {
-            return Vector2.Zero;
+            if (x.Id > y.Id)
+            {
+                return 1;
+            }
+            else
+            {
+                return -1;
+            }
         }
     }
 }

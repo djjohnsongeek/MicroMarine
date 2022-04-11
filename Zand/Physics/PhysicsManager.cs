@@ -113,8 +113,19 @@ namespace Zand.Physics
 
             var repelVelocity2 = Vector2.Multiply(repelVelocity1, -1);
 
-            var entity1Movement = entity1.GetComponent<WaypointMovement>();
-            var entity2Movement = entity2.GetComponent<WaypointMovement>();
+
+            if (entity1.GetComponent<CircleCollider>().Static)
+            {
+                repelVelocity1 = Vector2.Zero;
+            }
+
+            if (entity2.GetComponent<CircleCollider>().Static)
+            {
+                repelVelocity2 = Vector2.Zero;
+            }
+
+            var entity1Movement = entity1.GetComponent<Mover>();
+            var entity2Movement = entity2.GetComponent<Mover>();
 
             // adjustments
             //if (entity1Movement.CurrentWayPoint == null && entity2Movement.CurrentWayPoint != null)

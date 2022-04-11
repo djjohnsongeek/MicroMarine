@@ -55,9 +55,9 @@ namespace Zand
             return _mouseState.LeftButton == ButtonState.Pressed && _prevMouseState.LeftButton == ButtonState.Pressed;
         }
 
-        public static bool RightClickOccured()
+        public static bool RightShiftClickOccured()
         {
-            return RightMouseWasPressed() && !KeyIsDown(Keys.LeftShift);
+            return RightMouseWasPressed() && KeyIsDown(Keys.LeftShift);
         }
 
         //public static Vector2 GetMouseWorldPos()

@@ -5,6 +5,7 @@ namespace Zand.ECS.Components
 {
     public class Collider : Component, IUpdateable
     {
+        public bool Static = false;
         public Vector2 Origin;
         public Vector2 Offset;
         public Vector2 Center => Entity.Position + Offset;
