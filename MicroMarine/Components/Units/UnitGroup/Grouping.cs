@@ -28,6 +28,11 @@ namespace MicroMarine.Components.UnitGroups
         {
             int unitsGrouping = 0;
 
+            if (_context.Waypoints.Count > 0)
+            {
+                _machine.ChangeState<Moving>();
+            }
+
             for (int i = 0; i < _context.Units.Count; i++)
             {
                 // Skips units who have arrived

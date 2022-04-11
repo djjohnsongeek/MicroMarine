@@ -81,9 +81,8 @@ namespace MicroMarine.Components
             else
             {
                 group.Waypoints.Clear();
-                group.CurrentWaypoint = destination;
-                // TODO prefer enque over  setting
-                //group.Waypoints.Enqueue(destination);
+                group.Waypoints.Enqueue(destination);
+                group.CurrentWaypoint = null;
             }
         }
 
@@ -102,6 +101,8 @@ namespace MicroMarine.Components
                     }
                 }
             }
+
+            // TODO: update the unit group id as well
         }
 
         private string GetGroupId(List<Entity> entities)

@@ -32,6 +32,12 @@ namespace MicroMarine.Components.UnitGroups
 
         public override void Update()
         {
+            // Ensure we have a destination
+            if (_context.CurrentWaypoint == null)
+            {
+                _context.CurrentWaypoint = _context.Waypoints.Dequeue();
+            }
+
             Vector2 centerOfMass = _context.GetCenterOfMass();
             float leaderDistance = Vector2.DistanceSquared(_context.Leader.Position, _context.CurrentWaypoint.Value);
             int unitsInMotion = 0;
@@ -69,6 +75,7 @@ namespace MicroMarine.Components.UnitGroups
                 if (_context.Waypoints.Count > 0)
                 {
                     _context.CurrentWaypoint = _context.Waypoints.Dequeue();
+                    _context.SetUnitsToRunning();
                 }
                 // Group up
                 else
