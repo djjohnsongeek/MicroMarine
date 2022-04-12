@@ -97,6 +97,9 @@ namespace MicroMarine.Components
                     {
                         UnitGroups[j].Units.Remove(group.Units[i]);
                         UnitGroups[j].AssignNewLeader();
+                        GroupIds.Remove(UnitGroups[j].Id);
+                        UnitGroups[j].Id = GetGroupId(UnitGroups[j].Units);
+                        GroupIds.Add(UnitGroups[j].Id);
                         break;
                     }
                 }
