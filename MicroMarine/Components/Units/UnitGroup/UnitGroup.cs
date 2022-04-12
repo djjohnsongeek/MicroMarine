@@ -63,6 +63,10 @@ namespace MicroMarine.Components.UnitGroups
         {
             Vector2 centerOfMass = GetCenterOfMass();
             float distance = float.MaxValue;
+            if (Leader != null)
+            {
+                RemoveStatic(Leader);
+            }
 
             for (int i = 0; i < Units.Count; i++)
             {
