@@ -11,12 +11,14 @@ namespace MicroMarine.Components
     {
         private List<UnitGroup> UnitGroups;
         private HashSet<string> GroupIds;
+        private List<UnitGroup> AffectedGroups;
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
             // TODO implement UnitGroup pool?
             UnitGroups = new List<UnitGroup>(10);
             GroupIds = new HashSet<string>(10);
+            AffectedGroups = new List<UnitGroup>(10);
         }
 
         public override void Update()
@@ -88,7 +90,7 @@ namespace MicroMarine.Components
 
         private void StealUnits(UnitGroup group)
         {
-            // a rather nieve implementation
+            // A rather nieve implementation
             for (int i = 0; i < group.Units.Count; i ++)
             {
                 for (int j = 0; j < UnitGroups.Count; j++)
@@ -96,21 +98,31 @@ namespace MicroMarine.Components
                     if (UnitGroups[j].Units.Contains(group.Units[i]))
                     {
                         UnitGroups[j].Units.Remove(group.Units[i]);
-                        UnitGroups[j].AssignNewLeader();
-                        GroupIds.Remove(UnitGroups[j].Id);
-                        UnitGroups[j].Id = GetGroupId(UnitGroups[j].Units);
-                        GroupIds.Add(UnitGroups[j].Id);
+                        AffectedGroups.Add(UnitGroups[j]);
                         break;
                     }
                 }
             }
 
-            // TODO: update the unit group id as well
+            UpdateAffectedGroups();
+        }
+
+        private void UpdateAffectedGroups()
+        {
+            for (int i = 0; i < AffectedGroups.Count; i++)
+            {
+                AffectedGroups[i].AssignNewLeader();
+                GroupIds.Remove(AffectedGroups[i].Id);
+                AffectedGroups[i].Id = GetGroupId(AffectedGroups[i].Units);
+                GroupIds.Add(AffectedGroups[i].Id);
+            }
+
+            AffectedGroups.Clear();
         }
 
         private string GetGroupId(List<Entity> entities)
         {
-            // hash with prime numbrtd
+            // TODO hash with prime numbrtd
             // or bit map
             entities.Sort(CompareEntites);
             var builder = new System.Text.StringBuilder();
