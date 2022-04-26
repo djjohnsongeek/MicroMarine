@@ -18,9 +18,10 @@ namespace MicroMarine.Components.UnitGroups
         public Entity Leader = null;
         public Queue<Vector2> Waypoints;
         public Vector2? CurrentWaypoint;
-        private float _followLeaderDist = 0;
         internal float GroupingClock = 0;
         internal float StopDistance = 0;
+
+        private float _followLeaderDist = 0;
         private StateMachine<UnitGroup> _stateMachine;
 
         public UnitGroup(List<Entity> units, Vector2 destination)
