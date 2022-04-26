@@ -11,27 +11,15 @@ namespace MicroMarine.Components.UnitGroups
     {
         // JUST FOR DEBUG
         public Scene _scene;
+        //
+
         public string Id;
         public List<Entity> Units;
         public Entity Leader = null;
         public Queue<Vector2> Waypoints;
         public Vector2? CurrentWaypoint;
-
         private float _followLeaderDist = 0;
-        private static int _followLeaderBase = 255;
-        private static float _matchFactor = 0.125f;
-        private static float _cohesionFactor = .5f;
-        private static float _avoidFactor = .8f;
-        private static int _maxDistanceSqrd = 25 * 25;
-        private static float _unitSpeed = .1F;
-        internal static float _arrivalThreshold = 1;
-        private static float _destinationFactor = 100F;
-        private static float _cohesionVelocityLimit = 20F;
-        private static float _allGroupingTimeLimit = .2F;
-        internal static float _groupingTimeLimit = 2F;
-        internal float _groupingClock = 0;
-        private static float _circlePackingConst = 1.1026577908435840990226529966259F;
-
+        internal float GroupingClock = 0;
         internal float StopDistance = 0;
         private StateMachine<UnitGroup> _stateMachine;
 
@@ -117,8 +105,8 @@ namespace MicroMarine.Components.UnitGroups
         internal Vector2 GetCohesionVelocity(Entity unit, Vector2 centerOfMass)
         {
             var unitPos = unit.GetComponent<CircleCollider>().Center;
-            Vector2 cohVelocity = (centerOfMass - unitPos) * _cohesionFactor;
-            return LimitVelocity(cohVelocity, _cohesionVelocityLimit);
+            Vector2 cohVelocity = (centerOfMass - unitPos) * Core.Config.CohesionFactor;
+            return LimitVelocity(cohVelocity, Core.Config.CohesionVelocityLimit);
         }
 
         internal Vector2 GetDestinationVelocity(Entity unit)
@@ -141,12 +129,12 @@ namespace MicroMarine.Components.UnitGroups
             }
 
 
-            return Vector2.Normalize(velocity) * _destinationFactor;
+            return Vector2.Normalize(velocity) * Core.Config.DestinationFactor;
         }
 
         internal Vector2 GetGroupingVelocity(Entity unit)
         {
-            return Leader.Position - unit.Position;
+            return LimitVelocity(Leader.Position - unit.Position, Core.Config.DestinationFactor);
         }
 
         internal Vector2 LimitVelocity(Vector2 currentVelocity, float maxDistance)
@@ -161,7 +149,7 @@ namespace MicroMarine.Components.UnitGroups
 
         private void SetFollowLeaderDistance()
         {
-            _followLeaderDist = _followLeaderBase * Units.Count;
+            _followLeaderDist = Core.Config.FollowLeaderBaseDistance * Units.Count;
         }
 
         public void SetUnitsToRunning()
@@ -182,7 +170,7 @@ namespace MicroMarine.Components.UnitGroups
             int c = Units.Count;
             double r = Math.Pow(Units[0].GetComponent<CircleCollider>().Radius, 2);
 
-            return (float)Math.Sqrt(c * r * _circlePackingConst);
+            return (float)Math.Sqrt(c * r * Core.Config.CirclePackingConst);
         }
 
         internal void SetUnitStatic(Entity unit)
@@ -198,12 +186,12 @@ namespace MicroMarine.Components.UnitGroups
 
         internal bool IsAllGroupingPhase()
         {
-            return _groupingClock < _allGroupingTimeLimit;
+            return GroupingClock < Core.Config.AllGroupingTimeLimit;
         }
 
         internal bool ReachedGroupingTimeLimit()
         {
-            return _groupingClock >= _groupingTimeLimit;
+            return GroupingClock >= Core.Config.GroupingTimeLimit;
         }
 
         internal bool ShouldGroup(float distanceToLeader)

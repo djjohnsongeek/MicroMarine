@@ -1,9 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Zand;
 using Zand.AI;
 using Zand.ECS.Components;
 
@@ -55,7 +51,7 @@ namespace MicroMarine.Components.UnitGroups
                 var unitVelocity = _context.GetDestinationVelocity(_context.Units[i]) + _context.GetCohesionVelocity(_context.Units[i], centerOfMass);
 
                 // Check if units has arrived
-                if (leaderDistance <= UnitGroup._arrivalThreshold)
+                if (leaderDistance <= Core.Config.ArrivalThreshold)
                 {
                     unitVelocity = Vector2.Zero;
                     unitState.CurrentState = UnitStates.Idle;

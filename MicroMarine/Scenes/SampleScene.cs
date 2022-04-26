@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Zand;
 using MicroMarine.Components;
-using System.Text.Json;
-using Zand.Utils;
-using MicroMarine.Utils;
-using System.IO;
-using System.Text;
 
 namespace MicroMarine.Scenes
 
@@ -27,8 +22,6 @@ namespace MicroMarine.Scenes
         public override void Load()
         {
             base.Load();
-            string jsonString = File.ReadAllText("MicroMarine.config.json");
-            Config config = JsonSerializer.Deserialize<Config>(jsonString);
 
             int marineRows = 20;
             int marineCols = 20;
