@@ -10,6 +10,7 @@ namespace MicroMarine.Components
     // Acts as 'Loading Component' for a Marine
     class Marine : Component, Zand.IUpdateable
     {
+        // TODO add a Group property and move logic away from UnitGroup's states and into Marine?
         public override void OnAddedToEntity()
         {
             Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
@@ -50,8 +51,6 @@ namespace MicroMarine.Components
 
             Entity.AddComponent(new UnitState(UnitStates.Idle));
         }
-
-
 
         public void Update()
         {

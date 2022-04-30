@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
 using Zand;
 using Zand.ECS.Components;
@@ -15,7 +14,7 @@ namespace MicroMarine.Components
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
-            // TODO implement UnitGroup pool?
+            // TODO implement UnitGroup pool
             UnitGroups = new List<UnitGroup>(10);
             GroupIds = new HashSet<string>(10);
             AffectedGroups = new List<UnitGroup>(10);

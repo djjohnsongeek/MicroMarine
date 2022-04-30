@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Zand.AI;
+﻿using Zand.AI;
 using Microsoft.Xna.Framework;
 using Zand.ECS.Components;
 using Zand;
@@ -34,8 +30,11 @@ namespace MicroMarine.Components.UnitGroups
 
             for (int i = 0; i < _context.Units.Count; i++)
             {
+                UnitState unitState = _context.Units[i].GetComponent<UnitState>();
+                Mover unitMover = _context.Units[i].GetComponent<Mover>();
+
                 // Skips units who have arrived
-                if (_context.Units[i].GetComponent<UnitState>().CurrentState == UnitStates.Idle || _context.Units[i].Id == _context.Leader.Id)
+                if (unitState.CurrentState == UnitStates.Idle || _context.Units[i].Id == _context.Leader.Id)
                 {
                     continue;
                 }
@@ -43,13 +42,13 @@ namespace MicroMarine.Components.UnitGroups
                 float distanceToLeader = Vector2.Distance(_context.Leader.Position, _context.Units[i].Position);
                 if (_context.ShouldGroup(distanceToLeader))
                 {
-                    _context.Units[i].GetComponent<Mover>().Velocity = _context.GetGroupingVelocity(_context.Units[i]);
+                    unitMover.Velocity = _context.GetGroupingVelocity(_context.Units[i]);
                     unitsGrouping++;
                 }
                 else
                 {
-                    _context.Units[i].GetComponent<Mover>().Velocity = Vector2.Zero;
-                    _context.Units[i].GetComponent<UnitState>().CurrentState = UnitStates.Idle;
+                    unitMover.Velocity = Vector2.Zero;
+                    unitState.CurrentState = UnitStates.Idle;
                 }
             }
 
