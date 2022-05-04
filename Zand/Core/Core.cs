@@ -54,8 +54,8 @@ namespace Zand
 
         protected override void LoadContent()
         {
-            string jsonString = File.ReadAllText("MicroMarine.config.json");
-            Config = JsonSerializer.Deserialize<Config>(jsonString);
+            //string jsonString = File.ReadAllText("MicroMarine.config.json");
+            Config = new Config();
 
             CurrentScene.Load();
             _fpsRenderer = new TextRenderer(CurrentScene.Content.GetContent<SpriteFont>("DebugFont"));
