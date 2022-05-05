@@ -16,7 +16,6 @@ namespace Zand
         //public static new GraphicsDevice GraphicsDevice;
         public static ZandContentManager GlobalContent;
         public Scene CurrentScene;
-        public static Config Config = null;
 
         public ushort FPS { get; private set; } = 0;
         private ulong _frameCount;
@@ -54,9 +53,6 @@ namespace Zand
 
         protected override void LoadContent()
         {
-            string jsonString = File.ReadAllText("MicroMarine.config.json");
-            Config = JsonSerializer.Deserialize<Config>(jsonString);
-
             CurrentScene.Load();
             _fpsRenderer = new TextRenderer(CurrentScene.Content.GetContent<SpriteFont>("DebugFont"));
         }

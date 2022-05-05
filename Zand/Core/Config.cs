@@ -1,23 +1,23 @@
 ﻿namespace Zand
 {
-    public class Config
+    public static class Config
     {
         // Physics
-        public float UnitRepelMangitude { get; set; }
+        public const float UnitRepelMangitude = 2.5f;
 
         // Group Movement
-        public int FollowLeaderBaseDistance { get; set; }
-        public float MatchFactor { get; set; }
-        public float CohesionFactor { get; set; }
-        public float ArrivalThreshold { get; set; }
-        public float DestinationFactor { get; set; }
-        public float CohesionVelocityLimit { get; set; }
-        public float AllGroupingTimeLimit { get; set; }
-        public float GroupingTimeLimit { get; set; }
-        public float CirclePackingConst { get; set; }
+        public const int FollowLeaderBaseDistance = 255;
+        public const float MatchFactor = 0.125F;
+        public const float CohesionFactor = 0.5F;
+        public const float ArrivalThreshold = 1.0F;
+        public const float DestinationFactor = 100.0F;
+        public const float CohesionVelocityLimit = 20F;
+        public const float AllGroupingTimeLimit = 0.2F;
+        public const float GroupingTimeLimit = 2.0F;
+        public const float CirclePackingConst = 1.1026577908435840990226529966259F;
 
         // Camera
-        public float CameraSpeed { get; set; }
-        public int CameraEdgeBuffer { get; set; }
+        public const float CameraSpeed = 100.0F;
+        public const int CameraEdgeBuffer = 10;
     }
 }

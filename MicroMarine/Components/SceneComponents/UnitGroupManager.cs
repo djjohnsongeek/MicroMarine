@@ -16,7 +16,6 @@ namespace MicroMarine.Components
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
-            // TODO implement UnitGroup pool
             _unitGroupPool = new Pool<UnitGroup>(100);
             UnitGroups = new List<UnitGroup>(10);
             GroupIds = new HashSet<string>(10);
@@ -44,12 +43,10 @@ namespace MicroMarine.Components
                     GroupIds.Remove(UnitGroups[i].Id);
                     _unitGroupPool.Release(UnitGroups[i]);
                     UnitGroups.RemoveAt(i);
+                    continue;
                 }
 
-                if (UnitGroups.Count != 0)
-                {
-                    UnitGroups[i].Update();
-                }
+                UnitGroups[i].Update();
             }
         }
 

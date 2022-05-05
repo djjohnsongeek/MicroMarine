@@ -39,6 +39,7 @@ namespace MicroMarine.Components.UnitGroups
         {
             Id = null;
             Units.Clear();
+            RemoveStatic(Leader);
             Leader = null;
             Waypoints.Clear();
             CurrentWaypoint = null;
@@ -55,7 +56,6 @@ namespace MicroMarine.Components.UnitGroups
 
         public UnitGroup(List<Entity> units, Vector2 destination)
         {
-            // TODO: use a pool?
             Waypoints = new Queue<Vector2>();
             Waypoints.Enqueue(destination);
             CurrentWaypoint = null;
@@ -84,10 +84,7 @@ namespace MicroMarine.Components.UnitGroups
         {
             Vector2 centerOfMass = GetCenterOfMass();
             float distance = float.MaxValue;
-            if (Leader != null)
-            {
-                RemoveStatic(Leader);
-            }
+            RemoveStatic(Leader);
 
             for (int i = 0; i < Units.Count; i++)
             {
@@ -138,8 +135,8 @@ namespace MicroMarine.Components.UnitGroups
         internal Vector2 GetCohesionVelocity(Entity unit, Vector2 centerOfMass)
         {
             var unitPos = unit.GetComponent<CircleCollider>().Center;
-            Vector2 cohVelocity = (centerOfMass - unitPos) * Core.Config.CohesionFactor;
-            return LimitVelocity(cohVelocity, Core.Config.CohesionVelocityLimit);
+            Vector2 cohVelocity = (centerOfMass - unitPos) * Config.CohesionFactor;
+            return LimitVelocity(cohVelocity, Config.CohesionVelocityLimit);
         }
 
         internal Vector2 GetDestinationVelocity(Entity unit)
@@ -162,12 +159,12 @@ namespace MicroMarine.Components.UnitGroups
             }
 
 
-            return Vector2.Normalize(velocity) * Core.Config.DestinationFactor;
+            return Vector2.Normalize(velocity) * Config.DestinationFactor;
         }
 
         internal Vector2 GetGroupingVelocity(Entity unit)
         {
-            return LimitVelocity(Leader.Position - unit.Position, Core.Config.DestinationFactor);
+            return LimitVelocity(Leader.Position - unit.Position, Config.DestinationFactor);
         }
 
         internal Vector2 LimitVelocity(Vector2 currentVelocity, float maxDistance)
@@ -182,7 +179,7 @@ namespace MicroMarine.Components.UnitGroups
 
         private void SetFollowLeaderDistance()
         {
-            _followLeaderDist = Core.Config.FollowLeaderBaseDistance * Units.Count;
+            _followLeaderDist = Config.FollowLeaderBaseDistance * Units.Count;
         }
 
         public void SetUnitsToRunning()
@@ -203,7 +200,7 @@ namespace MicroMarine.Components.UnitGroups
             int c = Units.Count;
             double r = Math.Pow(Units[0].GetComponent<CircleCollider>().Radius, 2);
 
-            return (float)Math.Sqrt(c * r * Core.Config.CirclePackingConst);
+            return (float)Math.Sqrt(c * r * Config.CirclePackingConst);
         }
 
         internal void SetUnitStatic(Entity unit)
@@ -214,17 +211,18 @@ namespace MicroMarine.Components.UnitGroups
 
         internal void RemoveStatic(Entity unit)
         {
+            if (unit == null) return;
             unit.GetComponent<CircleCollider>().Static = false;
         }
 
         internal bool IsAllGroupingPhase()
         {
-            return GroupingClock < Core.Config.AllGroupingTimeLimit;
+            return GroupingClock < Config.AllGroupingTimeLimit;
         }
 
         internal bool ReachedGroupingTimeLimit()
         {
-            return GroupingClock >= Core.Config.GroupingTimeLimit;
+            return GroupingClock >= Config.GroupingTimeLimit;
         }
 
         internal bool ShouldGroup(float distanceToLeader)

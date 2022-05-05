@@ -51,7 +51,7 @@ namespace MicroMarine.Components.UnitGroups
                 var unitVelocity = _context.GetDestinationVelocity(_context.Units[i]) + _context.GetCohesionVelocity(_context.Units[i], centerOfMass);
 
                 // Check if units has arrived
-                if (leaderDistance <= Core.Config.ArrivalThreshold)
+                if (leaderDistance <= Config.ArrivalThreshold)
                 {
                     unitVelocity = Vector2.Zero;
                     unitState.CurrentState = UnitStates.Idle;
