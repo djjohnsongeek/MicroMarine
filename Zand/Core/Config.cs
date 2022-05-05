@@ -3,7 +3,7 @@
     public static class Config
     {
         // Physics
-        public const float UnitRepelMangitude = 2.5f;
+        public const float UnitRepelMangitude = 3.5f;
 
         // Group Movement
         public const int FollowLeaderBaseDistance = 255;
@@ -17,7 +17,7 @@
         public const float CirclePackingConst = 1.1026577908435840990226529966259F;
 
         // Camera
-        public const float CameraSpeed = 100.0F;
-        public const int CameraEdgeBuffer = 10;
+        public const float ScrollSpeed = 300f;
+        public const int CameraEdgeBuffer = 15;
     }
 }

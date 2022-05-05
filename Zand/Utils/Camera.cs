@@ -12,8 +12,6 @@ namespace Zand
         private Scene _scene;
         private float _rotation = 0.0f;
         private float _zoom = 1.0f;
-        private float _speed = 399.0f;
-        private int _edgeBuffer = 60;
 
         public Camera(Vector2 position, Scene scene, int width = 960, int height = 540)
         {
@@ -80,27 +78,27 @@ namespace Zand
             double dy = 0f;
 
             // left scroll
-            if (Input.MouseScreenPosition.X < _edgeBuffer)
+            if (Input.MouseScreenPosition.X < Config.CameraEdgeBuffer)
             {
-                dx = -(_speed * dt);
+                dx = -(Config.ScrollSpeed * dt);
             }
 
             // right scroll
-            if (Input.MouseScreenPosition.X > Width - _edgeBuffer)
+            if (Input.MouseScreenPosition.X > Width - Config.CameraEdgeBuffer)
             {
-                dx = _speed * dt;
+                dx = Config.ScrollSpeed * dt;
             }
 
             // down scroll
-            if (Input.MouseScreenPosition.Y > Height - _edgeBuffer)
+            if (Input.MouseScreenPosition.Y > Height - Config.CameraEdgeBuffer)
             {
-                dy = _speed * dt;
+                dy = Config.ScrollSpeed * dt;
             }
 
             // scroll up
-            if (Input.MouseScreenPosition.Y < _edgeBuffer)
+            if (Input.MouseScreenPosition.Y < Config.CameraEdgeBuffer)
             {
-                dy = -(_speed * dt);
+                dy = -(Config.ScrollSpeed * dt);
             }
 
             return new Vector2((float)dx, (float)dy);

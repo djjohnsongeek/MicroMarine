@@ -10,7 +10,6 @@ namespace Zand.Physics
     public class PhysicsManager
     {
         private SpatialHash _spatialHash;
-        private const float UnitRepelMangitude = 2.5F;
         private List<Collider> _colliders;
         private List<CircleCollider> _circleColliders;
 
@@ -164,12 +163,12 @@ namespace Zand.Physics
 
         private float GetRepelX(double angle, float power)
         {
-            return (float)Math.Cos(angle) * power * UnitRepelMangitude;
+            return (float)Math.Cos(angle) * power * Config.UnitRepelMangitude;
         }
 
         private float GetRepelY(double angle, float power)
         {
-            return (float)Math.Sin(angle) * power * UnitRepelMangitude;
+            return (float)Math.Sin(angle) * power * Config.UnitRepelMangitude;
         }
     }
 }
