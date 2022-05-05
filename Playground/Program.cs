@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Playground
 {
@@ -8,21 +6,21 @@ namespace Playground
     {
         static void Main(string[] args)
         {
-            int[] list1 = new int[] { 3, 2, 8, 9 };
-            int[] list2 = new int[] { 3, 8, 9, 2 };
+            int[] list1 = new int[] { 3, 7, 8, 6 };
+            int[] list2 = new int[] { 2, 8, 8, 5 };
 
-
-            var bitArray1 = new BitArray(list1);
-            var bitArray2 = new BitArray(list2);
-
-
-            Console.WriteLine($"Hash: {GetHash(bitArray1)}");
-            Console.WriteLine($"Hash: {GetHash(bitArray2)}");
+            Console.WriteLine($"Hash: {GetHash(list1)}");
+            Console.WriteLine($"Hash: {GetHash(list2)}");
         }
 
-        private static int GetHash(BitArray bits)
+        private static int GetHash(int[] nums)
         {
-            return bits.GetHashCode();
+            int n = nums[0];
+            for (int i = 0; i < nums.Length; i++)
+            {
+                n -= nums[i];
+            }
+            return n;
         }
     }
 }
