@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using Zand;
 using Zand.AI;
 using Zand.ECS.Components;
+using Zand.Utils;
 
 namespace MicroMarine.Components.UnitGroups
 {
-    public class UnitGroup
+    public class UnitGroup : IPoolable
     {
         // JUST FOR DEBUG
         public Scene _scene;
@@ -24,6 +25,34 @@ namespace MicroMarine.Components.UnitGroups
         private float _followLeaderDist = 0;
         private StateMachine<UnitGroup> _stateMachine;
 
+        public UnitGroup()
+        {
+            Waypoints = new Queue<Vector2>();
+            CurrentWaypoint = null;
+            Leader = null;
+            Units = new List<Entity>();
+            InitStates();
+            _stateMachine.SetInitialState<Idle>();
+        }
+
+        public void Reset()
+        {
+            Id = null;
+            Units.Clear();
+            Leader = null;
+            Waypoints.Clear();
+            CurrentWaypoint = null;
+            GroupingClock = 0;
+            StopDistance = 0;
+            _followLeaderDist = 0;
+            _stateMachine.ChangeState<Idle>();
+        }
+
+        public void SetStateToMoving()
+        {
+            _stateMachine.ChangeState<Moving>();
+        }
+
         public UnitGroup(List<Entity> units, Vector2 destination)
         {
             // TODO: use a pool?
@@ -39,13 +68,16 @@ namespace MicroMarine.Components.UnitGroups
             Units = units;
             Leader = null;
             AssignNewLeader();
+            InitStates();
+            _stateMachine.SetInitialState<Moving>();
+        }
 
-            // Init states
+        private void InitStates()
+        {
             _stateMachine = new StateMachine<UnitGroup>(this);
             _stateMachine.AddState(new Idle());
             _stateMachine.AddState(new Moving());
             _stateMachine.AddState(new Grouping());
-            _stateMachine.SetInitialState<Moving>();
         }
 
         public void AssignNewLeader()
