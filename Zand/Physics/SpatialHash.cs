@@ -9,14 +9,14 @@ namespace Zand.Physics
     class SpatialHash
     {
         private Dictionary<long, List<CircleCollider>> _grid;
-        private Dictionary<uint, List<long>> _entityCoordinates;
+        private Dictionary<int, List<long>> _entityCoordinates;
         private double _conversionFactor;
 
         public SpatialHash(int cellSize)
         {
             _conversionFactor = 1d / cellSize;
             _grid = new Dictionary<long, List<CircleCollider>>(1000);
-            _entityCoordinates = new Dictionary<uint, List<long>>();
+            _entityCoordinates = new Dictionary<int, List<long>>();
         }
 
         public IReadOnlyCollection<CircleCollider> GetNearby(Vector2 position)
@@ -61,7 +61,7 @@ namespace Zand.Physics
             }
         }
 
-        private void SaveEntityCellCoords(uint id, long cellHash)
+        private void SaveEntityCellCoords(int id, long cellHash)
         {
             if (!_entityCoordinates.ContainsKey(id))
             {

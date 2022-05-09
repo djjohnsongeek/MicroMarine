@@ -4,13 +4,14 @@ using Zand;
 using Zand.ECS.Components;
 using MicroMarine.Components.UnitGroups;
 using Zand.Utils;
+using System.Collections;
 
 namespace MicroMarine.Components
 {
     public class UnitGroupManager : SceneComponent
     {
         private List<UnitGroup> UnitGroups;
-        private HashSet<string> GroupIds;
+        private HashSet<BitArray> GroupIds;
         private List<UnitGroup> AffectedGroups;
         private Pool<UnitGroup> _unitGroupPool;
 
@@ -18,7 +19,7 @@ namespace MicroMarine.Components
         {
             _unitGroupPool = new Pool<UnitGroup>(100);
             UnitGroups = new List<UnitGroup>(10);
-            GroupIds = new HashSet<string>(10);
+            GroupIds = new HashSet<BitArray>(10);
             AffectedGroups = new List<UnitGroup>(10);
         }
 
@@ -54,7 +55,7 @@ namespace MicroMarine.Components
         {
             List<Entity> units = Scene.GetComponent<UnitSelector>().GetSelectedUnits();
             Vector2 destination = Scene.Camera.GetWorldLocation(Input.MouseScreenPosition);
-            string groupId = GetGroupId(units);
+            BitArray groupId = GetGroupId(units);
 
             if (GroupIds.Contains(groupId))
             {
@@ -66,7 +67,7 @@ namespace MicroMarine.Components
             }
         }
 
-        private void RegisterNewGroup(string groupId, List<Entity> units, Vector2 destination)
+        private void RegisterNewGroup(BitArray groupId, List<Entity> units, Vector2 destination)
         {
             UnitGroup group = _unitGroupPool.ObtainItem();
             group.Id = groupId;
@@ -82,7 +83,7 @@ namespace MicroMarine.Components
             group._scene = Scene;
         }
 
-        private void ReuseUnitGroup(string groupId, Vector2 destination)
+        private void ReuseUnitGroup(BitArray groupId, Vector2 destination)
         {
             UnitGroup group = GetUnitGroupById(groupId);
             if (Input.RightShiftClickOccured())
@@ -129,21 +130,18 @@ namespace MicroMarine.Components
             AffectedGroups.Clear();
         }
 
-        private string GetGroupId(List<Entity> entities)
+        private BitArray GetGroupId(List<Entity> entities)
         {
-            // TODO hash with prime numbrtd
-            // or bit map
-            entities.Sort(CompareEntites);
-            var builder = new System.Text.StringBuilder();
-            for (int i = 0; i < entities.Count; i ++)
+            int[] ids = new int[entities.Count];
+            for (int i = 0; i < entities.Count; i++)
             {
-                builder.Append(entities[i].Id);
+                ids[i] = entities[i].Id;
             }
 
-            return builder.ToString();
+            return new BitArray(ids);
         }
 
-        private UnitGroup GetUnitGroupById(string id)
+        private UnitGroup GetUnitGroupById(BitArray id)
         {
             for (int i = 0; i < UnitGroups.Count; i++)
             {

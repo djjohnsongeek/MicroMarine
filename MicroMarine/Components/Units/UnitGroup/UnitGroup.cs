@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Zand;
 using Zand.AI;
@@ -14,7 +15,7 @@ namespace MicroMarine.Components.UnitGroups
         public Scene _scene;
         //
 
-        public string Id;
+        public BitArray Id;
         public List<Entity> Units;
         public Entity Leader = null;
         public Queue<Vector2> Waypoints;
