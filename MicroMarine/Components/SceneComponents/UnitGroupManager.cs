@@ -132,13 +132,13 @@ namespace MicroMarine.Components
 
         private BitArray GetGroupId(List<Entity> entities)
         {
-            int[] ids = new int[entities.Count];
+            BitArray groupId = new BitArray(500, false);
             for (int i = 0; i < entities.Count; i++)
             {
-                ids[i] = entities[i].Id;
+                groupId[entities[i].Id] = true;
             }
 
-            return new BitArray(ids);
+            return groupId;
         }
 
         private UnitGroup GetUnitGroupById(BitArray id)
