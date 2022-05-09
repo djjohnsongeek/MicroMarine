@@ -74,7 +74,13 @@ namespace Playground.Tests
 
         private static BitArray GetBitArrayId(int[] unitsIds)
         {
-            return new BitArray(unitsIds);
+            var bits = new BitArray(unitsPerGroup);
+            for (int i = 0; i < unitsIds.Length; i++)
+            {
+                bits[unitsIds[i]] = true;
+            }
+
+            return bits;
         }
     }
 }

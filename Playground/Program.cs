@@ -7,6 +7,7 @@ namespace Playground
     {
         static void Main(string[] args)
         {
+            BitArrayIdentifier.Test();
             Profiler.StringIdCreationTest();
             Profiler.BitArrayIdCreationTests();
         }
