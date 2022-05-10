@@ -132,6 +132,7 @@ namespace MicroMarine.Components
 
         private BitArray GetGroupId(List<Entity> entities)
         {
+            // TODO add a pool for bit arrays too?
             var groupId = new BitArray(Config.UnitGroupIdLength, false);
             for (int i = 0; i < entities.Count; i++)
             {
