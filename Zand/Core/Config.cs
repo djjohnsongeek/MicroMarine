@@ -15,6 +15,7 @@
         public const float AllGroupingTimeLimit = 0.2F;
         public const float GroupingTimeLimit = 2.0F;
         public const float CirclePackingConst = 1.1026577908435840990226529966259F;
+        public const int UnitGroupIdLength = 500;
 
         // Camera
         public const float ScrollSpeed = 300f;
