@@ -5,13 +5,13 @@ using Zand.ECS.Components;
 using MicroMarine.Components.UnitGroups;
 using Zand.Utils;
 using System.Collections;
+using MicroMarine.Extensions;
 
 namespace MicroMarine.Components
 {
     public class UnitGroupManager : SceneComponent
     {
         private List<UnitGroup> UnitGroups;
-        private HashSet<BitArray> GroupIds;
         private List<UnitGroup> AffectedGroups;
         private Pool<UnitGroup> _unitGroupPool;
 
@@ -19,7 +19,6 @@ namespace MicroMarine.Components
         {
             _unitGroupPool = new Pool<UnitGroup>(100);
             UnitGroups = new List<UnitGroup>(10);
-            GroupIds = new HashSet<BitArray>(10);
             AffectedGroups = new List<UnitGroup>(10);
         }
 
@@ -41,7 +40,6 @@ namespace MicroMarine.Components
                 // Cull empty or stale unit groups
                 if (UnitGroups[i].IsStale())
                 {
-                    GroupIds.Remove(UnitGroups[i].Id);
                     _unitGroupPool.Release(UnitGroups[i]);
                     UnitGroups.RemoveAt(i);
                     continue;
@@ -56,10 +54,11 @@ namespace MicroMarine.Components
             List<Entity> units = Scene.GetComponent<UnitSelector>().GetSelectedUnits();
             Vector2 destination = Scene.Camera.GetWorldLocation(Input.MouseScreenPosition);
             BitArray groupId = GetGroupId(units);
+            UnitGroup matchingGroup = GetUnitGroupById(groupId);
 
-            if (GroupIds.Contains(groupId))
+            if (matchingGroup != null)
             {
-                ReuseUnitGroup(groupId, destination);
+                ReuseUnitGroup(matchingGroup, destination);
             }
             else
             {
@@ -78,14 +77,13 @@ namespace MicroMarine.Components
             StealUnits(group);
 
             UnitGroups.Add(group);
-            GroupIds.Add(group.Id);
+
             // really only for debug
             group._scene = Scene;
         }
 
-        private void ReuseUnitGroup(BitArray groupId, Vector2 destination)
+        private void ReuseUnitGroup(UnitGroup group, Vector2 destination)
         {
-            UnitGroup group = GetUnitGroupById(groupId);
             if (Input.RightShiftClickOccured())
             {
                 group.Waypoints.Enqueue(destination);
@@ -122,9 +120,7 @@ namespace MicroMarine.Components
             for (int i = 0; i < AffectedGroups.Count; i++)
             {
                 AffectedGroups[i].AssignNewLeader();
-                GroupIds.Remove(AffectedGroups[i].Id);
                 AffectedGroups[i].Id = GetGroupId(AffectedGroups[i].Units);
-                GroupIds.Add(AffectedGroups[i].Id);
             }
 
             AffectedGroups.Clear();
@@ -145,7 +141,7 @@ namespace MicroMarine.Components
         {
             for (int i = 0; i < UnitGroups.Count; i++)
             {
-                if (UnitGroups[i].Id == id)
+                if (id.IsEqual(UnitGroups[i].Id))
                 {
                     return UnitGroups[i];
                 }
