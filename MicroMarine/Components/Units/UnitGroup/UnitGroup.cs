@@ -50,7 +50,7 @@ namespace MicroMarine.Components.UnitGroups
             _stateMachine.ChangeState<Idle>();
         }
 
-        public void PrepareGroup(BitArray groupId, List<Entity> units, Vector2 destination)
+        public void Setup(BitArray groupId, List<Entity> units, Vector2 destination)
         {
             Id = groupId;
             Units = units;
