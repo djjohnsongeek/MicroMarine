@@ -14,7 +14,7 @@
         public const float CohesionVelocityLimit = 20F;
         public const float AllGroupingTimeLimit = 0.2F;
         public const float GroupingTimeLimit = 2.0F;
-        public const float CirclePackingConst = 1.1026577908435840990226529966259F;
+        public const float CirclePackingConst = 1.10265779F;
         public const int UnitGroupIdLength = 500;
         public const int MinimumStopDistance = 19;
         public const int MaxGroupingSize = 3;
