@@ -98,21 +98,24 @@ namespace MicroMarine.Components
 
         private void StealUnits(UnitGroup group)
         {
-            // A rather nieve implementation
             for (int i = 0; i < group.Units.Count; i ++)
             {
-                for (int j = 0; j < UnitGroups.Count; j++)
-                {
-                    if (UnitGroups[j].Units.Contains(group.Units[i]))
-                    {
-                        UnitGroups[j].Units.Remove(group.Units[i]);
-                        AffectedGroups.Add(UnitGroups[j]);
-                        break;
-                    }
-                }
+                StealUnit(group.Units[i]);
             }
 
             UpdateAffectedGroups();
+        }
+
+        private void StealUnit(Entity unit)
+        {
+            for (int i = 0; i < UnitGroups.Count; i++)
+            {
+                if (UnitGroups[i].Units.Remove(unit))
+                {
+                    AffectedGroups.Add(UnitGroups[i]);
+                    return;
+                }
+            }
         }
 
         private void UpdateAffectedGroups()
@@ -128,7 +131,7 @@ namespace MicroMarine.Components
 
         private BitArray GetGroupId(List<Entity> entities)
         {
-            BitArray groupId = new BitArray(500, false);
+            var groupId = new BitArray(Config.UnitGroupIdLength, false);
             for (int i = 0; i < entities.Count; i++)
             {
                 groupId[entities[i].Id] = true;
@@ -148,23 +151,6 @@ namespace MicroMarine.Components
             }
 
             return null;
-        }
-
-        private static int CompareEntites(Entity x, Entity y)
-        {
-            if (x.Id == y.Id)
-            {
-                return 0;
-            }
-
-            if (x.Id > y.Id)
-            {
-                return 1;
-            }
-            else
-            {
-                return -1;
-            }
         }
     }
 }
