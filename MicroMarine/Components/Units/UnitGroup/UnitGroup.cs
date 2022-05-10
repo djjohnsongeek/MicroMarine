@@ -202,9 +202,9 @@ namespace MicroMarine.Components.UnitGroups
 
         internal float GetStopDistance()
         {
-            if (Units.Count < 4)
+            if (Units.Count <= Config.MaxGroupingSize)
             {
-                return 19;
+                return Config.MinimumStopDistance;
             }
 
             int c = Units.Count;
@@ -223,6 +223,11 @@ namespace MicroMarine.Components.UnitGroups
         {
             if (unit == null) return;
             unit.GetComponent<CircleCollider>().Static = false;
+        }
+
+        internal bool RemoveUnit(Entity unit)
+        {
+            return Units.Remove(unit);
         }
 
         internal bool IsAllGroupingPhase()

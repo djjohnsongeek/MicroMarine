@@ -111,7 +111,7 @@ namespace MicroMarine.Components
         {
             for (int i = 0; i < newGroupUnits.Count; i++)
             {
-                if (currentGroup.Units.Remove(newGroupUnits[i]))
+                if (currentGroup.RemoveUnit(newGroupUnits[i]))
                 {
                     AffectedGroups.Add(currentGroup);
                 }
