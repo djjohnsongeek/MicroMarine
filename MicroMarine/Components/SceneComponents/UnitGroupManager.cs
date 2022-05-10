@@ -74,7 +74,7 @@ namespace MicroMarine.Components
         private void RegisterNewGroup(BitArray groupId, List<Entity> units, Vector2 destination)
         {
             UnitGroup newGroup = _unitGroupPool.ObtainItem();
-            newGroup.PrepareGroup(groupId, units, destination);
+            newGroup.Setup(groupId, units, destination);
 
             StealUnits(newGroup);
             UnitGroups.Add(newGroup);
@@ -97,24 +97,23 @@ namespace MicroMarine.Components
             }
         }
 
-        private void StealUnits(UnitGroup group)
+        private void StealUnits(UnitGroup newGroup)
         {
-            for (int i = 0; i < group.Units.Count; i ++)
+            for (int i = 0; i < UnitGroups.Count; i++)
             {
-                StealUnit(group.Units[i]);
+                RemoveUnits(UnitGroups[i], newGroup.Units);
             }
 
             UpdateAffectedGroups();
         }
 
-        private void StealUnit(Entity unit)
+        private void RemoveUnits(UnitGroup currentGroup, List<Entity> newGroupUnits)
         {
-            for (int i = 0; i < UnitGroups.Count; i++)
+            for (int i = 0; i < newGroupUnits.Count; i++)
             {
-                if (UnitGroups[i].Units.Remove(unit))
+                if (currentGroup.Units.Remove(newGroupUnits[i]))
                 {
-                    AffectedGroups.Add(UnitGroups[i]);
-                    return;
+                    AffectedGroups.Add(currentGroup);
                 }
             }
         }
