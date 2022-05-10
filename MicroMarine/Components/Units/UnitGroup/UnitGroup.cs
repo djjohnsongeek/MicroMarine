@@ -38,16 +38,25 @@ namespace MicroMarine.Components.UnitGroups
 
         public void Reset()
         {
-            Id = null;
             Units.Clear();
             RemoveStatic(Leader);
-            Leader = null;
             Waypoints.Clear();
             CurrentWaypoint = null;
+            Id = null;
+            _scene = null;
             GroupingClock = 0;
             StopDistance = 0;
             _followLeaderDist = 0;
             _stateMachine.ChangeState<Idle>();
+        }
+
+        public void PrepareGroup(BitArray groupId, List<Entity> units, Vector2 destination)
+        {
+            Id = groupId;
+            Units = units;
+            Waypoints.Enqueue(destination);
+            SetStateToMoving();
+            AssignNewLeader();
         }
 
         public void SetStateToMoving()

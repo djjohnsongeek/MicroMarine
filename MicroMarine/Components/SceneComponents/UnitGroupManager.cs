@@ -37,16 +37,21 @@ namespace MicroMarine.Components
             
             for (int i = UnitGroups.Count - 1; i >= 0; i--)
             {
-                // Cull empty or stale unit groups
                 if (UnitGroups[i].IsStale())
                 {
-                    _unitGroupPool.Release(UnitGroups[i]);
-                    UnitGroups.RemoveAt(i);
-                    continue;
+                    CullUnitGroup(i, UnitGroups[i]);
                 }
-
-                UnitGroups[i].Update();
+                else
+                {
+                    UnitGroups[i].Update();
+                }
             }
+        }
+
+        private void CullUnitGroup(int index, UnitGroup group)
+        {
+            _unitGroupPool.Release(group);
+            UnitGroups.RemoveAt(index);
         }
 
         private void CreateOrAssignUnitGroup()
@@ -68,18 +73,14 @@ namespace MicroMarine.Components
 
         private void RegisterNewGroup(BitArray groupId, List<Entity> units, Vector2 destination)
         {
-            UnitGroup group = _unitGroupPool.ObtainItem();
-            group.Id = groupId;
-            group.Units = units;
-            group.Waypoints.Enqueue(destination);
-            group.SetStateToMoving();
-            group.AssignNewLeader();
-            StealUnits(group);
+            UnitGroup newGroup = _unitGroupPool.ObtainItem();
+            newGroup.PrepareGroup(groupId, units, destination);
 
-            UnitGroups.Add(group);
+            StealUnits(newGroup);
+            UnitGroups.Add(newGroup);
 
             // really only for debug
-            group._scene = Scene;
+            newGroup._scene = Scene;
         }
 
         private void ReuseUnitGroup(UnitGroup group, Vector2 destination)
