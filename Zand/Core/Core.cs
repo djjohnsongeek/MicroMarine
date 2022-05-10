@@ -80,9 +80,10 @@ namespace Zand
             base.Draw(gameTime);
             // TODO: Add your drawing code here
             CurrentScene.Draw();
-            DrawFPS();
-
             timer.Stop();
+
+            // At the time of writing, these two lines make up the majority of allocations that needs to be collected by the GC
+            DrawFPS();
             Window.Title = $"MicroMarine - ms: {timer.ElapsedMilliseconds}";
         }
         #endregion
