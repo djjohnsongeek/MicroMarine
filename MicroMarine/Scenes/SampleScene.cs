@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Zand;
 using MicroMarine.Components;
+using Zand.ECS.Components.EntityComponents;
+using Zand.Assets;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MicroMarine.Scenes
 
@@ -32,15 +35,22 @@ namespace MicroMarine.Scenes
             SceneComponents.AddComponent(new UnitGroupManager(this));
 
             //Add Entities
-            for (int y = 0; y < marineRows * spacing; y += spacing)
+            for (int y = 10; y < marineRows * spacing; y += spacing)
             {
-                for (int x = 0; x < marineCols * spacing; x += spacing)
+                for (int x = 10; x < marineCols * spacing; x += spacing)
                 {
                     Entity marine = CreateEntity("marine", new Vector2(x, y));
                     marine.AddComponent(new Marine());
                     unitSelector.AddUnit(marine);
                 }
             }
+
+            Entity tileMapEntity = CreateEntity("tileMap", Vector2.Zero);
+            Texture2D mapTexture = this.Content.LoadTexture("mapSheet", "Content/grassSheet32.png");
+            var mapSpriteSheet = new SpriteSheet(mapTexture, 32, 32);
+            var map = new TileMap(32, new Point(60, 60), mapSpriteSheet);
+            map.GenerateMap();
+            tileMapEntity.AddComponent(new TileMapComponent(map));
         }
 
         public override void Update()
