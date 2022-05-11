@@ -19,7 +19,7 @@ namespace Zand.ECS.Components.EntityComponents
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            _map.Draw(spriteBatch);
+            _map.Draw(spriteBatch, Scene.Camera);
         }
     }
 }
