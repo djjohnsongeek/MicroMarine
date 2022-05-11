@@ -78,7 +78,6 @@ namespace Zand
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             base.Draw(gameTime);
-            // TODO: Add your drawing code here
             CurrentScene.Draw();
             timer.Stop();
 
