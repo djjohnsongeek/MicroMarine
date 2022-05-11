@@ -22,5 +22,9 @@
         // Camera
         public const float ScrollSpeed = 300f;
         public const int CameraEdgeBuffer = 15;
+
+        // Map
+        public const int MapWidth = 200;
+        public const int MapHeight = 200;
     }
 }
