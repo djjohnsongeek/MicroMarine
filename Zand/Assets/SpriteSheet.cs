@@ -44,6 +44,13 @@ namespace Zand.Assets
             return frames;
         }
 
+        public Rectangle GetFrame(int index)
+        {
+            return _sprites[index];
+        }
+
+        public Texture2D Texture => _texture;
+
         private Rectangle[] ParseSprites(int spriteWidth, int spriteHeight)
         {
             // This is a pretty fragile method that expects square sprite sheets, no padding, and exact demensions
