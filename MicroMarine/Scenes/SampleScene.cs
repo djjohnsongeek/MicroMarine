@@ -50,7 +50,7 @@ namespace MicroMarine.Scenes
             var mapSpriteSheet = new SpriteSheet(mapTexture, 32, 32);
             var map = new TileMap(32, new Point(60, 60), mapSpriteSheet);
             map.GenerateMap();
-            tileMapEntity.AddComponent(new TileMapComponent(map));
+            tileMapEntity.AddComponent(new TileMapRenderer(map));
         }
 
         public override void Update()

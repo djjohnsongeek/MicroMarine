@@ -8,11 +8,11 @@ using Zand.Assets;
 
 namespace Zand.ECS.Components.EntityComponents
 {
-    public class TileMapComponent : Component, IRenderable
+    public class TileMapRenderer : Component, IRenderable
     {
         private readonly TileMap _map;
 
-        public TileMapComponent(TileMap map)
+        public TileMapRenderer(TileMap map)
         {
             _map = map;
         }

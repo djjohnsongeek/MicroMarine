@@ -41,18 +41,19 @@ namespace Zand.Assets
 
         public void Draw(SpriteBatch sbatch)
         {
-            int xPos = 0;
-            int yPos = 0;
-            for (int yIndex = 0; yIndex < _visualMap.Length; yIndex++)
+            (Point min, Point max) cullingBounds = GetCullingBounds();
+            for (int yIndex = cullingBounds.min.Y; yIndex < cullingBounds.max.Y; yIndex++)
             {
-                for (int xIndex = 0; xIndex < _visualMap[yIndex].Length; xIndex++)
+                for (int xIndex = cullingBounds.min.X; xIndex < cullingBounds.max.X; xIndex++)
                 {
-                    sbatch.Draw(_spriteSheet.Texture, new Vector2(xPos, yPos), _spriteSheet.GetFrame(_visualMap[yIndex][xIndex]), Color.White);
-                    xPos += _tileSize;
+                    sbatch.Draw(_spriteSheet.Texture, new Vector2(xIndex * _tileSize, yIndex * _tileSize), _spriteSheet.GetFrame(_visualMap[yIndex][xIndex]), Color.White);
                 }
-                xPos = 0;
-                yPos += _tileSize;
             }
+        }
+
+        public (Point minIndex, Point maxIndex) GetCullingBounds()
+        {
+            return (new Point(2, 0), new Point(60, 60));
         }
     }
 }
