@@ -42,13 +42,11 @@ namespace Zand.Assets
         public void Draw(SpriteBatch sbatch, Camera camera)
         {
             (Point min, Point max) cullingBounds = GetCullingBounds(camera);
-            int count = 0;
             for (int yIndex = cullingBounds.min.Y; yIndex < cullingBounds.max.Y; yIndex++)
             {
                 for (int xIndex = cullingBounds.min.X; xIndex < cullingBounds.max.X; xIndex++)
                 {
                     sbatch.Draw(_spriteSheet.Texture, new Vector2(xIndex * _tileSize, yIndex * _tileSize), _spriteSheet.GetFrame(_visualMap[yIndex][xIndex]), Color.White);
-                    count++;
                 }
             }
         }
