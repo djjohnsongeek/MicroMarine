@@ -45,6 +45,8 @@ namespace MicroMarine.Scenes
                 }
             }
 
+
+            // initiate tile map
             Entity tileMapEntity = CreateEntity("tileMap", Vector2.Zero);
             Texture2D mapTexture = this.Content.LoadTexture("mapSheet", "Content/grassSheet32.png");
             var mapSpriteSheet = new SpriteSheet(mapTexture, 32, 32);
