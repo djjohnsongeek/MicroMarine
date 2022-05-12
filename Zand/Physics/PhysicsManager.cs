@@ -96,6 +96,11 @@ namespace Zand.Physics
 
         private CollisionResult ResolveCollision(CircleCollider circle, BoxCollider box)
         {
+            CollisionResult result = new CollisionResult
+            {
+                SafeDistance = circle.Radius
+            };
+
             float testX = circle.Center.X;
             float testY = box.Center.Y;
 
@@ -119,8 +124,16 @@ namespace Zand.Physics
 
             float distanceX = circle.Center.X - testX;
             float distanceY = circle.Center.Y - testY;
+            result.Distance = Vector2.Distance(circle.Center, new Vector2(distanceX, distanceY));
+            result.Angle = GetAngle(circle, box);
+            result.Collides = result.Distance < result.SafeDistance;
+            result.SetRepelStrength();
+            return result;
+        }
 
-            bool collides = Vector2.Distance(circle.Center, new Vector2(distanceX, distanceY)) < circle.Radius;
+        private CollisionResult ResolveCollision(BoxCollider box, CircleCollider circle)
+        {
+            return ResolveCollision(circle, box);
         }
 
         private float GetAngle(Collider collider1, Collider collider2)
