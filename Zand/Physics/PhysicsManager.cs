@@ -94,6 +94,35 @@ namespace Zand.Physics
             return result;
         }
 
+        private CollisionResult ResolveCollision(CircleCollider circle, BoxCollider box)
+        {
+            float testX = circle.Center.X;
+            float testY = box.Center.Y;
+
+            if (circle.Center.X > box.HitBox.X)
+            {
+                testX = box.HitBox.Right;
+            }
+            else if (circle.Center.X < box.HitBox.X)
+            {
+                testX = box.HitBox.Left;
+            }
+
+            if (circle.Center.Y > box.HitBox.Y)
+            {
+                testY = box.HitBox.Bottom;
+            }
+            else if (circle.Center.Y < box.HitBox.Y)
+            {
+                testY = box.HitBox.Top;
+            }
+
+            float distanceX = circle.Center.X - testX;
+            float distanceY = circle.Center.Y - testY;
+
+            bool collides = Vector2.Distance(circle.Center, new Vector2(distanceX, distanceY)) < circle.Radius;
+        }
+
         private float GetAngle(Collider collider1, Collider collider2)
         {
             var angle =  (float)Math.Atan2(
