@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Zand.Physics
 {
-    struct CollisionResult
+    public struct CollisionResult
     {
         public bool Collides;
         public float Distance;

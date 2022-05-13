@@ -4,7 +4,7 @@ using Zand.Physics;
 
 namespace Zand.ECS.Components
 {
-    public class Collider : Component, IUpdateable
+    public abstract class Collider : Component, IUpdateable
     {
         public bool Static = false;
         public Vector2 Origin;

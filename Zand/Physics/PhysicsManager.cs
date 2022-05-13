@@ -76,95 +76,22 @@ namespace Zand.Physics
         {
             if (collider1 is CircleCollider && collider2 is CircleCollider)
             {
-                return TestCollision(collider1 as CircleCollider, collider2 as CircleCollider);
+                return Collisions.CircleToCircle(collider1 as CircleCollider, collider2 as CircleCollider);
             }
             else if (collider1 is BoxCollider && collider2 is BoxCollider)
             {
-                return TestCollision(collider1 as BoxCollider, collider2 as BoxCollider);
+                return Collisions.BoxToBox(collider1 as BoxCollider, collider2 as BoxCollider);
             }
             else if (collider1 is BoxCollider)
             {
-                return TestCollision(collider1 as BoxCollider, collider2 as CircleCollider);
+                return Collisions.BoxToCircle(collider1 as BoxCollider, collider2 as CircleCollider);
             }
             else
             {
-                return TestCollision(collider1 as CircleCollider, collider2 as BoxCollider);
+                return Collisions.CircleToBox(collider1 as CircleCollider, collider2 as BoxCollider);
             }
         }
 
-        private CollisionResult TestCollision(CircleCollider collider1, CircleCollider collider2)
-        {
-            var result = new CollisionResult
-            {
-                SafeDistance = collider1.Radius + collider2.Radius,
-                Distance = Vector2.Distance(collider1.Entity.ScreenPosition, collider2.Entity.ScreenPosition),
-                Angle = GetAngle(collider1, collider2)
-            };
-
-            result.Collides = result.Distance <= result.SafeDistance;
-            result.SetRepelStrength();
-
-            return result;
-        }
-
-        private CollisionResult TestCollision(CircleCollider circle, BoxCollider box)
-        {
-            CollisionResult result = new CollisionResult
-            {
-                SafeDistance = circle.Radius
-            };
-
-            float testX = circle.Center.X;
-            float testY = box.Center.Y;
-
-            if (circle.Center.X > box.HitBox.X)
-            {
-                testX = box.HitBox.Right;
-            }
-            else if (circle.Center.X < box.HitBox.X)
-            {
-                testX = box.HitBox.Left;
-            }
-
-            if (circle.Center.Y > box.HitBox.Y)
-            {
-                testY = box.HitBox.Bottom;
-            }
-            else if (circle.Center.Y < box.HitBox.Y)
-            {
-                testY = box.HitBox.Top;
-            }
-
-            float distanceX = circle.Center.X - testX;
-            float distanceY = circle.Center.Y - testY;
-            result.Distance = Vector2.Distance(circle.Center, new Vector2(distanceX, distanceY));
-            result.Angle = GetAngle(circle, box);
-            result.Collides = result.Distance < result.SafeDistance;
-            result.SetRepelStrength();
-            return result;
-        }
-
-        private CollisionResult TestCollision(BoxCollider box, CircleCollider circle)
-        {
-            return TestCollision(circle, box);
-        }
-
-        private CollisionResult TestCollision(BoxCollider box1, BoxCollider box2)
-        {
-            return new CollisionResult
-            {
-                Collides = false,
-            };
-        }
-
-        private float GetAngle(Collider collider1, Collider collider2)
-        {
-            var angle =  (float)Math.Atan2(
-                collider1.Entity.Position.Y - collider2.Entity.Position.Y,
-                collider1.Entity.Position.X - collider2.Entity.Position.X);
-
-            return angle;
-        }
 
         private void ApplyRepel(Entity entity1, Entity entity2, CollisionResult collision)
         {
