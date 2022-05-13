@@ -34,7 +34,7 @@ namespace Zand.Assets
             {
                for (int x = 0; x < _visualMap[y].Length; x++)
                 {
-                    _visualMap[y][x] = rand.Next(0, 55);
+                    _visualMap[y][x] = rand.Next(0, 64);
                 }
             }
         }
