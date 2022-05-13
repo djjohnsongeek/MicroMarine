@@ -15,8 +15,6 @@ namespace MicroMarine.Components
         {
             Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
             Entity.AddComponent(new Health(100));
-            //Entity.AddComponent(new WaypointNav());
-            //Entity.AddComponent(new WaypointMovement(100));
             Entity.AddComponent(new Mover(100));
 
             Texture2D marineSheet = Scene.Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
