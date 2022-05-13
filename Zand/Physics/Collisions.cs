@@ -31,18 +31,6 @@ namespace Zand.Physics
 
         #region Rectangles
 
-        public static bool RectangleToPoint(Rectangle rectangle, Vector2 point)
-        {
-            return
-                point.X >= rectangle.X && point.X <= (rectangle.X + rectangle.Width)
-                &&
-                point.Y >= rectangle.Y && point.Y <= (rectangle.Y + rectangle.Height);
-        }
-
-        public static bool RectangleToPoint(Rectangle rectangle, Point point)
-        {
-            return RectangleToPoint(rectangle, point.ToVector2());
-        }
 
         #endregion
     }

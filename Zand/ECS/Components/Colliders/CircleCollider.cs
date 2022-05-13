@@ -1,9 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Zand.Physics;
 
 namespace Zand.ECS.Components
 {
-    public class CircleCollider : Collider
+    public class CircleCollider : Collider, ICollider
     {
         public float Radius;
         private Texture2D _texture;
@@ -20,6 +21,11 @@ namespace Zand.ECS.Components
             Origin = new Vector2(radius, radius);
             Offset = offset;
         }
+
+        public Vector2 TopLeft => new Vector2(Center.X - Radius, Center.Y - Radius);
+        public Vector2 TopRight => new Vector2(Center.X + Radius, Center.Y - Radius);
+        public Vector2 BottomLeft => new Vector2(Center.X - Radius, Center.Y + Radius);
+        public Vector2 BottomRight => new Vector2(Center.X + Radius, Center.Y + Radius);
 
 
         public override void Draw(SpriteBatch sbatch)

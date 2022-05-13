@@ -8,49 +8,41 @@ namespace Zand.Physics
 {
     class SpatialHash
     {
-        private Dictionary<long, List<CircleCollider>> _grid;
+        private Dictionary<long, List<ICollider>> _grid;
         private Dictionary<int, List<long>> _entityCoordinates;
         private double _conversionFactor;
 
         public SpatialHash(int cellSize)
         {
             _conversionFactor = 1d / cellSize;
-            _grid = new Dictionary<long, List<CircleCollider>>(1000);
+            _grid = new Dictionary<long, List<ICollider>>(1000);
             _entityCoordinates = new Dictionary<int, List<long>>();
         }
 
-        public IReadOnlyCollection<CircleCollider> GetNearby(Vector2 position)
+        public IReadOnlyCollection<ICollider> GetNearby(Vector2 position)
         {
             long cellHash = GetCellHash(position);
             if (!CellExists(cellHash))
             {
-                return new Collection<CircleCollider>();
+                return new Collection<ICollider>();
             }
             return _grid[cellHash];
         }
 
-        public void AddCollider(CircleCollider collider)
+        public void AddCollider(ICollider collider)
         {
-            // store pos to reduce excess math
-            Vector2 pos = collider.Center;
-
-            Vector2 bottomRight = new Vector2(pos.X + collider.Radius, pos.Y + collider.Radius);
-            Vector2 topLeft = new Vector2(pos.X - collider.Radius, pos.Y - collider.Radius);
-            Vector2 topRight = new Vector2(bottomRight.X, topLeft.Y);
-            Vector2 bottomLeft = new Vector2(topLeft.X, bottomRight.Y);
-
-            AddToCell(GetCellHash(bottomRight), collider);
-            AddToCell(GetCellHash(topLeft), collider);
-            AddToCell(GetCellHash(topRight), collider);
-            AddToCell(GetCellHash(bottomLeft), collider);
+            AddToCell(GetCellHash(collider.BottomRight), collider);
+            AddToCell(GetCellHash(collider.TopLeft), collider);
+            AddToCell(GetCellHash(collider.TopRight), collider);
+            AddToCell(GetCellHash(collider.BottomLeft), collider);
         }
 
-        private void AddToCell(long cellHash, CircleCollider collider)
+        private void AddToCell(long cellHash, ICollider collider)
         {
             // Create New Cell if none exists
             if (!CellExists(cellHash))
             {
-                _grid.Add(cellHash, new List<CircleCollider>(8));
+                _grid.Add(cellHash, new List<ICollider>(8));
             }
 
             // Add collider if it is not already there
@@ -71,7 +63,7 @@ namespace Zand.Physics
             _entityCoordinates[id].Add(cellHash);
         }
 
-        public void RemoveCollider(CircleCollider collider)
+        public void RemoveCollider(ICollider collider)
         {
             // No need to remove if it's not there
             if (!_entityCoordinates.ContainsKey(collider.Entity.Id))
@@ -89,7 +81,7 @@ namespace Zand.Physics
             _entityCoordinates[collider.Entity.Id].Clear();
         }
 
-        private bool ColliderExists(long cellHash, CircleCollider circleCollider)
+        private bool ColliderExists(long cellHash, ICollider circleCollider)
         {
             foreach (var collider in _grid[cellHash])
             {

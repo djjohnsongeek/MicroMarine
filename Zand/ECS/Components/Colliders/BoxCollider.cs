@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Zand.Graphics;
+using Zand.Physics;
 
 namespace Zand.ECS.Components
 {
-    public class BoxCollider : Collider
+    public class BoxCollider : Collider, ICollider
     {
         public Rectangle HitBox;
 
@@ -14,10 +15,10 @@ namespace Zand.ECS.Components
             Offset = offset;
         }
 
-        public BoxCollider(Vector2 position, int width, int height)
-        {
-            HitBox = new Rectangle((int)position.X, (int)position.Y, width, height);
-        }
+        public Vector2 TopLeft => new Vector2();
+        public Vector2 TopRight => new Vector2();
+        public Vector2 BottomLeft => new Vector2();
+        public Vector2 BottomRight => new Vector2();
 
         public override void Update()
         {

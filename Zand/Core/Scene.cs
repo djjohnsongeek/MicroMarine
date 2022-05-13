@@ -108,7 +108,7 @@ namespace Zand
             return SceneComponents.GetSceneComponent<T>();
         }
 
-        public void RegisterCollider(Collider collider)
+        public void RegisterCollider(ICollider collider)
         {
             Physics.AddCollider(collider);
         }
