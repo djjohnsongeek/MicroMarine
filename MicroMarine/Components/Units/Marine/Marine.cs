@@ -41,7 +41,6 @@ namespace MicroMarine.Components
 
             MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle(Entity.Position.ToPoint(), new Point(19, 26)), new Vector2(-9, -13)); // new Vector2(6, 4)
             Entity.AddComponent(mouseCollider);
-            // Scene.RegisterCollider(mouseCollider);
 
             Texture2D circleTex = Shapes.CreateCircleTexture(18);
 
