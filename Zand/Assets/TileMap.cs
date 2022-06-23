@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using Zand.ECS.Components;
 
 namespace Zand.Assets
 {
-    public class TileMap
+    public class TileMap : Component, IRenderable
     {
         private int _tileSize;
         private Point _mapSize;
@@ -19,6 +20,12 @@ namespace Zand.Assets
             _spriteSheet = sprites;
         }
 
+        public override void OnAddedToEntity()
+        {
+            base.OnAddedToEntity();
+            GenerateMap();
+        }
+
         public void GenerateMap()
         {
             // Instantiate
@@ -30,16 +37,31 @@ namespace Zand.Assets
 
             // Populate
             var rand = new Random();
+            int tileId;
             for (int y = 0; y < _visualMap.Length; y++)
             {
                for (int x = 0; x < _visualMap[y].Length; x++)
                 {
-                    _visualMap[y][x] = rand.Next(0, 64);
+                    tileId = rand.Next(0, 64);
+                    _visualMap[y][x] = tileId;
+                    if (tileId == 63)
+                    {
+                        Entity staticTile = Entity.Scene.CreateEntity("staticTile", new Vector2(x * _tileSize, y * _tileSize));
+                        var collider = new BoxCollider(new Rectangle(new Point(x * _tileSize, y * _tileSize), new Point(_tileSize, _tileSize)), Vector2.Zero);
+                        collider.Static = true;
+                        staticTile.AddComponent(collider);
+                        Entity.Scene.RegisterCollider(collider);
+                    }
                 }
             }
         }
 
-        public void Draw(SpriteBatch sbatch, Camera camera)
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            DrawMap(spriteBatch, Scene.Camera);
+        }
+
+        private void DrawMap(SpriteBatch sbatch, Camera camera)
         {
             (Point min, Point max) cullingBounds = GetCullingBounds(camera);
             for (int yIndex = cullingBounds.min.Y; yIndex < cullingBounds.max.Y; yIndex++)
