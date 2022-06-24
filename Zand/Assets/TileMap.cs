@@ -38,19 +38,27 @@ namespace Zand.Assets
             // Populate
             var rand = new Random();
             int tileId;
+            int staticTilesCount = 0;
             for (int y = 0; y < _visualMap.Length; y++)
             {
                for (int x = 0; x < _visualMap[y].Length; x++)
                 {
                     tileId = rand.Next(0, 64);
+                    if (tileId == 63 && staticTilesCount >= 5)
+                    {
+                        tileId = rand.Next(0, 63);
+                    }
                     _visualMap[y][x] = tileId;
+
+                    // Add static tile
                     if (tileId == 63)
                     {
-                        Entity staticTile = Entity.Scene.CreateEntity("staticTile", new Vector2(x * _tileSize, y * _tileSize));
-                        var collider = new BoxCollider(new Rectangle(new Point(x * _tileSize, y * _tileSize), new Point(_tileSize, _tileSize)), Vector2.Zero);
-                        collider.Static = true;
-                        staticTile.AddComponent(collider);
-                        Entity.Scene.RegisterCollider(collider);
+                        //Entity staticTile = Entity.Scene.CreateEntity("staticTile", new Vector2(x * _tileSize, y * _tileSize));
+                        //var collider = new BoxCollider(new Rectangle(new Point(x * _tileSize, y * _tileSize), new Point(_tileSize, _tileSize)), Vector2.Zero);
+                        //collider.Static = true;
+                        //staticTile.AddComponent(collider);
+                        //Entity.Scene.RegisterCollider(collider);
+                        //staticTilesCount++;
                     }
                 }
             }
@@ -81,6 +89,24 @@ namespace Zand.Assets
             int minY = GetMinBound(camera.Position.Y, camera.Height, 0);
 
             return (new Point(minX, minY), new Point(maxX, maxY));
+        }
+
+        public void ResolveMapCollisions(CircleCollider collider)
+        {
+            
+        }
+
+        public bool IsOnStaticTile(Vector2 position)
+        {
+            return GetTile(position) == 63;
+        }
+
+        private int GetTile(Vector2 position)
+        {
+            int x = (int)position.X / _tileSize;
+            int y = (int)position.Y / _tileSize;
+
+            return _visualMap[y][x];
         }
 
         private int GetMaxBound(float posCoordinate, int cameraDimension, int maxValue)

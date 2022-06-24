@@ -27,6 +27,11 @@ namespace Zand.ECS.Components
         public Vector2 BottomLeft => new Vector2(Center.X - Radius, Center.Y + Radius);
         public Vector2 BottomRight => new Vector2(Center.X + Radius, Center.Y + Radius);
 
+        public float Right => Center.X + Radius;
+        public float Left => Center.X - Radius;
+        public float Bottom => Center.Y + Radius;
+        public float Top => Center.Y - Radius;
+
 
         public override void Draw(SpriteBatch sbatch)
         {

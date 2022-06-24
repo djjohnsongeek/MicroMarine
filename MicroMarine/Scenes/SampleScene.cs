@@ -30,8 +30,8 @@ namespace MicroMarine.Scenes
             SceneComponents.AddComponent(new UnitGroupManager(this));
 
             // Add Marine Entities
-            int marineRows = 1;
-            int marineCols = 1;
+            int marineRows = 10;
+            int marineCols = 10;
             int spacing = 32;
             for (int y = 10; y < marineRows * spacing; y += spacing)
             {

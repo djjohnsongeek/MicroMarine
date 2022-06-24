@@ -20,6 +20,7 @@ namespace Zand.ECS.Components
         public void Update()
         {
             Entity.Position += Velocity * (float)Time.DeltaTime;
+            Scene.
             UpdateEntityLayerDepth();
         }
 

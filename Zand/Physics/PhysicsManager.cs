@@ -103,12 +103,12 @@ namespace Zand.Physics
             var repelVelocity2 = Vector2.Multiply(repelVelocity1, -1);
 
 
-            if (entity1.GetComponent<CircleCollider>().Static)
+            if (entity1.GetComponent<Collider>().Static)
             {
                 repelVelocity1 = Vector2.Zero;
             }
 
-            if (entity2.GetComponent<CircleCollider>().Static)
+            if (entity2.GetComponent<Collider>().Static)
             {
                 repelVelocity2 = Vector2.Zero;
             }
@@ -127,8 +127,8 @@ namespace Zand.Physics
             //    repelVelocity2 = Vector2.Multiply(repelVelocity2, 3);
             //}
 
-            entity1Movement.Nudge(repelVelocity1);
-            entity2Movement.Nudge(repelVelocity2);
+            entity1Movement?.Nudge(repelVelocity1);
+            entity2Movement?.Nudge(repelVelocity2);
 
 
 
