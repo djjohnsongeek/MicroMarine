@@ -24,7 +24,7 @@
         public const int CameraEdgeBuffer = 15;
 
         // Map
-        public const int MapWidth = 20;
-        public const int MapHeight = 20;
+        public const int MapWidth = 64;
+        public const int MapHeight = 64;
     }
 }

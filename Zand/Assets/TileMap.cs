@@ -41,7 +41,7 @@ namespace Zand.Assets
             int staticTilesCount = 0;
             for (int y = 0; y < _visualMap.Length; y++)
             {
-               for (int x = 0; x < _visualMap[y].Length; x++)
+                for (int x = 0; x < _visualMap[y].Length; x++)
                 {
                     tileId = rand.Next(0, 64);
                     if (tileId == 63 && staticTilesCount >= 5)
@@ -93,16 +93,50 @@ namespace Zand.Assets
 
         public void ResolveMapCollisions(CircleCollider collider)
         {
+            Vector2 rightCenter = new Vector2(collider.Right, collider.Center.Y);
+            Vector2 leftCenter = new Vector2(collider.Left, collider.Center.Y);
+
+            Vector2 topCenter = new Vector2(collider.Center.X, collider.Top);
+            Vector2 bottomCenter = new Vector2(collider.Center.X, collider.Bottom);
+
+            bool rightCollision = CollidesWithTile(rightCenter);
+            bool leftCollision = CollidesWithTile(leftCenter);
+            bool topCollision = CollidesWithTile(topCenter);
+            bool bottomCollision = CollidesWithTile(bottomCenter);
+
+            if (rightCollision)
+            {
+                Point tilePos = GetTileCoords(rightCenter);
+                collider.Entity.Position.X = tilePos.X - collider.Radius;
+            }
+
+            if (leftCollision)
+            {
+                Point tilePos = GetTileCoords(leftCenter);
+                collider.Entity.Position.X = tilePos.X + _tileSize + collider.Radius;
+            }
+
+            if (topCollision)
+            {
+                Point tilePos = GetTileCoords(topCenter);
+                collider.Entity.Position.Y = tilePos.Y + _tileSize + collider.Radius - collider.Offset.Y;
+            }
+
+            if (bottomCollision)
+            {
+                Point tilePos = GetTileCoords(bottomCenter);
+                collider.Entity.Position.Y = tilePos.Y - collider.Radius - collider.Offset.Y;
+            }
             // check current tile for all sides
-                // calculate sides using circle collider edges
+            // calculate sides using circle collider edges
             // for any side that is colliding with a static tile
-                // update entity's (and collider?) position
-                    // collider's x position = tile's static edge + or - collider radius
-                    // collider's y poistion = tile's static edge + or - collider radius
+            // update entity's (and collider?) position
+            // collider's x position = tile's static edge + or - collider radius
+            // collider's y poistion = tile's static edge + or - collider radius
 
         }
 
-        public bool IsOnStaticTile(Vector2 position)
+        public bool CollidesWithTile(Vector2 position)
         {
             return GetTile(position) == 63;
         }
@@ -112,7 +146,20 @@ namespace Zand.Assets
             int x = (int)position.X / _tileSize;
             int y = (int)position.Y / _tileSize;
 
+            if ((y >= _mapSize.Y || y < 0) || (x >= _mapSize.X || x < 0))
+            {
+                return 63 + 1;
+            }
+
             return _visualMap[y][x];
+        }
+
+        private Point GetTileCoords(Vector2 position)
+        {
+            int x = (int)position.X / _tileSize;
+            int y = (int)position.Y / _tileSize;
+
+            return new Point(x * _tileSize, y * _tileSize);
         }
 
         private int GetMaxBound(float posCoordinate, int cameraDimension, int maxValue)

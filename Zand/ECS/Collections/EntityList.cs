@@ -46,6 +46,27 @@ namespace Zand
             return _entities.Contains(entity) || _entitiesToAdd.Contains(entity);
         }
 
+        public Entity FindEntity(string name)
+        {
+            for (int i = 0; i < _entities.Count; i++)
+            {
+                if (_entities[i].Name == name)
+                {
+                    return _entities[i];
+                }
+            }
+
+            for (int i = 0; i < _entities.Count; i++)
+            {
+                if (_entities[i].Name == name)
+                {
+                    return _entities[i];
+                }
+            }
+
+            return null;
+        }
+
         internal void Draw()
         {
             Matrix? matrix = Scene.Camera == null ? null : Scene.Camera.GetTransformation();

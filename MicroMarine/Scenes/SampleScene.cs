@@ -9,6 +9,7 @@ namespace MicroMarine.Scenes
 {
     class SampleScene : Scene
     {
+
         public SampleScene() : base()
         {
             

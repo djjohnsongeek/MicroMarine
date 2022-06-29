@@ -22,6 +22,7 @@ namespace Zand
         public bool ShowDebug = false;
         public DebugTools Debug;
         public PhysicsManager Physics;
+
         public bool GameIsActive => Core._instance.IsActive;
 
 
@@ -73,6 +74,11 @@ namespace Zand
             _idPool++;
 
             return entity;
+        }
+
+        public Entity FindEntity(string name)
+        {
+            return Entities.FindEntity(name);
         }
 
         public virtual void Update()
