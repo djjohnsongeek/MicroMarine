@@ -93,7 +93,13 @@ namespace Zand.Assets
 
         public void ResolveMapCollisions(CircleCollider collider)
         {
-            
+            // check current tile for all sides
+                // calculate sides using circle collider edges
+            // for any side that is colliding with a static tile
+                // update entity's (and collider?) position
+                    // collider's x position = tile's static edge + or - collider radius
+                    // collider's y poistion = tile's static edge + or - collider radius
+
         }
 
         public bool IsOnStaticTile(Vector2 position)
