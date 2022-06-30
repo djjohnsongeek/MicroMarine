@@ -15,10 +15,10 @@ namespace Zand.ECS.Components
             Offset = offset;
         }
 
-        public Vector2 TopLeft => new Vector2();
-        public Vector2 TopRight => new Vector2();
-        public Vector2 BottomLeft => new Vector2();
-        public Vector2 BottomRight => new Vector2();
+        public override Vector2 TopLeft => new Vector2();
+        public override Vector2 TopRight => new Vector2();
+        public override Vector2 BottomLeft => new Vector2();
+        public override Vector2 BottomRight => new Vector2();
 
         public override void Update()
         {

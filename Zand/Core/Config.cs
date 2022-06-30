@@ -1,9 +1,11 @@
-﻿namespace Zand
+﻿using System.Collections.Generic;
+
+namespace Zand
 {
     public static class Config
     {
         // Physics
-        public const float UnitRepelMangitude = 3.5f;
+        public const float UnitRepelMangitude = 4f;
 
         // Group Movement
         public const int FollowLeaderBaseDistance = 255;
@@ -26,5 +28,6 @@
         // Map
         public const int MapWidth = 64;
         public const int MapHeight = 64;
+        public static HashSet<int> StaticTiles = new HashSet<int> { 63 };
     }
 }
