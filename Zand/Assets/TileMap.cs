@@ -41,6 +41,7 @@ namespace Zand.Assets
             {
                 for (int x = 0; x < _visualMap[y].Length; x++)
                 {
+                    // use a reference to a "Tile Repo" instead of creating multiple types of tile
                     Tile newTile = new Tile(rand.Next(0, 64));
                     _visualMap[y][x] = newTile;
                 }
