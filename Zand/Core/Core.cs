@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Diagnostics;
-using System.IO;
-using System.Text.Json;
 using Zand.UI;
 using Zand.Utils;
 
@@ -82,8 +80,8 @@ namespace Zand
             timer.Stop();
 
             // At the time of writing, these two lines make up the majority of allocations that needs to be collected by the GC
-            DrawFPS();
-            Window.Title = $"MicroMarine - ms: {timer.ElapsedMilliseconds}";
+            //DrawFPS();
+            //Window.Title = $"MicroMarine - ms: {timer.ElapsedMilliseconds}";
         }
         #endregion
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Zand;
 using Zand.Assets;
 using Zand.ECS.Components;
@@ -46,6 +47,11 @@ namespace MicroMarine.Components
             Entity.AddComponent(circle);
             Scene.RegisterCollider(circle);
             Entity.AddComponent(new UnitState(UnitStates.Idle));
+
+            var random = new Random();
+
+            int allegiance = random.Next(1, 5);
+            Entity.AddComponent(new UnitAllegiance(allegiance));
         }
 
         public void Update()

@@ -87,13 +87,26 @@ namespace Zand.ECS.Components
                 _currentAnimation.Texture,
                 Entity.Position,
                 _currentFrame,
-                Color.White,
+                GetEntityColor(),
                 0,
                 Entity.Origin,
                 1,
                 SpriteEffects.None,
                 Entity.layerDepth
            );
+        }
+
+        private Color GetEntityColor()
+        {
+            Color entityColor = Color.White;
+            UnitAllegiance allegiance = Entity.GetComponent<UnitAllegiance>();
+
+            if (allegiance is not null)
+            {
+                entityColor = allegiance.Color;
+            }
+
+            return entityColor;
         }
 
         private void SuppressUpdate(float timeLength)
