@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Zand.ECS.Components
+namespace Zand.Components
 {
     public class SimpleSprite : Component, IRenderable
     {

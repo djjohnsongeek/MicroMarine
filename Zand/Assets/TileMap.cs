@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using Zand.Colliders;
 using Zand.ECS.Components;
 
 namespace Zand.Assets

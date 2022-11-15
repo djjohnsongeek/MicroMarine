@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Zand;
 using Zand.AI;
+using Zand.Colliders;
 using Zand.ECS.Components;
 using Zand.Utils;
 

@@ -4,6 +4,7 @@ using System.Linq;
 using Zand.ECS.Components;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Zand.Colliders;
 
 namespace Zand.Physics
 {

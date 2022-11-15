@@ -28,7 +28,7 @@ namespace MicroMarine.Scenes
 
             // Add Scene Components
             var unitSelector = (UnitSelector) SceneComponents.AddComponent(new UnitSelector(this));
-            SceneComponents.AddComponent(new UnitGroupManager(this));
+            //SceneComponents.AddComponent(new UnitGroupManager(this));
 
             // Add Marine Entities
             int marineRows = 10;

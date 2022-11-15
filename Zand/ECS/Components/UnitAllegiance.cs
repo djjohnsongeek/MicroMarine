@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Zand.ECS.Components
+namespace Zand.Components
 {
     public class UnitAllegiance: Component
     {

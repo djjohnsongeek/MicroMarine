@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Zand;
+using Zand.Colliders;
 using Zand.ECS.Components;
 
-namespace Zand.ECS.Components
+namespace Zand.Components
 {
-    public class MouseSelectCollider : BoxCollider, Zand.IUpdateable
+    public class MouseSelectCollider : BoxCollider, IUpdateable
     {
         public bool Selected = false;
 

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Zand.Graphics;
 using Zand.Physics;
 
-namespace Zand.ECS.Components
+namespace Zand.Colliders
 {
     public class BoxCollider : Collider, ICollider
     {

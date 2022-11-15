@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Zand;
 using Zand.Assets;
+using Zand.Colliders;
+using Zand.Components;
 using Zand.ECS.Components;
 using Zand.Graphics;
 

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Zand;
+using Zand.Components;
 using Zand.ECS.Components;
 using Zand.Graphics;
 using Zand.Physics;

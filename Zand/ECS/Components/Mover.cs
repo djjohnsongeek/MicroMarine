@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Zand.Assets;
+using Zand.Colliders;
 
 namespace Zand.ECS.Components
 {
@@ -22,7 +23,7 @@ namespace Zand.ECS.Components
         public void Update()
         {
             Entity.Position += Velocity * (float)Time.DeltaTime;
-            GetTileMap().ResolveMapCollisions((CircleCollider)Entity.GetComponent<CircleCollider>());
+            GetTileMap().ResolveMapCollisions(Entity.GetComponent<CircleCollider>());
             UpdateEntityLayerDepth();
         }
 

@@ -6,17 +6,22 @@
 
   <ItemGroup>
     <Compile Remove="Collision\**" />
+    <Compile Remove="ECS\Components\SceneComponents\**" />
     <EmbeddedResource Remove="Collision\**" />
+    <EmbeddedResource Remove="ECS\Components\SceneComponents\**" />
     <None Remove="Collision\**" />
+    <None Remove="ECS\Components\SceneComponents\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ECS\Components\SceneComponents\" />
     <Folder Include="Graphics\Lighting\" />
     <Folder Include="Audio\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1641" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="ECS\Components\MovementQueue.cs" />
   </ItemGroup>
 </Project>

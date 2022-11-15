@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Zand.Assets;
 
-namespace Zand.ECS.Components
+namespace Zand.Components
 {
     public class Animator : Component, IRenderable, IUpdateable
     {
