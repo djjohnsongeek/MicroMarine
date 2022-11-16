@@ -11,10 +11,12 @@ namespace MicroMarine.Components
     class Idle : State<Marine>
     {
         private CommandQueue _unitCommands;
+        private Animator _animator;
 
         public override void OnInitialize()
         {
             _unitCommands = _context.Entity.GetComponent<CommandQueue>();
+            _animator = _context.Entity.GetComponent<Animator>();
         }
 
         public override void Exit()
@@ -25,6 +27,7 @@ namespace MicroMarine.Components
         public override void Enter()
         {
             // determine animation
+            _animator.SetAnimation("IdleSouth");
         }
 
         public override void Update()

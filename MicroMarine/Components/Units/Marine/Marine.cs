@@ -20,12 +20,29 @@ namespace MicroMarine.Components
             Entity.AddComponent(new Health(100));
             Entity.AddComponent(new Mover(100));
 
+            AddAnimationComponents();
+            AddCollisionComponents();
+
+
+            Entity.AddComponent(new UnitState(UnitStates.Idle));
+
+            var random = new Random();
+            int[] filteredAllegiances = new int[] { 2, 5 };
+            int index = random.Next(0, 2);
+            Entity.AddComponent(new UnitAllegiance(filteredAllegiances[index]));
+        }
+
+        public void Update()
+        {
+            UpdateMarineAnimation();
+        }
+
+        private void AddAnimationComponents()
+        {
             Texture2D marineSheet = Scene.Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
             var spriteSheet = new SpriteSheet(marineSheet, 32, 32);
+
             var animator = new Animator();
-
-            #region Setup Animation
-
             animator.AddAnimation("IdleNorth", new Animation(marineSheet, spriteSheet.GetFrames(0, 7), 8));
             animator.AddAnimation("IdleSouth", new Animation(marineSheet, spriteSheet.GetFrames(8, 15), 8));
             animator.AddAnimation("IdleEast", new Animation(marineSheet, spriteSheet.GetFrames(16, 23), 8));
@@ -34,31 +51,20 @@ namespace MicroMarine.Components
             animator.AddAnimation("WalkSouth", new Animation(marineSheet, spriteSheet.GetFrames(40, 47)));
             animator.AddAnimation("WalkEast", new Animation(marineSheet, spriteSheet.GetFrames(48, 55)));
             animator.AddAnimation("WalkWest", new Animation(marineSheet, spriteSheet.GetFrames(56, 63)));
-
-            #endregion
-
             animator.SetAnimation("IdleSouth");
-            Entity.AddComponent(animator);
 
+            Entity.AddComponent(animator);
+        }
+
+        private void AddCollisionComponents()
+        {
             MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle(Entity.Position.ToPoint(), new Point(19, 26)), new Vector2(-9, -13)); // new Vector2(6, 4)
             Entity.AddComponent(mouseCollider);
 
             Texture2D circleTex = Shapes.CreateCircleTexture(18);
-
-            CircleCollider circle = new CircleCollider(circleTex, 9, new Vector2(0, 6));
-            Entity.AddComponent(circle);
-            Scene.RegisterCollider(circle);
-            Entity.AddComponent(new UnitState(UnitStates.Idle));
-
-            var random = new Random();
-
-            int allegiance = random.Next(1, 5);
-            Entity.AddComponent(new UnitAllegiance(allegiance));
-        }
-
-        public void Update()
-        {
-            UpdateMarineAnimation();
+            CircleCollider collider = new CircleCollider(circleTex, 9, new Vector2(0, 6));
+            Entity.AddComponent(collider);
+            Scene.RegisterCollider(collider);
         }
 
         private void UpdateMarineAnimation()

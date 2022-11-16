@@ -34,6 +34,9 @@ namespace Zand.Components
                 case 4:
                     Color = new Color(238, 253, 116);
                     break;
+                case 5:
+                    Color = new Color(180, 180, 180);
+                    break;
                 default:
                     throw new ArgumentException("Invalid Allegiance Id");
             }

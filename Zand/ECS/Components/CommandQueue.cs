@@ -6,6 +6,7 @@ namespace Zand.Components
     public class CommandQueue: Component
     {
         private Queue<UnitCommand> _commands;
+        public UnitCommand CurrentCommand { get; private set; }
 
         public UnitCommand PeekNext()
         {
@@ -13,10 +14,21 @@ namespace Zand.Components
             {
                 return null;
             }
+            return _commands.Peek();
+        }
+
+        public UnitCommand Next()
+        {
+            if (_commands.Count == 0)
+            {
+                CurrentCommand = null;
+            }
             else
             {
-                return _commands.Peek();
+                CurrentCommand = _commands.Dequeue();
             }
+
+            return CurrentCommand;
         }
 
         public CommandQueue()

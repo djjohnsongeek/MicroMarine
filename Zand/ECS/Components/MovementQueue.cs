@@ -10,26 +10,39 @@ namespace Zand.Components
 {
     public class MovementQueue : Component
     {
-        private Queue<Vector2> _destinations;
+        private Queue<Vector2> _waypoints;
+        public Vector2? CurrentWaypoint { get; private set; }
 
-        public void AddDesitination(Vector2 destination)
+        public void AddWaypoint(Vector2 destination)
         {
-            _destinations.Enqueue(destination);
+            _waypoints.Enqueue(destination);
         }
 
-        public Vector2 Next()
+        public Vector2? Next()
         {
-            return _destinations.Dequeue();
+            if (_waypoints.Count == 0)
+            {
+                CurrentWaypoint = null;
+            }
+            else
+            {
+                CurrentWaypoint = _waypoints.Dequeue();
+            }
+            return CurrentWaypoint;
         }
 
-        public Vector2 PeekNext()
+        public Vector2? PeekNext()
         {
-            return _destinations.Peek();
+            if (_waypoints.Count == 0)
+            {
+                return null;
+            }
+            return _waypoints.Peek();
         }
 
         public bool IsEmpty()
         {
-            return _destinations.Count == 0;
+            return _waypoints.Count == 0;
         }
 
     }
