@@ -14,12 +14,14 @@ namespace MicroMarine.Components
         private List<UnitGroup> UnitGroups;
         private List<UnitGroup> AffectedGroups;
         private Pool<UnitGroup> _unitGroupPool;
+        private UnitSelector _unitSelector;
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
             _unitGroupPool = new Pool<UnitGroup>(100);
             UnitGroups = new List<UnitGroup>(10);
             AffectedGroups = new List<UnitGroup>(10);
+            _unitSelector = Scene.GetComponent<UnitSelector>();
         }
 
         public override void Update()
@@ -56,7 +58,7 @@ namespace MicroMarine.Components
 
         private void CreateOrAssignUnitGroup()
         {
-            List<Entity> units = Scene.GetComponent<UnitSelector>().GetSelectedUnits();
+            List<Entity> units = _unitSelector.GetSelectedUnits();
             Vector2 destination = Scene.Camera.GetWorldLocation(Input.MouseScreenPosition);
             BitArray groupId = GetGroupId(units);
             UnitGroup matchingGroup = GetUnitGroupById(groupId);
