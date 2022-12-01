@@ -42,6 +42,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Archive\" />
     <Folder Include="Content\Fonts\" />
   </ItemGroup>
 </Project>

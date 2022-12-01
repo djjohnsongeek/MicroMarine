@@ -10,12 +10,12 @@ namespace MicroMarine.Components
 {
     class Idle : State<Marine>
     {
-        private CommandQueue _unitCommands;
+        private UnitCommand CurrentCommad;
         private Animator _animator;
 
         public override void OnInitialize()
         {
-            _unitCommands = _context.Entity.GetComponent<CommandQueue>();
+            CurrentCommad _context
             _animator = _context.Entity.GetComponent<Animator>();
         }
 

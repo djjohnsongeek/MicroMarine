@@ -8,6 +8,23 @@ namespace Zand.Components
         private Queue<UnitCommand> _commands;
         public UnitCommand CurrentCommand { get; private set; }
 
+        public CommandQueue()
+        {
+            _commands = new Queue<UnitCommand>();
+            CurrentCommand = null;
+        }
+
+        public void AddCommand(UnitCommand command)
+        {
+            _commands.Enqueue(command);
+        }
+
+        public void Clear()
+        {
+            _commands.Clear();
+            CurrentCommand = null;
+        }
+
         public UnitCommand PeekNext()
         {
             if (_commands.Count == 0)
@@ -31,9 +48,6 @@ namespace Zand.Components
             return CurrentCommand;
         }
 
-        public CommandQueue()
-        {
-            _commands = new Queue<UnitCommand>();
-        }
+
     }
 }

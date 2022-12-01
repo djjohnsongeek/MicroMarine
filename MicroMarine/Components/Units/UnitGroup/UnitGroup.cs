@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Zand;
 using Zand.AI;
 using Zand.Colliders;
-using Zand.ECS.Components;
+using Zand.Components;
 using Zand.Utils;
 
 namespace MicroMarine.Components.UnitGroups
@@ -20,7 +20,7 @@ namespace MicroMarine.Components.UnitGroups
         public List<Entity> Units;
         public Entity Leader = null;
         public Queue<Vector2> Waypoints;
-        public Vector2? CurrentWaypoint;
+        public CommandQueue CommandQueue;
         internal float GroupingClock = 0;
         internal float StopDistance = 0;
 
@@ -30,7 +30,7 @@ namespace MicroMarine.Components.UnitGroups
         public UnitGroup()
         {
             Waypoints = new Queue<Vector2>();
-            CurrentWaypoint = null;
+            CommandQueue = new CommandQueue();
             Leader = null;
             Units = new List<Entity>();
             InitStates();
@@ -42,7 +42,7 @@ namespace MicroMarine.Components.UnitGroups
             Units.Clear();
             RemoveStatic(Leader);
             Waypoints.Clear();
-            CurrentWaypoint = null;
+            CommandQueue.Clear();
             Id = null;
             _scene = null;
             GroupingClock = 0;
@@ -51,36 +51,13 @@ namespace MicroMarine.Components.UnitGroups
             _stateMachine.ChangeState<Idle>();
         }
 
-        public void Setup(BitArray groupId, List<Entity> units, Vector2 destination)
+        public void Setup(BitArray groupId, List<Entity> units, UnitCommand command)
         {
             Id = groupId;
             Units = units;
-            Waypoints.Enqueue(destination);
-            SetStateToMoving();
-            AssignNewLeader();
-        }
-
-        public void SetStateToMoving()
-        {
+            CommandQueue.AddCommand(command);
             _stateMachine.ChangeState<Moving>();
-        }
-
-        public UnitGroup(List<Entity> units, Vector2 destination)
-        {
-            Waypoints = new Queue<Vector2>();
-            Waypoints.Enqueue(destination);
-            CurrentWaypoint = null;
-            InitGroup(units);
-        }
-
-        private void InitGroup(List<Entity> units)
-        {
-            // Init properties
-            Units = units;
-            Leader = null;
             AssignNewLeader();
-            InitStates();
-            _stateMachine.SetInitialState<Moving>();
         }
 
         private void InitStates()
@@ -122,17 +99,6 @@ namespace MicroMarine.Components.UnitGroups
             return _stateMachine.CurrentState is Idle || Units.Count == 0;
         }
 
-        internal bool GetNextWaypoint()
-        {
-            if (Waypoints.Count > 0)
-            {
-                CurrentWaypoint = Waypoints.Dequeue();
-                return true;
-            }
-
-            return false;
-        }
-
         internal Vector2 GetCenterOfMass()
         {
             var center = Vector2.Zero;
@@ -153,7 +119,7 @@ namespace MicroMarine.Components.UnitGroups
         internal Vector2 GetDestinationVelocity(Entity unit)
         {
             Vector2 velocity = Vector2.Zero;
-            if (CurrentWaypoint == null)
+            if (CommandQueue.CurrentCommand == null)
             {
                 return velocity;
             }
@@ -162,11 +128,11 @@ namespace MicroMarine.Components.UnitGroups
 
             if (distanceFromLeader > _followLeaderDist)
             {
-                velocity = CurrentWaypoint.Value - unit.Position;
+                velocity = CommandQueue.CurrentCommand.TargetLocation - unit.Position;
             }
             else
             {
-                velocity = CurrentWaypoint.Value - Leader.Position;
+                velocity = CommandQueue.CurrentCommand.TargetLocation - Leader.Position;
             }
 
 

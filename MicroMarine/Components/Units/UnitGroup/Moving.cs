@@ -14,28 +14,28 @@ namespace MicroMarine.Components.UnitGroups
 
         public override void Exit()
         {
-            _context.CurrentWaypoint = null;
+
         }
 
         public override void Enter()
         {
             _context.SetUnitsToRunning();
-            if (_context.CurrentWaypoint == null)
+            if (_context.CommandQueue.CurrentCommand == null)
             {
-                _context.CurrentWaypoint = _context.Waypoints.Dequeue();
+                _context.CommandQueue.Next();
             }
         }
 
         public override void Update()
         {
             // Ensure we have a destination
-            if (_context.CurrentWaypoint == null)
-            {
-                _context.CurrentWaypoint = _context.Waypoints.Dequeue();
-            }
+            //if (_context.CommandQueue.CurrentCommand == null)
+            //{
+            //    _context.CurrentWaypoint = _context.Waypoints.Dequeue();
+            //}
 
             Vector2 centerOfMass = _context.GetCenterOfMass();
-            float leaderDistance = Vector2.DistanceSquared(_context.Leader.Position, _context.CurrentWaypoint.Value);
+            float leaderDistance = Vector2.DistanceSquared(_context.Leader.Position, _context.CommandQueue.CurrentCommand.TargetLocation);
             int unitsInMotion = 0;
 
             for (int i = 0; i < _context.Units.Count; i++)
@@ -67,16 +67,16 @@ namespace MicroMarine.Components.UnitGroups
             // All units have arrived
             if (unitsInMotion == 0)
             {
-                // Follow the next waypoint
-                if (_context.Waypoints.Count > 0)
-                {
-                    _context.CurrentWaypoint = _context.Waypoints.Dequeue();
-                    _context.SetUnitsToRunning();
-                }
-                // Group up
-                else
+
+                _context.CommandQueue.Next();
+
+                if (_context.CommandQueue.CurrentCommand == null)
                 {
                     _machine.ChangeState<Grouping>();
+                }
+                else
+                {
+                    _context.SetUnitsToRunning();
                 }
             }
         }

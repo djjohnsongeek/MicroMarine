@@ -6,6 +6,7 @@ using MicroMarine.Components.UnitGroups;
 using Zand.Utils;
 using System.Collections;
 using MicroMarine.Extensions;
+using Zand.AI;
 
 namespace MicroMarine.Components
 {
@@ -59,24 +60,24 @@ namespace MicroMarine.Components
         private void CreateOrAssignUnitGroup()
         {
             List<Entity> units = _unitSelector.GetSelectedUnits();
-            Vector2 destination = Scene.Camera.GetWorldLocation(Input.MouseScreenPosition);
+            var command = new UnitCommand(CommandType.Move, null, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
             BitArray groupId = GetGroupId(units);
             UnitGroup matchingGroup = GetUnitGroupById(groupId);
 
             if (matchingGroup != null)
             {
-                ReuseUnitGroup(matchingGroup, destination);
+                ReuseUnitGroup(matchingGroup, command);
             }
             else
             {
-                RegisterNewGroup(groupId, units, destination);
+                RegisterNewGroup(groupId, units, command);
             }
         }
 
-        private void RegisterNewGroup(BitArray groupId, List<Entity> units, Vector2 destination)
+        private void RegisterNewGroup(BitArray groupId, List<Entity> units, UnitCommand command)
         {
             UnitGroup newGroup = _unitGroupPool.ObtainItem();
-            newGroup.Setup(groupId, units, destination);
+            newGroup.Setup(groupId, units, command);
 
             StealUnits(newGroup);
             UnitGroups.Add(newGroup);
@@ -85,17 +86,16 @@ namespace MicroMarine.Components
             newGroup._scene = Scene;
         }
 
-        private void ReuseUnitGroup(UnitGroup group, Vector2 destination)
+        private void ReuseUnitGroup(UnitGroup group, UnitCommand command)
         {
             if (Input.RightShiftClickOccured())
             {
-                group.Waypoints.Enqueue(destination);
+                group.CommandQueue.AddCommand(command);
             }
             else
             {
-                group.Waypoints.Clear();
-                group.Waypoints.Enqueue(destination);
-                group.CurrentWaypoint = null;
+                group.CommandQueue.Clear();
+                group.CommandQueue.AddCommand(command);
             }
         }
 
