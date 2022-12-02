@@ -90,12 +90,12 @@ namespace MicroMarine.Components
         {
             if (Input.RightShiftClickOccured())
             {
-                group.CommandQueue.AddCommand(command);
+                group.GroupCommands.AddCommand(command);
             }
             else
             {
-                group.CommandQueue.Clear();
-                group.CommandQueue.AddCommand(command);
+                group.GroupCommands.Clear();
+                group.GroupCommands.AddCommand(command);
             }
         }
 

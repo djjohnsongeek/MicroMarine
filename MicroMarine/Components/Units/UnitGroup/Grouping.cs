@@ -10,7 +10,6 @@ namespace MicroMarine.Components.UnitGroups
         public override void Enter()
         {
             _context.StopDistance = _context.GetStopDistance();
-            _context.SetUnitsToRunning();
             _context.SetUnitStatic(_context.Leader);
         }
 
@@ -28,29 +27,29 @@ namespace MicroMarine.Components.UnitGroups
                 _machine.ChangeState<Moving>();
             }
 
-            for (int i = 0; i < _context.Units.Count; i++)
-            {
-                UnitState unitState = _context.Units[i].GetComponent<UnitState>();
-                Mover unitMover = _context.Units[i].GetComponent<Mover>();
+            //for (int i = 0; i < _context.Units.Count; i++)
+            //{
+            //    UnitState unitState = _context.Units[i].GetComponent<UnitState>();
+            //    Mover unitMover = _context.Units[i].GetComponent<Mover>();
 
-                // Skips units who have arrived
-                if (unitState.CurrentState == UnitStates.Idle || _context.Units[i].Id == _context.Leader.Id)
-                {
-                    continue;
-                }
+            //    // Skips units who have arrived
+            //    if (unitState.CurrentState == UnitStates.Idle || _context.Units[i].Id == _context.Leader.Id)
+            //    {
+            //        continue;
+            //    }
 
-                float distanceToLeader = Vector2.Distance(_context.Leader.Position, _context.Units[i].Position);
-                if (_context.ShouldGroup(distanceToLeader))
-                {
-                    unitMover.Velocity = _context.GetGroupingVelocity(_context.Units[i]);
-                    unitsGrouping++;
-                }
-                else
-                {
-                    unitMover.Velocity = Vector2.Zero;
-                    unitState.CurrentState = UnitStates.Idle;
-                }
-            }
+            //    float distanceToLeader = Vector2.Distance(_context.Leader.Position, _context.Units[i].Position);
+            //    if (_context.ShouldGroup(distanceToLeader))
+            //    {
+            //        unitMover.Velocity = _context.GetGroupingVelocity(_context.Units[i]);
+            //        unitsGrouping++;
+            //    }
+            //    else
+            //    {
+            //        unitMover.Velocity = Vector2.Zero;
+            //        unitState.CurrentState = UnitStates.Idle;
+            //    }
+            //}
 
             if (unitsGrouping == 0)
             {

@@ -1,11 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Zand.Colliders;
 
 namespace Zand.AI
 {
     public class UnitCommand
     {
         public Entity EntityTarget { get; private set; }
-        public Vector2 TargetLocation { get; private set; }
+        public Destination Destination { get; private set; }
         public CommandType Type { get; private set; }
         public CommandStatus Status { get; private set; }
 
@@ -13,8 +14,13 @@ namespace Zand.AI
         {
             EntityTarget = target;
             Type = type;
-            TargetLocation = targetLocation;
+            Destination = new Destination(targetLocation);
             Status = CommandStatus.Created;
+        }
+
+        public void SetStatus(CommandStatus status)
+        {
+            Status = status;
         }
     }
 

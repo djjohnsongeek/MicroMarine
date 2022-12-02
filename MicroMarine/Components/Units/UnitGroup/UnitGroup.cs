@@ -20,7 +20,7 @@ namespace MicroMarine.Components.UnitGroups
         public List<Entity> Units;
         public Entity Leader = null;
         public Queue<Vector2> Waypoints;
-        public CommandQueue CommandQueue;
+        public CommandQueue GroupCommands;
         internal float GroupingClock = 0;
         internal float StopDistance = 0;
 
@@ -30,7 +30,7 @@ namespace MicroMarine.Components.UnitGroups
         public UnitGroup()
         {
             Waypoints = new Queue<Vector2>();
-            CommandQueue = new CommandQueue();
+            GroupCommands = new CommandQueue();
             Leader = null;
             Units = new List<Entity>();
             InitStates();
@@ -42,7 +42,7 @@ namespace MicroMarine.Components.UnitGroups
             Units.Clear();
             RemoveStatic(Leader);
             Waypoints.Clear();
-            CommandQueue.Clear();
+            GroupCommands.Clear();
             Id = null;
             _scene = null;
             GroupingClock = 0;
@@ -55,7 +55,7 @@ namespace MicroMarine.Components.UnitGroups
         {
             Id = groupId;
             Units = units;
-            CommandQueue.AddCommand(command);
+            GroupCommands.AddCommand(command);
             _stateMachine.ChangeState<Moving>();
             AssignNewLeader();
         }
@@ -82,8 +82,6 @@ namespace MicroMarine.Components.UnitGroups
                     Leader = Units[i];
                     distance = unitDistance;
                 }
-
-                Units[i].GetComponent<UnitState>().CurrentState = UnitStates.Running;
             }
 
             SetFollowLeaderDistance();
@@ -119,7 +117,7 @@ namespace MicroMarine.Components.UnitGroups
         internal Vector2 GetDestinationVelocity(Entity unit)
         {
             Vector2 velocity = Vector2.Zero;
-            if (CommandQueue.CurrentCommand == null)
+            if (GroupCommands.CurrentCommand == null)
             {
                 return velocity;
             }
@@ -128,11 +126,11 @@ namespace MicroMarine.Components.UnitGroups
 
             if (distanceFromLeader > _followLeaderDist)
             {
-                velocity = CommandQueue.CurrentCommand.TargetLocation - unit.Position;
+                velocity = GroupCommands.CurrentCommand.Destination.Position - unit.Position;
             }
             else
             {
-                velocity = CommandQueue.CurrentCommand.TargetLocation - Leader.Position;
+                velocity = GroupCommands.CurrentCommand.Destination.Position - Leader.Position;
             }
 
 
@@ -159,14 +157,6 @@ namespace MicroMarine.Components.UnitGroups
             _followLeaderDist = Config.FollowLeaderBaseDistance * Units.Count;
         }
 
-        public void SetUnitsToRunning()
-        {
-            for (int i = 0; i < Units.Count; i++)
-            {
-                Units[i].GetComponent<UnitState>().CurrentState = UnitStates.Running;
-            }
-        }
-
         internal float GetStopDistance()
         {
             if (Units.Count <= Config.MaxGroupingSize)
@@ -183,7 +173,6 @@ namespace MicroMarine.Components.UnitGroups
         internal void SetUnitStatic(Entity unit)
         {
             unit.GetComponent<CircleCollider>().Static = true;
-            unit.GetComponent<UnitState>().CurrentState = UnitStates.Idle;
         }
 
         internal void RemoveStatic(Entity unit)

@@ -42,9 +42,9 @@ namespace Zand
             component.OnAddedToEntity();
         }
 
-        public T GetComponent<T>() where T: Component
+        public T GetComponent<T>(bool onlyInitialized = true) where T: Component
         {
-            return Components.GetComponent<T>();
+            return Components.GetComponent<T>(onlyInitialized);
         }
 
         internal void Draw(SpriteBatch spriteBatch)

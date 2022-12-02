@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zand.AI;
 using Zand.Colliders;
 using Zand.ECS.Components;
 
@@ -21,6 +22,11 @@ namespace Zand.Physics
         public static bool CircleToPoint(CircleCollider circle, Point point)
         {
             return Vector2.DistanceSquared(circle.Entity.Position, point.ToVector2()) > circle.Radius * circle.Radius;
+        }
+
+        public static bool CircleToPoint(Destination destination, Vector2 point)
+        {
+            return Vector2.DistanceSquared(destination.Position, point) < destination.Radius * destination.Radius;
         }
 
         #endregion

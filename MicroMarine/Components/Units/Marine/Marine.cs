@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Zand;
+using Zand.AI;
 using Zand.Assets;
 using Zand.Colliders;
 using Zand.Components;
@@ -13,28 +14,25 @@ namespace MicroMarine.Components
     // Acts as 'Loading Component' for a Marine
     class Marine : Component, Zand.IUpdateable
     {
+        private StateMachine<Marine> _stateMachine;
+
         // TODO add a Group property and move logic away from UnitGroup's states and into Marine?
         public override void OnAddedToEntity()
         {
             Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
             Entity.AddComponent(new Health(100));
             Entity.AddComponent(new Mover(100));
+            Entity.AddComponent(new CommandQueue());
 
             AddAnimationComponents();
             AddCollisionComponents();
-
-
-            Entity.AddComponent(new UnitState(UnitStates.Idle));
-
-            var random = new Random();
-            int[] filteredAllegiances = new int[] { 2, 5 };
-            int index = random.Next(0, 2);
-            Entity.AddComponent(new UnitAllegiance(filteredAllegiances[index]));
+            AddUnitStates();
+            AddAllegiance();
         }
 
         public void Update()
         {
-            UpdateMarineAnimation();
+            _stateMachine.Update();
         }
 
         private void AddAnimationComponents()
@@ -67,61 +65,20 @@ namespace MicroMarine.Components
             Scene.RegisterCollider(collider);
         }
 
-        private void UpdateMarineAnimation()
+        private void AddUnitStates()
         {
-            Animator animator = Entity.GetComponent<Animator>();
-            Vector2 velocity = Entity.GetComponent<Mover>().Velocity;
+            _stateMachine = new StateMachine<Marine>(this);
+            _stateMachine.AddState(new Idle());
+            _stateMachine.AddState(new Moving());
+            _stateMachine.SetInitialState<Idle>();
+        }
 
-            if (velocity != Vector2.Zero)
-            {
-                velocity.Normalize();
-                float dot = Vector2.Dot(Vector2.UnitX, velocity);
-
-                // close to zero, traveling up or down
-                if (dot > -0.5F && dot < 0.5F)
-                {
-                    if (velocity.Y < 0)
-                    {
-                        if (!animator.AnimationIsRunning("WalkNorth"))
-                        {
-                            animator.SetAnimation("WalkNorth");
-                        }
-                    }
-                    else if (velocity.Y > 0)
-                    {
-                        if (!animator.AnimationIsRunning("WalkSouth"))
-                        {
-                            animator.SetAnimation("WalkSouth");
-                        }
-                    }
-                }
-                // close to 1 traveling more horizontal
-                if (dot < -0.5 || dot > 0.5F)
-                {
-                    if (velocity.X > 0)
-                    {
-                        if (!animator.AnimationIsRunning("WalkEast"))
-                        {
-                            animator.SetAnimation("WalkEast");
-                        }
-
-                    }
-                    else if (velocity.X < 0)
-                    {
-                        if (!animator.AnimationIsRunning("WalkWest"))
-                        {
-                            animator.SetAnimation("WalkWest");
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (!animator.AnimationIsRunning("IdleSouth"))
-                {
-                    animator.SetAnimation("IdleSouth");
-                }
-            }
+        private void AddAllegiance()
+        {
+            var random = new Random();
+            int[] filteredAllegiances = new int[] { 2, 5 };
+            int index = random.Next(0, 2);
+            Entity.AddComponent(new UnitAllegiance(filteredAllegiances[index]));
         }
     }
 }

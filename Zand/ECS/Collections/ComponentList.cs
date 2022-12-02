@@ -38,13 +38,24 @@ namespace Zand
             _componentsToRemove.Remove(component);
         }
 
-        public T GetComponent<T>() where T : Component
+        public T GetComponent<T>(bool onlyInitialized = true) where T : Component
         {
             for (int i = 0; i < _components.Count; i ++)
             {
                 if (_components[i] is T)
                 {
                     return _components[i] as T;
+                }
+            }
+
+            if (!onlyInitialized)
+            {
+                for(int i = 0; i < _componentsToAdd.Count; i++)
+                {
+                    if (_componentsToAdd[i] is T)
+                    {
+                        return _componentsToAdd[i] as T;
+                    }
                 }
             }
 
