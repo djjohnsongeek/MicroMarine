@@ -1,40 +1,46 @@
-﻿
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
-using Zand.ECS.Components;
-using Zand.Physics;
 
 namespace Zand.Debug
 {
-    public class DebugTools : SceneComponent
+    public static class DebugTools
     {
-        private DebugConsole _debugConsole;
-        private Scene _scene;
+        private static DebugConsole _debugConsole;
+        private static Scene _scene;
+        public static bool ShowDebug = false;
 
-        public DebugTools (Scene scene, SpriteFont font) : base (scene)
+        public static void SetUp(Scene scene, SpriteFont font)
         {
             _debugConsole = new DebugConsole(scene, font);
             _scene = scene;
         }
 
-        public override void Update()
+        public static void Update()
         {
-            if (_scene.ShowDebug)
+            if (ShowDebug)
             {
                 _debugConsole.Update();
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public static void Draw(SpriteBatch spriteBatch)
         {
-            if (_scene.ShowDebug)
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                null, null, null, null, null
+            );
+
+            if (ShowDebug)
             {
                 _debugConsole.Draw(spriteBatch);
                 _scene.Physics.Draw(spriteBatch);
             }
+
+            spriteBatch.End();
         }
 
-        public void Log(string message)
+        public static void Log(string message)
         {
             _debugConsole.AddMessage(message);
         }

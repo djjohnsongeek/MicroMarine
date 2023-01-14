@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Zand.AI;
 using Zand.Colliders;
 using Zand.Components;
+using Zand.Debug;
 using Zand.ECS.Components;
 using Zand.Physics;
 
@@ -36,10 +37,8 @@ namespace MicroMarine.Components
 
         public override void Enter()
         {
-            _unitCommands.Next();
-
             // Handle commands on another type
-            if (_unitCommands.CurrentCommand.Type != CommandType.Move)
+            if (_unitCommands.PeekNext().Type != CommandType.Move)
             {
                 throw new NotImplementedException("Movement state cannot handle non movement commands.");
             }
@@ -78,13 +77,7 @@ namespace MicroMarine.Components
 
         private UnitCommand GetCommand()
         {
-            var currentCommand = _unitCommands.CurrentCommand;
-            if (currentCommand.Status == CommandStatus.Completed)
-            {
-                currentCommand = _unitCommands.Next();
-            }
-
-            return currentCommand;
+            return _unitCommands.PeekNext();
         }
 
         private void UpdateMarineAnimation(Vector2 velocity)

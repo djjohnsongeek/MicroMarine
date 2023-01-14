@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Zand.AI;
 using Zand.Components;
+using Zand.Debug;
 
 namespace MicroMarine.Components
 {
@@ -26,7 +27,6 @@ namespace MicroMarine.Components
 
         public override void Enter()
         {
-            // determine animation
             _animator.SetAnimation("IdleSouth");
         }
 
