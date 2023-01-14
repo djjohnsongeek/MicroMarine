@@ -28,10 +28,15 @@ namespace MicroMarine.Components
             List<Entity> units = _unitSelector.GetSelectedUnits();
             var command = new UnitCommand(CommandType.Move, null, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
 
+            bool isShiftClick = Input.RightShiftClickOccured();
+
             foreach (var unit in units)
             {
                 var unitCommandQueue = unit.GetComponent<CommandQueue>();
-                unitCommandQueue.Clear();
+                if (!isShiftClick)
+                {
+                    unitCommandQueue.Clear();
+                }
                 unitCommandQueue.AddCommand(command);
             }
         }
