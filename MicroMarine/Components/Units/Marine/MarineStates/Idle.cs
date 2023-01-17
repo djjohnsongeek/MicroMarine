@@ -32,7 +32,7 @@ namespace MicroMarine.Components
 
         public override void Update()
         {
-            var nextCommand = _unitCommands.PeekNext();
+            var nextCommand = _unitCommands.Peek();
 
             if (nextCommand is null)
             {

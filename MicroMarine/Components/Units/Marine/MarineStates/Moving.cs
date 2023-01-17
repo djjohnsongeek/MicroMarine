@@ -38,7 +38,7 @@ namespace MicroMarine.Components
         public override void Enter()
         {
             // Handle commands on another type
-            if (_unitCommands.PeekNext().Type != CommandType.Move)
+            if (_unitCommands.Peek().Type != CommandType.Move)
             {
                 throw new NotImplementedException("Movement state cannot handle non movement commands.");
             }
@@ -56,10 +56,11 @@ namespace MicroMarine.Components
             // check if unit is arrived
             if (UnitArrivedAt(currentCommand.Destination))
             {
-                //currentCommand.SetStatus(CommandStatus.Completed);
+                currentCommand.SetStatus(CommandStatus.Completed);
                 _mover.Velocity = Vector2.Zero;
                 _machine.ChangeState<Idle>();
                 currentCommand.Destination.Radius += _context.Entity.GetComponent<CircleCollider>().Radius / 1.3f;
+                _unitCommands.Dequeue();
                 return;
             }
             
@@ -77,7 +78,7 @@ namespace MicroMarine.Components
 
         private UnitCommand GetCommand()
         {
-            return _unitCommands.PeekNext();
+            return _unitCommands.Peek();
         }
 
         private void UpdateMarineAnimation(Vector2 velocity)

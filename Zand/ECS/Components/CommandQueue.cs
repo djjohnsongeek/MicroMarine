@@ -22,13 +22,18 @@ namespace Zand.Components
             _commands.Clear();
         }
 
-        public UnitCommand PeekNext()
+        public UnitCommand Peek()
         {
             if (_commands.Count == 0)
             {
                 return null;
             }
             return _commands.Peek();
+        }
+
+        public UnitCommand Dequeue()
+        {
+            return _commands.Dequeue();
         }
 
         public int Count => _commands.Count;

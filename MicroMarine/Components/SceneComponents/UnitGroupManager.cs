@@ -25,11 +25,14 @@ namespace MicroMarine.Components
 
         private void AssignCommand()
         {
-            List<Entity> units = _unitSelector.GetSelectedUnits();
-            var command = new UnitCommand(CommandType.Move, null, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+            List<Entity> selectedUnits = _unitSelector.GetSelectedUnits();
+            var moveCommand = new UnitCommand(CommandType.Move, null, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+            UpdateCommandQueues(selectedUnits, moveCommand);
+        }
 
+        private void UpdateCommandQueues(List<Entity> units, UnitCommand newCommand)
+        {
             bool isShiftClick = Input.RightShiftClickOccured();
-
             foreach (var unit in units)
             {
                 var unitCommandQueue = unit.GetComponent<CommandQueue>();
@@ -37,7 +40,7 @@ namespace MicroMarine.Components
                 {
                     unitCommandQueue.Clear();
                 }
-                unitCommandQueue.AddCommand(command);
+                unitCommandQueue.AddCommand(newCommand);
             }
         }
     }
