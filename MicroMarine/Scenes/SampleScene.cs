@@ -26,6 +26,9 @@ namespace MicroMarine.Scenes
         {
             base.Load();
 
+            // Textures...
+            this.Content.LoadTexture("waypoint", "Content/waypoint.png");
+
             // Add Scene Components
             var unitSelector = (UnitSelector) SceneComponents.AddComponent(new UnitSelector(this));
             SceneComponents.AddComponent(new UnitGroupManager(this));

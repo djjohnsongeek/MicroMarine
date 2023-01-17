@@ -19,6 +19,10 @@ namespace Zand.Components
 
         public void Clear()
         {
+            foreach (var command in _commands)
+            {
+                command.SetStatus(CommandStatus.Completed);
+            }
             _commands.Clear();
         }
 
