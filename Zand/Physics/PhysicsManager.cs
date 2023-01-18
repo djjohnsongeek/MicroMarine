@@ -33,7 +33,7 @@ namespace Zand.Physics
 
         public void Draw(SpriteBatch sBatch)
         {
-            if (DebugTools.ShowDebug)
+            if (DebugTools.Active)
             {
                 foreach (var collider in _colliders)
                 {

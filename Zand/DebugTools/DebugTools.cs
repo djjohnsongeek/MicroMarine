@@ -7,7 +7,7 @@ namespace Zand.Debug
     {
         private static DebugConsole _debugConsole;
         private static Scene _scene;
-        public static bool ShowDebug = false;
+        public static bool Active = false;
 
         public static void SetUp(Scene scene, SpriteFont font)
         {
@@ -17,7 +17,7 @@ namespace Zand.Debug
 
         public static void Update()
         {
-            if (ShowDebug)
+            if (Active)
             {
                 _debugConsole.Update();
             }
@@ -31,7 +31,7 @@ namespace Zand.Debug
                 null, null, null, null, null
             );
 
-            if (ShowDebug)
+            if (Active)
             {
                 _debugConsole.Draw(spriteBatch);
                 _scene.Physics.Draw(spriteBatch);

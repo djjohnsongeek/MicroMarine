@@ -30,7 +30,7 @@ namespace MicroMarine.Components
                 AssignCommand();
             }
 
-            if (!DebugTools.ShowDebug)
+            if (!DebugTools.Active)
             {
                 CullCommands();
             }
@@ -74,45 +74,52 @@ namespace MicroMarine.Components
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            var origin = new Vector2(8, 8);
             foreach (var command in _allCommands)
             {
-                Vector2 position = Scene.Camera.GetScreenLocation(command.Destination.Position);
-
-                // Draw Waypoint
-                spriteBatch.Draw(
-                    _waypointTexture,
-                    position,
-                    null,
-                    Color.White,
-                    0,
-                    origin,
-                    1,
-                    SpriteEffects.None,
-                    1
-                );
-
-
-                if (DebugTools.ShowDebug)
-                {
-                    var circleTexture = Shapes.CreateCircleTexture(command.Destination.Radius * 2);
-
-                    // Draw Destination Radius
-                    spriteBatch.Draw(
-                        texture: circleTexture,
-                        position: position,
-                        sourceRectangle: null,
-                        color: new Color(200, 100, 100, 100),
-                        rotation: 0,
-                        origin: new Vector2(circleTexture.Width / 2, circleTexture.Height / 2),
-                        scale: 1,
-                        effects: SpriteEffects.None,
-                        layerDepth: 1
-                    );
-                }
-
-
+                DrawCommand(spriteBatch, command);
             }
+        }
+
+        private void DrawCommand(SpriteBatch sBatch, UnitCommand command)
+        {
+            Vector2 screenPos = Scene.Camera.GetScreenLocation(command.Destination.Position);
+            DrawWaypoint(sBatch, command, screenPos);
+
+            if (DebugTools.Active)
+            {
+                DrawDestinationCircles(sBatch, command, screenPos);
+            }
+        }
+
+        private void DrawWaypoint(SpriteBatch sBatch, UnitCommand command, Vector2 commandScreenPos)
+        {
+            sBatch.Draw(
+                _waypointTexture,
+                commandScreenPos,
+                null,
+                Color.White,
+                0,
+                new Vector2(8, 8),
+                1,
+                SpriteEffects.None,
+                1
+            );
+        }
+
+        private void DrawDestinationCircles(SpriteBatch sBatch, UnitCommand command, Vector2 commandScreenPos)
+        {
+            var circleTexture = Shapes.CreateCircleTexture(command.Destination.Radius * 2);
+            sBatch.Draw(
+                texture: circleTexture,
+                position: commandScreenPos,
+                sourceRectangle: null,
+                color: new Color(200, 100, 100, 100),
+                rotation: 0,
+                origin: new Vector2(circleTexture.Width / 2, circleTexture.Height / 2),
+                scale: 1,
+                effects: SpriteEffects.None,
+                layerDepth: 1
+            );
         }
     }
 }

@@ -84,7 +84,7 @@ namespace Zand
             // Toggle Debug
             if (Input.KeyIsDown(Keys.LeftControl) && Input.KeyWasPressed(Keys.D))
             {
-                DebugTools.ShowDebug = !DebugTools.ShowDebug;
+                DebugTools.Active = !DebugTools.Active;
             }
 
             Physics.Update();
@@ -104,7 +104,7 @@ namespace Zand
             Entities.Draw();
             SceneComponents.Draw();
 
-            if (DebugTools.ShowDebug)
+            if (DebugTools.Active)
             {
                 DebugTools.Draw(SpriteBatch);
             }
