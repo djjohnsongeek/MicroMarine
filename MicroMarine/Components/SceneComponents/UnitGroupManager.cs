@@ -5,6 +5,8 @@ using Zand.AI;
 using Zand.Components;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Zand.Debug;
+using Zand.Graphics;
 
 namespace MicroMarine.Components
 {
@@ -28,13 +30,18 @@ namespace MicroMarine.Components
                 AssignCommand();
             }
 
-            CullCommands();
-
+            if (!DebugTools.ShowDebug)
+            {
+                CullCommands();
+            }
         }
 
         private void AssignCommand()
         {
             List<Entity> selectedUnits = _unitSelector.GetSelectedUnits();
+
+            if (selectedUnits.Count == 0) return;
+
             var moveCommand = new UnitCommand(CommandType.Move, null, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
             UpdateCommandQueues(selectedUnits, moveCommand);
         }
@@ -70,9 +77,12 @@ namespace MicroMarine.Components
             var origin = new Vector2(8, 8);
             foreach (var command in _allCommands)
             {
+                Vector2 position = Scene.Camera.GetScreenLocation(command.Destination.Position);
+
+                // Draw Waypoint
                 spriteBatch.Draw(
                     _waypointTexture,
-                    Scene.Camera.GetScreenLocation(command.Destination.Position),
+                    position,
                     null,
                     Color.White,
                     0,
@@ -81,6 +91,27 @@ namespace MicroMarine.Components
                     SpriteEffects.None,
                     1
                 );
+
+
+                if (DebugTools.ShowDebug)
+                {
+                    var circleTexture = Shapes.CreateCircleTexture(command.Destination.Radius * 2);
+
+                    // Draw Destination Radius
+                    spriteBatch.Draw(
+                        texture: circleTexture,
+                        position: position,
+                        sourceRectangle: null,
+                        color: new Color(200, 100, 100, 100),
+                        rotation: 0,
+                        origin: new Vector2(circleTexture.Width / 2, circleTexture.Height / 2),
+                        scale: 1,
+                        effects: SpriteEffects.None,
+                        layerDepth: 1
+                    );
+                }
+
+
             }
         }
     }

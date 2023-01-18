@@ -59,7 +59,7 @@ namespace MicroMarine.Components
                 currentCommand.SetStatus(CommandStatus.Completed);
                 _mover.Velocity = Vector2.Zero;
                 _machine.ChangeState<Idle>();
-                currentCommand.Destination.Radius += _context.Entity.GetComponent<CircleCollider>().Radius / 1.3f;
+                currentCommand.Destination.Radius += (float)Math.Cbrt(currentCommand.Destination.Radius);
                 _unitCommands.Dequeue();
                 return;
             }

@@ -27,7 +27,7 @@ namespace Zand.Debug
         {
             spriteBatch.Begin(
                 SpriteSortMode.Deferred,
-                BlendState.AlphaBlend,
+                BlendState.NonPremultiplied,
                 null, null, null, null, null
             );
 

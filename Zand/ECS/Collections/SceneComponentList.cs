@@ -31,9 +31,9 @@ namespace Zand.ECS.Collections
         {
             Scene.SpriteBatch.Begin(
                 SpriteSortMode.Deferred,
-                BlendState.NonPremultiplied,
+                BlendState.Additive,
                 null, null, null, null, null
-            );
+            ); ;
 
             for (int i = 0; i < _components.Count; i++)
             {

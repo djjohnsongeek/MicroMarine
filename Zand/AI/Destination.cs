@@ -4,7 +4,7 @@ namespace Zand.AI
 {
     public class Destination
     {
-        private const float DefaultStartRadius = 6f;
+        private const float DefaultStartRadius = 9f;
         public float Radius;
         public Vector2 Position;
 

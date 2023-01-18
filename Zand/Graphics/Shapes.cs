@@ -55,6 +55,12 @@ namespace Zand.Graphics
         {
             spriteBatch.Draw(texure, rect, color);
         }
+
+        public static Texture2D CreateCircleTexture(float diameter)
+        {
+            return CreateCircleTexture((int)diameter);
+        }
+
         public static Texture2D CreateCircleTexture(int diameter)
         {
             if (Shapes._circleTextures.ContainsKey(diameter))
