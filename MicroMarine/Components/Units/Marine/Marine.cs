@@ -49,7 +49,6 @@ namespace MicroMarine.Components
             animator.AddAnimation("WalkSouth", new Animation(marineSheet, spriteSheet.GetFrames(40, 47)));
             animator.AddAnimation("WalkEast", new Animation(marineSheet, spriteSheet.GetFrames(48, 55)));
             animator.AddAnimation("WalkWest", new Animation(marineSheet, spriteSheet.GetFrames(56, 63)));
-            animator.SetAnimation("IdleSouth");
 
             Entity.AddComponent(animator);
         }

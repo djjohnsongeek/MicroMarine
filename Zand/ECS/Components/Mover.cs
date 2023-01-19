@@ -20,6 +20,7 @@ namespace Zand.ECS.Components
         public Mover (float maxSpeed)
         {
             this.maxSpeed = maxSpeed;
+            Orientation = UnitDirection.South;
         }
 
         public void Update()
