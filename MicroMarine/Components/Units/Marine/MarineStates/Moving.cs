@@ -83,56 +83,8 @@ namespace MicroMarine.Components
 
         private void UpdateMarineAnimation(Vector2 velocity)
         {
-            if (velocity != Vector2.Zero)
-            {
-                velocity.Normalize();
-                float dot = Vector2.Dot(Vector2.UnitX, velocity);
-
-                // close to zero, traveling up or down
-                if (dot > -0.5F && dot < 0.5F)
-                {
-                    if (velocity.Y < 0)
-                    {
-                        if (!_animator.AnimationIsRunning("WalkNorth"))
-                        {
-                            _animator.SetAnimation("WalkNorth");
-                        }
-                    }
-                    else if (velocity.Y > 0)
-                    {
-                        if (!_animator.AnimationIsRunning("WalkSouth"))
-                        {
-                            _animator.SetAnimation("WalkSouth");
-                        }
-                    }
-                }
-                // close to 1 traveling more horizontal
-                if (dot < -0.5 || dot > 0.5F)
-                {
-                    if (velocity.X > 0)
-                    {
-                        if (!_animator.AnimationIsRunning("WalkEast"))
-                        {
-                            _animator.SetAnimation("WalkEast");
-                        }
-
-                    }
-                    else if (velocity.X < 0)
-                    {
-                        if (!_animator.AnimationIsRunning("WalkWest"))
-                        {
-                            _animator.SetAnimation("WalkWest");
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (!_animator.AnimationIsRunning("IdleSouth"))
-                {
-                    _animator.SetAnimation("IdleSouth");
-                }
-            }
+            string animation = "Walk" + _mover.Orientation.ToString();
+            _animator.SetAnimation(animation);
         }
     }
 }

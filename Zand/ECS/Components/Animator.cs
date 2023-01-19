@@ -37,6 +37,11 @@ namespace Zand.Components
                 throw new IndexOutOfRangeException($"The animation {name} does not exist!");
             }
 
+            if (AnimationIsRunning(name))
+            {
+                return;
+            }
+
             _currentAnimation = _animations[name];
             _finalIndex = _currentAnimation.Length - 1;
             _currentIndex = 0;
@@ -115,7 +120,7 @@ namespace Zand.Components
             _suppressUpdate = true;
         }
 
-        public bool AnimationIsRunning(string name)
+        private bool AnimationIsRunning(string name)
         {
             return  _currentAnimation == _animations[name];
         }

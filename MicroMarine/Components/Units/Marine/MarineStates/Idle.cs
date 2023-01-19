@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Zand.AI;
 using Zand.Components;
 using Zand.Debug;
+using Zand.ECS.Components;
 
 namespace MicroMarine.Components
 {
@@ -13,11 +14,13 @@ namespace MicroMarine.Components
     {
         private CommandQueue _unitCommands;
         private Animator _animator;
+        private Mover _mover;
 
         public override void OnInitialize()
         {
             _unitCommands = _context.Entity.GetComponent<CommandQueue>(false);
             _animator = _context.Entity.GetComponent<Animator>(false);
+            _mover = _context.Entity.GetComponent<Mover>(false);
         }
 
         public override void Exit()
@@ -27,7 +30,8 @@ namespace MicroMarine.Components
 
         public override void Enter()
         {
-            _animator.SetAnimation("IdleSouth");
+            string animation = "Idle" + _mover.Orientation.ToString();
+            _animator.SetAnimation(animation);
         }
 
         public override void Update()

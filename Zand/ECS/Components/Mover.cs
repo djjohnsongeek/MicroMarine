@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Zand.Assets;
 using Zand.Colliders;
+using Zand.Components;
 
 namespace Zand.ECS.Components
 {
@@ -14,6 +15,7 @@ namespace Zand.ECS.Components
         private float maxSpeed;
         public Vector2 Velocity = Vector2.Zero;
         private TileMap _tileMap = null;
+        public UnitDirection Orientation { get; private set; }
 
         public Mover (float maxSpeed)
         {
@@ -23,6 +25,7 @@ namespace Zand.ECS.Components
         public void Update()
         {
             Entity.Position += Velocity * (float)Time.DeltaTime;
+            UpdateOrientation();
             GetTileMap().ResolveMapCollisions(Entity.GetComponent<CircleCollider>());
             UpdateEntityLayerDepth();
         }
@@ -48,5 +51,53 @@ namespace Zand.ECS.Components
             _tileMap = Scene.FindEntity("tileMap").GetComponent<TileMap>();
             return _tileMap;
         }
+
+        private void UpdateOrientation()
+        {
+            Vector2 currentVelocity = Velocity;
+            currentVelocity.Normalize();
+            if (currentVelocity != Vector2.Zero)
+            {
+                float dot = Vector2.Dot(Vector2.UnitX, currentVelocity);
+                // close to zero, traveling up or down
+                if (dot > -0.5F && dot < 0.5F)
+                {
+
+                    if (currentVelocity.Y < 0)
+                    {
+                        Orientation = UnitDirection.North;
+                    }
+                    else if (currentVelocity.Y > 0)
+                    {
+                        Orientation = UnitDirection.South;
+                    }
+                }
+                // close to 1 traveling more horizontal
+                if (dot < -0.5 || dot > 0.5F)
+                {
+                    if (currentVelocity.X > 0)
+                    {
+                        Orientation = UnitDirection.East;
+
+                    }
+                    else if (currentVelocity.X < 0)
+                    {
+                        Orientation = UnitDirection.West;
+                    }
+                }
+            }
+        }
+    }
+
+    public enum UnitDirection
+    {
+        North,
+        NorthEast,
+        East,
+        SouthEast,
+        South,
+        SouthWest,
+        West,
+        NorthWest,
     }
 }
