@@ -65,7 +65,12 @@ namespace Zand.Assets
                         _spriteSheet.Texture,
                         new Vector2(xIndex * _tileSize, yIndex * _tileSize),
                         _spriteSheet.GetFrame(_visualMap[yIndex][xIndex].Id),
-                        Color.White
+                        Color.White,
+                        0,
+                        Vector2.Zero,
+                        1,
+                        SpriteEffects.None,
+                        0
                     );
                 }
             }

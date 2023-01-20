@@ -28,10 +28,18 @@ namespace MicroMarine.Scenes
 
             // Textures...
             this.Content.LoadTexture("waypoint", "Content/waypoint.png");
+            this.Content.LoadTexture("smallUnitShadow", "Content/small_unit_shadow.png");
 
             // Add Scene Components
             var unitSelector = (UnitSelector) SceneComponents.AddComponent(new UnitSelector(this));
             SceneComponents.AddComponent(new UnitGroupManager(this));
+
+            // Initiate tile map
+            Entity tileMapEntity = CreateEntity("tileMap", Vector2.Zero);
+            Texture2D mapTexture = this.Content.LoadTexture("mapSheet", "Content/grassSheet32.png");
+            var mapSpriteSheet = new SpriteSheet(mapTexture, 32, 32);
+            var map = new TileMap(32, new Point(Config.MapWidth, Config.MapHeight), mapSpriteSheet);
+            tileMapEntity.AddComponent(map);
 
             // Add Marine Entities
             int marineRows = 5;
@@ -47,12 +55,7 @@ namespace MicroMarine.Scenes
                 }
             }
 
-            // initiate tile map
-            Entity tileMapEntity = CreateEntity("tileMap", Vector2.Zero);
-            Texture2D mapTexture = this.Content.LoadTexture("mapSheet", "Content/grassSheet32.png");
-            var mapSpriteSheet = new SpriteSheet(mapTexture, 32, 32);
-            var map = new TileMap(32, new Point(Config.MapWidth, Config.MapHeight), mapSpriteSheet);
-            tileMapEntity.AddComponent(map);
+
         }
 
         public override void Update()

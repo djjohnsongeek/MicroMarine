@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Zand.Assets;
 using Zand.Colliders;
 using Zand.Components;
+using Zand.Debug;
 
 namespace Zand.ECS.Components
 {
@@ -40,6 +41,7 @@ namespace Zand.ECS.Components
         {
             Vector2 screenPos = Scene.Camera.GetScreenLocation(Entity.Position);
             Entity.layerDepth = MathUtil.CalculateLayerDepth(screenPos.Y, Entity.Dimensions.Y);
+            DebugTools.Log($"{Entity.layerDepth}");
         }
 
         private TileMap GetTileMap()

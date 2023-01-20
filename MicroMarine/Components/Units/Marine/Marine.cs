@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using MicroMarine.Components.Units;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Zand;
@@ -23,6 +24,10 @@ namespace MicroMarine.Components
             Entity.AddComponent(new Health(100));
             Entity.AddComponent(new Mover(100));
             Entity.AddComponent(new CommandQueue());
+
+
+            Texture2D texture = Scene.Content.GetContent<Texture2D>("smallUnitShadow");
+            Entity.AddComponent(new UnitShadow(texture));
 
             AddAnimationComponents();
             AddCollisionComponents();
