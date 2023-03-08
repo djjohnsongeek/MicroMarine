@@ -42,8 +42,8 @@ namespace MicroMarine.Scenes
             tileMapEntity.AddComponent(map);
 
             // Add Marine Entities
-            int marineRows = 5;
-            int marineCols = 5;
+            int marineRows = 10;
+            int marineCols = 10;
             int spacing = 32;
             for (int y = 10; y < marineRows * spacing; y += spacing)
             {

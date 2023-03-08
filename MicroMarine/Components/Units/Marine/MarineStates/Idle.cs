@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Zand.AI;
+﻿using Zand.AI;
 using Zand.Components;
-using Zand.Debug;
 using Zand.ECS.Components;
 
 namespace MicroMarine.Components
@@ -47,6 +41,9 @@ namespace MicroMarine.Components
             {
                 case CommandType.Move:
                     _machine.ChangeState<Moving>();
+                    break;
+                case CommandType.Follow:
+                    _machine.ChangeState<Following>();
                     break;
                 default:
                     break;

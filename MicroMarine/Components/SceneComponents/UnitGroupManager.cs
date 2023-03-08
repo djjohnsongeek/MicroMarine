@@ -39,11 +39,20 @@ namespace MicroMarine.Components
         private void AssignCommand()
         {
             List<Entity> selectedUnits = _unitSelector.GetSelectedUnits();
-
             if (selectedUnits.Count == 0) return;
+            UnitCommand command;
 
-            var moveCommand = new UnitCommand(CommandType.Move, null, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
-            UpdateCommandQueues(selectedUnits, moveCommand);
+            Entity followEntity = Scene.Physics.GetEntityAtPosition("marine", Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+            if (followEntity != null)
+            {
+                command = new UnitCommand(CommandType.Follow, followEntity, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+            }
+            else
+            {
+                command = new UnitCommand(CommandType.Move, null, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+            }
+
+            UpdateCommandQueues(selectedUnits, command);
         }
 
         private void UpdateCommandQueues(List<Entity> units, UnitCommand newCommand)

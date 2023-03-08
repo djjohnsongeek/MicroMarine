@@ -41,7 +41,6 @@ namespace Zand.ECS.Components
         {
             Vector2 screenPos = Scene.Camera.GetScreenLocation(Entity.Position);
             Entity.layerDepth = MathUtil.CalculateLayerDepth(screenPos.Y, Entity.Dimensions.Y);
-            DebugTools.Log($"{Entity.layerDepth}");
         }
 
         private TileMap GetTileMap()

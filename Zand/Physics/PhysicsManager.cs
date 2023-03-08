@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Zand.Colliders;
 using Zand.Debug;
+using Zand.Components;
 
 namespace Zand.Physics
 {
@@ -40,6 +41,36 @@ namespace Zand.Physics
                     collider.Draw(sBatch);
                 }
             }
+        }
+
+        public Entity GetEntityAtPosition(string entityName, Vector2 position)
+        {
+            var entities = GetNearbyEntities(entityName, position);
+            foreach (var entity in entities)
+            {
+                var mouseSelectCollider = entity.GetComponent<MouseSelectCollider>(onlyInitialized: true);
+                if (mouseSelectCollider.HitBox.Contains(position))
+                {
+                    return entity;
+                }
+            }
+
+            return null;
+        }
+
+        public List<Entity> GetNearbyEntities(string entityName, Vector2 position)
+        {
+            var colliders = _spatialHash.GetNearby(position);
+            List<Entity> entities = new List<Entity>(colliders.Count);
+            foreach (var collider in colliders)
+            {
+                if (collider.Entity.Name == entityName)
+                {
+                    entities.Add(collider.Entity);
+                }
+            }
+            entities.TrimExcess();
+            return entities;
         }
 
         private void UpdateSpatialHash()

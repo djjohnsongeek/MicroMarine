@@ -1,13 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zand.AI;
-using Zand.Colliders;
 using Zand.Components;
-using Zand.Debug;
 using Zand.ECS.Components;
 using Zand.Physics;
 
@@ -65,10 +59,10 @@ namespace MicroMarine.Components
             }
             
 
-            Vector2 unitVelocity = Vector2.Normalize(currentCommand.Destination.Position - _context.Entity.Position) * 100;
+            Vector2 unitVelocity = Vector2.Normalize(currentCommand.Destination.Position - _context.Entity.Position) * _context.Speed;
             _mover.Velocity = unitVelocity;
 
-            UpdateMarineAnimation(unitVelocity);
+            SetMarineAnimation(unitVelocity);
         }
 
         private bool UnitArrivedAt(Destination destination)
@@ -81,7 +75,7 @@ namespace MicroMarine.Components
             return _unitCommands.Peek();
         }
 
-        private void UpdateMarineAnimation(Vector2 velocity)
+        private void SetMarineAnimation(Vector2 velocity)
         {
             string animation = "Walk" + _mover.Orientation.ToString();
             _animator.SetAnimation(animation);

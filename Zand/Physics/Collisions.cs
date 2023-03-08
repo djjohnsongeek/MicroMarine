@@ -104,11 +104,6 @@ namespace Zand.Physics
             };
         }
 
-        #region Rectangles
-
-
-        #endregion
-
         public static float GetAngle(Collider collider1, Collider collider2)
         {
             var angle = (float)Math.Atan2(
