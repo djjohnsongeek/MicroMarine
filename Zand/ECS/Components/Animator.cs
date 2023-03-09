@@ -30,19 +30,29 @@ namespace Zand.Components
             _animations.Add(name, animation);
         }
 
-        public void SetAnimation(string name)
+        public void Play(string animationName)
         {
-            if (!_animations.ContainsKey(name))
+            // Invalid AnimationName
+            if (!_animations.ContainsKey(animationName))
             {
-                throw new IndexOutOfRangeException($"The animation {name} does not exist!");
+                throw new IndexOutOfRangeException($"The animation {animationName} does not exist!");
             }
 
-            if (AnimationIsRunning(name))
+            // Don't Interrupt Current animation
+            if (AnimationAlreadyRunning(animationName))
             {
                 return;
             }
 
-            _currentAnimation = _animations[name];
+            // Finish current Animation
+            if (_currentAnimation != null)
+            {
+                _currentAnimation.State = Animation.AnimationState.None;
+            }
+
+            // Setup next animation
+            _currentAnimation = _animations[animationName];
+            _currentAnimation.State = Animation.AnimationState.Running;
             _finalIndex = _currentAnimation.Length - 1;
             _currentIndex = 0;
             _updateTarget = 1d / _currentAnimation.FrameRate;
@@ -50,20 +60,12 @@ namespace Zand.Components
 
         public void Update()
         {
-            _elapsedTime += Time.DeltaTime;
-
-            // loop delay
-            if (_suppressUpdate)
+            if (_currentAnimation.IsSuspended() || _currentAnimation == null)
             {
-                if (_elapsedTime < _suppressDuration)
-                {
-                    return;
-                }
-
-                _elapsedTime = 0d;
-                _suppressUpdate = false;
-                _suppressDuration = 0f;
+                return;
             }
+
+            _elapsedTime += Time.DeltaTime;
 
             // Main animation update
             _currentFrame = _currentAnimation[_currentIndex];
@@ -73,16 +75,16 @@ namespace Zand.Components
                 _elapsedTime = 0d;
             }
 
-            // looping animation
+            // Handle the looping
             if (_currentIndex == _finalIndex)
             {
-                _currentIndex = 0;
-                _elapsedTime = 0d;
-
-                if (_currentAnimation.LoopDelay > 0)
+                // Complete Animation so it stops playing
+                if (_currentAnimation.Mode == Animation.LoopMode.Once)
                 {
-                    SuppressUpdate(_currentAnimation.LoopDelay);
+                    _currentAnimation.State = Animation.AnimationState.Completed;
                 }
+                _elapsedTime = 0d;
+                _currentIndex = 0;
             }
         }
 
@@ -114,15 +116,10 @@ namespace Zand.Components
             return entityColor;
         }
 
-        private void SuppressUpdate(float timeLength)
+        private bool AnimationAlreadyRunning(string name)
         {
-            _suppressDuration = timeLength;
-            _suppressUpdate = true;
-        }
-
-        private bool AnimationIsRunning(string name)
-        {
-            return  _currentAnimation == _animations[name];
+            bool isCurrentAnimation = _animations[name] == _currentAnimation;
+            return isCurrentAnimation && _currentAnimation.State == Animation.AnimationState.Running;
         }
     }
 }

@@ -78,7 +78,7 @@ namespace MicroMarine.Components
         private void SetMarineAnimation(Vector2 velocity)
         {
             string animation = "Walk" + _mover.Orientation.ToString();
-            _animator.SetAnimation(animation);
+            _animator.Play(animation);
         }
     }
 }

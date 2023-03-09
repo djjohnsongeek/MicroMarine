@@ -25,7 +25,7 @@ namespace MicroMarine.Components
         public override void Enter()
         {
             string animation = "Idle" + _mover.Orientation.ToString();
-            _animator.SetAnimation(animation);
+            _animator.Play(animation);
         }
 
         public override void Update()

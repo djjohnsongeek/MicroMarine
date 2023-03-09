@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Zand;
 using Zand.AI;
 using Zand.Components;
@@ -7,7 +7,7 @@ using Zand.ECS.Components;
 
 namespace MicroMarine.Components
 {
-    class Following : State<Marine>
+    class Attacking: State<Marine>
     {
         private CommandQueue _unitCommands;
         private Animator _animator;
@@ -30,7 +30,7 @@ namespace MicroMarine.Components
         public override void Update()
         {
             var currentCommand = _unitCommands.Peek();
-            if (currentCommand is null || currentCommand.Type != CommandType.Follow)
+            if (currentCommand is null || currentCommand.Type != CommandType.Attack)
             {
                 _machine.ChangeState<Idle>();
                 return;
@@ -42,7 +42,7 @@ namespace MicroMarine.Components
                 if (InRangePeriodIsOver())
                 {
                     _mover.Velocity = Vector2.Zero;
-                    SetMarineAnimation(_mover.Velocity, "Idle");
+                    // attack animation
                 }
             }
             else
