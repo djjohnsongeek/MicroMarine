@@ -45,6 +45,9 @@ namespace MicroMarine.Components
                 case CommandType.Follow:
                     _machine.ChangeState<Following>();
                     break;
+                case CommandType.Attack:
+                    _machine.ChangeState<Attacking>();
+                    break;
                 default:
                     break;
             }

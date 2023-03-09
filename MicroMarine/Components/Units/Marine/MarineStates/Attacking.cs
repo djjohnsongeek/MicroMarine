@@ -43,6 +43,7 @@ namespace MicroMarine.Components
                 {
                     _mover.Velocity = Vector2.Zero;
                     // attack animation
+                    _animator.Play("AttackEast");
                 }
             }
             else

@@ -31,7 +31,7 @@ namespace MicroMarine.Scenes
             this.Content.LoadTexture("smallUnitShadow", "Content/small_unit_shadow.png");
 
             // Add Scene Components
-            var unitSelector = (UnitSelector) SceneComponents.AddComponent(new UnitSelector(this));
+            var unitSelector = (UnitSelector) SceneComponents.AddComponent(new UnitSelector(this, 5));
             SceneComponents.AddComponent(new UnitGroupManager(this));
 
             // Initiate tile map

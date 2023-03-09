@@ -19,12 +19,15 @@ namespace MicroMarine.Components
         private Rectangle selectBox;
         private Vector2 SelectBoxOrigin;
 
-        public UnitSelector(Scene scene) : base(scene)
+        public UnitAllegiance Allegiance { get; private set; }
+
+        public UnitSelector(Scene scene, int allegianceId) : base(scene)
         {
             _units = new List<Entity>();
             _selectedUnits = new List<Entity>();
             selectBox = Rectangle.Empty;
             SelectBoxOrigin = Vector2.Zero;
+            Allegiance = new UnitAllegiance(allegianceId);
         }
 
         public override void Update()
@@ -48,7 +51,7 @@ namespace MicroMarine.Components
                 for (int i = 0; i < _units.Count; i++)
                 {
                     MouseSelectCollider selectCollider = _units[i].GetComponent<MouseSelectCollider>();
-                    if (selectBox.Intersects(selectCollider.GetScreenLocation()))
+                    if (selectBox.Intersects(selectCollider.GetScreenLocation()) && SameTeam(selectCollider.Entity))
                     {
                         SelectUnit(_units[i], selectCollider);
                     }
@@ -63,6 +66,11 @@ namespace MicroMarine.Components
             {
                 SelectAll();
             }
+        }
+        
+        private bool SameTeam(Entity entity)
+        {
+            return entity.GetComponent<UnitAllegiance>().Id == Allegiance.Id;
         }
 
         private void DeselectAll()

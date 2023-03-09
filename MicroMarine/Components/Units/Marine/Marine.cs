@@ -60,6 +60,7 @@ namespace MicroMarine.Components
             animator.AddAnimation("WalkSouth", new Animation(marineSheet, spriteSheet.GetFrames(40, 47), 24, Animation.LoopMode.Loop));
             animator.AddAnimation("WalkEast", new Animation(marineSheet, spriteSheet.GetFrames(48, 55), 24, Animation.LoopMode.Loop));
             animator.AddAnimation("WalkWest", new Animation(marineSheet, spriteSheet.GetFrames(56, 63), 24, Animation.LoopMode.Loop));
+            animator.AddAnimation("AttackEast", new Animation(marineSheet, spriteSheet.GetFrames(64, 71), 24, Animation.LoopMode.Loop));
 
             Entity.AddComponent(animator);
         }
@@ -81,6 +82,7 @@ namespace MicroMarine.Components
             _stateMachine.AddState(new Idle());
             _stateMachine.AddState(new Moving());
             _stateMachine.AddState(new Following());
+            _stateMachine.AddState(new Attacking());
             _stateMachine.SetInitialState<Idle>();
         }
 

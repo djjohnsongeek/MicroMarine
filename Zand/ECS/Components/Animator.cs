@@ -38,7 +38,7 @@ namespace Zand.Components
                 throw new IndexOutOfRangeException($"The animation {animationName} does not exist!");
             }
 
-            // Don't Interrupt Current animation
+            // Don't interrupt if same animation
             if (AnimationAlreadyRunning(animationName))
             {
                 return;

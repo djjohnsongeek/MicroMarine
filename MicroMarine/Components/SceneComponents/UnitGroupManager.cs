@@ -42,17 +42,39 @@ namespace MicroMarine.Components
             if (selectedUnits.Count == 0) return;
             UnitCommand command;
 
-            Entity followEntity = Scene.Physics.GetEntityAtPosition("marine", Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
-            if (followEntity != null)
+            Entity targetEntity = Scene.Physics.GetEntityAtPosition("marine", Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+            CommandType commandType = CommandType.Move;
+            if (targetEntity != null)
             {
-                command = new UnitCommand(CommandType.Follow, followEntity, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+                if (TargetIsAlly(selectedUnits, targetEntity))
+                {
+                    commandType = CommandType.Follow;
+                }
+                else
+                {
+                    commandType = CommandType.Attack;
+                }
+                command = new UnitCommand(commandType, targetEntity, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
             }
             else
             {
-                command = new UnitCommand(CommandType.Move, null, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+                command = new UnitCommand(commandType, null, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
             }
 
             UpdateCommandQueues(selectedUnits, command);
+        }
+
+        private UnitAllegiance SelectionAllegiance(List<Entity> units)
+        {
+            return units[0].GetComponent<UnitAllegiance>();
+        }
+
+        private bool TargetIsAlly(List<Entity> selectedUnits, Entity targetEntity)
+        {
+            var unitAllegiance = SelectionAllegiance(selectedUnits);
+            var targetAllegiance = targetEntity.GetComponent<UnitAllegiance>();
+
+            return unitAllegiance.Id == targetAllegiance.Id;
         }
 
         private void UpdateCommandQueues(List<Entity> units, UnitCommand newCommand)
