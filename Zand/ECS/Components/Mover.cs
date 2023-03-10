@@ -27,7 +27,7 @@ namespace Zand.ECS.Components
         public void Update()
         {
             Entity.Position += Velocity * (float)Time.DeltaTime;
-            UpdateOrientation();
+            Orientation = DetermineUnitDirection(Velocity);
             GetTileMap().ResolveMapCollisions(Entity.GetComponent<CircleCollider>());
             UpdateEntityLayerDepth();
         }
@@ -54,42 +54,49 @@ namespace Zand.ECS.Components
             return _tileMap;
         }
 
-        private void UpdateOrientation()
+        public static UnitDirection DetermineUnitDirection(Vector2 velocity)
         {
-            Vector2 currentVelocity = Velocity;
-            currentVelocity.Normalize();
-            if (currentVelocity != Vector2.Zero)
+            return DetermineUnitDirection(Vector2.Zero, velocity);
+        }
+
+        public static UnitDirection DetermineUnitDirection(Vector2 agentPosition, Vector2 targetPosition)
+        {
+            var difference = targetPosition - agentPosition;
+            difference.Normalize();
+
+            float dot = Vector2.Dot(Vector2.UnitX, difference);
+            UnitDirection orientation = UnitDirection.North;
+            // close to zero, traveling up or down
+            if (dot > -0.5F && dot < 0.5F)
             {
-                float dot = Vector2.Dot(Vector2.UnitX, currentVelocity);
-                // close to zero, traveling up or down
-                if (dot > -0.5F && dot < 0.5F)
+                if (difference.Y < 0)
                 {
-
-                    if (currentVelocity.Y < 0)
-                    {
-                        Orientation = UnitDirection.North;
-                    }
-                    else if (currentVelocity.Y > 0)
-                    {
-                        Orientation = UnitDirection.South;
-                    }
+                    orientation = UnitDirection.North;
                 }
-                // close to 1 traveling more horizontal
-                if (dot < -0.5 || dot > 0.5F)
+                else if (difference.Y > 0)
                 {
-                    if (currentVelocity.X > 0)
-                    {
-                        Orientation = UnitDirection.East;
-
-                    }
-                    else if (currentVelocity.X < 0)
-                    {
-                        Orientation = UnitDirection.West;
-                    }
+                    orientation = UnitDirection.South;
                 }
             }
+            // close to 1 traveling more horizontal
+            if (dot < -0.5 || dot > 0.5F)
+            {
+                if (difference.X > 0)
+                {
+                    orientation = UnitDirection.East;
+
+                }
+                else if (difference.X < 0)
+                {
+                    orientation = UnitDirection.West;
+                }
+            }
+
+            return orientation;
         }
     }
+
+
 
     public enum UnitDirection
     {

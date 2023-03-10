@@ -42,15 +42,14 @@ namespace MicroMarine.Components
                 if (InRangePeriodIsOver())
                 {
                     _mover.Velocity = Vector2.Zero;
-                    // attack animation
-                    PlayAttachAnimation(currentCommand.EntityTarget);
+                    PlayAttackAnimation(currentCommand.EntityTarget);
                 }
             }
             else
             {
                 Vector2 unitVelocity = Vector2.Normalize(currentCommand.EntityTarget.Position - _context.Entity.Position) * _context.Speed;
                 _mover.Velocity = unitVelocity;
-                SetMarineAnimation(_mover.Velocity, "Walk");
+                _animator.Play($"Walk{_mover.Orientation}");
                 _inRangeCount = 0;
             }
         }
@@ -66,56 +65,10 @@ namespace MicroMarine.Components
             return _inRangeCount >= _maxInRangeCount;
         }
 
-        private void PlayAttachAnimation(Entity target)
+        private void PlayAttackAnimation(Entity target)
         {
-            var targetPosition = target.Position;
-            var entityPosition = _context.Entity.Position;
-
-            var attackVector = targetPosition - entityPosition;
-            var direction = GetAttackOrientation(attackVector);
-
-            _animator.Play($"Attack{direction}");
-        }
-
-        private UnitDirection GetAttackOrientation(Vector2 attackVector)
-        {
-            attackVector.Normalize();
-            float dot = Vector2.Dot(Vector2.UnitX, attackVector);
-            UnitDirection orientation = UnitDirection.North;
-            // close to zero, traveling up or down
-            if (dot > -0.5F && dot < 0.5F)
-            {
-
-                if (attackVector.Y < 0)
-                {
-                    orientation = UnitDirection.North;
-                }
-                else if (attackVector.Y > 0)
-                {
-                    orientation = UnitDirection.South;
-                }
-            }
-            // close to 1 traveling more horizontal
-            if (dot < -0.5 || dot > 0.5F)
-            {
-                if (attackVector.X > 0)
-                {
-                    orientation = UnitDirection.East;
-
-                }
-                else if (attackVector.X < 0)
-                {
-                    orientation = UnitDirection.West;
-                }
-            }
-
-            return orientation;
-        }
-
-        private void SetMarineAnimation(Vector2 velocity, string animationVerb)
-        {
-            string animation = animationVerb + _mover.Orientation.ToString();
-            _animator.Play(animation);
+            UnitDirection orientation = Mover.DetermineUnitDirection(_context.Entity.Position, target.Position);
+            _animator.Play($"Attack{orientation}");
         }
     }
 }
