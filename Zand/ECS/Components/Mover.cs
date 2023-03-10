@@ -54,8 +54,13 @@ namespace Zand.ECS.Components
             return _tileMap;
         }
 
-        public static UnitDirection DetermineUnitDirection(Vector2 velocity)
+        public UnitDirection DetermineUnitDirection(Vector2 velocity)
         {
+            if (velocity == Vector2.Zero)
+            {
+                return Orientation;
+            }
+
             return DetermineUnitDirection(Vector2.Zero, velocity);
         }
 
