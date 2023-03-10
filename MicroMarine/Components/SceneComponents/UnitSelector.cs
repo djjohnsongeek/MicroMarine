@@ -51,7 +51,8 @@ namespace MicroMarine.Components
                 for (int i = 0; i < _units.Count; i++)
                 {
                     MouseSelectCollider selectCollider = _units[i].GetComponent<MouseSelectCollider>();
-                    if (selectBox.Intersects(selectCollider.GetScreenLocation()) && SameTeam(selectCollider.Entity))
+                    // && SameTeam(selectCollider.Entity)
+                    if (selectBox.Intersects(selectCollider.GetScreenLocation()))
                     {
                         SelectUnit(_units[i], selectCollider);
                     }

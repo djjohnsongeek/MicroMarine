@@ -79,6 +79,7 @@ namespace MicroMarine.Components
 
         private UnitDirection GetAttackOrientation(Vector2 attackVector)
         {
+            attackVector.Normalize();
             float dot = Vector2.Dot(Vector2.UnitX, attackVector);
             UnitDirection orientation = UnitDirection.North;
             // close to zero, traveling up or down
