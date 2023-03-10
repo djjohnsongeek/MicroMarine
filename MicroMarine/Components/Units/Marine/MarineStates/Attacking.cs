@@ -43,7 +43,7 @@ namespace MicroMarine.Components
                 {
                     _mover.Velocity = Vector2.Zero;
                     // attack animation
-                    _animator.Play("AttackEast");
+                    PlayAttachAnimation(currentCommand.EntityTarget);
                 }
             }
             else
@@ -64,6 +64,51 @@ namespace MicroMarine.Components
         public bool InRangePeriodIsOver()
         {
             return _inRangeCount >= _maxInRangeCount;
+        }
+
+        private void PlayAttachAnimation(Entity target)
+        {
+            var targetPosition = target.Position;
+            var entityPosition = _context.Entity.Position;
+
+            var attackVector = targetPosition - entityPosition;
+            var direction = GetAttackOrientation(attackVector);
+
+            _animator.Play($"Attack{direction}");
+        }
+
+        private UnitDirection GetAttackOrientation(Vector2 attackVector)
+        {
+            float dot = Vector2.Dot(Vector2.UnitX, attackVector);
+            UnitDirection orientation = UnitDirection.North;
+            // close to zero, traveling up or down
+            if (dot > -0.5F && dot < 0.5F)
+            {
+
+                if (attackVector.Y < 0)
+                {
+                    orientation = UnitDirection.North;
+                }
+                else if (attackVector.Y > 0)
+                {
+                    orientation = UnitDirection.South;
+                }
+            }
+            // close to 1 traveling more horizontal
+            if (dot < -0.5 || dot > 0.5F)
+            {
+                if (attackVector.X > 0)
+                {
+                    orientation = UnitDirection.East;
+
+                }
+                else if (attackVector.X < 0)
+                {
+                    orientation = UnitDirection.West;
+                }
+            }
+
+            return orientation;
         }
 
         private void SetMarineAnimation(Vector2 velocity, string animationVerb)
