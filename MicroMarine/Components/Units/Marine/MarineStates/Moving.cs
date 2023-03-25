@@ -41,9 +41,8 @@ namespace MicroMarine.Components
         public override void Update()
         {
             var currentCommand = GetCommand();
-            if (currentCommand is null)
+            if (UnsupportedCommand(currentCommand))
             {
-                _machine.ChangeState<Idle>();
                 return;
             }
 
@@ -63,6 +62,31 @@ namespace MicroMarine.Components
             _mover.Velocity = unitVelocity;
 
             SetMarineAnimation(unitVelocity);
+        }
+
+        private bool UnsupportedCommand(UnitCommand currentCommand)
+        {
+            bool unsupported = false;
+
+            if (currentCommand is null)
+            {
+                _machine.ChangeState<Idle>();
+                return unsupported;
+            }
+
+            switch(currentCommand.Type)
+            {
+                case CommandType.Attack:
+                    unsupported = true;
+                    _machine.ChangeState<Attacking>();
+                    break;
+                case CommandType.Follow:
+                    unsupported = true;
+                    _machine.ChangeState<Following>();
+                    break;
+            }
+
+            return unsupported;
         }
 
         private bool UnitArrivedAt(Destination destination)

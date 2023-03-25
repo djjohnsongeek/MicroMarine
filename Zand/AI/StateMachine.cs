@@ -80,6 +80,7 @@ namespace Zand.AI
         public void Update()
         {
             _currentState.Update();
+            DebugTools.Log(_currentState.ToString());
         }
     }
 }
