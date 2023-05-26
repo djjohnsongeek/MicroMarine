@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Zand.Debug;
 
 namespace Zand.AI
 {
@@ -43,7 +42,6 @@ namespace Zand.AI
             _states.Push(nextState);
             nextState.Enter();
             _currentState = nextState;
-            DebugTools.Log(_currentState.ToString());
         }
 
         // Switch to a new state, saving the last state for later
@@ -80,7 +78,6 @@ namespace Zand.AI
         public void Update()
         {
             _currentState.Update();
-            DebugTools.Log(_currentState.ToString());
         }
     }
 }

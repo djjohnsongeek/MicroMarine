@@ -34,7 +34,7 @@ namespace Zand.Graphics
             );
         }
 
-        public static void DrawLine(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, Vector2 end, int width, Color color)
+        public static void DrawLine(SpriteBatch spriteBatch, Texture2D texture, Vector2 start, Vector2 end, int width, Color color, float depth = 1)
         {
             Vector2 edge = end - start;
             float angle = (float)Math.Atan2(edge.Y, edge.X);
@@ -47,7 +47,7 @@ namespace Zand.Graphics
                 angle,
                 new Vector2(0, 0),
                 SpriteEffects.None,
-                1
+                depth
            );
         }
 

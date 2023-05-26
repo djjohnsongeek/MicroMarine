@@ -17,15 +17,21 @@ namespace MicroMarine.Components
     {
         private StateMachine<Marine> _stateMachine;
 
-        public float Range { get; private set; }
+        public float AttackRange { get; private set; }
+        public float FollowRange { get; private set; }
         public float Speed { get; private set; }
-
-        // TODO add a Group property and move logic away from UnitGroup's states and into Marine?
+        public ushort Damage { get; private set; }
+        public float AttacksPerSecond { get; private set; }
+        public float AttackInterval { get; private set; }
         public override void OnAddedToEntity()
         {
             Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
-            Range = 120;
+            AttackRange = 250;
+            FollowRange = 120;
             Speed = 100;
+            Damage = 5;
+            AttacksPerSecond = 4.3f;
+            AttackInterval = 5 / 60f;
 
             Entity.AddComponent(new Health(100));
             Entity.AddComponent(new Mover(100));

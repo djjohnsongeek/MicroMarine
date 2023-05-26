@@ -4,6 +4,7 @@ using Zand;
 using Zand.AI;
 using Zand.Components;
 using Zand.ECS.Components;
+using Zand.Debug;
 
 namespace MicroMarine.Components
 {
@@ -14,6 +15,8 @@ namespace MicroMarine.Components
         private Mover _mover;
         private int _maxInRangeCount = 600;
         private int _inRangeCount = 0;
+        private double _elapsedTime = 0;
+
 
         public override void OnInitialize()
         {
@@ -36,6 +39,13 @@ namespace MicroMarine.Components
                 return;
             }
 
+            if (TargetIsDead(currentCommand.EntityTarget))
+            {
+                currentCommand.SetStatus(CommandStatus.Completed);
+                _unitCommands.Dequeue();
+                return;
+            }
+
             if (TargetIsInRange(currentCommand.EntityTarget))
             {
                 _inRangeCount++;
@@ -43,6 +53,7 @@ namespace MicroMarine.Components
                 {
                     _mover.Velocity = Vector2.Zero;
                     PlayAttackAnimation(currentCommand.EntityTarget);
+                    AttackTarget(currentCommand.EntityTarget);
                 }
             }
             else
@@ -57,7 +68,12 @@ namespace MicroMarine.Components
         public bool TargetIsInRange(Entity target)
         {
             var distanceSquared = Vector2.DistanceSquared(_context.Entity.Position, target.Position);
-            return distanceSquared < Math.Pow(_context.Range, 2d);
+            return distanceSquared < Math.Pow(_context.AttackRange, 2d);
+        }
+
+        public bool TargetIsDead(Entity target)
+        {
+            return !target.Enabled;
         }
 
         public bool InRangePeriodIsOver()
@@ -69,6 +85,21 @@ namespace MicroMarine.Components
         {
             UnitDirection orientation = Mover.DetermineUnitDirection(_context.Entity.Position, target.Position);
             _animator.Play($"Attack{orientation}");
+        }
+
+        private void AttackTarget(Entity target)
+        {
+            if (_elapsedTime >= _context.AttackInterval)
+            {
+                _elapsedTime = 0;
+            }
+
+            if (_elapsedTime == 0)
+            {
+                target.GetComponent<Health>().Damage(_context.Damage);
+            }
+
+            _elapsedTime += Time.DeltaTime;
         }
     }
 }

@@ -57,7 +57,7 @@ namespace MicroMarine.Components
         public bool TargetIsInRange(Entity target)
         {
             var distanceSquared = Vector2.DistanceSquared(_context.Entity.Position, target.Position);
-            return distanceSquared < Math.Pow(_context.Range, 2d);
+            return distanceSquared < Math.Pow(_context.FollowRange, 2d);
         }
 
         public bool InRangePeriodIsOver()
