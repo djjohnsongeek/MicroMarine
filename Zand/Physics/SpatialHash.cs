@@ -29,6 +29,15 @@ namespace Zand.Physics
             return _grid[cellHash];
         }
 
+        public IReadOnlyCollection<ICollider> GetWithin(double distance, Vector2 position)
+        {
+            var colliders = new Collection<ICollider>();
+            int layerCount = (int)Math.Ceiling(distance * _conversionFactor);
+
+
+            return colliders;
+        }
+
         public void AddCollider(ICollider collider)
         {
             AddToCell(GetCellHash(collider.BottomRight), collider);
