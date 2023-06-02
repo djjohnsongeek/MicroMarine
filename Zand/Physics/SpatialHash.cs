@@ -11,10 +11,12 @@ namespace Zand.Physics
         private Dictionary<long, List<ICollider>> _grid;
         private Dictionary<int, List<long>> _entityCoordinates;
         private double _conversionFactor;
+        private int _cellSize;
 
         public SpatialHash(int cellSize)
         {
             _conversionFactor = 1d / cellSize;
+            _cellSize = cellSize;
             _grid = new Dictionary<long, List<ICollider>>(1000);
             _entityCoordinates = new Dictionary<int, List<long>>();
         }
@@ -32,10 +34,44 @@ namespace Zand.Physics
         public IReadOnlyCollection<ICollider> GetWithin(double distance, Vector2 position)
         {
             var colliders = new Collection<ICollider>();
-            int layerCount = (int)Math.Ceiling(distance * _conversionFactor);
+            int layerCount = CalculateLayerCount(distance, position);
+            var positionsToSearch = new List<Vector2>();
+
+        
+            for (int currentLayer = 1; currentLayer <= layerCount; currentLayer++)
+            {
+                if (currentLayer == 1)
+                {
+                    positionsToSearch.Add(position);
+                    continue;
+                }
+
+                int incrementAmount = currentLayer - 1;
+                float shiftDistance = incrementAmount * _cellSize; // 64 in this case
+
+
+                var up = position + new Vector2(position.X, position.Y - incrementAmount);
+                var down = position + new Vector2(position.X, position.Y + incrementAmount);
+                var left = position + new Vector2(position.X - incrementAmount, position.Y);
+                var right = position + new Vector2(position.X + incrementAmount, position.Y);
+       
+
+
+
+
+
+
+            }
+
+
 
 
             return colliders;
+        }
+
+        private int CalculateLayerCount(double distance, Vector2 position)
+        {
+            return (int)Math.Ceiling(distance * _conversionFactor);
         }
 
         public void AddCollider(ICollider collider)
