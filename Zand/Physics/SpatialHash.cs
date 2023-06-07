@@ -31,39 +31,43 @@ namespace Zand.Physics
             return _grid[cellHash];
         }
 
-        public IReadOnlyCollection<ICollider> GetWithin(double distance, Vector2 position)
+        public IReadOnlyCollection<ICollider> GetWithin(double distance, Vector2 originalPosition)
         {
-            var colliders = new Collection<ICollider>();
-            int layerCount = CalculateLayerCount(distance, position);
-            var positionsToSearch = new List<Vector2>();
+            var colliders = new List<ICollider>();
+            int layerCount = CalculateLayerCount(distance, originalPosition);
+            var positionsToSearch = new Queue<Vector2>();
+            var searchedPositions = new HashSet<Vector2>();
+            positionsToSearch.Enqueue(originalPosition);
 
-        
-            for (int currentLayer = 1; currentLayer <= layerCount; currentLayer++)
+            while (positionsToSearch.Count > 0)
             {
-                if (currentLayer == 1)
+                Vector2 searchPosition = positionsToSearch.Dequeue();
+                colliders.AddRange(GetNearby(searchPosition));
+                searchedPositions.Add(searchPosition);
+
+                // Determine adjacent positions
+                var up = searchPosition + new Vector2(searchPosition.X, searchPosition.Y - _cellSize);
+                var down = searchPosition + new Vector2(searchPosition.X, searchPosition.Y + _cellSize);
+                var left = searchPosition + new Vector2(searchPosition.X - _cellSize, searchPosition.Y);
+                var right = searchPosition + new Vector2(searchPosition.X + _cellSize, searchPosition.Y);
+                Vector2[] canidatePositions = new Vector2[]
                 {
-                    positionsToSearch.Add(position);
-                    continue;
+                    up, down, left, right
+                };
+
+                // Determine adjacent position eligibility
+                foreach (var canidatePosition in canidatePositions)
+                {
+                    if (!searchedPositions.Contains(canidatePosition))
+                    {
+                        
+                        // TODO ONLY if grid touches original distance somehow
+
+                        positionsToSearch.Enqueue(canidatePosition);
+                    }
                 }
 
-                int incrementAmount = currentLayer - 1;
-                float shiftDistance = incrementAmount * _cellSize; // 64 in this case
-
-
-                var up = position + new Vector2(position.X, position.Y - incrementAmount);
-                var down = position + new Vector2(position.X, position.Y + incrementAmount);
-                var left = position + new Vector2(position.X - incrementAmount, position.Y);
-                var right = position + new Vector2(position.X + incrementAmount, position.Y);
-       
-
-
-
-
-
-
             }
-
-
 
 
             return colliders;
@@ -145,10 +149,15 @@ namespace Zand.Physics
 
         private long GetCellHash(Vector2 vector)
         {
-            int x = (int)Math.Floor(vector.X * _conversionFactor);
-            int y = (int)Math.Floor(vector.Y * _conversionFactor);
+            int x = GetCellAxis(vector.X);
+            int y = GetCellAxis(vector.Y);
 
             return (long)x << 32 | (long)(uint)y;
+        }
+
+        private int GetCellAxis(float axixValue)
+        {
+            return (int)Math.Floor(axixValue * _conversionFactor);
         }
 
         public void Reset()
