@@ -73,6 +73,18 @@ namespace Zand.Physics
             return entities;
         }
 
+        public List<Entity> GetEntitiesWithin(Vector2 position, float distance)
+        {
+            var entities = new List<Entity>();
+            var colliders = _spatialHash.GetWithin(position, distance);
+            foreach(var collider in colliders)
+            {
+                entities.Add(collider.Entity);
+            }
+
+            return entities;
+        }
+
         private void UpdateSpatialHash()
         {
             // Further optimization: only reset colliders that are in motion
@@ -136,12 +148,12 @@ namespace Zand.Physics
             var repelVelocity2 = Vector2.Multiply(repelVelocity1, -1);
 
 
-            if (entity1.GetComponent<Collider>().Static)
+            if (entity1.GetComponent<Collider>(false).Static)
             {
                 repelVelocity1 = Vector2.Zero;
             }
 
-            if (entity2.GetComponent<Collider>().Static)
+            if (entity2.GetComponent<Collider>(false).Static)
             {
                 repelVelocity2 = Vector2.Zero;
             }

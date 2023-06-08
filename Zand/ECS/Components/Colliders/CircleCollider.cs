@@ -7,17 +7,10 @@ namespace Zand.Colliders
     public class CircleCollider : Collider, ICollider
     {
         public float Radius;
-        private Texture2D _texture;
 
-        /// <summary>
-        ///  Requires a 'Circle' Texture
-        /// </summary>
-        /// <param name="texture"></param>
-        /// <param name="radius"></param>
-        public CircleCollider(Texture2D texture, float radius, Vector2 offset) : base()
+        public CircleCollider(float radius, Vector2 offset) : base()
         {
             Radius = radius;
-            _texture = texture;
             Origin = new Vector2(radius, radius);
             Offset = offset;
         }
@@ -42,9 +35,9 @@ namespace Zand.Colliders
         public override float Top => Center.Y - Radius;
 
 
-        public override void Draw(SpriteBatch sbatch)
-        {
-            sbatch.Draw(_texture, Entity.Scene.Camera.GetScreenLocation(Center), null, Tint, 0, Origin, 1, SpriteEffects.None, 0);
-        }
+        //public override void Draw(SpriteBatch sbatch)
+        //{
+        //    sbatch.Draw(_texture, Entity.Scene.Camera.GetScreenLocation(Center), null, Tint, 0, Origin, 1, SpriteEffects.None, 0);
+        //}
     }
 }

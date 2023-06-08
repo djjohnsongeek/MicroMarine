@@ -42,19 +42,30 @@ namespace MicroMarine.Scenes
             tileMapEntity.AddComponent(map);
 
             // Add Marine Entities
-            int marineRows = 10;
-            int marineCols = 10;
+            int marineRows = 4;
+            int marineCols = 4;
             int spacing = 32;
             for (int y = 10; y < marineRows * spacing; y += spacing)
             {
                 for (int x = 10; x < marineCols * spacing; x += spacing)
                 {
                     Entity marine = CreateEntity("marine", new Vector2(x, y));
-                    marine.AddComponent(new Marine());
+                    marine.AddComponent(new Marine(2));
                     unitSelector.AddUnit(marine);
                 }
             }
 
+
+
+            for (int y = 128; y < 250; y += spacing)
+            {
+                for (int x = 128; x < 250; x += spacing)
+                {
+                    Entity marine = CreateEntity("marine", new Vector2(x, y));
+                    marine.AddComponent(new Marine(5));
+                    unitSelector.AddUnit(marine);
+                }
+            }
 
         }
 

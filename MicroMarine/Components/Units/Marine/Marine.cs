@@ -23,6 +23,13 @@ namespace MicroMarine.Components
         public ushort Damage { get; private set; }
         public float AttacksPerSecond { get; private set; }
         public float AttackInterval { get; private set; }
+        public UnitAllegiance Allegiance { get; private set; }
+
+        public Marine(int allegianceId)
+        {
+            Allegiance = new UnitAllegiance(allegianceId);
+        }
+
         public override void OnAddedToEntity()
         {
             Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
@@ -79,8 +86,7 @@ namespace MicroMarine.Components
             MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle(Entity.Position.ToPoint(), new Point(19, 26)), new Vector2(-9, -13)); // new Vector2(6, 4)
             Entity.AddComponent(mouseCollider);
 
-            Texture2D circleTex = Shapes.CreateCircleTexture(18);
-            CircleCollider collider = new CircleCollider(circleTex, 9, new Vector2(0, 6));
+            CircleCollider collider = new CircleCollider(9, new Vector2(0, 6));
             Entity.AddComponent(collider);
             Scene.RegisterCollider(collider);
         }
@@ -97,10 +103,7 @@ namespace MicroMarine.Components
 
         private void AddAllegiance()
         {
-            var random = new Random();
-            int[] filteredAllegiances = new int[] { 2, 5 };
-            int index = random.Next(0, 2);
-            Entity.AddComponent(new UnitAllegiance(filteredAllegiances[index]));
+            Entity.AddComponent(Allegiance);
         }
     }
 }

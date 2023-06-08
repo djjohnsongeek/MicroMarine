@@ -2,7 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
+using Zand.Colliders;
 using Zand.ECS.Components;
+using Point = Microsoft.Xna.Framework.Point;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace Zand.Physics
 {
@@ -31,51 +35,56 @@ namespace Zand.Physics
             return _grid[cellHash];
         }
 
-        public IReadOnlyCollection<ICollider> GetWithin(double distance, Vector2 originalPosition)
+        public IReadOnlyCollection<ICollider> GetWithin(RectangleF boundingBox)
         {
-            var colliders = new List<ICollider>();
-            int layerCount = CalculateLayerCount(distance, originalPosition);
-            var positionsToSearch = new Queue<Vector2>();
-            var searchedPositions = new HashSet<Vector2>();
-            positionsToSearch.Enqueue(originalPosition);
+            HashSet<ICollider> colliders = new HashSet<ICollider>();
 
-            while (positionsToSearch.Count > 0)
+            // too much instantiation....
+            var topLeft = new Point(GetCellAxis(boundingBox.X), GetCellAxis(boundingBox.Y));
+            var bottomRight = new Point(GetCellAxis(boundingBox.Right), GetCellAxis(boundingBox.Bottom));
+
+            for (int x = topLeft.X; x <= bottomRight.X; x++)
             {
-                Vector2 searchPosition = positionsToSearch.Dequeue();
-                colliders.AddRange(GetNearby(searchPosition));
-                searchedPositions.Add(searchPosition);
-
-                // Determine adjacent positions
-                var up = searchPosition + new Vector2(searchPosition.X, searchPosition.Y - _cellSize);
-                var down = searchPosition + new Vector2(searchPosition.X, searchPosition.Y + _cellSize);
-                var left = searchPosition + new Vector2(searchPosition.X - _cellSize, searchPosition.Y);
-                var right = searchPosition + new Vector2(searchPosition.X + _cellSize, searchPosition.Y);
-                Vector2[] canidatePositions = new Vector2[]
+                for (int y = topLeft.Y; y <= bottomRight.Y; y++)
                 {
-                    up, down, left, right
-                };
+                    var cellCoords = new Point(x, y);
+                    var key = HashCoords(cellCoords);
 
-                // Determine adjacent position eligibility
-                foreach (var canidatePosition in canidatePositions)
-                {
-                    if (!searchedPositions.Contains(canidatePosition))
+                    if (CellExists(key))
                     {
-                        
-                        // TODO ONLY if grid touches original distance somehow
-
-                        positionsToSearch.Enqueue(canidatePosition);
+                        foreach (var collider in _grid[key])
+                        {
+                            colliders.Add(collider);
+                        }
                     }
+
                 }
-
             }
-
 
             return colliders;
         }
 
-        private int CalculateLayerCount(double distance, Vector2 position)
+        public IReadOnlyCollection<ICollider> GetWithin(Vector2 position, float distance)
         {
-            return (int)Math.Ceiling(distance * _conversionFactor);
+            var boundingCircle = new Circle(position, distance);
+            var boundingBox = new RectangleF(position.X - distance, position.Y - distance, distance * 2, distance * 2);
+
+
+            var colliders = new HashSet<ICollider>();
+            var possibleColliders = GetWithin(boundingBox);
+
+            foreach (var collider in possibleColliders)
+            {
+                if (collider is CircleCollider)
+                {
+                    if (Collisions.CircleOverLaps(boundingCircle, collider as CircleCollider))
+                    {
+                        colliders.Add(collider);
+                    }
+                }
+            }
+
+            return colliders;
         }
 
         public void AddCollider(ICollider collider)
@@ -152,7 +161,12 @@ namespace Zand.Physics
             int x = GetCellAxis(vector.X);
             int y = GetCellAxis(vector.Y);
 
-            return (long)x << 32 | (long)(uint)y;
+            return HashCoords(new Point(x, y));
+        }
+
+        private long HashCoords(Point cellCoords)
+        {
+            return (long)cellCoords.X << 32 | (long)(uint)cellCoords.Y;
         }
 
         private int GetCellAxis(float axixValue)

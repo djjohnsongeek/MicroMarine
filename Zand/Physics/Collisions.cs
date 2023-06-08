@@ -46,6 +46,11 @@ namespace Zand.Physics
             return result;
         }
 
+        public static bool CircleOverLaps(Circle circleOverlap, CircleCollider circleCollider)
+        {
+            return Vector2.Distance(circleOverlap.Center, circleCollider.Center) <= circleOverlap.Radius + circleCollider.Radius;
+        }
+
         public static CollisionResult CircleToBox(CircleCollider circle, BoxCollider box)
         {
             CollisionResult result = new CollisionResult
