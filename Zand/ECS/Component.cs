@@ -15,8 +15,6 @@
 
         public virtual void OnRemovedFromEntity()
         {
-            Entity = null;
-            Scene = null;
         }
     }
 }
