@@ -38,6 +38,25 @@ namespace Zand
             _componentsToRemove.Remove(component);
         }
 
+        public void RemoveAll()
+        {
+            foreach (var component in _components)
+            {
+                HandleRemoval(component);
+            }
+            _componentsToAdd.Clear();
+            _componentsToRemove.Clear();
+            _components.Clear();
+            _renderableComponents.Clear();
+            _updatableComponents.Clear();
+            Entity = null;
+        }
+
+        private void HandleRemoval(Component component)
+        {
+            component.OnRemovedFromEntity();
+        }
+
         public T GetComponent<T>(bool onlyInitialized = true) where T : Component
         {
             for (int i = 0; i < _components.Count; i ++)
@@ -111,7 +130,7 @@ namespace Zand
                         _renderableComponents.Remove(_componentsToRemove[i] as IRenderable);
                     }
 
-                    _componentsToRemove[i].Entity = null;
+                    _componentsToRemove[i].OnRemovedFromEntity();
                     _components.Remove(_componentsToRemove[i]);
                 }
 

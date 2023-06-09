@@ -42,6 +42,11 @@ namespace Zand.Components
 
         public int Count => _commands.Count;
 
-
+        public override void OnRemovedFromEntity()
+        {
+            _commands.Clear();
+            _commands = null;
+            base.OnRemovedFromEntity();
+        }
     }
 }

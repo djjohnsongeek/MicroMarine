@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Zand.Debug;
 using Zand.Physics;
 
 namespace Zand.Colliders
@@ -37,6 +38,13 @@ namespace Zand.Colliders
 
         public virtual void Draw(SpriteBatch sBatch)
         {
+        }
+
+        public override void OnRemovedFromEntity()
+        {
+            DebugTools.Log("Remove collider");
+            Scene.Physics.RemoveCollider(this);
+            base.OnRemovedFromEntity();
         }
 
     }

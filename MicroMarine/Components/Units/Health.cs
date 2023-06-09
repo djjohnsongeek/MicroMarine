@@ -33,7 +33,7 @@ namespace MicroMarine.Components
             if (value >= HitPoints)
             {
                 HitPoints = 0;
-                Entity.Disable();
+                Entity.Destroy();
             }
 
             HitPoints -= value;

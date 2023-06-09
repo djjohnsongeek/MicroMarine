@@ -121,5 +121,19 @@ namespace Zand.Components
             bool isCurrentAnimation = _animations[name] == _currentAnimation;
             return isCurrentAnimation && _currentAnimation.State == Animation.AnimationState.Running;
         }
+
+        public override void OnRemovedFromEntity()
+        {
+            _currentAnimation.Dispose();
+            foreach (KeyValuePair<string, Animation> pair in _animations)
+            {
+                pair.Value.Dispose();
+            }
+
+            _animations.Clear();
+            _animations = null;
+            _currentAnimation = null;
+            base.OnRemovedFromEntity();
+        }
     }
 }

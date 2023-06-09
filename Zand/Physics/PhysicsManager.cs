@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Zand.Colliders;
 using Zand.Debug;
 using Zand.Components;
+using Zand.Graphics;
 
 namespace Zand.Physics
 {
@@ -24,6 +25,13 @@ namespace Zand.Physics
         public void AddCollider(ICollider collider)
         {
             _colliders.Add(collider);
+        }
+
+        public void RemoveCollider(ICollider collider)
+        {
+            DebugTools.Log("removed collider)");
+            _spatialHash.RemoveCollider(collider);
+            _colliders.Remove(collider);
         }
 
         public void Update()

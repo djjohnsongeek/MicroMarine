@@ -32,6 +32,12 @@ namespace Zand.ECS.Components
             UpdateEntityLayerDepth();
         }
 
+        public override void OnRemovedFromEntity()
+        {
+            _tileMap = null;
+            base.OnRemovedFromEntity();
+        }
+
         public void Nudge(Vector2 velocity)
         {
             Entity.Position += velocity * (float)Time.DeltaTime;

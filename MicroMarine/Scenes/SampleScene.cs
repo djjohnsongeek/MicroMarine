@@ -57,9 +57,9 @@ namespace MicroMarine.Scenes
 
 
 
-            for (int y = 128; y < 250; y += spacing)
+            for (int y = 250; y < 400; y += spacing)
             {
-                for (int x = 128; x < 250; x += spacing)
+                for (int x = 250; x < 400; x += spacing)
                 {
                     Entity marine = CreateEntity("marine", new Vector2(x, y));
                     marine.AddComponent(new Marine(5));

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Zand
 {
-    class EntityList
+    public class EntityList
     {
         private List<Entity> _entities;
         private List<Entity> _entitiesToAdd;
@@ -39,6 +39,17 @@ namespace Zand
         public void Add(Entity entity)
         {
             _entitiesToAdd.Add(entity);
+        }
+
+        public void Remove(Entity entity)
+        {
+            if (_entitiesToAdd.Contains(entity))
+            {
+                _entitiesToAdd.Remove(entity);
+                return;
+            }
+
+            _entitiesToRemove.Add(entity);
         }
 
         public bool Contains(Entity entity)
@@ -103,13 +114,11 @@ namespace Zand
                 for (int i = 0; i < _entitiesToRemove.Count; i++)
                 {
                     _entities.Remove(_entitiesToRemove[i]);
+                    _entitiesToRemove[i].OnRemovedFromScene();
                 }
             }
 
             _entitiesToRemove.Clear();
-
-            // call on entity removed
-
         }
 
         private void HandleAdditions()

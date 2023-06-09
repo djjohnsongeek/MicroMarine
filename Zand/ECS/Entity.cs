@@ -52,6 +52,16 @@ namespace Zand
             Components.Draw(spriteBatch);
         }
 
+        public void Destroy()
+        {
+            Scene.Entities.Remove(this);
+        }
+
+        public void OnRemovedFromScene()
+        {
+            Components.RemoveAll();
+        }
+
         #region Helpers, Getters, Settings
 
         public void Disable()

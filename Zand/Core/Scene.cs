@@ -14,7 +14,7 @@ namespace Zand
     public class Scene
     {
         private int _idPool = 0;
-        private EntityList Entities;
+        public EntityList Entities;
         public SceneComponentList SceneComponents;
         public ZandContentManager Content;
         public Camera Camera = null;

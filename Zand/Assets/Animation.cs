@@ -10,7 +10,7 @@ using Zand.ECS.Components;
 
 namespace Zand.Assets
 {
-    public class Animation
+    public class Animation : IDisposable
     {
         public enum AnimationState
         {
@@ -60,6 +60,12 @@ namespace Zand.Assets
         public bool IsSuspended()
         {
             return State == AnimationState.Completed || State == AnimationState.Paused || State == AnimationState.None;
+        }
+
+        public void Dispose()
+        {
+            _textureAtlas.Dispose();
+            Array.Clear(_frames, 0, _frames.Length);
         }
     }
 }

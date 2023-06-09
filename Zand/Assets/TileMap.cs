@@ -27,6 +27,17 @@ namespace Zand.Assets
             GenerateMap();
         }
 
+        public override void OnRemovedFromEntity()
+        {
+            _spriteSheet.OnRemovedFromEntity();
+            foreach (var row in _visualMap)
+            {
+                Array.Clear(row, 0, row.Length);
+            }
+            Array.Clear(_visualMap, 0, _visualMap.Length);
+            base.OnRemovedFromEntity();
+        }
+
         public void GenerateMap()
         {
             // Instantiate

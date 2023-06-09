@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Zand.Graphics;
 using Zand.Physics;
 
 namespace Zand.Colliders
@@ -35,9 +36,9 @@ namespace Zand.Colliders
         public override float Top => Center.Y - Radius;
 
 
-        //public override void Draw(SpriteBatch sbatch)
-        //{
-        //    sbatch.Draw(_texture, Entity.Scene.Camera.GetScreenLocation(Center), null, Tint, 0, Origin, 1, SpriteEffects.None, 0);
-        //}
+        public override void Draw(SpriteBatch sbatch)
+        {
+            sbatch.Draw(Shapes.CreateCircleTexture(Radius * 2), Entity.Scene.Camera.GetScreenLocation(Center), null, Tint, 0, Origin, 1, SpriteEffects.None, 0);
+        }
     }
 }

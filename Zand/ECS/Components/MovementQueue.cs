@@ -13,6 +13,11 @@ namespace Zand.Components
         private Queue<Vector2> _waypoints;
         public Vector2? CurrentWaypoint { get; private set; }
 
+        public MovementQueue()
+        {
+            _waypoints = new Queue<Vector2>();
+        }
+
         public void AddWaypoint(Vector2 destination)
         {
             _waypoints.Enqueue(destination);
@@ -43,6 +48,13 @@ namespace Zand.Components
         public bool IsEmpty()
         {
             return _waypoints.Count == 0;
+        }
+
+        public override void OnRemovedFromEntity()
+        {
+            _waypoints.Clear();
+            _waypoints = null;
+            base.OnRemovedFromEntity();
         }
 
     }
