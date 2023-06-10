@@ -92,7 +92,6 @@ namespace Zand
             SceneComponents.Update();
 
             Entities.Update();
-
         }
 
         public virtual void Draw()

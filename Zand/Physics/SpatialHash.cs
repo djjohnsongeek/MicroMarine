@@ -132,11 +132,26 @@ namespace Zand.Physics
             // Remove from previous cells
             foreach (var cellCoord in _entityCoordinates[collider.Entity.Id])
             {
-                _grid[cellCoord].Remove(collider);
+                var list = _grid[cellCoord];
+                var index = DetermineColliderIndex(list, collider);
+                 _grid[cellCoord].RemoveAt(index);
             }
 
             // Remove this entities previous cell coords
             _entityCoordinates[collider.Entity.Id].Clear();
+        }
+
+        private int DetermineColliderIndex(List<ICollider> colliders, ICollider collider)
+        {
+            for (int i = 0; i < colliders.Count; i++)
+            {
+                if (colliders[i].Entity.Id == collider.Entity.Id)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
 
         private bool ColliderExists(long cellHash, ICollider circleCollider)

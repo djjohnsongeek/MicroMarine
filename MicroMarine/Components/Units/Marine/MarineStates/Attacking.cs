@@ -39,7 +39,7 @@ namespace MicroMarine.Components
                 return;
             }
 
-            if (TargetIsDead(currentCommand.EntityTarget))
+            if (currentCommand.EntityTarget.IsDestroyed)
             {
                 currentCommand.SetStatus(CommandStatus.Completed);
                 _unitCommands.Dequeue();

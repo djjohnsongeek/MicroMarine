@@ -76,7 +76,7 @@ namespace Zand.Assets
         public override void OnRemovedFromEntity()
         {
             Array.Clear(_sprites, 0, _sprites.Length);
-            _texture.Dispose();
+            //_texture.Dispose();
             base.OnRemovedFromEntity();
         }
     }

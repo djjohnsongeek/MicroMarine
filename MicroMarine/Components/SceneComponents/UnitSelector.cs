@@ -2,12 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Zand;
 using Zand.Components;
 using Zand.ECS.Components;
 using Zand.Graphics;
-using Zand.Physics;
 
 namespace MicroMarine.Components
 {
@@ -106,6 +104,12 @@ namespace MicroMarine.Components
         public void AddUnit(Entity entity)
         {
             _units.Add(entity);
+        }
+
+        public void RemoveUnit(Entity entity)
+        {
+            _units.Remove(entity);
+            _selectedUnits.Remove(entity);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -64,7 +64,7 @@ namespace Zand.Assets
 
         public void Dispose()
         {
-            _textureAtlas.Dispose();
+            //_textureAtlas.Dispose();
             Array.Clear(_frames, 0, _frames.Length);
         }
     }

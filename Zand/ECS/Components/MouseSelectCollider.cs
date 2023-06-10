@@ -15,6 +15,5 @@ namespace Zand.Components
         {
             return Scene.Camera.GetScreenLocation(HitBox);
         }
-
     }
 }

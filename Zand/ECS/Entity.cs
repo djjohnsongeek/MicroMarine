@@ -7,10 +7,16 @@ namespace Zand
     {
         public int Id { get; set;  }
         private bool _enabled = true;
+        private bool _destroyed = false;
         public bool Enabled
         {
             get => _enabled;
             set => SetEnabled(value);
+        }
+
+        public bool IsDestroyed
+        {
+            get => _destroyed;
         }
 
         public Vector2 Position;
@@ -55,6 +61,7 @@ namespace Zand
         public void Destroy()
         {
             Scene.Entities.Remove(this);
+            _destroyed = true;
         }
 
         public void OnRemovedFromScene()

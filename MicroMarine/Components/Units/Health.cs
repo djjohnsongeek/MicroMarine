@@ -34,6 +34,7 @@ namespace MicroMarine.Components
             {
                 HitPoints = 0;
                 Entity.Destroy();
+                Entity.Scene.GetComponent<UnitSelector>().RemoveUnit(Entity);
             }
 
             HitPoints -= value;

@@ -3,7 +3,6 @@ using Zand;
 using Zand.AI;
 using Zand.Components;
 using Zand.ECS.Components;
-using Zand.Physics;
 
 namespace MicroMarine.Components
 {
@@ -75,6 +74,11 @@ namespace MicroMarine.Components
 
             foreach (var entity in entitiesInRange)
             {
+                if (entity.IsDestroyed)
+                {
+                    continue;
+                }
+
                 if (entity.Name == "marine")
                 {
                     var allegiance = entity.GetComponent<UnitAllegiance>();

@@ -162,6 +162,7 @@ namespace Zand.Physics
             }
 
             if (entity2.GetComponent<Collider>(false).Static)
+            if (entity2.GetComponent<Collider>(false).Static)
             {
                 repelVelocity2 = Vector2.Zero;
             }
