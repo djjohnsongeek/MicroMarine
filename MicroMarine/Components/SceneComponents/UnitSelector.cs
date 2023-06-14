@@ -96,9 +96,12 @@ namespace MicroMarine.Components
 
         private void SelectUnit(Entity entity, MouseSelectCollider selector)
         {
-            selector.Selected = true;
-            _selectedUnits.Add(entity);
-            entity.GetComponent<Health>().Visible = true;
+            if (SameTeam(entity))
+            {
+                selector.Selected = true;
+                _selectedUnits.Add(entity);
+                entity.GetComponent<Health>().Visible = true;
+            }
         }
 
         public void AddUnit(Entity entity)

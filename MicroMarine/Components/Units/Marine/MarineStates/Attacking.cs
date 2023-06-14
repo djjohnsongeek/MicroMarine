@@ -13,8 +13,8 @@ namespace MicroMarine.Components
         private CommandQueue _unitCommands;
         private Animator _animator;
         private Mover _mover;
-        private int _maxInRangeCount = 600;
-        private int _inRangeCount = 0;
+        private double _inRangeThreshold = 0.5;
+        private double _inRangeCount = 0;
         private double _elapsedTime = 0;
 
 
@@ -48,7 +48,7 @@ namespace MicroMarine.Components
 
             if (TargetIsInRange(currentCommand.EntityTarget))
             {
-                _inRangeCount++;
+                _inRangeCount += Time.DeltaTime;
                 if (InRangePeriodIsOver())
                 {
                     _mover.Velocity = Vector2.Zero;
@@ -71,14 +71,9 @@ namespace MicroMarine.Components
             return distanceSquared < Math.Pow(_context.AttackRange, 2d);
         }
 
-        public bool TargetIsDead(Entity target)
-        {
-            return !target.Enabled;
-        }
-
         public bool InRangePeriodIsOver()
         {
-            return _inRangeCount >= _maxInRangeCount;
+            return _inRangeCount >= _inRangeThreshold;
         }
 
         private void PlayAttackAnimation(Entity target)
