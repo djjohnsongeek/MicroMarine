@@ -12,8 +12,8 @@ namespace MicroMarine.Components
         private CommandQueue _unitCommands;
         private Animator _animator;
         private Mover _mover;
-        private int _maxInRangeCount = 600;
-        private int _inRangeCount = 0;
+        private double _inRangeThreshold = .5;
+        private double _inRangeDuration = 0;
 
         public override void OnInitialize()
         {
@@ -38,7 +38,7 @@ namespace MicroMarine.Components
 
             if (TargetIsInRange(currentCommand.EntityTarget))
             {
-                _inRangeCount++;
+                _inRangeDuration += Time.DeltaTime;
                 if (InRangePeriodIsOver())
                 {
                     _mover.Velocity = Vector2.Zero;
@@ -50,7 +50,7 @@ namespace MicroMarine.Components
                 Vector2 unitVelocity = Vector2.Normalize(currentCommand.EntityTarget.Position - _context.Entity.Position) * _context.Speed;
                 _mover.Velocity = unitVelocity;
                 SetMarineAnimation(_mover.Velocity, "Walk");
-                _inRangeCount = 0;
+                _inRangeDuration = 0;
             }
         }
 
@@ -62,7 +62,7 @@ namespace MicroMarine.Components
 
         public bool InRangePeriodIsOver()
         {
-            return _inRangeCount >= _maxInRangeCount;
+            return _inRangeDuration >= _inRangeThreshold;
         }
 
         private void SetMarineAnimation(Vector2 velocity, string animationVerb)
