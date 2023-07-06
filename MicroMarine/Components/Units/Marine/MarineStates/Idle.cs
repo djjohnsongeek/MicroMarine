@@ -37,7 +37,6 @@ namespace MicroMarine.Components
 
             if (nextCommand is null)
             {
-                //
                 var nextTarget = SearchForTarget();
                 if (nextTarget != null)
                 {
@@ -68,7 +67,6 @@ namespace MicroMarine.Components
         }
         private Entity SearchForTarget()
         {
-            //return null;
             var entitiesInRange = _context.Scene.Physics.GetEntitiesWithin(_context.Entity.Position, _context.AttackRange);
             var testDistance = float.MaxValue;
             Entity newTarget = null;

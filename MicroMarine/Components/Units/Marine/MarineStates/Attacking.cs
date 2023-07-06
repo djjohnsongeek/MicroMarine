@@ -4,7 +4,6 @@ using Zand;
 using Zand.AI;
 using Zand.Components;
 using Zand.ECS.Components;
-using Zand.Debug;
 
 namespace MicroMarine.Components
 {

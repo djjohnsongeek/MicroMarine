@@ -44,6 +44,7 @@ namespace MicroMarine.Components
 
             Entity targetEntity = Scene.Physics.GetEntityAtPosition("marine", Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
             CommandType commandType = CommandType.Move;
+
             if (targetEntity != null)
             {
                 if (TargetIsAlly(selectedUnits, targetEntity))
@@ -54,12 +55,9 @@ namespace MicroMarine.Components
                 {
                     commandType = CommandType.Attack;
                 }
-                command = new UnitCommand(commandType, targetEntity, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
             }
-            else
-            {
-                command = new UnitCommand(commandType, null, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
-            }
+
+            command = new UnitCommand(commandType, targetEntity, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
 
             UpdateCommandQueues(selectedUnits, command);
         }

@@ -103,12 +103,30 @@ namespace Zand
             Entities.Draw();
             SceneComponents.Draw();
 
+
+
+            // Draw Effects
+            // Draw UI
             if (DebugTools.Active)
             {
                 DebugTools.Draw(SpriteBatch);
             }
 
-            // Draw Effects
+            if (!Core._instance.IsMouseVisible)
+            {
+                SpriteBatch.Begin();
+                SpriteBatch.Draw(
+                    Content.GetContent<Texture2D>("cursor"),
+                    Input.MouseScreenPosition,
+                    null,
+                    Color.White,
+                    0,
+                    Vector2.Zero,
+                    new Vector2(1, 1),
+                    SpriteEffects.None,
+                    1);
+                SpriteBatch.End();
+            }
         }
 
         public T GetComponent<T>() where T : SceneComponent
@@ -130,6 +148,17 @@ namespace Zand
             ScreenWidth = width;
 
             Core.GraphicsManager.ApplyChanges();
+        }
+
+        public void SetFullScreen(bool value)
+        {
+            Core.GraphicsManager.IsFullScreen = value;
+            Core.GraphicsManager.ApplyChanges();
+        }
+
+        public void SetMouseVisibility(bool value)
+        {
+            Core._instance.IsMouseVisible = value;
         }
     }
 }

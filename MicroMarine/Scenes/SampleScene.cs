@@ -17,7 +17,10 @@ namespace MicroMarine.Scenes
 
         public override void Initialize()
         {
-            SetWindowSize(1280, 720);
+            // SetWindowSize(2560, 1440);
+            SetWindowSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+            SetFullScreen(true);
+            SetMouseVisibility(false);
             Camera = new Camera(new Vector2(ScreenWidth / 2, ScreenHeight / 2), this, ScreenWidth, ScreenHeight);
             base.Initialize();
         }
@@ -27,8 +30,10 @@ namespace MicroMarine.Scenes
             base.Load();
 
             // Textures...
-            this.Content.LoadTexture("waypoint", "Content/waypoint.png");
-            this.Content.LoadTexture("smallUnitShadow", "Content/small_unit_shadow.png");
+            Content.LoadTexture("waypoint", "Content/waypoint.png");
+            Content.LoadTexture("smallUnitShadow", "Content/small_unit_shadow.png");
+            Content.LoadTexture("attackCursor", "Content/attack_cursor.png");
+            Content.LoadTexture("cursor", "Content/cursor.png");
 
             // Add Scene Components
             var unitSelector = (UnitSelector) SceneComponents.AddComponent(new UnitSelector(this, 5));
