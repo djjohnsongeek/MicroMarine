@@ -122,17 +122,21 @@ namespace MicroMarine.Components
 
         private void DrawWaypoint(SpriteBatch sBatch, UnitCommand command, Vector2 commandScreenPos)
         {
-            sBatch.Draw(
-                _waypointTexture,
-                commandScreenPos,
-                null,
-                Color.White,
-                0,
-                new Vector2(8, 8),
-                1,
-                SpriteEffects.None,
-                1
-            );
+            if (command.Type == CommandType.Move)
+            {
+                sBatch.Draw(
+                    _waypointTexture,
+                    commandScreenPos,
+                    null,
+                    Color.White,
+                    0,
+                    new Vector2(8, 8),
+                    1,
+                    SpriteEffects.None,
+                    1
+                );
+            }
+
         }
 
         private void DrawDestinationCircles(SpriteBatch sBatch, UnitCommand command, Vector2 commandScreenPos)

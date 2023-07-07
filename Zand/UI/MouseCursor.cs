@@ -49,6 +49,8 @@ namespace Zand.UI
     {
         Default,
         Attack,
+        Follow,
+        AttackMove,
     }
 
     public struct CursorData

@@ -67,18 +67,31 @@ namespace MicroMarine.Components
                 SelectAll();
             }
 
-            // Attack cursor
+            // Update Cursors
+            var cursor = Scene.UI.GetElement<MouseCursor>();
+            cursor.SetCursor(CursorType.Default);
             if (_selectedUnits.Count > 0)
             {
                 var entity = Scene.Physics.GetEntityAtPosition("marine", Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
-                var cursor = Scene.UI.GetElement<MouseCursor>();
-                if (entity != null && !SameTeam(entity))
+                if (entity != null)
                 {
-                    cursor.SetCursor(CursorType.Attack);
+                    if (SameTeam(entity))
+                    {
+                        cursor.SetCursor(CursorType.Follow);
+                    }
+                    else
+                    {
+                        cursor.SetCursor(CursorType.Attack);
+                    }
+
                     return;
                 }
 
-                cursor.SetCursor(CursorType.Default);
+                if (Input.KeyIsDown(Microsoft.Xna.Framework.Input.Keys.A))
+                {
+                    cursor.SetCursor(CursorType.AttackMove);
+                }
+
             }
         }
         

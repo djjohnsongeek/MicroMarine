@@ -34,8 +34,11 @@ namespace MicroMarine.Scenes
             Content.LoadTexture("waypoint", "Content/waypoint.png");
             Content.LoadTexture("smallUnitShadow", "Content/small_unit_shadow.png");
             Content.LoadTexture("smallUnitSelect", "Content/small_unit_select.png");
-            var attackTexture = Content.LoadTexture("attackCursor", "Content/attack_cursor.png");
+
             var defaultCursorTexture = Content.LoadTexture("cursor", "Content/cursor.png");
+            var attackTexture = Content.LoadTexture("attackCursor", "Content/cursor_attack.png");
+            var attackMoveCursorTexture = Content.LoadTexture("attackMoveCursor", "Content/cursor_attack_move.png");
+            var followCursorTexture = Content.LoadTexture("followCursor", "Content/cursor_follow.png");
 
             // Setup Mouse Cursors
             CursorData defaultCursor = new CursorData
@@ -52,8 +55,24 @@ namespace MicroMarine.Scenes
                 Type = CursorType.Attack,
             };
 
+            CursorData attackMoveCursor = new CursorData
+            {
+                OriginOffset = Vector2.Zero,
+                Texture = attackMoveCursorTexture,
+                Type = CursorType.AttackMove,
+            };
+
+            CursorData followCursor = new CursorData
+            {
+                OriginOffset = new Vector2(attackTexture.Width / 2, attackTexture.Height / 2),
+                Texture = followCursorTexture,
+                Type = CursorType.Follow,
+            };
+
             var mouse = new MouseCursor(defaultCursor);
             mouse.AddCursor(attackCursor);
+            mouse.AddCursor(followCursor);
+            mouse.AddCursor(attackMoveCursor);
             UI.AddElement(mouse);
 
 
