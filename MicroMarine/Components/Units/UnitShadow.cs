@@ -6,12 +6,14 @@ namespace MicroMarine.Components.Units
 {
     class UnitShadow : Component, IRenderable
     {
-        private Texture2D _shadowTexture;
+        private Texture2D texture;
         private Vector2 _entityOffset;
+        protected float _layer;
 
         public UnitShadow(Texture2D texture)
         {
-            _shadowTexture = texture;
+            this.texture = texture;
+            _layer = 0.0000001f;
         }
 
         public override void OnAddedToEntity()
@@ -19,10 +21,10 @@ namespace MicroMarine.Components.Units
             _entityOffset = new Vector2(10, -12);
         }
 
-        public void Draw(SpriteBatch sbatch)
+        public virtual void Draw(SpriteBatch sbatch)
         {
             sbatch.Draw(
-                _shadowTexture,
+                texture,
                 Entity.Position,
                 null,
                 Color.White,
@@ -30,7 +32,7 @@ namespace MicroMarine.Components.Units
                 _entityOffset,
                 1,
                 SpriteEffects.None,
-                0.0000001f
+                _layer
              );
         }
     }

@@ -7,6 +7,7 @@ using Zand.Debug;
 using Zand.ECS.Collections;
 using Zand.ECS.Components;
 using Zand.Physics;
+using Zand.UI;
 using Zand.Utils;
 
 namespace Zand
@@ -20,6 +21,7 @@ namespace Zand
         public Camera Camera = null;
         public Texture2D DebugPixelTexture;
         public PhysicsManager Physics;
+        public UserInterface UI;
 
         public bool GameIsActive => Core._instance.IsActive;
 
@@ -34,8 +36,8 @@ namespace Zand
             Entities = new EntityList(this);
             Content = new ZandContentManager(Core._instance.Services, Core._instance.Content.RootDirectory);
             SpriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);
-
             SceneComponents = new SceneComponentList(this);
+            UI = new UserInterface();
         }
 
         public virtual void Initialize()
@@ -107,25 +109,12 @@ namespace Zand
 
             // Draw Effects
             // Draw UI
+
+            UI.Draw(SpriteBatch);
+
             if (DebugTools.Active)
             {
                 DebugTools.Draw(SpriteBatch);
-            }
-
-            if (!Core._instance.IsMouseVisible)
-            {
-                SpriteBatch.Begin();
-                SpriteBatch.Draw(
-                    Content.GetContent<Texture2D>("cursor"),
-                    Input.MouseScreenPosition,
-                    null,
-                    Color.White,
-                    0,
-                    Vector2.Zero,
-                    new Vector2(1, 1),
-                    SpriteEffects.None,
-                    1);
-                SpriteBatch.End();
             }
         }
 

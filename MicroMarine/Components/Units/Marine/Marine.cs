@@ -45,8 +45,10 @@ namespace MicroMarine.Components
             Entity.AddComponent(new CommandQueue());
 
 
-            Texture2D texture = Scene.Content.GetContent<Texture2D>("smallUnitShadow");
-            Entity.AddComponent(new UnitShadow(texture));
+            Texture2D shadowTexture = Scene.Content.GetContent<Texture2D>("smallUnitShadow");
+            Texture2D selectTexture = Scene.Content.GetContent<Texture2D>("smallUnitSelect");
+            Entity.AddComponent(new UnitShadow(shadowTexture));
+            Entity.AddComponent(new SelectionIndicator(selectTexture));
 
             AddAnimationComponents();
             AddCollisionComponents();

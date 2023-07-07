@@ -3,6 +3,7 @@ using Zand;
 using MicroMarine.Components;
 using Zand.Assets;
 using Microsoft.Xna.Framework.Graphics;
+using Zand.UI;
 
 namespace MicroMarine.Scenes
 
@@ -32,8 +33,29 @@ namespace MicroMarine.Scenes
             // Textures...
             Content.LoadTexture("waypoint", "Content/waypoint.png");
             Content.LoadTexture("smallUnitShadow", "Content/small_unit_shadow.png");
-            Content.LoadTexture("attackCursor", "Content/attack_cursor.png");
-            Content.LoadTexture("cursor", "Content/cursor.png");
+            Content.LoadTexture("smallUnitSelect", "Content/small_unit_select.png");
+            var attackTexture = Content.LoadTexture("attackCursor", "Content/attack_cursor.png");
+            var defaultCursorTexture = Content.LoadTexture("cursor", "Content/cursor.png");
+
+            // Setup Mouse Cursors
+            CursorData defaultCursor = new CursorData
+            {
+                OriginOffset = Vector2.Zero,
+                Texture = defaultCursorTexture,
+                Type = CursorType.Default,
+            };
+
+            CursorData attackCursor = new CursorData
+            {
+                OriginOffset = new Vector2(attackTexture.Width / 2, attackTexture.Height / 2),
+                Texture = attackTexture,
+                Type = CursorType.Attack,
+            };
+
+            var mouse = new MouseCursor(defaultCursor);
+            mouse.AddCursor(attackCursor);
+            UI.AddElement(mouse);
+
 
             // Add Scene Components
             var unitSelector = (UnitSelector) SceneComponents.AddComponent(new UnitSelector(this, 5));

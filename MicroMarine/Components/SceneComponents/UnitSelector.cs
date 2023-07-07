@@ -6,6 +6,7 @@ using Zand;
 using Zand.Components;
 using Zand.ECS.Components;
 using Zand.Graphics;
+using Zand.UI;
 
 namespace MicroMarine.Components
 {
@@ -65,6 +66,20 @@ namespace MicroMarine.Components
             {
                 SelectAll();
             }
+
+            // Attack cursor
+            if (_selectedUnits.Count > 0)
+            {
+                var entity = Scene.Physics.GetEntityAtPosition("marine", Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+                var cursor = Scene.UI.GetElement<MouseCursor>();
+                if (entity != null && !SameTeam(entity))
+                {
+                    cursor.SetCursor(CursorType.Attack);
+                    return;
+                }
+
+                cursor.SetCursor(CursorType.Default);
+            }
         }
         
         private bool SameTeam(Entity entity)
@@ -78,7 +93,6 @@ namespace MicroMarine.Components
             {
                 // lets try and eliminate the need to do this
                 _selectedUnits[i].GetComponent<MouseSelectCollider>().Selected = false;
-                _selectedUnits[i].GetComponent<Health>().Visible = false;
             }
 
             _selectedUnits.Clear();
@@ -100,7 +114,6 @@ namespace MicroMarine.Components
             {
                 selector.Selected = true;
                 _selectedUnits.Add(entity);
-                entity.GetComponent<Health>().Visible = true;
             }
         }
 
