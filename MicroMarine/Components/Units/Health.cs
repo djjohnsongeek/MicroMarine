@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Zand;
+using Zand.Components;
 using Zand.Graphics;
 
 namespace MicroMarine.Components
@@ -11,14 +12,14 @@ namespace MicroMarine.Components
         public ushort MaxHitPoints;
         public Rectangle HealthBar;
         public Rectangle DamageBar;
-        public bool Visible;
         private float _hitPointsPerPixel;
+        private Color _damageColor = new Color(30, 0, 0);
+        private int _bottomMargin = 5;
 
         public Health(ushort hp, ushort max = 100)
         {
             HitPoints = hp;
             MaxHitPoints = max;
-
         }
 
         public override void OnAddedToEntity()
@@ -44,7 +45,7 @@ namespace MicroMarine.Components
         {
             Vector2 screenPos = Entity.ScreenPosition;
             HealthBar.X = (int)screenPos.X;
-            HealthBar.Y = (int)screenPos.Y;
+            HealthBar.Y = (int)screenPos.Y - _bottomMargin;
 
             DamageBar.X = HealthBar.X;
             DamageBar.Y = HealthBar.Y;
@@ -52,7 +53,7 @@ namespace MicroMarine.Components
 
         public void Draw(SpriteBatch sbatch)
         {
-            if (Visible || HitPoints < MaxHitPoints)
+            if (HitPoints < MaxHitPoints)
             {
                 Vector2 start = new Vector2(DamageBar.X, DamageBar.Y);
                 Vector2 end = new Vector2(DamageBar.Right, DamageBar.Top);
@@ -64,10 +65,12 @@ namespace MicroMarine.Components
 
                 Vector2 healthEnd = new Vector2(end.X - pixelDamage, end.Y);
 
+                var color = Entity.GetComponent<UnitAllegiance>().Color;
 
 
-                Shapes.DrawLine(sbatch, Scene.DebugPixelTexture, start, end, DamageBar.Height, Color.Red, .8f);
-                Shapes.DrawLine(sbatch, Scene.DebugPixelTexture, start, healthEnd, HealthBar.Height, Color.Green, 1);
+
+                Shapes.DrawLine(sbatch, Scene.DebugPixelTexture, start, end, DamageBar.Height, _damageColor, .8f);
+                Shapes.DrawLine(sbatch, Scene.DebugPixelTexture, start, healthEnd, HealthBar.Height, color, 1);
             }
         }
     }
