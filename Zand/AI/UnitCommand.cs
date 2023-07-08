@@ -28,6 +28,7 @@ namespace Zand.AI
     {
         Move,
         Attack,
+        AttackMove,
         Follow,
         Harvest
     }

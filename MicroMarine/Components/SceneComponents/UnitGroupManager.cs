@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Zand.Debug;
 using Zand.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace MicroMarine.Components
 {
@@ -15,11 +16,13 @@ namespace MicroMarine.Components
         private UnitSelector _unitSelector;
         private List<UnitCommand> _allCommands;
         private Texture2D _waypointTexture;
+        private Texture2D _waypointAttackTexture;
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
             _unitSelector = Scene.GetComponent<UnitSelector>();
             _waypointTexture = scene.Content.GetContent<Texture2D>("waypoint");
+            _waypointAttackTexture = scene.Content.GetContent<Texture2D>("waypointAttack");
             _allCommands = new List<UnitCommand>();
         }
 
@@ -40,10 +43,13 @@ namespace MicroMarine.Components
         {
             List<Entity> selectedUnits = _unitSelector.GetSelectedUnits();
             if (selectedUnits.Count == 0) return;
+
+
+            bool isAttackMove = Input.KeyIsDown(Keys.A);
             UnitCommand command;
 
             Entity targetEntity = Scene.Physics.GetEntityAtPosition("marine", Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
-            CommandType commandType = CommandType.Move;
+            CommandType commandType = isAttackMove ? CommandType.AttackMove : CommandType.Move;
 
             if (targetEntity != null)
             {
@@ -122,20 +128,31 @@ namespace MicroMarine.Components
 
         private void DrawWaypoint(SpriteBatch sBatch, UnitCommand command, Vector2 commandScreenPos)
         {
+            Texture2D texture;
             if (command.Type == CommandType.Move)
             {
-                sBatch.Draw(
-                    _waypointTexture,
-                    commandScreenPos,
-                    null,
-                    Color.White,
-                    0,
-                    new Vector2(8, 8),
-                    1,
-                    SpriteEffects.None,
-                    1
-                );
+                texture = _waypointTexture;
             }
+            else if (command.Type == CommandType.AttackMove)
+            {
+                texture = _waypointAttackTexture;
+            }
+            else
+            {
+                return;
+            }
+
+            sBatch.Draw(
+                texture,
+                commandScreenPos,
+                null,
+                Color.White,
+                0,
+                new Vector2(8, 8),
+                1,
+                SpriteEffects.None,
+                1
+            );
 
         }
 

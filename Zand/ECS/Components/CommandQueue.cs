@@ -5,16 +5,21 @@ namespace Zand.Components
 {
     public class CommandQueue: Component
     {
-        private Queue<UnitCommand> _commands;
+        private LinkedList<UnitCommand> _commands;
 
         public CommandQueue()
         {
-            _commands = new Queue<UnitCommand>();
+            _commands = new LinkedList<UnitCommand>();
         }
 
         public void AddCommand(UnitCommand command)
         {
-            _commands.Enqueue(command);
+            _commands.AddFirst(command);
+        }
+
+        public void InsertCommand(UnitCommand command)
+        {
+            _commands.AddLast(command);
         }
 
         public void Clear()
@@ -32,12 +37,12 @@ namespace Zand.Components
             {
                 return null;
             }
-            return _commands.Peek();
+            return _commands.Last.Value;
         }
 
-        public UnitCommand Dequeue()
+        public void Dequeue()
         {
-            return _commands.Dequeue();
+            _commands.RemoveLast();
         }
 
         public int Count => _commands.Count;

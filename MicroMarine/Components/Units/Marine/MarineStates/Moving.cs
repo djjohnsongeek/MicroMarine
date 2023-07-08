@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using Zand;
 using Zand.AI;
 using Zand.Components;
 using Zand.ECS.Components;
@@ -31,20 +32,29 @@ namespace MicroMarine.Components
 
         public override void Enter()
         {
-            // Handle commands on another type
-            if (_unitCommands.Peek().Type != CommandType.Move)
-            {
-                throw new NotImplementedException("Movement state cannot handle non movement commands.");
-            }
+            // TODO Validate?
         }
 
         public override void Update()
         {
             var currentCommand = GetCommand();
-            if (UnsupportedCommand(currentCommand))
+            if (!SupportedCommand(currentCommand))
             {
                 return;
             }
+
+
+            // check for targets
+            if (currentCommand.Type == CommandType.AttackMove)
+            {
+                var nextTarget = SearchForTarget();
+                if (nextTarget != null)
+                {
+                    var newCommand = new UnitCommand(CommandType.Attack, nextTarget, nextTarget.Position);
+                    _unitCommands.InsertCommand(newCommand);
+                }
+            }
+
 
             // check if unit is arrived
             if (UnitArrivedAt(currentCommand.Destination))
@@ -64,29 +74,30 @@ namespace MicroMarine.Components
             SetMarineAnimation(unitVelocity);
         }
 
-        private bool UnsupportedCommand(UnitCommand currentCommand)
+        private bool SupportedCommand(UnitCommand currentCommand)
         {
-            bool unsupported = false;
-
             if (currentCommand is null)
             {
                 _machine.ChangeState<Idle>();
-                return unsupported;
+                return false;
             }
 
+            bool supported = false;
             switch(currentCommand.Type)
             {
                 case CommandType.Attack:
-                    unsupported = true;
                     _machine.ChangeState<Attacking>();
                     break;
                 case CommandType.Follow:
-                    unsupported = true;
                     _machine.ChangeState<Following>();
+                    break;
+                case CommandType.AttackMove:
+                case CommandType.Move:
+                    supported = true;
                     break;
             }
 
-            return unsupported;
+            return supported;
         }
 
         private bool UnitArrivedAt(Destination destination)
@@ -103,6 +114,38 @@ namespace MicroMarine.Components
         {
             string animation = "Walk" + _mover.Orientation.ToString();
             _animator.Play(animation);
+        }
+
+        private Entity SearchForTarget()
+        {
+            var entitiesInRange = _context.Scene.Physics.GetEntitiesWithin(_context.Entity.Position, _context.AttackRange);
+            var testDistance = float.MaxValue;
+            Entity newTarget = null;
+
+            foreach (var entity in entitiesInRange)
+            {
+                if (entity.IsDestroyed)
+                {
+                    continue;
+                }
+
+                if (entity.Name == "marine")
+                {
+                    var allegiance = entity.GetComponent<UnitAllegiance>();
+
+                    if (allegiance.Id != _context.Entity.GetComponent<UnitAllegiance>().Id)
+                    {
+                        float distance = Vector2.Distance(entity.Position, _context.Entity.Position);
+                        if (distance < testDistance)
+                        {
+                            testDistance = distance;
+                            newTarget = entity;
+                        }
+                    }
+                }
+            }
+
+            return newTarget;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace MicroMarine.Scenes
         {
             // SetWindowSize(2560, 1440);
             SetWindowSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
-            SetFullScreen(true);
+            SetFullScreen(false);
             SetMouseVisibility(false);
             Camera = new Camera(new Vector2(ScreenWidth / 2, ScreenHeight / 2), this, ScreenWidth, ScreenHeight);
             base.Initialize();
@@ -32,6 +32,7 @@ namespace MicroMarine.Scenes
 
             // Textures...
             Content.LoadTexture("waypoint", "Content/waypoint.png");
+            Content.LoadTexture("waypointAttack", "Content/waypoint_attack.png");
             Content.LoadTexture("smallUnitShadow", "Content/small_unit_shadow.png");
             Content.LoadTexture("smallUnitSelect", "Content/small_unit_select.png");
 
@@ -95,13 +96,15 @@ namespace MicroMarine.Scenes
             {
                 for (int x = 10; x < marineCols * spacing; x += spacing)
                 {
-                    Entity marine = CreateEntity("marine", new Vector2(x, y));
-                    marine.AddComponent(new Marine(2));
-                    unitSelector.AddUnit(marine);
+                    Entity unit = CreateEntity("marine", new Vector2(x, y));
+                    unit.AddComponent(new Marine(2));
+                    unitSelector.AddUnit(unit);
                 }
             }
 
-
+            //Entity marine = CreateEntity("marine", new Vector2(100, 100));
+            //marine.AddComponent(new Marine(5));
+            //unitSelector.AddUnit(marine);
 
             for (int y = 250; y < 400; y += spacing)
             {

@@ -53,6 +53,7 @@ namespace MicroMarine.Components
             switch(nextCommand.Type)
             {
                 case CommandType.Move:
+                case CommandType.AttackMove:
                     _machine.ChangeState<Moving>();
                     break;
                 case CommandType.Follow:
