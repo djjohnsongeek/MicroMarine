@@ -49,6 +49,10 @@ namespace Zand.Components
 
         public override void OnRemovedFromEntity()
         {
+            foreach (var command in _commands)
+            {
+                command.SetStatus(CommandStatus.Completed);
+            }
             _commands.Clear();
             _commands = null;
             base.OnRemovedFromEntity();
