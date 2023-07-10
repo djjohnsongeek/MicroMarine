@@ -23,19 +23,19 @@ namespace Zand.Components
             switch(Id)
             {
                 case 1:
-                    Color = new Color(78, 113, 253);
+                    Color = Color.White;
                     break;
                 case 2:
-                    Color = new Color(252, 78, 78);
+                    Color = Color.White;
                     break;
                 case 3:
-                    Color = new Color(91, 178, 83);
+                    Color = Color.White;
                     break;
                 case 4:
-                    Color = new Color(238, 253, 116);
+                    Color = Color.White;
                     break;
                 case 5:
-                    Color = new Color(180, 180, 180);
+                    Color = Color.White;
                     break;
                 default:
                     throw new ArgumentException("Invalid Allegiance Id");

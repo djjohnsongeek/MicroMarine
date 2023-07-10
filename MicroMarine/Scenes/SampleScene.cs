@@ -4,6 +4,8 @@ using MicroMarine.Components;
 using Zand.Assets;
 using Microsoft.Xna.Framework.Graphics;
 using Zand.UI;
+using MicroMarine.Components.Units;
+using System;
 
 namespace MicroMarine.Scenes
 
@@ -36,6 +38,7 @@ namespace MicroMarine.Scenes
             Content.LoadTexture("smallUnitShadow", "Content/small_unit_shadow.png");
             Content.LoadTexture("smallUnitSelect", "Content/small_unit_select.png");
             Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
+            Content.LoadTexture("blantSheet", "Content/creature-sheet.png");
 
             var defaultCursorTexture = Content.LoadTexture("cursor", "Content/cursor.png");
             var attackTexture = Content.LoadTexture("attackCursor", "Content/cursor_attack.png");
@@ -79,7 +82,7 @@ namespace MicroMarine.Scenes
 
 
             // Add Scene Components
-            var unitSelector = (UnitSelector) SceneComponents.AddComponent(new UnitSelector(this, 5));
+            var unitSelector = (UnitSelector) SceneComponents.AddComponent(new UnitSelector(this, 1));
             SceneComponents.AddComponent(new UnitGroupManager(this));
 
             // Initiate tile map
@@ -89,32 +92,34 @@ namespace MicroMarine.Scenes
             var map = new TileMap(32, new Point(Config.MapWidth, Config.MapHeight), mapSpriteSheet);
             tileMapEntity.AddComponent(map);
 
-            // Add Marine Entities
-            int marineRows = 4;
-            int marineCols = 4;
-            int spacing = 32;
-            for (int y = 10; y < marineRows * spacing; y += spacing)
+
+            var rand = new Random();
+
+            for (int i = 0; i < 20; i++)
             {
-                for (int x = 10; x < marineCols * spacing; x += spacing)
-                {
-                    Entity unit = CreateEntity("marine", new Vector2(x, y));
-                    unit.AddComponent(new Marine(2));
-                    unitSelector.AddUnit(unit);
-                }
+                Entity unit = CreateEntity("marine", new Vector2(rand.Next(10, 60), rand.Next(10, 60)));
+                unit.AddComponent(new Marine(1));
+                unitSelector.AddUnit(unit);
             }
 
             //Entity marine = CreateEntity("marine", new Vector2(100, 100));
             //marine.AddComponent(new Marine(5));
             //unitSelector.AddUnit(marine);
 
-            for (int y = 250; y < 400; y += spacing)
+            //for (int y = 250; y < 400; y += spacing)
+            //{
+            //    for (int x = 250; x < 400; x += spacing)
+            //    {
+            //        Entity marine = CreateEntity("marine", new Vector2(x, y));
+            //        marine.AddComponent(new Marine(2));
+            //        unitSelector.AddUnit(marine);
+            //    }
+            //}
+            for (int i = 0; i < 10; i++)
             {
-                for (int x = 250; x < 400; x += spacing)
-                {
-                    Entity marine = CreateEntity("marine", new Vector2(x, y));
-                    marine.AddComponent(new Marine(5));
-                    unitSelector.AddUnit(marine);
-                }
+                Entity blant = CreateEntity("marine", new Vector2(rand.Next(600, 700), rand.Next(400, 500)));
+                blant.AddComponent(new Blant(2));
+                unitSelector.AddUnit(blant);
             }
 
         }

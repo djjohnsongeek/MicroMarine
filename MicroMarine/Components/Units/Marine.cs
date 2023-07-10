@@ -15,25 +15,24 @@ namespace MicroMarine.Components
     // Acts as 'Loading Component' for a Marine
     class Marine : Unit, Zand.IUpdateable
     {
-        private StateMachine<Unit> _stateMachine;
-
-        public Marine(int allegianceId)
+        public Marine(int allegianceId) : base(allegianceId)
         {
-            Allegiance = new UnitAllegiance(allegianceId);
+
         }
 
         public override void OnAddedToEntity()
         {
             Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
-            AttackRange = 250;
+            AttackRange = 200;
+            SightRange = 250;
             FollowRange = 120;
             Speed = 100;
             Damage = 3;
-            AttacksPerSecond = 4.3f;
+            AttacksPerSecond = 5f;
             AttackInterval = 5 / 60f;
 
-            Entity.AddComponent(new Health(100));
-            Entity.AddComponent(new Mover(100));
+            Entity.AddComponent(new Health(100, 100));
+            Entity.AddComponent(new Mover(Speed));
             Entity.AddComponent(new CommandQueue());
 
 
@@ -46,11 +45,6 @@ namespace MicroMarine.Components
             AddCollisionComponents();
             AddUnitStates();
             AddAllegiance();
-        }
-
-        public void Update()
-        {
-            _stateMachine.Update();
         }
 
         private void AddAnimationComponents()
@@ -87,7 +81,7 @@ namespace MicroMarine.Components
 
         private void AddUnitStates()
         {
-            _stateMachine = new StateMachine<Unit>(this);
+            //_stateMachine = new StateMachine<Unit>(this);
             _stateMachine.AddState(new Idle());
             _stateMachine.AddState(new Moving());
             _stateMachine.AddState(new Following());

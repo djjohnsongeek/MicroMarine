@@ -132,6 +132,12 @@ namespace Zand.Assets
         private Tile GetTile(Vector2 position)
         {
             Point tileCoords = GetTileCoords(position);
+
+            if (tileCoords.X < 0 || tileCoords.Y < 0)
+            {
+                return new Tile(true);
+            }
+
             return _visualMap[tileCoords.Y][tileCoords.X];
         }
 

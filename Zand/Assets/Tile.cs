@@ -10,5 +10,11 @@
             Id = id;
             Static = Config.StaticTiles.Contains(id);
         }
+
+        public Tile(bool isNull)
+        {
+            Id = 0;
+            Static = false;
+        }
     }
 }

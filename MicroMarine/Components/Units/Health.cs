@@ -8,15 +8,15 @@ namespace MicroMarine.Components
 {
     internal class Health : Component, Zand.IUpdateable, IRenderable
     {
-        public ushort HitPoints;
-        public ushort MaxHitPoints;
+        public int HitPoints;
+        public int MaxHitPoints;
         public Rectangle HealthRect;
         public Rectangle DamageRect;
         private float _hitPointsPerPixel;
         private Color _damageColor = new Color(30, 0, 0);
         private int _bottomMargin = 5;
 
-        public Health(ushort hp, ushort max = 100)
+        public Health(int hp, int max)
         {
             HitPoints = hp;
             MaxHitPoints = max;
@@ -29,7 +29,7 @@ namespace MicroMarine.Components
             _hitPointsPerPixel = (float)Entity.Dimensions.X / (float)MaxHitPoints;
         }
 
-        public void ApplyDamage(ushort value)
+        public void ApplyDamage(int value)
         {
             if (value >= HitPoints)
             {

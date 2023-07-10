@@ -22,7 +22,7 @@ namespace MicroMarine.Components
 
         protected Entity SearchForTarget()
         {
-            var entitiesInRange = _context.Scene.Physics.GetEntitiesWithin(_context.Entity.Position, _context.AttackRange);
+            var entitiesInRange = _context.Scene.Physics.GetEntitiesWithin(_context.Entity.Position, _context.SightRange);
             return GetClosestEnemyUnit(entitiesInRange);
         }
 
