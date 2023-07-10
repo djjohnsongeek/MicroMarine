@@ -2,27 +2,15 @@
 using Microsoft.Xna.Framework;
 using Zand;
 using Zand.AI;
-using Zand.Components;
 using Zand.ECS.Components;
 
 namespace MicroMarine.Components
 {
     class Attacking: BaseMarineState
     {
-        private CommandQueue _unitCommands;
-        private Animator _animator;
-        private Mover _mover;
         private double _inRangeThreshold = 0.5;
         private double _inRangeCount = 0;
         private double _elapsedTime = 0;
-
-
-        public override void OnInitialize()
-        {
-            _unitCommands = _context.Entity.GetComponent<CommandQueue>(false);
-            _animator = _context.Entity.GetComponent<Animator>(false);
-            _mover = _context.Entity.GetComponent<Mover>(false);
-        }
 
         public override void Exit()
         {

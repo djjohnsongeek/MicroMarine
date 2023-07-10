@@ -1,17 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zand;
 using Zand.AI;
 using Zand.Components;
+using Zand.ECS.Components;
 
 namespace MicroMarine.Components
 {
     class BaseMarineState : State<Unit>
     {
+        protected CommandQueue _unitCommands;
+        protected Mover _mover;
+        protected Animator _animator;
+
+        public override void OnInitialize()
+        {
+            _unitCommands = _context.Entity.GetComponent<CommandQueue>(false);
+            _mover = _context.Entity.GetComponent<Mover>(false);
+            _animator = _context.Entity.GetComponent<Animator>(false);
+        }
+
         protected Entity SearchForTarget()
         {
             var entitiesInRange = _context.Scene.Physics.GetEntitiesWithin(_context.Entity.Position, _context.AttackRange);
