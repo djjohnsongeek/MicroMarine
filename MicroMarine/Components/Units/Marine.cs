@@ -13,17 +13,9 @@ using Zand.Graphics;
 namespace MicroMarine.Components
 {
     // Acts as 'Loading Component' for a Marine
-    class Marine : Component, Zand.IUpdateable
+    class Marine : Unit, Zand.IUpdateable
     {
-        private StateMachine<Marine> _stateMachine;
-
-        public float AttackRange { get; protected set; }
-        public float FollowRange { get; protected set; }
-        public float Speed { get; protected set; }
-        public ushort Damage { get; protected set; }
-        public float AttacksPerSecond { get; protected set; }
-        public float AttackInterval { get; protected set; }
-        public UnitAllegiance Allegiance { get; protected set; }
+        private StateMachine<Unit> _stateMachine;
 
         public Marine(int allegianceId)
         {
@@ -95,7 +87,7 @@ namespace MicroMarine.Components
 
         private void AddUnitStates()
         {
-            _stateMachine = new StateMachine<Marine>(this);
+            _stateMachine = new StateMachine<Unit>(this);
             _stateMachine.AddState(new Idle());
             _stateMachine.AddState(new Moving());
             _stateMachine.AddState(new Following());

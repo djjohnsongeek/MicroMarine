@@ -10,7 +10,7 @@ using Zand.Components;
 
 namespace MicroMarine.Components
 {
-    class BaseMarineState : State<Marine>
+    class BaseMarineState : State<Unit>
     {
         protected Entity SearchForTarget()
         {
