@@ -8,16 +8,18 @@ namespace Zand.Assets
 {
     public class TileMap : Component, IRenderable
     {
-        private int _tileSize;
-        private Point _mapSize;
+        public int TileSize { get; private set; }
+        public Point MapSize { get; private set; }
         private SpriteSheet _spriteSheet;
         private Tile[][] _visualMap;
+
+        public Point MapCenter => new Point(MapSize.X / 2 * TileSize, MapSize.Y / 2 * TileSize);
         // logical grid
 
         public TileMap(int tileSize, Point mapSize, SpriteSheet sprites)
         {
-            _tileSize = tileSize;
-            _mapSize = mapSize;
+            TileSize = tileSize;
+            MapSize = mapSize;
             _spriteSheet = sprites;
         }
 
@@ -41,10 +43,10 @@ namespace Zand.Assets
         public void GenerateMap()
         {
             // Instantiate
-            _visualMap = new Tile[_mapSize.Y][];
+            _visualMap = new Tile[MapSize.Y][];
             for (int y = 0; y < _visualMap.Length; y++)
             {
-                _visualMap[y] = new Tile[_mapSize.X];
+                _visualMap[y] = new Tile[MapSize.X];
             }
 
             // Populate
@@ -74,7 +76,7 @@ namespace Zand.Assets
                 {
                     sbatch.Draw(
                         _spriteSheet.Texture,
-                        new Vector2(xIndex * _tileSize, yIndex * _tileSize),
+                        new Vector2(xIndex * TileSize, yIndex * TileSize),
                         _spriteSheet.GetFrame(_visualMap[yIndex][xIndex].Id),
                         Color.White,
                         0,
@@ -89,8 +91,8 @@ namespace Zand.Assets
 
         public (Point minIndex, Point maxIndex) GetCullingBounds(Camera camera)
         {
-            int maxX = GetMaxBound(camera.Position.X, camera.Width, _mapSize.X);
-            int maxY = GetMaxBound(camera.Position.Y, camera.Height, _mapSize.Y);
+            int maxX = GetMaxBound(camera.Position.X, camera.Width, MapSize.X);
+            int maxY = GetMaxBound(camera.Position.Y, camera.Height, MapSize.Y);
             int minX = GetMinBound(camera.Position.X, camera.Width, 0);
             int minY = GetMinBound(camera.Position.Y, camera.Height, 0);
 
@@ -108,13 +110,13 @@ namespace Zand.Assets
             if (CollidesWithTile(collider.LeftCenter))
             {
                 Point tilePos = GetTilePosition(collider.LeftCenter);
-                collider.Entity.Position.X = tilePos.X + _tileSize + collider.Radius - collider.Offset.X;
+                collider.Entity.Position.X = tilePos.X + TileSize + collider.Radius - collider.Offset.X;
             }
 
             if (CollidesWithTile(collider.TopCenter))
             {
                 Point tilePos = GetTilePosition(collider.TopCenter);
-                collider.Entity.Position.Y = tilePos.Y + _tileSize + collider.Radius - collider.Offset.Y;
+                collider.Entity.Position.Y = tilePos.Y + TileSize + collider.Radius - collider.Offset.Y;
             }
 
             if (CollidesWithTile(collider.BottomCenter))
@@ -144,26 +146,26 @@ namespace Zand.Assets
         public Point GetTileCoords(Vector2 position)
         {
             return new Point(
-                (int)position.X / _tileSize,
-                (int)position.Y / _tileSize
+                (int)position.X / TileSize,
+                (int)position.Y / TileSize
             );
         }
 
         private Point GetTilePosition(Vector2 position)
         {
             Point tileCoords = GetTileCoords(position);
-            return new Point(tileCoords.X * _tileSize, tileCoords.Y * _tileSize);
+            return new Point(tileCoords.X * TileSize, tileCoords.Y * TileSize);
         }
 
         private int GetMaxBound(float posCoordinate, int cameraDimension, int maxValue)
         {
-            int initValue = (int)(posCoordinate + cameraDimension / 2) / _tileSize + 1;
+            int initValue = (int)(posCoordinate + cameraDimension / 2) / TileSize + 1;
             return Math.Min(maxValue, initValue);
         }
 
         private int GetMinBound(float posCoordinate, int cameraDimension, int minValue)
         {
-            int initValue = ((int)posCoordinate - cameraDimension / 2) / _tileSize;
+            int initValue = ((int)posCoordinate - cameraDimension / 2) / TileSize;
             return Math.Max(minValue, initValue);
         }
     }

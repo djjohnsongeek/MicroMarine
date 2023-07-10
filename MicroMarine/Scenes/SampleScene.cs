@@ -12,6 +12,7 @@ namespace MicroMarine.Scenes
 {
     class SampleScene : Scene
     {
+        private Random _rng = new Random();
 
         public SampleScene() : base()
         {
@@ -21,7 +22,8 @@ namespace MicroMarine.Scenes
         public override void Initialize()
         {
             // SetWindowSize(2560, 1440);
-            SetWindowSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+            SetWindowSize(1280, 720);
+            // SetWindowSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
             SetFullScreen(false);
             SetMouseVisibility(false);
             Camera = new Camera(new Vector2(ScreenWidth / 2, ScreenHeight / 2), this, ScreenWidth, ScreenHeight);
@@ -92,35 +94,26 @@ namespace MicroMarine.Scenes
             var map = new TileMap(32, new Point(Config.MapWidth, Config.MapHeight), mapSpriteSheet);
             tileMapEntity.AddComponent(map);
 
-
-            var rand = new Random();
-
+            // Place Marines
             for (int i = 0; i < 20; i++)
             {
-                Entity unit = CreateEntity("marine", new Vector2(rand.Next(10, 60), rand.Next(10, 60)));
+                Entity unit = CreateEntity("marine", RandomPosition(map.MapCenter.ToVector2(), 60));
                 unit.AddComponent(new Marine(1));
                 unitSelector.AddUnit(unit);
             }
 
-            //Entity marine = CreateEntity("marine", new Vector2(100, 100));
-            //marine.AddComponent(new Marine(5));
-            //unitSelector.AddUnit(marine);
+            // Add Blant Spawner
+            Entity blantSpawner = CreateEntity("spawner", map.MapCenter.ToVector2());
+            blantSpawner.AddComponent(new UnitSpawner<Blant>(map.MapCenter.ToVector2(), 2, 5));
 
-            //for (int y = 250; y < 400; y += spacing)
+            //for (int i = 0; i < 10; i++)
             //{
-            //    for (int x = 250; x < 400; x += spacing)
-            //    {
-            //        Entity marine = CreateEntity("marine", new Vector2(x, y));
-            //        marine.AddComponent(new Marine(2));
-            //        unitSelector.AddUnit(marine);
-            //    }
+            //    Entity blant = CreateEntity("marine", RandomPosition(map.MapCenter.ToVector2(), 100));
+            //    blant.AddComponent(new Blant(2));
+            //    unitSelector.AddUnit(blant);
             //}
-            for (int i = 0; i < 10; i++)
-            {
-                Entity blant = CreateEntity("marine", new Vector2(rand.Next(600, 700), rand.Next(400, 500)));
-                blant.AddComponent(new Blant(2));
-                unitSelector.AddUnit(blant);
-            }
+
+            Camera.Position = map.MapCenter.ToVector2();
 
         }
 
@@ -128,6 +121,13 @@ namespace MicroMarine.Scenes
         {
             Camera.Update();
             base.Update();
+        }
+
+        public Vector2 RandomPosition(Vector2 origin, int maxVariation)
+        {
+            var x = _rng.Next((int)origin.X, (int)origin.X + maxVariation);
+            int y = _rng.Next((int)origin.Y, (int)origin.Y + maxVariation);
+            return new Vector2(x, y);
         }
     }
 }

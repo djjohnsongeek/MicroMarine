@@ -23,6 +23,11 @@ namespace MicroMarine.Components
             _stateMachine = new StateMachine<Unit>(this);
         }
 
+        public Unit()
+        {
+
+        }
+
         public void Update()
         {
             _stateMachine.Update();

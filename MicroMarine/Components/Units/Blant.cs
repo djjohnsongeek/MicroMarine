@@ -19,6 +19,11 @@ namespace MicroMarine.Components.Units
         {
         }
 
+        public Blant()
+        {
+
+        }
+
         public override void OnAddedToEntity()
         {
             Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
@@ -33,8 +38,6 @@ namespace MicroMarine.Components.Units
             Entity.AddComponent(new Health(300, 300));
             Entity.AddComponent(new Mover(Speed));
             Entity.AddComponent(new CommandQueue());
-
-
 
             // animations
             Texture2D marineSheet = Scene.Content.GetContent<Texture2D>("blantSheet");
