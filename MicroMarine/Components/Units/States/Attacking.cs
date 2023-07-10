@@ -90,7 +90,7 @@ namespace MicroMarine.Components
 
             if (_elapsedTime == 0)
             {
-                target.GetComponent<Health>().Damage(_context.Damage);
+                target.GetComponent<Health>().ApplyDamage(_context.Damage);
             }
 
             _elapsedTime += Time.DeltaTime;

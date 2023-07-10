@@ -10,8 +10,8 @@ namespace MicroMarine.Components
     {
         public ushort HitPoints;
         public ushort MaxHitPoints;
-        public Rectangle HealthBar;
-        public Rectangle DamageBar;
+        public Rectangle HealthRect;
+        public Rectangle DamageRect;
         private float _hitPointsPerPixel;
         private Color _damageColor = new Color(30, 0, 0);
         private int _bottomMargin = 5;
@@ -24,12 +24,12 @@ namespace MicroMarine.Components
 
         public override void OnAddedToEntity()
         {
-            HealthBar = new Rectangle((int)Entity.Position.X, (int)Entity.Position.Y - 6, Entity.Dimensions.X, 4);
-            DamageBar = new Rectangle((int)Entity.Position.X, (int)Entity.Position.Y - 6, Entity.Dimensions.X, 4);
+            HealthRect = new Rectangle((int)Entity.Position.X, (int)Entity.Position.Y - 6, Entity.Dimensions.X, 4);
+            DamageRect = new Rectangle((int)Entity.Position.X, (int)Entity.Position.Y - 6, Entity.Dimensions.X, 4);
             _hitPointsPerPixel = (float)Entity.Dimensions.X / (float)MaxHitPoints;
         }
 
-        public void Damage(ushort value)
+        public void ApplyDamage(ushort value)
         {
             if (value >= HitPoints)
             {
@@ -44,19 +44,19 @@ namespace MicroMarine.Components
         public void Update()
         {
             Vector2 screenPos = Entity.ScreenPosition;
-            HealthBar.X = (int)screenPos.X;
-            HealthBar.Y = (int)screenPos.Y - _bottomMargin;
+            HealthRect.X = (int)screenPos.X;
+            HealthRect.Y = (int)screenPos.Y - _bottomMargin;
 
-            DamageBar.X = HealthBar.X;
-            DamageBar.Y = HealthBar.Y;
+            DamageRect.X = HealthRect.X;
+            DamageRect.Y = HealthRect.Y;
         }
 
         public void Draw(SpriteBatch sbatch)
         {
             if (HitPoints < MaxHitPoints)
             {
-                Vector2 start = new Vector2(DamageBar.X, DamageBar.Y);
-                Vector2 end = new Vector2(DamageBar.Right, DamageBar.Top);
+                Vector2 start = new Vector2(DamageRect.X, DamageRect.Y);
+                Vector2 end = new Vector2(DamageRect.Right, DamageRect.Top);
 
 
                 int diff = MaxHitPoints - HitPoints;
@@ -69,8 +69,8 @@ namespace MicroMarine.Components
 
 
 
-                Shapes.DrawLine(sbatch, Scene.DebugPixelTexture, start, end, DamageBar.Height, _damageColor, .8f);
-                Shapes.DrawLine(sbatch, Scene.DebugPixelTexture, start, healthEnd, HealthBar.Height, color, 1);
+                Shapes.DrawLine(sbatch, Scene.DebugPixelTexture, start, end, DamageRect.Height, _damageColor, .8f);
+                Shapes.DrawLine(sbatch, Scene.DebugPixelTexture, start, healthEnd, HealthRect.Height, color, 1);
             }
         }
     }
