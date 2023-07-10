@@ -17,13 +17,13 @@ namespace MicroMarine.Components
     {
         private StateMachine<Marine> _stateMachine;
 
-        public float AttackRange { get; private set; }
-        public float FollowRange { get; private set; }
-        public float Speed { get; private set; }
-        public ushort Damage { get; private set; }
-        public float AttacksPerSecond { get; private set; }
-        public float AttackInterval { get; private set; }
-        public UnitAllegiance Allegiance { get; private set; }
+        public float AttackRange { get; protected set; }
+        public float FollowRange { get; protected set; }
+        public float Speed { get; protected set; }
+        public ushort Damage { get; protected set; }
+        public float AttacksPerSecond { get; protected set; }
+        public float AttackInterval { get; protected set; }
+        public UnitAllegiance Allegiance { get; protected set; }
 
         public Marine(int allegianceId)
         {
@@ -63,7 +63,7 @@ namespace MicroMarine.Components
 
         private void AddAnimationComponents()
         {
-            Texture2D marineSheet = Scene.Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
+            Texture2D marineSheet = Scene.Content.GetContent<Texture2D>("marineSheet");
             var spriteSheet = new SpriteSheet(marineSheet, 32, 32);
 
             var animator = new Animator();

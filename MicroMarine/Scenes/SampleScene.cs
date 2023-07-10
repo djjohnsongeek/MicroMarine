@@ -35,6 +35,7 @@ namespace MicroMarine.Scenes
             Content.LoadTexture("waypointAttack", "Content/waypoint_attack.png");
             Content.LoadTexture("smallUnitShadow", "Content/small_unit_shadow.png");
             Content.LoadTexture("smallUnitSelect", "Content/small_unit_select.png");
+            Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
 
             var defaultCursorTexture = Content.LoadTexture("cursor", "Content/cursor.png");
             var attackTexture = Content.LoadTexture("attackCursor", "Content/cursor_attack.png");

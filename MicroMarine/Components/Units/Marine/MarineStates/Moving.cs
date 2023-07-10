@@ -8,7 +8,7 @@ using Zand.Physics;
 
 namespace MicroMarine.Components
 {
-    class Moving : State<Marine>
+    class Moving : BaseMarineState
     {
         private CommandQueue _unitCommands;
 

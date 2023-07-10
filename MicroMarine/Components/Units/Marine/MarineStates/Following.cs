@@ -7,7 +7,7 @@ using Zand.ECS.Components;
 
 namespace MicroMarine.Components
 {
-    class Following : State<Marine>
+    class Following : BaseMarineState
     {
         private CommandQueue _unitCommands;
         private Animator _animator;
