@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Zand;
 using Zand.AI;
-using Zand.Components;
 
 namespace MicroMarine.Components
 {

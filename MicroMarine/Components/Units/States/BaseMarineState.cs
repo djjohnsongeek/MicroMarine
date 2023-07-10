@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Zand;
 using Zand.AI;
 using Zand.Components;
@@ -22,33 +23,33 @@ namespace MicroMarine.Components
         protected Entity SearchForTarget()
         {
             var entitiesInRange = _context.Scene.Physics.GetEntitiesWithin(_context.Entity.Position, _context.AttackRange);
-            var testDistance = float.MaxValue;
-            Entity newTarget = null;
+            return GetClosestEnemyUnit(entitiesInRange);
+        }
 
-            foreach (var entity in entitiesInRange)
+        protected Entity GetClosestEnemyUnit(List<Entity> entities)
+        {
+            var shortestDistance = float.MaxValue;
+            Entity closestEnemy = null;
+
+            foreach (var entity in entities)
             {
-                if (entity.IsDestroyed)
+                var allegiance = entity.GetComponent<UnitAllegiance>();
+                bool sameTeam = allegiance.Id == _context.Entity.GetComponent<UnitAllegiance>().Id;
+
+                if (entity.IsDestroyed || sameTeam || entity.Name != "marine")
                 {
                     continue;
                 }
 
-                if (entity.Name == "marine")
+                float distance = Vector2.Distance(entity.Position, _context.Entity.Position);
+                if (distance < shortestDistance)
                 {
-                    var allegiance = entity.GetComponent<UnitAllegiance>();
-
-                    if (allegiance.Id != _context.Entity.GetComponent<UnitAllegiance>().Id)
-                    {
-                        float distance = Vector2.Distance(entity.Position, _context.Entity.Position);
-                        if (distance < testDistance)
-                        {
-                            testDistance = distance;
-                            newTarget = entity;
-                        }
-                    }
+                    shortestDistance = distance;
+                    closestEnemy = entity;
                 }
             }
 
-            return newTarget;
+            return closestEnemy;
         }
     }
 }
