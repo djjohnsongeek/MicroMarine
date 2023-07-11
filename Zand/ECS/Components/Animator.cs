@@ -18,6 +18,7 @@ namespace Zand.Components
         private bool _suppressUpdate = false;
         private float _suppressDuration = 0;
 
+        public Animation CurrentAnimation => _currentAnimation;
 
         public Animator()
         {

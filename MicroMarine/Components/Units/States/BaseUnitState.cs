@@ -7,7 +7,7 @@ using Zand.ECS.Components;
 
 namespace MicroMarine.Components
 {
-    class BaseMarineState : State<Unit>
+    class BaseUnitState : State<Unit>
     {
         protected CommandQueue _unitCommands;
         protected Mover _mover;
@@ -36,7 +36,7 @@ namespace MicroMarine.Components
                 var allegiance = entity.GetComponent<UnitAllegiance>();
                 bool sameTeam = allegiance.Id == _context.Entity.GetComponent<UnitAllegiance>().Id;
 
-                if (entity.IsDestroyed || sameTeam || entity.Name != "marine")
+                if (entity.IsDestroyed || sameTeam || entity.Name != "unit")
                 {
                     continue;
                 }

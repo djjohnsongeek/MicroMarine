@@ -40,23 +40,23 @@ namespace MicroMarine.Components.Units
             Entity.AddComponent(new CommandQueue());
 
             // animations
-            Texture2D marineSheet = Scene.Content.GetContent<Texture2D>("blantSheet");
-            var spriteSheet = new SpriteSheet(marineSheet, 32, 32);
+            Texture2D blantSheet = Scene.Content.GetContent<Texture2D>("blantSheet");
+            var spriteSheet = new SpriteSheet(blantSheet, 32, 32);
 
             var animator = new Animator();
-            animator.AddAnimation("IdleNorth", new Animation(marineSheet, spriteSheet.GetFrames(4, 7), 8, Animation.LoopMode.Loop));
-            animator.AddAnimation("IdleSouth", new Animation(marineSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
-            animator.AddAnimation("IdleEast", new Animation(marineSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
-            animator.AddAnimation("IdleWest", new Animation(marineSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
-            animator.AddAnimation("WalkNorth", new Animation(marineSheet, spriteSheet.GetFrames(4, 7), 8, Animation.LoopMode.Loop));
-            animator.AddAnimation("WalkSouth", new Animation(marineSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
-            animator.AddAnimation("WalkEast", new Animation(marineSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
-            animator.AddAnimation("WalkWest", new Animation(marineSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
-            animator.AddAnimation("AttackNorth", new Animation(marineSheet, spriteSheet.GetFrames(4, 7), 8, Animation.LoopMode.Loop));
-            animator.AddAnimation("AttackSouth", new Animation(marineSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
-            animator.AddAnimation("AttackEast", new Animation(marineSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
-            animator.AddAnimation("AttackWest", new Animation(marineSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
-
+            animator.AddAnimation("SpawnSouth", new Animation(blantSheet, spriteSheet.GetFrames(8, 15), 8, Animation.LoopMode.Once));
+            animator.AddAnimation("IdleNorth", new Animation(blantSheet, spriteSheet.GetFrames(4, 7), 8, Animation.LoopMode.Loop));
+            animator.AddAnimation("IdleSouth", new Animation(blantSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
+            animator.AddAnimation("IdleEast", new Animation(blantSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
+            animator.AddAnimation("IdleWest", new Animation(blantSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
+            animator.AddAnimation("WalkNorth", new Animation(blantSheet, spriteSheet.GetFrames(4, 7), 8, Animation.LoopMode.Loop));
+            animator.AddAnimation("WalkSouth", new Animation(blantSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
+            animator.AddAnimation("WalkEast", new Animation(blantSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
+            animator.AddAnimation("WalkWest", new Animation(blantSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
+            animator.AddAnimation("AttackNorth", new Animation(blantSheet, spriteSheet.GetFrames(4, 7), 8, Animation.LoopMode.Loop));
+            animator.AddAnimation("AttackSouth", new Animation(blantSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
+            animator.AddAnimation("AttackEast", new Animation(blantSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
+            animator.AddAnimation("AttackWest", new Animation(blantSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
             Entity.AddComponent(animator);
 
             // colliders
@@ -69,11 +69,12 @@ namespace MicroMarine.Components.Units
             Scene.RegisterCollider(collider);
 
             // states
+            _stateMachine.AddState(new BlantSpawn());
             _stateMachine.AddState(new Idle());
             _stateMachine.AddState(new Moving());
             _stateMachine.AddState(new Following());
             _stateMachine.AddState(new Attacking());
-            _stateMachine.SetInitialState<Idle>();
+            _stateMachine.SetInitialState<BlantSpawn>();
 
             // allegiance
             Entity.AddComponent(Allegiance);

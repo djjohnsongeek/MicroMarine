@@ -9,13 +9,15 @@ namespace MicroMarine.Components
         public Vector2 Position { get; private set; }
         private int _waveCount;
         private int _waveDelay;
+        private int _waveStep;
         private double _waveTimer;
 
-        public UnitSpawner(Vector2 position, int waveCount, int waveDelay)
+        public UnitSpawner(Vector2 position, int waveCount, int waveDelay, int step = 2)
         {
             _waveCount = waveCount;
             _waveDelay = waveDelay;
             _waveTimer = 0;
+            _waveStep = step;
             Position = position;
         }
 
@@ -25,7 +27,7 @@ namespace MicroMarine.Components
             if (_waveTimer >= _waveDelay)
             {
                 SpawnWave();
-                _waveTimer = 0;
+
             }
         }
 
@@ -33,12 +35,16 @@ namespace MicroMarine.Components
         {
             for (int i = 0; i < _waveCount; i++)
             {
+                Vector2 unitPosition = MathUtil.RandomPosition(Entity.Scene.Rng, Position, 60);
                 var unitSelector = Entity.Scene.GetComponent<UnitSelector>();
-                var blant = Entity.Scene.CreateEntity("marine", Position);
+                var blant = Entity.Scene.CreateEntity("unit", unitPosition);
 
-                blant.AddComponent(new Blant(2)); // not correct, should be T
+                blant.AddComponent(new Blant(2)); // not correct, should be T ...
                 unitSelector.AddUnit(blant);
             }
+
+            _waveTimer = 0;
+            _waveCount += _waveStep;
         }
 
         public override void OnAddedToEntity()

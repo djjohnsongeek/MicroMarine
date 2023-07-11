@@ -5,7 +5,7 @@ using Zand.AI;
 
 namespace MicroMarine.Components
 {
-    class Following : BaseMarineState
+    class Following : BaseUnitState
     {
         private double _inRangeThreshold = .5;
         private double _inRangeDuration = 0;

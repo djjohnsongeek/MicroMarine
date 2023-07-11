@@ -48,7 +48,7 @@ namespace MicroMarine.Components
             bool isAttackMove = Input.KeyIsDown(Keys.A);
             UnitCommand command;
 
-            Entity targetEntity = Scene.Physics.GetEntityAtPosition("marine", Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+            Entity targetEntity = Scene.Physics.GetEntityAtPosition("unit", Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
             CommandType commandType = isAttackMove ? CommandType.AttackMove : CommandType.Move;
 
             if (targetEntity != null)

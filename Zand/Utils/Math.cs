@@ -1,9 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Zand
 {
@@ -32,6 +28,13 @@ namespace Zand
         public static float CalculateLayerDepth(float entityYPos, int entityHeight)
         {
             return ((entityYPos + entityHeight) * 0.00001f) + 0.00001f;
+        }
+
+        public static Vector2 RandomPosition(Random rng, Vector2 origin, int maxVariation)
+        {
+            var x = rng.Next((int)origin.X, (int)origin.X + maxVariation);
+            int y = rng.Next((int)origin.Y, (int)origin.Y + maxVariation);
+            return new Vector2(x, y);
         }
     }
 }

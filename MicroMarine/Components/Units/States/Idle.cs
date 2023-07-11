@@ -3,7 +3,7 @@ using Zand.AI;
 
 namespace MicroMarine.Components
 {
-    class Idle : BaseMarineState
+    class Idle : BaseUnitState
     {
 
         public override void Exit()

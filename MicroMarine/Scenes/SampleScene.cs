@@ -12,8 +12,6 @@ namespace MicroMarine.Scenes
 {
     class SampleScene : Scene
     {
-        private Random _rng = new Random();
-
         public SampleScene() : base()
         {
             
@@ -40,7 +38,7 @@ namespace MicroMarine.Scenes
             Content.LoadTexture("smallUnitShadow", "Content/small_unit_shadow.png");
             Content.LoadTexture("smallUnitSelect", "Content/small_unit_select.png");
             Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
-            Content.LoadTexture("blantSheet", "Content/creature-sheet.png");
+            Content.LoadTexture("blantSheet", "Content/blant_sheet.png");
 
             var defaultCursorTexture = Content.LoadTexture("cursor", "Content/cursor.png");
             var attackTexture = Content.LoadTexture("attackCursor", "Content/cursor_attack.png");
@@ -97,22 +95,16 @@ namespace MicroMarine.Scenes
             // Place Marines
             for (int i = 0; i < 20; i++)
             {
-                Entity unit = CreateEntity("marine", RandomPosition(map.MapCenter.ToVector2(), 60));
+                Entity unit = CreateEntity("unit", RandomPosition(map.MapCenter.ToVector2(), 60));
                 unit.AddComponent(new Marine(1));
                 unitSelector.AddUnit(unit);
             }
 
             // Add Blant Spawner
-            Entity blantSpawner = CreateEntity("spawner", map.MapCenter.ToVector2());
-            blantSpawner.AddComponent(new UnitSpawner<Blant>(map.MapCenter.ToVector2(), 2, 5));
+            Entity blantSpawner = CreateEntity("unitSpawner", map.MapCenter.ToVector2());
+            blantSpawner.AddComponent(new UnitSpawner<Blant>(map.MapCenter.ToVector2(), 2, 10));
 
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    Entity blant = CreateEntity("marine", RandomPosition(map.MapCenter.ToVector2(), 100));
-            //    blant.AddComponent(new Blant(2));
-            //    unitSelector.AddUnit(blant);
-            //}
-
+            // Center on Marines
             Camera.Position = map.MapCenter.ToVector2();
 
         }
@@ -125,8 +117,8 @@ namespace MicroMarine.Scenes
 
         public Vector2 RandomPosition(Vector2 origin, int maxVariation)
         {
-            var x = _rng.Next((int)origin.X, (int)origin.X + maxVariation);
-            int y = _rng.Next((int)origin.Y, (int)origin.Y + maxVariation);
+            var x = Rng.Next((int)origin.X, (int)origin.X + maxVariation);
+            int y = Rng.Next((int)origin.Y, (int)origin.Y + maxVariation);
             return new Vector2(x, y);
         }
     }

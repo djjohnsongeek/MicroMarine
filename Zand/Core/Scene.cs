@@ -22,6 +22,7 @@ namespace Zand
         public Texture2D DebugPixelTexture;
         public PhysicsManager Physics;
         public UserInterface UI;
+        public Random Rng;
 
         public bool GameIsActive => Core._instance.IsActive;
 
@@ -38,6 +39,7 @@ namespace Zand
             SpriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);
             SceneComponents = new SceneComponentList(this);
             UI = new UserInterface();
+            Rng = new Random();
         }
 
         public virtual void Initialize()

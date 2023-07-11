@@ -7,7 +7,7 @@ using Zand.Physics;
 
 namespace MicroMarine.Components
 {
-    class Moving : BaseMarineState
+    class Moving : BaseUnitState
     {
         public override void Exit()
         {

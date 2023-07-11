@@ -6,7 +6,7 @@ using Zand.ECS.Components;
 
 namespace MicroMarine.Components
 {
-    class Attacking: BaseMarineState
+    class Attacking: BaseUnitState
     {
         private double _inRangeThreshold = 0.5;
         private double _inRangeCount = 0;

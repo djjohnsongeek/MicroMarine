@@ -72,7 +72,7 @@ namespace MicroMarine.Components
             cursor.SetCursor(CursorType.Default);
             if (_selectedUnits.Count > 0)
             {
-                var entity = Scene.Physics.GetEntityAtPosition("marine", Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+                var entity = Scene.Physics.GetEntityAtPosition("unit", Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
                 if (entity != null)
                 {
                     if (SameTeam(entity))
