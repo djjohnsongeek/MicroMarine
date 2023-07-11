@@ -48,7 +48,7 @@ namespace Zand
             component.OnAddedToEntity();
         }
 
-        public T GetComponent<T>(bool onlyInitialized = true) where T: Component
+        public T GetComponent<T>(bool onlyInitialized = false) where T: Component
         {
             return Components.GetComponent<T>(onlyInitialized);
         }

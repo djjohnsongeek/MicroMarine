@@ -56,7 +56,7 @@ namespace Zand.Physics
             var entities = GetNearbyEntities(entityName, position);
             foreach (var entity in entities)
             {
-                var mouseSelectCollider = entity.GetComponent<MouseSelectCollider>(onlyInitialized: true);
+                var mouseSelectCollider = entity.GetComponent<MouseSelectCollider>(onlyInitialized: false);
                 if (mouseSelectCollider.HitBox.Contains(position))
                 {
                     return entity;
