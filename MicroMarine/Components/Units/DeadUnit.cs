@@ -24,6 +24,10 @@ namespace MicroMarine.Components.Units
         {
             float max = 6.28f;
             _rotation = (float)Entity.Scene.Rng.NextDouble() * max;
+
+            //RemoveEntity action = new RemoveEntity(Entity.Destroy);
+
+            //Time.AddTimer(_duration, action);
         }
 
         public void Update()
@@ -35,6 +39,8 @@ namespace MicroMarine.Components.Units
                 Entity.Destroy();
             }
         }
+
+        //public delegate void RemoveEntity();
 
         public override void Draw(SpriteBatch sbatch)
         {
