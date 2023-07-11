@@ -93,29 +93,7 @@ namespace MicroMarine.Components
         {
             var deadMarineSheet = Entity.Scene.Content.GetContent<Texture2D>("deadMarineSheet");
             var spriteSheet = new SpriteSheet(deadMarineSheet, 32, 32);
-            int index = 1;
-
-            var mover = Entity.GetComponent<Mover>();
-
-            if (mover.Orientation == UnitDirection.North)
-            {
-                index = 0;
-            }
-
-            if (mover.Orientation == UnitDirection.South)
-            {
-                index = 1;
-            }
-
-            if (mover.Orientation == UnitDirection.East)
-            {
-                index = 2;
-            }
-
-            if (mover.Orientation == UnitDirection.West)
-            {
-                index = 3;
-            }
+            int index = Entity.Scene.Rng.Next(0, 3);
 
 
             Rectangle frame = spriteSheet.GetFrame(index);

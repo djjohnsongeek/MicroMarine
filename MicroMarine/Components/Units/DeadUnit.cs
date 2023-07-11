@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Zand;
 namespace MicroMarine.Components.Units
 {
@@ -9,12 +8,18 @@ namespace MicroMarine.Components.Units
         private Rectangle? _srcRect;
         private float _duration;
         private double _elapsedTime;
+        private float _rotation;
 
         public DeadUnit(Texture2D texture, Vector2 entityOffset, Rectangle? frame) : base(texture, entityOffset)
         {
             _srcRect = frame;
             _duration = 30;
             _elapsedTime = 0;
+        }
+
+        public override void OnAddedToEntity()
+        {
+            _rotation = (float)Entity.Scene.Rng.NextDouble();
         }
 
         public void Update()
@@ -33,7 +38,7 @@ namespace MicroMarine.Components.Units
                 Entity.Position,
                 _srcRect,
                 Color.White,
-                0,
+                _rotation,
                 _entityOffset,
                 1,
                 SpriteEffects.None,

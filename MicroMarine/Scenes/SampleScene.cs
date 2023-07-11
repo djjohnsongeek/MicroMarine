@@ -105,7 +105,7 @@ namespace MicroMarine.Scenes
 
             // Add Blant Spawner
             Entity blantSpawner = CreateEntity("unitSpawner", map.MapCenter.ToVector2());
-            blantSpawner.AddComponent(new UnitSpawner<Blant>(map.MapCenter.ToVector2(), 2, 10));
+            blantSpawner.AddComponent(new UnitSpawner<Blant>(map.MapCenter.ToVector2(), 2, 5));
 
             // Center on Marines
             Camera.Position = map.MapCenter.ToVector2();
