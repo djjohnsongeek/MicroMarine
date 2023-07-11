@@ -17,6 +17,7 @@ namespace Zand.Components
         private double _elapsedTime;
         private bool _suppressUpdate = false;
         private float _suppressDuration = 0;
+        private Color _colorFilter;
 
         public Animation CurrentAnimation => _currentAnimation;
 
@@ -24,6 +25,12 @@ namespace Zand.Components
         {
             _animations = new Dictionary<string, Animation>();
             _elapsedTime = 0d;
+            _colorFilter = Color.White;
+        }
+
+        public Animator(Color colorFilter) : this()
+        {
+            _colorFilter = colorFilter;
         }
 
         public void AddAnimation(string name, Animation animation)
@@ -95,26 +102,13 @@ namespace Zand.Components
                 _currentAnimation.Texture,
                 Entity.Position,
                 _currentFrame,
-                GetEntityColor(),
+                _colorFilter,
                 0,
                 Entity.Origin,
                 1,
                 SpriteEffects.None,
                 Entity.layerDepth
            );
-        }
-
-        private Color GetEntityColor()
-        {
-            Color entityColor = Color.White;
-            UnitAllegiance allegiance = Entity.GetComponent<UnitAllegiance>();
-
-            if (allegiance is not null)
-            {
-                entityColor = allegiance.Color;
-            }
-
-            return entityColor;
         }
 
         private bool AnimationAlreadyRunning(string name)

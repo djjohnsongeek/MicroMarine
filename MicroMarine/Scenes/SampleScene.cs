@@ -35,10 +35,13 @@ namespace MicroMarine.Scenes
             // Textures...
             Content.LoadTexture("waypoint", "Content/waypoint.png");
             Content.LoadTexture("waypointAttack", "Content/waypoint_attack.png");
+            Content.LoadTexture("mediumUnitShadow", "Content/medium_unit_shadow.png");
             Content.LoadTexture("smallUnitShadow", "Content/small_unit_shadow.png");
             Content.LoadTexture("smallUnitSelect", "Content/small_unit_select.png");
             Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
             Content.LoadTexture("blantSheet", "Content/blant_sheet.png");
+            Content.LoadTexture("deadMarine", "Content/marine_dead.png");
+            Content.LoadTexture("deadBlant", "Content/blant_dead.png");
 
             var defaultCursorTexture = Content.LoadTexture("cursor", "Content/cursor.png");
             var attackTexture = Content.LoadTexture("attackCursor", "Content/cursor_attack.png");
@@ -93,7 +96,7 @@ namespace MicroMarine.Scenes
             tileMapEntity.AddComponent(map);
 
             // Place Marines
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 15; i++)
             {
                 Entity unit = CreateEntity("unit", RandomPosition(map.MapCenter.ToVector2(), 60));
                 unit.AddComponent(new Marine(1));

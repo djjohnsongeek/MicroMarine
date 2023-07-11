@@ -38,8 +38,8 @@ namespace MicroMarine.Components
 
             Texture2D shadowTexture = Scene.Content.GetContent<Texture2D>("smallUnitShadow");
             Texture2D selectTexture = Scene.Content.GetContent<Texture2D>("smallUnitSelect");
-            Entity.AddComponent(new UnitShadow(shadowTexture));
-            Entity.AddComponent(new SelectionIndicator(selectTexture));
+            Entity.AddComponent(new UnitShadow(shadowTexture, new Vector2(10, -12)));
+            Entity.AddComponent(new SelectionIndicator(selectTexture, new Vector2(10, -12)));
 
             AddAnimationComponents();
             AddCollisionComponents();
@@ -87,6 +87,12 @@ namespace MicroMarine.Components
             _stateMachine.AddState(new Following());
             _stateMachine.AddState(new Attacking());
             _stateMachine.SetInitialState<Idle>();
+        }
+
+        public override void OnRemovedFromEntity()
+        {
+            var entity = Scene.CreateEntity("deadUnit", Entity.Position);
+            entity.AddComponent(new DeadUnit(Scene.Content.GetContent<Texture2D>("deadMarine"), new Vector2(15, 0)));
         }
 
         private void AddAllegiance()

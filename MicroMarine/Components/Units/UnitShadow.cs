@@ -10,15 +10,11 @@ namespace MicroMarine.Components.Units
         private Vector2 _entityOffset;
         protected float _layer;
 
-        public UnitShadow(Texture2D texture)
+        public UnitShadow(Texture2D texture, Vector2 entityOffset)
         {
             this.texture = texture;
             _layer = 0.0000001f;
-        }
-
-        public override void OnAddedToEntity()
-        {
-            _entityOffset = new Vector2(10, -12);
+            _entityOffset = entityOffset;
         }
 
         public virtual void Draw(SpriteBatch sbatch)
