@@ -19,7 +19,8 @@ namespace MicroMarine.Components.Units
 
         public override void OnAddedToEntity()
         {
-            _rotation = (float)Entity.Scene.Rng.NextDouble();
+            float max = 6.28f;
+            _rotation = (float)Entity.Scene.Rng.NextDouble() * max;
         }
 
         public void Update()
