@@ -30,7 +30,7 @@ namespace MicroMarine.Components.Units
             AttackRange = 25;
             SightRange = 250;
             FollowRange = 120;
-            Speed = 120;
+            Speed = 80;
             Damage = 10;
             AttacksPerSecond = 1f;
             AttackInterval = 1 / 60f;
