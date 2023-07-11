@@ -6,8 +6,8 @@ namespace MicroMarine.Components.Units
 {
     class Decale : Component, IRenderable
     {
-        private Texture2D texture;
-        private Vector2 _entityOffset;
+        protected Texture2D texture;
+        protected Vector2 _entityOffset;
         protected float _layer;
 
         public Decale(Texture2D texture, Vector2 entityOffset)

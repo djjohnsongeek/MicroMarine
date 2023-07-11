@@ -91,8 +91,39 @@ namespace MicroMarine.Components
 
         public override void OnRemovedFromEntity()
         {
+            var deadMarineSheet = Entity.Scene.Content.GetContent<Texture2D>("deadMarineSheet");
+            var spriteSheet = new SpriteSheet(deadMarineSheet, 32, 32);
+            int index = 1;
+
+            var mover = Entity.GetComponent<Mover>();
+
+            if (mover.Orientation == UnitDirection.North)
+            {
+                index = 0;
+            }
+
+            if (mover.Orientation == UnitDirection.South)
+            {
+                index = 1;
+            }
+
+            if (mover.Orientation == UnitDirection.East)
+            {
+                index = 2;
+            }
+
+            if (mover.Orientation == UnitDirection.West)
+            {
+                index = 3;
+            }
+
+
+            Rectangle frame = spriteSheet.GetFrame(index);
+
+
+            
             var entity = Scene.CreateEntity("deadUnit", Entity.Position);
-            entity.AddComponent(new DeadUnit(Scene.Content.GetContent<Texture2D>("deadMarine"), new Vector2(15, 0)));
+            entity.AddComponent(new DeadUnit(deadMarineSheet, new Vector2(15, 0), frame));
         }
 
         private void AddAllegiance()

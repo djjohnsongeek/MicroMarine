@@ -40,7 +40,7 @@ namespace MicroMarine.Scenes
             Content.LoadTexture("smallUnitSelect", "Content/small_unit_select.png");
             Content.LoadTexture("marineSheet", "Content/marineSheet32.png");
             Content.LoadTexture("blantSheet", "Content/blant_sheet.png");
-            Content.LoadTexture("deadMarine", "Content/marine_dead.png");
+            Content.LoadTexture("deadMarineSheet", "Content/dead_marine_sheet.png");
             Content.LoadTexture("deadBlant", "Content/blant_dead.png");
 
             var defaultCursorTexture = Content.LoadTexture("cursor", "Content/cursor.png");
