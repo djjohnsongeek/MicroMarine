@@ -4,13 +4,13 @@ using Zand;
 
 namespace MicroMarine.Components.Units
 {
-    class UnitShadow : Component, IRenderable
+    class Decale : Component, IRenderable
     {
         private Texture2D texture;
         private Vector2 _entityOffset;
         protected float _layer;
 
-        public UnitShadow(Texture2D texture, Vector2 entityOffset)
+        public Decale(Texture2D texture, Vector2 entityOffset)
         {
             this.texture = texture;
             _layer = 0.0000001f;

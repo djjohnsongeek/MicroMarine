@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MicroMarine.Components.Units
 {
-    class DeadUnit : UnitShadow
+    class DeadUnit : Decale
     {
         public DeadUnit(Texture2D texture, Vector2 entityOffset) : base(texture, entityOffset)
         {

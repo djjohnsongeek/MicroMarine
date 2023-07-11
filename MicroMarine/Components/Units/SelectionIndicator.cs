@@ -4,7 +4,7 @@ using Zand.Components;
 
 namespace MicroMarine.Components.Units
 {
-    class SelectionIndicator : UnitShadow
+    class SelectionIndicator : Decale
     {
         public SelectionIndicator(Texture2D texture, Vector2 entityOffset) : base(texture, entityOffset)
         {

@@ -69,7 +69,7 @@ namespace MicroMarine.Components.Units
 
 
             // shadows
-            Entity.AddComponent(new UnitShadow(Scene.Content.GetContent<Texture2D>("mediumUnitShadow"), new Vector2(16, -12)));
+            Entity.AddComponent(new Decale(Scene.Content.GetContent<Texture2D>("mediumUnitShadow"), new Vector2(16, -12)));
 
             // states
             _stateMachine.AddState(new BlantSpawn());

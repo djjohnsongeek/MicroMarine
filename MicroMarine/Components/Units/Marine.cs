@@ -38,7 +38,7 @@ namespace MicroMarine.Components
 
             Texture2D shadowTexture = Scene.Content.GetContent<Texture2D>("smallUnitShadow");
             Texture2D selectTexture = Scene.Content.GetContent<Texture2D>("smallUnitSelect");
-            Entity.AddComponent(new UnitShadow(shadowTexture, new Vector2(10, -12)));
+            Entity.AddComponent(new Decale(shadowTexture, new Vector2(10, -12)));
             Entity.AddComponent(new SelectionIndicator(selectTexture, new Vector2(10, -12)));
 
             AddAnimationComponents();
