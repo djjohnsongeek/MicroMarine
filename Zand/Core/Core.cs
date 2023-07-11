@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Apos.Tweens;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -60,6 +61,7 @@ namespace Zand
             timer.Restart();
 
             Time.Update(gameTime.ElapsedGameTime.TotalSeconds);
+            TweenHelper.UpdateSetup(gameTime);
             Input.Update();
 
             if (Input.KeyIsDown(Keys.Escape))

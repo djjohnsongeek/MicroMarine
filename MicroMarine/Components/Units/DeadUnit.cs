@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Apos.Tweens;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Zand;
 namespace MicroMarine.Components.Units
@@ -9,12 +10,14 @@ namespace MicroMarine.Components.Units
         private float _duration;
         private double _elapsedTime;
         private float _rotation;
+        public FloatTween Transparency;
 
         public DeadUnit(Texture2D texture, Vector2 entityOffset, Rectangle? frame) : base(texture, entityOffset)
         {
             _srcRect = frame;
             _duration = 30;
             _elapsedTime = 0;
+            Transparency = new FloatTween(255, 0, 30000, Easing.Linear);
         }
 
         public override void OnAddedToEntity()
@@ -26,6 +29,7 @@ namespace MicroMarine.Components.Units
         public void Update()
         {
             _elapsedTime += Time.DeltaTime;
+
             if (_elapsedTime > _duration)
             {
                 Entity.Destroy();
@@ -38,7 +42,7 @@ namespace MicroMarine.Components.Units
                 texture,
                 Entity.Position,
                 _srcRect,
-                Color.White,
+                new Color(255, 255, 255, (int)Transparency.Value),
                 _rotation,
                 _entityOffset,
                 1,

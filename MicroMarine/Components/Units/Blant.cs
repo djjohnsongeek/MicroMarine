@@ -63,7 +63,7 @@ namespace MicroMarine.Components.Units
             Entity.AddComponent(mouseCollider);
 
 
-            CircleCollider collider = new CircleCollider(9, new Vector2(0, 6));
+            CircleCollider collider = new CircleCollider(11, new Vector2(0, 6));
             Entity.AddComponent(collider);
             Scene.RegisterCollider(collider);
 
