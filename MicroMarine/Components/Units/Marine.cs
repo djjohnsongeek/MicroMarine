@@ -1,7 +1,9 @@
 ﻿using MicroMarine.Components.Units;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using Zand;
 using Zand.AI;
 using Zand.Assets;
@@ -15,6 +17,7 @@ namespace MicroMarine.Components
     // Acts as 'Loading Component' for a Marine
     class Marine : Unit, Zand.IUpdateable
     {
+        private List<SoundEffect> _deathBarks;
         public Marine(int allegianceId) : base(allegianceId)
         {
 
@@ -30,6 +33,12 @@ namespace MicroMarine.Components
             Damage = 3;
             AttacksPerSecond = 5f;
             AttackInterval = 5 / 60f;
+
+            _deathBarks = new List<SoundEffect>
+            {
+                Entity.Scene.Content.GetContent<SoundEffect>("deathBark1"),
+                Entity.Scene.Content.GetContent<SoundEffect>("deathBark2"),
+            };
 
             Entity.AddComponent(new Health(100, 100));
             Entity.AddComponent(new Mover(Speed));
@@ -102,6 +111,9 @@ namespace MicroMarine.Components
             
             var entity = Scene.CreateEntity("deadUnit", Entity.Position);
             entity.AddComponent(new DeadUnit(deadMarineSheet, new Vector2(15, 0), frame));
+
+            _deathBarks[Scene.Rng.Next(0, _deathBarks.Count)].Play();
+
         }
 
         private void AddAllegiance()

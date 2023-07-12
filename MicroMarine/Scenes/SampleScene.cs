@@ -56,6 +56,9 @@ namespace MicroMarine.Scenes
             Content.LoadSoundEffect("commandBark3", "Content/Audio/Barks/command_bark3.wav");
             Content.LoadSoundEffect("commandBark4", "Content/Audio/Barks/command_bark4.wav");
 
+            Content.LoadSoundEffect("deathBark1", "Content/Audio/Barks/death_bark1.wav");
+            Content.LoadSoundEffect("deathBark2", "Content/Audio/Barks/death_bark2.wav");
+
 
 
 
