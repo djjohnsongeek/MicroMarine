@@ -43,6 +43,15 @@ namespace Zand
             if (_scene.GameIsActive)
             {
                 Move(GetCameraVelocity(Time.DeltaTime));
+
+                if (Input.MouseScrolledUp())
+                {
+                    Zoom += .1f;
+                }
+                else if (Input.MouseScrolledDown())
+                {
+                    Zoom -= .1f;
+                }
             }
         }
 

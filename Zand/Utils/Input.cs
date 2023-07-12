@@ -25,6 +25,16 @@ namespace Zand
             MouseScreenPosition.Y = _mouseState.Y;
         }
 
+        public static bool MouseScrolledUp()
+        {
+            return _mouseState.ScrollWheelValue > _prevMouseState.ScrollWheelValue;
+        }
+
+        public static bool MouseScrolledDown()
+        {
+            return _mouseState.ScrollWheelValue < _prevMouseState.ScrollWheelValue;
+        }
+
         public static bool KeyWasReleased(Keys key)
         {
             return _prevKeyBoardState.IsKeyDown(key) && _keyBoardState.IsKeyUp(key);
