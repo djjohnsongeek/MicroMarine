@@ -34,12 +34,6 @@ namespace MicroMarine.Components
             AttacksPerSecond = 5f;
             AttackInterval = 5 / 60f;
 
-            _deathBarks = new List<SoundEffect>
-            {
-                Entity.Scene.Content.GetContent<SoundEffect>("deathBark1"),
-                Entity.Scene.Content.GetContent<SoundEffect>("deathBark2"),
-            };
-
             Entity.AddComponent(new Health(100, 100));
             Entity.AddComponent(new Mover(Speed));
             Entity.AddComponent(new CommandQueue());
@@ -61,7 +55,12 @@ namespace MicroMarine.Components
             Texture2D marineSheet = Scene.Content.GetContent<Texture2D>("marineSheet");
             var spriteSheet = new SpriteSheet(marineSheet, 32, 32);
 
+            var sFxManager = Entity.Scene.GetComponent<SoundEffectManager>();
+
             var animator = new Animator();
+
+            animator.AnimationStart += sFxManager.OnAnimationStart;
+
             animator.AddAnimation("IdleNorth", new Animation(marineSheet, spriteSheet.GetFrames(0, 7), 8, Animation.LoopMode.Loop));
             animator.AddAnimation("IdleSouth", new Animation(marineSheet, spriteSheet.GetFrames(8, 15), 8, Animation.LoopMode.Loop));
             animator.AddAnimation("IdleEast", new Animation(marineSheet, spriteSheet.GetFrames(16, 23), 8, Animation.LoopMode.Loop));
@@ -112,7 +111,7 @@ namespace MicroMarine.Components
             var entity = Scene.CreateEntity("deadUnit", Entity.Position);
             entity.AddComponent(new DeadUnit(deadMarineSheet, new Vector2(15, 0), frame, fadeDuration: 30));
 
-            _deathBarks[Scene.Rng.Next(0, _deathBarks.Count)].Play();
+            Entity.Scene.GetComponent<UnitBarks>().PlayBark(BarkType.Death);
 
         }
 

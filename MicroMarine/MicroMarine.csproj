@@ -32,16 +32,16 @@
     <ProjectReference Include="..\Zand\Zand.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Content\Audio\Barks\command_bark1.wav">
+    <None Update="Content\Audio\Barks\ack_bark1.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\Audio\Barks\command_bark2.wav">
+    <None Update="Content\Audio\Barks\ack_bark2.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\Audio\Barks\command_bark3.wav">
+    <None Update="Content\Audio\Barks\ack_bark3.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\Audio\Barks\command_bark4.wav">
+    <None Update="Content\Audio\Barks\ack_bark4.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Content\Audio\Barks\death_bark1.wav">
@@ -50,19 +50,22 @@
     <None Update="Content\Audio\Barks\death_bark2.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\Audio\Barks\select_bark1.wav">
+    <None Update="Content\Audio\Barks\ready_bark1.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\Audio\Barks\select_bark2.wav">
+    <None Update="Content\Audio\Barks\ready_bark2.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\Audio\Barks\select_bark3.wav">
+    <None Update="Content\Audio\Barks\ready_bark3.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\Audio\Barks\select_bark4.wav">
+    <None Update="Content\Audio\Barks\ready_bark4.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\Audio\Barks\select_bark5.wav">
+    <None Update="Content\Audio\Barks\ready_bark5.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Audio\FX\marine_fire.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Content\Audio\Music\tribute-to-mr-wick.wav">

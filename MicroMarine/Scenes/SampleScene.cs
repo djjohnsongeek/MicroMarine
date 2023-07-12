@@ -5,7 +5,6 @@ using Zand.Assets;
 using Microsoft.Xna.Framework.Graphics;
 using Zand.UI;
 using MicroMarine.Components.Units;
-using System;
 using Microsoft.Xna.Framework.Audio;
 
 namespace MicroMarine.Scenes
@@ -44,20 +43,22 @@ namespace MicroMarine.Scenes
             Content.LoadTexture("deadMarineSheet", "Content/dead_marine_sheet.png");
             Content.LoadTexture("deadBlant", "Content/blant_dead.png");
 
-            Content.LoadSoundEffect("selectBark1", "Content/Audio/Barks/select_bark1.wav");
-            Content.LoadSoundEffect("selectBark2", "Content/Audio/Barks/select_bark2.wav");
-            Content.LoadSoundEffect("selectBark3", "Content/Audio/Barks/select_bark3.wav");
-            Content.LoadSoundEffect("selectBark4", "Content/Audio/Barks/select_bark4.wav");
-            Content.LoadSoundEffect("selectBark5", "Content/Audio/Barks/select_bark5.wav");
+            // Audio
+            Content.LoadSoundEffect("readyBark1", "Content/Audio/Barks/ready_bark1.wav");
+            Content.LoadSoundEffect("readyBark2", "Content/Audio/Barks/ready_bark2.wav");
+            Content.LoadSoundEffect("readyBark3", "Content/Audio/Barks/ready_bark3.wav");
+            Content.LoadSoundEffect("readyBark4", "Content/Audio/Barks/ready_bark4.wav");
+            Content.LoadSoundEffect("readyBark5", "Content/Audio/Barks/ready_bark5.wav");
 
-
-            Content.LoadSoundEffect("commandBark1", "Content/Audio/Barks/command_bark1.wav");
-            Content.LoadSoundEffect("commandBark2", "Content/Audio/Barks/command_bark2.wav");
-            Content.LoadSoundEffect("commandBark3", "Content/Audio/Barks/command_bark3.wav");
-            Content.LoadSoundEffect("commandBark4", "Content/Audio/Barks/command_bark4.wav");
+            Content.LoadSoundEffect("ackBark1", "Content/Audio/Barks/ack_bark1.wav");
+            Content.LoadSoundEffect("ackBark2", "Content/Audio/Barks/ack_bark2.wav");
+            Content.LoadSoundEffect("ackBark3", "Content/Audio/Barks/ack_bark3.wav");
+            Content.LoadSoundEffect("ackBark4", "Content/Audio/Barks/ack_bark4.wav");
 
             Content.LoadSoundEffect("deathBark1", "Content/Audio/Barks/death_bark1.wav");
             Content.LoadSoundEffect("deathBark2", "Content/Audio/Barks/death_bark2.wav");
+
+            Content.LoadSoundEffect("marineFire", "Content/Audio/FX/marine_fire.wav");
 
             var music = Content.LoadSoundEffect("soundtrack", "Content/Audio/Music/tribute-to-mr-wick.wav").CreateInstance();
 
@@ -119,6 +120,7 @@ namespace MicroMarine.Scenes
             // Add Scene Components
             var unitSelector = (UnitSelector) SceneComponents.AddComponent(new UnitSelector(this, 1));
             SceneComponents.AddComponent(new UnitGroupManager(this));
+            SceneComponents.AddComponent(new SoundEffectManager(this));
 
             // Initiate tile map
             Entity tileMapEntity = CreateEntity("tileMap", Vector2.Zero);
@@ -141,6 +143,24 @@ namespace MicroMarine.Scenes
 
             // Center on Marines
             Camera.Position = map.MapCenter.ToVector2();
+
+            // Units Barks
+            UnitBarks barks = new UnitBarks(this);
+            barks.AddBark(Content.GetContent<SoundEffect>("deathBark1").CreateInstance(), BarkType.Death);
+            barks.AddBark(Content.GetContent<SoundEffect>("deathBark2").CreateInstance(), BarkType.Death);
+
+            barks.AddBark(Content.GetContent<SoundEffect>("ackBark1").CreateInstance(), BarkType.ACK);
+            barks.AddBark(Content.GetContent<SoundEffect>("ackBark2").CreateInstance(), BarkType.ACK);
+            barks.AddBark(Content.GetContent<SoundEffect>("ackBark3").CreateInstance(), BarkType.ACK);
+            barks.AddBark(Content.GetContent<SoundEffect>("ackBark4").CreateInstance(), BarkType.ACK);
+
+            barks.AddBark(Content.GetContent<SoundEffect>("readyBark1").CreateInstance(), BarkType.Ready);
+            barks.AddBark(Content.GetContent<SoundEffect>("readyBark2").CreateInstance(), BarkType.Ready);
+            barks.AddBark(Content.GetContent<SoundEffect>("readyBark3").CreateInstance(), BarkType.Ready);
+            barks.AddBark(Content.GetContent<SoundEffect>("readyBark4").CreateInstance(), BarkType.Ready);
+            barks.AddBark(Content.GetContent<SoundEffect>("readyBark5").CreateInstance(), BarkType.Ready);
+
+            SceneComponents.AddComponent(barks);
 
         }
 

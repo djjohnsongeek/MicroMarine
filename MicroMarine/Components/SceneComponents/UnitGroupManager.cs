@@ -8,13 +8,11 @@ using Microsoft.Xna.Framework;
 using Zand.Debug;
 using Zand.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Audio;
 
 namespace MicroMarine.Components
 {
     public class UnitGroupManager : SceneComponent
     {
-        private List<SoundEffect> _commandsBarks;
         private UnitSelector _unitSelector;
         private List<UnitCommand> _allCommands;
         private Texture2D _waypointTexture;
@@ -22,13 +20,6 @@ namespace MicroMarine.Components
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
-            _commandsBarks = new List<SoundEffect>
-            {
-                Scene.Content.GetContent<SoundEffect>("commandBark1"),
-                Scene.Content.GetContent<SoundEffect>("commandBark2"),
-                Scene.Content.GetContent<SoundEffect>("commandBark3"),
-                Scene.Content.GetContent<SoundEffect>("commandBark4"),
-            };
             _unitSelector = Scene.GetComponent<UnitSelector>();
             _waypointTexture = scene.Content.GetContent<Texture2D>("waypoint");
             _waypointAttackTexture = scene.Content.GetContent<Texture2D>("waypointAttack");
@@ -75,7 +66,7 @@ namespace MicroMarine.Components
             command = new UnitCommand(commandType, targetEntity, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
 
             UpdateCommandQueues(selectedUnits, command);
-            _commandsBarks[Scene.Rng.Next(0, _commandsBarks.Count)].Play();
+            Scene.GetComponent<UnitBarks>().PlayBark(BarkType.ACK);
         }
 
         private UnitAllegiance SelectionAllegiance(List<Entity> units)
