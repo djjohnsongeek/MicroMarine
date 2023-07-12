@@ -59,6 +59,19 @@ namespace MicroMarine.Scenes
             Content.LoadSoundEffect("deathBark1", "Content/Audio/Barks/death_bark1.wav");
             Content.LoadSoundEffect("deathBark2", "Content/Audio/Barks/death_bark2.wav");
 
+            var music = Content.LoadSoundEffect("soundtrack", "Content/Audio/Music/tribute-to-mr-wick.wav").CreateInstance();
+
+            //The following music was used for this media project:
+            //Music: Tribute To Mr.Wick by Frank Schroeter
+            //Free download: https://filmmusic.io/song/11087-tribute-to-mr-wick
+            //License(CC BY 4.0): https://filmmusic.io/standard-license
+
+
+            music.Volume = .1f;
+            music.Play();
+
+
+
 
 
 
