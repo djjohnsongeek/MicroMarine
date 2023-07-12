@@ -10,23 +10,44 @@ namespace Zand
     {
         public static double DeltaTime { get; private set; }
         private static List<Timer> Timers = new List<Timer>();
+        private static List<int> _timersToRemove = new List<int>();
 
         public static void Update(GameTime gameTime)
         {
             DeltaTime = gameTime.ElapsedGameTime.TotalSeconds;
             TweenHelper.UpdateSetup(gameTime);
+            UpdateTimers(gameTime);
+            RemoveFinshedTimers();
 
-            foreach (var timer in Timers)
+            Debug.DebugTools.Log($"{Timers.Count} timers in play");
+        }
+
+        public static void UpdateTimers(GameTime gameTime)
+        {
+            for (int i = 0; i < Timers.Count; i++)
             {
-                timer.Update(gameTime);
+                Timers[i].Update(gameTime);
+                if (Timers[i].Finished)
+                {
+                    _timersToRemove.Add(i);
+                }
             }
         }
 
-        public static void AddTimer(double delay, Delegate action)
+        public static void RemoveFinshedTimers()
+        {
+            _timersToRemove.Sort();
+            for (int i = _timersToRemove.Count - 1; i >= 0; i--)
+            {
+                Timers.RemoveAt(_timersToRemove[i]);
+            }
+
+            _timersToRemove.Clear();
+        }
+
+        public static void AddTimer(double delay, Action action)
         {
             Timers.Add(new Timer(delay, action));
         }
-
-
     }
 }

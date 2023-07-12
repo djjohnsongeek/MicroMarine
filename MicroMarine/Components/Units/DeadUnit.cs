@@ -4,45 +4,34 @@ using Microsoft.Xna.Framework.Graphics;
 using Zand;
 namespace MicroMarine.Components.Units
 {
-    class DeadUnit : Decale, Zand.IUpdateable
+    class DeadUnit : Decale
     {
         private Rectangle? _srcRect;
         private float _duration;
-        private double _elapsedTime;
         private float _rotation;
         public FloatTween Transparency;
 
-        public DeadUnit(Texture2D texture, Vector2 entityOffset, Rectangle? frame) : base(texture, entityOffset)
+        /// <summary>
+        /// Simple decal that fades out over time.
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="entityOffset"></param>
+        /// <param name="frame"></param>
+        /// <param name="fadeDuration"> In seconds</param>
+
+        public DeadUnit(Texture2D texture, Vector2 entityOffset, Rectangle? frame, float fadeDuration) : base(texture, entityOffset)
         {
             _srcRect = frame;
-            _duration = 30;
-            _elapsedTime = 0;
-            Transparency = new FloatTween(255, 0, 30000, Easing.Linear);
+            _duration = fadeDuration;
+            Transparency = new FloatTween(255, 0, (long)_duration * 1000, Easing.SineIn);
         }
 
         public override void OnAddedToEntity()
         {
             float max = 6.28f;
             _rotation = (float)Entity.Scene.Rng.NextDouble() * max;
-
-
-
-
-            //RemoveEntity action = new RemoveEntity(Entity.Destroy);
-            //Time.AddTimer(_duration, action);
+            Time.AddTimer(_duration, Entity.Destroy);
         }
-
-        public void Update()
-        {
-            _elapsedTime += Time.DeltaTime;
-
-            if (_elapsedTime > _duration)
-            {
-                Entity.Destroy();
-            }
-        }
-
-        //public delegate void RemoveEntity();
 
         public override void Draw(SpriteBatch sbatch)
         {

@@ -110,7 +110,7 @@ namespace MicroMarine.Components
 
             
             var entity = Scene.CreateEntity("deadUnit", Entity.Position);
-            entity.AddComponent(new DeadUnit(deadMarineSheet, new Vector2(15, 0), frame));
+            entity.AddComponent(new DeadUnit(deadMarineSheet, new Vector2(15, 0), frame, fadeDuration: 30));
 
             _deathBarks[Scene.Rng.Next(0, _deathBarks.Count)].Play();
 

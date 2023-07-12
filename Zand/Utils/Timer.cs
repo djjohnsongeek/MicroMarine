@@ -7,10 +7,10 @@ namespace Zand.Utils
     {
         private double _elapsedTime;
         private double _targetTime;
-        private Delegate _action;
-        private bool _done;
+        private Action _action;
+        private bool _finished;
 
-        public Timer(double delay, Delegate action)
+        public Timer(double delay, Action action)
         {
             _elapsedTime = 0;
             _targetTime = delay;
@@ -19,15 +19,18 @@ namespace Zand.Utils
         
         public void Update(GameTime gameTime)
         {
-            if (!_done)
+            if (!_finished)
             {
                 _elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
 
                 if (_elapsedTime >= _targetTime)
                 {
-                    _done = true;
+                    _action();
+                    _finished = true;
                 }
             }
         }
+
+        public bool Finished => _finished;
     }
 }
