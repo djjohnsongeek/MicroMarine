@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Zand.UI;
 using MicroMarine.Components.Units;
 using System;
+using Microsoft.Xna.Framework.Audio;
 
 namespace MicroMarine.Scenes
 
@@ -42,6 +43,21 @@ namespace MicroMarine.Scenes
             Content.LoadTexture("blantSheet", "Content/blant_sheet.png");
             Content.LoadTexture("deadMarineSheet", "Content/dead_marine_sheet.png");
             Content.LoadTexture("deadBlant", "Content/blant_dead.png");
+
+            Content.LoadSoundEffect("selectBark1", "Content/Audio/Barks/select_bark1.wav");
+            Content.LoadSoundEffect("selectBark2", "Content/Audio/Barks/select_bark2.wav");
+            Content.LoadSoundEffect("selectBark3", "Content/Audio/Barks/select_bark3.wav");
+            Content.LoadSoundEffect("selectBark4", "Content/Audio/Barks/select_bark4.wav");
+            Content.LoadSoundEffect("selectBark5", "Content/Audio/Barks/select_bark5.wav");
+
+
+            Content.LoadSoundEffect("commandBark1", "Content/Audio/Barks/command_bark1.wav");
+            Content.LoadSoundEffect("commandBark2", "Content/Audio/Barks/command_bark2.wav");
+            Content.LoadSoundEffect("commandBark3", "Content/Audio/Barks/command_bark3.wav");
+            Content.LoadSoundEffect("commandBark4", "Content/Audio/Barks/command_bark4.wav");
+
+
+
 
             var defaultCursorTexture = Content.LoadTexture("cursor", "Content/cursor.png");
             var attackTexture = Content.LoadTexture("attackCursor", "Content/cursor_attack.png");

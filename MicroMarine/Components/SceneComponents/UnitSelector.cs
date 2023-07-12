@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace MicroMarine.Components
     {
         private List<Entity> _selectedUnits;
         private List<Entity> _units;
+        private List<SoundEffect> _selectionBarks;
 
         private Rectangle selectBox;
         private Vector2 SelectBoxOrigin;
@@ -24,6 +26,14 @@ namespace MicroMarine.Components
         {
             _units = new List<Entity>();
             _selectedUnits = new List<Entity>();
+            _selectionBarks = new List<SoundEffect> {
+                Scene.Content.GetContent<SoundEffect>("selectBark1"),
+                Scene.Content.GetContent<SoundEffect>("selectBark2"),
+                Scene.Content.GetContent<SoundEffect>("selectBark3"),
+                Scene.Content.GetContent<SoundEffect>("selectBark4"),
+                Scene.Content.GetContent<SoundEffect>("selectBark5"),
+            };
+
             selectBox = Rectangle.Empty;
             SelectBoxOrigin = Vector2.Zero;
             Allegiance = new UnitAllegiance(allegianceId);
@@ -44,6 +54,7 @@ namespace MicroMarine.Components
             }
 
             // Clear Select Box and Select Units
+            bool unitsSelected = false;
             if (Input.LeftMouseWasPressed() && selectBox != Rectangle.Empty)
             {
                 DeselectAll();
@@ -54,11 +65,20 @@ namespace MicroMarine.Components
                     if (selectBox.Intersects(selectCollider.GetScreenLocation()))
                     {
                         SelectUnit(_units[i], selectCollider);
+                        unitsSelected = true;
                     }
                 }
 
                 selectBox = Rectangle.Empty;
                 SelectBoxOrigin = Vector2.Zero;
+
+
+            }
+
+            if (unitsSelected)
+            {
+                int index = Scene.Rng.Next(0, _selectionBarks.Count);
+                _selectionBarks[index].Play();
             }
 
             // Select All Hotkey

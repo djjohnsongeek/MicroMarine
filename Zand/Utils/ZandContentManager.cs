@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Zand.Utils
 {
@@ -25,41 +26,60 @@ namespace Zand.Utils
                 return Load<Texture2D>(path);
             }
 
-            // check to see if this asset is already loaded
-            if (_loadedAssets.TryGetValue(name, out var asset))
+            if (AssetExists<Texture2D>(name))
             {
-                if (asset is Texture2D tex)
-                {
-                    return tex;
-                }
+                return GetContent<Texture2D>(name);
             }
 
-            using (FileStream stream = File.OpenRead(path))
-            {
-                Texture2D texture = Texture2D.FromStream(Core._instance.GraphicsDevice, stream);
-                texture.Name = name;
-                _loadedAssets[name] = texture;
-                _disposableAssets.Add(texture);
-
-                return texture;
-            }
+            using FileStream stream = File.OpenRead(path);
+            Texture2D texture = Texture2D.FromStream(Core._instance.GraphicsDevice, stream);
+            texture.Name = name;
+            _loadedAssets[name] = texture;
+            _disposableAssets.Add(texture);
+            return texture;
         }
 
         public SpriteFont LoadFont(string name, string path)
         {
             SpriteFont font = Load<SpriteFont>(path);
 
-            // check to see if this asset is already loaded
-            if (_loadedAssets.TryGetValue(name, out var asset))
+            if (AssetExists<SpriteFont>(name))
             {
-                if (asset is SpriteFont sFont)
-                {
-                    return sFont;
-                }
+                return GetContent<SpriteFont>(name);
             }
 
             _loadedAssets[name] = font;
             return font;
+        }
+
+        public SoundEffect LoadSoundEffect(string name, string path)
+        {
+            
+            if (AssetExists<SoundEffect>(name))
+            {
+                return GetContent<SoundEffect>(name);
+            }
+
+            using FileStream stream = File.OpenRead(path);
+            SoundEffect sfx = SoundEffect.FromStream(stream);
+            sfx.Name = name;
+            _loadedAssets[name] = sfx;
+            _disposableAssets.Add(sfx);
+
+            return sfx;
+        }
+
+        private bool AssetExists<T>(string name)
+        {
+            if (_loadedAssets.TryGetValue(name, out var asset))
+            {
+                if (asset is T)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public T GetContent<T>(string contentName)
