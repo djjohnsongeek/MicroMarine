@@ -1,5 +1,8 @@
-﻿namespace Zand.AI
+﻿using System;
+
+namespace Zand.AI
 {
+    
     public abstract class State<T>
     {
         protected StateMachine<T> _machine;

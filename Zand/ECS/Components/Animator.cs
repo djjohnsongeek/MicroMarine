@@ -8,8 +8,6 @@ namespace Zand.Components
 {
     public class Animator : Component, IRenderable, IUpdateable
     {
-        public event EventHandler<AnimatorEventArgs> AnimationStart;
-
         private Dictionary<string, Animation> _animations;
         private Animation _currentAnimation;
         private Rectangle _currentFrame;
@@ -33,11 +31,6 @@ namespace Zand.Components
         public Animator(Color colorFilter) : this()
         {
             _colorFilter = colorFilter;
-        }
-
-        public virtual void OnAnimationStart(AnimatorEventArgs args)
-        {
-            AnimationStart?.Invoke(this, args);
         }
 
         public void AddAnimation(string name, Animation animation)
@@ -65,8 +58,6 @@ namespace Zand.Components
                 _currentAnimation.State = Animation.AnimationState.None;
             }
 
-            // Setup next animation
-            OnAnimationStart(new AnimatorEventArgs { AnimationName = animationName });
             _currentAnimation = _animations[animationName];
             _currentAnimation.State = Animation.AnimationState.Running;
             _finalIndex = _currentAnimation.Length - 1;

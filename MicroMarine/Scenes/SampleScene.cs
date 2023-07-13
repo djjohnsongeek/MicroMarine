@@ -58,7 +58,7 @@ namespace MicroMarine.Scenes
             Content.LoadSoundEffect("deathBark1", "Content/Audio/Barks/death_bark1.wav");
             Content.LoadSoundEffect("deathBark2", "Content/Audio/Barks/death_bark2.wav");
 
-            Content.LoadSoundEffect("marineFire", "Content/Audio/FX/marine_fire.wav");
+            Content.LoadSoundEffect("marineAttack", "Content/Audio/FX/marine_fire.wav");
 
             var music = Content.LoadSoundEffect("soundtrack", "Content/Audio/Music/tribute-to-mr-wick.wav").CreateInstance();
 
@@ -71,15 +71,9 @@ namespace MicroMarine.Scenes
             music.Volume = .1f;
             music.Play();
 
-
-
-
-
-
             var defaultCursorTexture = Content.LoadTexture("cursor", "Content/cursor.png");
             var attackTexture = Content.LoadTexture("attackCursor", "Content/cursor_attack.png");
             var attackMoveCursorTexture = Content.LoadTexture("attackMoveCursor", "Content/cursor_attack_move.png");
-            var followCursorTexture = Content.LoadTexture("followCursor", "Content/cursor_follow.png");
 
             // Setup Mouse Cursors
             CursorData defaultCursor = new CursorData
@@ -103,16 +97,8 @@ namespace MicroMarine.Scenes
                 Type = CursorType.AttackMove,
             };
 
-            CursorData followCursor = new CursorData
-            {
-                OriginOffset = new Vector2(attackTexture.Width / 2, attackTexture.Height / 2),
-                Texture = followCursorTexture,
-                Type = CursorType.Follow,
-            };
-
             var mouse = new MouseCursor(defaultCursor);
             mouse.AddCursor(attackCursor);
-            mouse.AddCursor(followCursor);
             mouse.AddCursor(attackMoveCursor);
             UI.AddElement(mouse);
 
@@ -130,7 +116,7 @@ namespace MicroMarine.Scenes
             tileMapEntity.AddComponent(map);
 
             // Place Marines
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Entity unit = CreateEntity("unit", RandomPosition(map.MapCenter.ToVector2(), 60));
                 unit.AddComponent(new Marine(1));
@@ -139,7 +125,7 @@ namespace MicroMarine.Scenes
 
             // Add Blant Spawner
             Entity blantSpawner = CreateEntity("unitSpawner", map.MapCenter.ToVector2());
-            blantSpawner.AddComponent(new UnitSpawner<Blant>(map.MapCenter.ToVector2(), 2, 5));
+            blantSpawner.AddComponent(new UnitSpawner<Blant>(map.MapCenter.ToVector2(), 1, 1, 1));
 
             // Center on Marines
             Camera.Position = map.MapCenter.ToVector2();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using Zand;
 using Zand.AI;
@@ -20,10 +21,19 @@ namespace MicroMarine.Components
             _animator = _context.Entity.GetComponent<Animator>(false);
         }
 
-        protected Entity SearchForTarget()
+        protected bool TargetsAreNearby(out Entity entity)
         {
             var entitiesInRange = _context.Scene.Physics.GetEntitiesWithin(_context.Entity.Position, _context.SightRange);
-            return GetClosestEnemyUnit(entitiesInRange);
+            entity = GetClosestEnemyUnit(entitiesInRange);
+            return entity != null;
+        }
+
+        protected bool TargetIsInRange(Entity target, float buffer = 0)
+        {
+            var distanceSquared = Vector2.DistanceSquared(_context.Entity.Position, target.Position);
+            var attackRangeSquared = Math.Pow(_context.AttackRange, 2d);
+
+            return attackRangeSquared - distanceSquared > buffer;
         }
 
         protected Entity GetClosestEnemyUnit(List<Entity> entities)
@@ -50,6 +60,12 @@ namespace MicroMarine.Components
             }
 
             return closestEnemy;
+        }
+
+        protected void SetUnitAnimation(string animationVerb)
+        {
+            string animation = animationVerb + _mover.Orientation.ToString();
+            _animator.Play(animation);
         }
     }
 }

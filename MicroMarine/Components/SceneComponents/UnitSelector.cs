@@ -82,15 +82,10 @@ namespace MicroMarine.Components
                 var entity = Scene.Physics.GetEntityAtPosition("unit", Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
                 if (entity != null)
                 {
-                    if (SameTeam(entity))
-                    {
-                        cursor.SetCursor(CursorType.Follow);
-                    }
-                    else
+                    if (!SameTeam(entity))
                     {
                         cursor.SetCursor(CursorType.Attack);
                     }
-
                     return;
                 }
 

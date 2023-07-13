@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Zand;
 using Zand.AI;
+using Zand.Colliders;
 using Zand.ECS.Components;
 
 namespace MicroMarine.Components
@@ -10,12 +10,22 @@ namespace MicroMarine.Components
     class Attacking: BaseUnitState
     {
         private double _inRangeThreshold = 0.5;
-        private double _inRangeCount = 0;
+        private double _inRangeDuration = 0;
         private double _elapsedTime = 0;
+
+        public event EventHandler<StateEventArgs> AttackingStateChange;
 
         public override void Exit()
         {
+            _context.Entity.GetComponent<CircleCollider>().Static = false;
+            OnAttackingStateChange(new StateEventArgs(StateEventType.Exit));
+        }
 
+        public override void Enter()
+        {
+            _mover.Velocity = Vector2.Zero;
+            _context.Entity.GetComponent<CircleCollider>().Static = true;
+            OnAttackingStateChange(new StateEventArgs(StateEventType.Enter));
         }
 
         public override void Update()
@@ -34,34 +44,23 @@ namespace MicroMarine.Components
                 return;
             }
 
-            if (TargetIsInRange(currentCommand.EntityTarget))
+            if (!TargetIsInRange(currentCommand.EntityTarget, 60))
             {
-                _inRangeCount += Time.DeltaTime;
-                if (InRangePeriodIsOver())
-                {
-                    _mover.Velocity = Vector2.Zero;
-                    PlayAttackAnimation(currentCommand.EntityTarget);
-                    AttackTarget(currentCommand.EntityTarget);
-                }
+                _machine.ChangeState<Following>();
+                return;
             }
-            else
-            {
-                Vector2 unitVelocity = Vector2.Normalize(currentCommand.EntityTarget.Position - _context.Entity.Position) * _context.Speed;
-                _mover.Velocity = unitVelocity;
-                _animator.Play($"Walk{_mover.Orientation}");
-                _inRangeCount = 0;
-            }
-        }
-
-        public bool TargetIsInRange(Entity target)
-        {
-            var distanceSquared = Vector2.DistanceSquared(_context.Entity.Position, target.Position);
-            return distanceSquared < Math.Pow(_context.AttackRange, 2d);
+            PlayAttackAnimation(currentCommand.EntityTarget);
+            AttackTarget(currentCommand.EntityTarget);
         }
 
         public bool InRangePeriodIsOver()
         {
-            return _inRangeCount >= _inRangeThreshold;
+            return _inRangeDuration >= _inRangeThreshold;
+        }
+
+        public virtual void OnAttackingStateChange(StateEventArgs args)
+        {
+            AttackingStateChange?.Invoke(this, args);
         }
 
         private void PlayAttackAnimation(Entity target)

@@ -31,8 +31,7 @@ namespace MicroMarine.Components
             // check for targets
             if (currentCommand.Type == CommandType.AttackMove)
             {
-                var nextTarget = SearchForTarget();
-                if (nextTarget != null)
+                if (TargetsAreNearby(out Entity nextTarget))
                 {
                     var newCommand = new UnitCommand(CommandType.Attack, nextTarget, nextTarget.Position);
                     _unitCommands.InsertCommand(newCommand);
@@ -54,8 +53,7 @@ namespace MicroMarine.Components
 
             Vector2 unitVelocity = Vector2.Normalize(currentCommand.Destination.Position - _context.Entity.Position) * _context.Speed;
             _mover.Velocity = unitVelocity;
-
-            SetMarineAnimation(unitVelocity);
+            SetUnitAnimation("Walk");
         }
 
         private bool SupportedCommand(UnitCommand currentCommand)
@@ -71,9 +69,6 @@ namespace MicroMarine.Components
             {
                 case CommandType.Attack:
                     _machine.ChangeState<Attacking>();
-                    break;
-                case CommandType.Follow:
-                    _machine.ChangeState<Following>();
                     break;
                 case CommandType.AttackMove:
                 case CommandType.Move:
@@ -92,12 +87,6 @@ namespace MicroMarine.Components
         private UnitCommand GetCommand()
         {
             return _unitCommands.Peek();
-        }
-
-        private void SetMarineAnimation(Vector2 velocity)
-        {
-            string animation = "Walk" + _mover.Orientation.ToString();
-            _animator.Play(animation);
         }
     }
 }

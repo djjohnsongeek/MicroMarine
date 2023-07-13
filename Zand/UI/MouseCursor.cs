@@ -49,7 +49,6 @@ namespace Zand.UI
     {
         Default,
         Attack,
-        Follow,
         AttackMove,
     }
 

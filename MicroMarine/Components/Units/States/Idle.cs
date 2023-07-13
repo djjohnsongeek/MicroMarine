@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Zand;
 using Zand.AI;
 
 namespace MicroMarine.Components
@@ -14,8 +15,7 @@ namespace MicroMarine.Components
         public override void Enter()
         {
             _mover.Velocity = Vector2.Zero;
-            string animation = "Idle" + _mover.Orientation.ToString();
-            _animator.Play(animation);
+            SetUnitAnimation("Idle");
         }
 
         public override void Update()
@@ -24,8 +24,7 @@ namespace MicroMarine.Components
 
             if (nextCommand is null)
             {
-                var nextTarget = SearchForTarget();
-                if (nextTarget != null)
+                if (TargetsAreNearby(out Entity nextTarget))
                 {
                     nextCommand = new UnitCommand(CommandType.Attack, nextTarget, nextTarget.Position);
                     _unitCommands.AddCommand(nextCommand);
@@ -34,7 +33,6 @@ namespace MicroMarine.Components
                 {
                     return;
                 }
-
             }
 
             switch(nextCommand.Type)
@@ -42,9 +40,6 @@ namespace MicroMarine.Components
                 case CommandType.Move:
                 case CommandType.AttackMove:
                     _machine.ChangeState<Moving>();
-                    break;
-                case CommandType.Follow:
-                    _machine.ChangeState<Following>();
                     break;
                 case CommandType.Attack:
                     _machine.ChangeState<Attacking>();

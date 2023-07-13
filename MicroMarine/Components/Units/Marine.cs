@@ -54,12 +54,7 @@ namespace MicroMarine.Components
         {
             Texture2D marineSheet = Scene.Content.GetContent<Texture2D>("marineSheet");
             var spriteSheet = new SpriteSheet(marineSheet, 32, 32);
-
-            var sFxManager = Entity.Scene.GetComponent<SoundEffectManager>();
-
             var animator = new Animator();
-
-            animator.AnimationStart += sFxManager.OnAnimationStart;
 
             animator.AddAnimation("IdleNorth", new Animation(marineSheet, spriteSheet.GetFrames(0, 7), 8, Animation.LoopMode.Loop));
             animator.AddAnimation("IdleSouth", new Animation(marineSheet, spriteSheet.GetFrames(8, 15), 8, Animation.LoopMode.Loop));
@@ -89,11 +84,20 @@ namespace MicroMarine.Components
 
         private void AddUnitStates()
         {
-            //_stateMachine = new StateMachine<Unit>(this);
+            var sFxManager = Entity.Scene.GetComponent<SoundEffectManager>();
+            sFxManager.AddSoundEffect("marineAttack", Entity.Scene.Content.GetContent<SoundEffect>("marineAttack"));
+
+            var attacking = new Attacking();
+
+            attacking.AttackingStateChange += sFxManager.OnAttackingStateChange;
+
+
+
             _stateMachine.AddState(new Idle());
             _stateMachine.AddState(new Moving());
             _stateMachine.AddState(new Following());
-            _stateMachine.AddState(new Attacking());
+            _stateMachine.AddState(attacking);
+
             _stateMachine.SetInitialState<Idle>();
         }
 

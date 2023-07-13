@@ -31,11 +31,11 @@ namespace MicroMarine.Components.Units
             SightRange = 250;
             FollowRange = 120;
             Speed = 80;
-            Damage = 7;
+            Damage = 0;
             AttacksPerSecond = 1f;
             AttackInterval = 1 / 60f;
 
-            Entity.AddComponent(new Health(300, 300));
+            Entity.AddComponent(new Health(800, 800)); //250
             Entity.AddComponent(new Mover(Speed));
             Entity.AddComponent(new CommandQueue());
 

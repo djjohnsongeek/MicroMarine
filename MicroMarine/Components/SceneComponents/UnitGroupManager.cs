@@ -53,11 +53,7 @@ namespace MicroMarine.Components
 
             if (targetEntity != null)
             {
-                if (TargetIsAlly(selectedUnits, targetEntity))
-                {
-                    commandType = CommandType.Follow;
-                }
-                else
+                if (!TargetIsAlly(selectedUnits, targetEntity))
                 {
                     commandType = CommandType.Attack;
                 }

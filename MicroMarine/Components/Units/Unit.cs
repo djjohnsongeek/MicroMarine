@@ -31,6 +31,7 @@ namespace MicroMarine.Components
         public void Update()
         {
             _stateMachine.Update();
+            Zand.Debug.DebugTools.Log($"Current Marine State: {_stateMachine.CurrentState}");
         }
     }
 }

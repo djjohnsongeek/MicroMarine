@@ -7,9 +7,6 @@ namespace MicroMarine.Components
 {
     class Following : BaseUnitState
     {
-        private double _inRangeThreshold = .5;
-        private double _inRangeDuration = 0;
-
         public override void Exit()
         {
 
@@ -18,45 +15,33 @@ namespace MicroMarine.Components
         public override void Update()
         {
             var currentCommand = _unitCommands.Peek();
-            if (currentCommand is null || currentCommand.Type != CommandType.Follow)
+            if (currentCommand is null)
             {
                 _machine.ChangeState<Idle>();
                 return;
             }
 
-            if (TargetIsInRange(currentCommand.EntityTarget))
-            {
-                _inRangeDuration += Time.DeltaTime;
-                if (InRangePeriodIsOver())
-                {
-                    _mover.Velocity = Vector2.Zero;
-                    SetMarineAnimation(_mover.Velocity, "Idle");
-                }
-            }
-            else
+            bool targetIsInRange = TargetIsInRange(currentCommand.EntityTarget, 100);
+
+            if (!targetIsInRange)
             {
                 Vector2 unitVelocity = Vector2.Normalize(currentCommand.EntityTarget.Position - _context.Entity.Position) * _context.Speed;
                 _mover.Velocity = unitVelocity;
-                SetMarineAnimation(_mover.Velocity, "Walk");
-                _inRangeDuration = 0;
+                SetUnitAnimation("Walk");
             }
-        }
 
-        public bool TargetIsInRange(Entity target)
-        {
-            var distanceSquared = Vector2.DistanceSquared(_context.Entity.Position, target.Position);
-            return distanceSquared < Math.Pow(_context.FollowRange, 2d);
-        }
-
-        public bool InRangePeriodIsOver()
-        {
-            return _inRangeDuration >= _inRangeThreshold;
-        }
-
-        private void SetMarineAnimation(Vector2 velocity, string animationVerb)
-        {
-            string animation = animationVerb + _mover.Orientation.ToString();
-            _animator.Play(animation);
+            if (targetIsInRange)
+            {
+                if (currentCommand.Type == CommandType.Attack)
+                {
+                    _machine.ChangeState<Attacking>();
+                }
+                else
+                {
+                    _mover.Velocity = Vector2.Zero;
+                    SetUnitAnimation("Idle");
+                }
+            }
         }
     }
 }
