@@ -66,7 +66,7 @@ namespace MicroMarine.Scenes
             sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark4", "Content/Audio/Barks/blant_death4.wav"), 1);
             sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark5", "Content/Audio/Barks/blant_death5.wav"), 1);
 
-            sfxManager.AddSoundEffect("mShoot", Content.LoadSoundEffect("mFire", "Content/Audio/FX/marine_fire.wav"), 8, .5f);   
+            sfxManager.AddSoundEffect("mShoot", Content.LoadSoundEffect("mFire", "Content/Audio/FX/marine_fire.wav"), 8, .1f);   
 
 
             var music = Content.LoadSoundEffect("soundtrack", "Content/Audio/Music/tribute-to-mr-wick.wav").CreateInstance();
@@ -75,7 +75,7 @@ namespace MicroMarine.Scenes
             //Free download: https://filmmusic.io/song/11087-tribute-to-mr-wick
             //License(CC BY 4.0): https://filmmusic.io/standard-license
 
-            music.Volume = .1f;
+            music.Volume = .2f;
             music.Play();
 
             var defaultCursorTexture = Content.LoadTexture("cursor", "Content/cursor.png");
