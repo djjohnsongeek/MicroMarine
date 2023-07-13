@@ -93,6 +93,7 @@ namespace MicroMarine.Components
         public override void OnRemovedFromEntity()
         {
             Entity.Scene.GetComponent<SoundEffectManager>().StopAllSoundEffects(Entity);
+            Entity.Scene.GetComponent<SoundEffectManager>().PlaySoundEffect("mDeath");
             CreateDeadBody();
         }
 

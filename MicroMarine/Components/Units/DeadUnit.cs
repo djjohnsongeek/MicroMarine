@@ -28,7 +28,6 @@ namespace MicroMarine.Components.Units
 
         public override void OnAddedToEntity()
         {
-            Entity.Scene.GetComponent<SoundEffectManager>().PlaySoundEffect("mDeath");
             float max = 6.28f;
             _rotation = (float)Entity.Scene.Rng.NextDouble() * max;
             //_rotation = 0;
