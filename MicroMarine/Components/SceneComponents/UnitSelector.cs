@@ -17,6 +17,7 @@ namespace MicroMarine.Components
         private List<Entity> _units;
         private Rectangle selectBox;
         private Vector2 SelectBoxOrigin;
+        private SoundEffectManager _sfxManager;
 
         public UnitAllegiance Allegiance { get; private set; }
 
@@ -27,6 +28,7 @@ namespace MicroMarine.Components
             selectBox = Rectangle.Empty;
             SelectBoxOrigin = Vector2.Zero;
             Allegiance = new UnitAllegiance(allegianceId);
+            _sfxManager = scene.GetComponent<SoundEffectManager>();
         }
 
         public override void Update()
@@ -51,8 +53,8 @@ namespace MicroMarine.Components
                 for (int i = 0; i < _units.Count; i++)
                 {
                     MouseSelectCollider selectCollider = _units[i].GetComponent<MouseSelectCollider>();
-                    // && SameTeam(selectCollider.Entity)
-                    if (selectBox.Intersects(selectCollider.GetScreenLocation()))
+                    // 
+                    if (selectBox.Intersects(selectCollider.GetScreenLocation()) && SameTeam(selectCollider.Entity))
                     {
                         SelectUnit(_units[i], selectCollider);
                         unitsSelected = true;
@@ -65,7 +67,7 @@ namespace MicroMarine.Components
 
             if (unitsSelected)
             {
-                Scene.GetComponent<UnitBarks>().PlayBark(BarkType.Ready);
+                _sfxManager.PlaySoundEffect("mReady");
             }
 
             // Select All Hotkey

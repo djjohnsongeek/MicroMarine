@@ -17,6 +17,7 @@ namespace MicroMarine.Components
         private List<UnitCommand> _allCommands;
         private Texture2D _waypointTexture;
         private Texture2D _waypointAttackTexture;
+        private SoundEffectManager _sfxManager;
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
@@ -24,6 +25,7 @@ namespace MicroMarine.Components
             _waypointTexture = scene.Content.GetContent<Texture2D>("waypoint");
             _waypointAttackTexture = scene.Content.GetContent<Texture2D>("waypointAttack");
             _allCommands = new List<UnitCommand>();
+            _sfxManager = scene.GetComponent<SoundEffectManager>();
         }
 
         public override void Update()
@@ -62,7 +64,8 @@ namespace MicroMarine.Components
             command = new UnitCommand(commandType, targetEntity, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
 
             UpdateCommandQueues(selectedUnits, command);
-            Scene.GetComponent<UnitBarks>().PlayBark(BarkType.ACK);
+
+            _sfxManager.PlaySoundEffect("mAck");
         }
 
         private UnitAllegiance SelectionAllegiance(List<Entity> units)

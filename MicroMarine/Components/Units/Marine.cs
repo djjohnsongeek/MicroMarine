@@ -17,7 +17,6 @@ namespace MicroMarine.Components
     // Acts as 'Loading Component' for a Marine
     class Marine : Unit, Zand.IUpdateable
     {
-        private List<SoundEffect> _deathBarks;
         public Marine(int allegianceId) : base(allegianceId)
         {
 
@@ -84,39 +83,27 @@ namespace MicroMarine.Components
 
         private void AddUnitStates()
         {
-            var sFxManager = Entity.Scene.GetComponent<SoundEffectManager>();
-            sFxManager.AddSoundEffect("marineAttack", Entity.Scene.Content.GetContent<SoundEffect>("marineAttack"));
-
-            var attacking = new Attacking();
-
-            attacking.AttackingStateChange += sFxManager.OnAttackingStateChange;
-
-
-
             _stateMachine.AddState(new Idle());
             _stateMachine.AddState(new Moving());
             _stateMachine.AddState(new Following());
-            _stateMachine.AddState(attacking);
-
+            _stateMachine.AddState(new Attacking());
             _stateMachine.SetInitialState<Idle>();
         }
 
         public override void OnRemovedFromEntity()
         {
+            Entity.Scene.GetComponent<SoundEffectManager>().StopAllSoundEffects(Entity);
+            CreateDeadBody();
+        }
+
+        private void CreateDeadBody()
+        {
             var deadMarineSheet = Entity.Scene.Content.GetContent<Texture2D>("deadMarineSheet");
             var spriteSheet = new SpriteSheet(deadMarineSheet, 32, 32);
             int index = Entity.Scene.Rng.Next(0, 3);
-
-
             Rectangle frame = spriteSheet.GetFrame(index);
-
-
-            
             var entity = Scene.CreateEntity("deadUnit", Entity.Position);
             entity.AddComponent(new DeadUnit(deadMarineSheet, new Vector2(15, 0), frame, fadeDuration: 30));
-
-            Entity.Scene.GetComponent<UnitBarks>().PlayBark(BarkType.Death);
-
         }
 
         private void AddAllegiance()

@@ -13,19 +13,17 @@ namespace MicroMarine.Components
         private double _inRangeDuration = 0;
         private double _elapsedTime = 0;
 
-        public event EventHandler<StateEventArgs> AttackingStateChange;
-
         public override void Exit()
         {
             _context.Entity.GetComponent<CircleCollider>().Static = false;
-            OnAttackingStateChange(new StateEventArgs(StateEventType.Exit));
+            _sfxManger.StopSoundEffect("mShoot", _context.Entity);
         }
 
         public override void Enter()
         {
             _mover.Velocity = Vector2.Zero;
             _context.Entity.GetComponent<CircleCollider>().Static = true;
-            OnAttackingStateChange(new StateEventArgs(StateEventType.Enter));
+            _sfxManger.PlaySoundEffect("mShoot", _context.Entity);
         }
 
         public override void Update()
@@ -56,11 +54,6 @@ namespace MicroMarine.Components
         public bool InRangePeriodIsOver()
         {
             return _inRangeDuration >= _inRangeThreshold;
-        }
-
-        public virtual void OnAttackingStateChange(StateEventArgs args)
-        {
-            AttackingStateChange?.Invoke(this, args);
         }
 
         private void PlayAttackAnimation(Entity target)

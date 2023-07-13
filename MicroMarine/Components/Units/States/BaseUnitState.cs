@@ -13,12 +13,14 @@ namespace MicroMarine.Components
         protected CommandQueue _unitCommands;
         protected Mover _mover;
         protected Animator _animator;
+        protected SoundEffectManager _sfxManger;
 
         public override void OnInitialize()
         {
             _unitCommands = _context.Entity.GetComponent<CommandQueue>(false);
             _mover = _context.Entity.GetComponent<Mover>(false);
             _animator = _context.Entity.GetComponent<Animator>(false);
+            _sfxManger = _context.Entity.Scene.GetComponent<SoundEffectManager>();
         }
 
         protected bool TargetsAreNearby(out Entity entity)

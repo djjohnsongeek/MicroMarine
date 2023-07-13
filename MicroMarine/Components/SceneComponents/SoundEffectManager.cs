@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
 using Zand;
-using Zand.AI;
-using Zand.Assets;
 using Zand.ECS.Components;
 
 namespace MicroMarine.Components
@@ -10,60 +8,115 @@ namespace MicroMarine.Components
     class SoundEffectManager : SceneComponent
     {
 
-        private Dictionary<string, SoundEffectInstance> _soundFxBank;
+        private Dictionary<string, List<SoundEffectInstance>> _soundFxBank;
+        private List<TrackedSoundEffect> _nowPlaying;
 
         public SoundEffectManager(Scene scene) : base(scene)
         {
-            _soundFxBank = new Dictionary<string, SoundEffectInstance>();
+            _soundFxBank = new Dictionary<string, List<SoundEffectInstance>>();
+            _nowPlaying = new List<TrackedSoundEffect>();
         }
 
-        public void AddSoundEffect(string key, SoundEffect soundEffect)
+        public void AddSoundEffect(string name, SoundEffect soundEffect, int instanceCount, float volume = 1)
         {
-            _soundFxBank[key] = soundEffect.CreateInstance();
-        }
-
-        public void PlaySoundEffect(string name)
-        {
-            if (name is null)
+            if (!_soundFxBank.ContainsKey(name))
             {
-                return;
+                _soundFxBank[name] = new List<SoundEffectInstance>();
             }
 
-            if (_soundFxBank.TryGetValue(name, out SoundEffectInstance sfx))
+            for (int i = 0; i < instanceCount; i++)
             {
-                if (sfx.State != SoundState.Playing)
+                var sfx = soundEffect.CreateInstance();
+                sfx.Volume = volume;
+                _soundFxBank[name].Add(sfx);
+            }
+        }
+
+        public void PlaySoundEffect(string name, Entity entity = null)
+        {
+            if (_soundFxBank.TryGetValue(name, out List<SoundEffectInstance> sfxInstances))
+            {
+                int index = Scene.Rng.Next(0, sfxInstances.Count);
+                if (sfxInstances[index].State == SoundState.Playing)
                 {
-                    sfx.IsLooped = true;
-                    sfx.Play();
+                    return;
+                }
+                sfxInstances[index].Play();
+
+                // new Tracked sound effect will definately cause mem ssies TODO
+                _nowPlaying.Add(new TrackedSoundEffect(name, sfxInstances[index], entity));
+            }
+        }
+
+        public void StopSoundEffect(string name, Entity entity)
+        {
+            int? index = null;
+            for (int i = 0; i < _nowPlaying.Count; i++)
+            {
+                if (_nowPlaying[i].Entity is null) continue;
+
+
+                if (_nowPlaying[i].Entity.Id == entity.Id && _nowPlaying[i].Name == name)
+                {
+                    _nowPlaying[i].SoundEffect.Stop();
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index.HasValue)
+            {
+                _nowPlaying.RemoveAt(index.Value);
+            }
+        }
+
+        public void StopAllSoundEffects(Entity entity)
+        {
+            int? index = null;
+            for (int i = 0; i < _nowPlaying.Count; i++)
+            {
+                if (_nowPlaying[i].Entity is null) continue;
+                if (_nowPlaying[i].Entity.Id == entity.Id)
+                {
+                    _nowPlaying[i].SoundEffect.Stop();
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index.HasValue)
+            {
+                _nowPlaying.RemoveAt(index.Value);
+            }
+        }
+
+
+        public override void Update()
+        {
+            for (int i = _nowPlaying.Count - 1; i >= 0; i--)
+            {
+                if (_nowPlaying[i].SoundEffect.State == SoundState.Stopped)
+                {
+                    _nowPlaying.RemoveAt(i);
                 }
             }
         }
+        // list of sound effects currenly playing
+        // on update run through and remove those that are done
+        // or if the entity is destroyed
+    }
 
-        public void StopSoundEffect(string name)
+    public class TrackedSoundEffect
+    {
+        public SoundEffectInstance SoundEffect;
+        public Entity Entity;
+        public string Name;
+
+        public TrackedSoundEffect(string name, SoundEffectInstance sfx, Entity entity)
         {
-            if (name is null)
-            {
-                return;
-            }
-
-            if (_soundFxBank.TryGetValue(name, out SoundEffectInstance sfx))
-            {
-                sfx.Stop();
-                sfx.IsLooped = false;
-            }
-        }
-
-        public void OnAttackingStateChange(object src, StateEventArgs args)
-        {
-            if (args.EventType == StateEventType.Enter)
-            {
-                PlaySoundEffect("marineAttack");
-            }
-            else if (args.EventType == StateEventType.Exit)
-            {
-                StopSoundEffect("marineAttack");
-            }
-
+            SoundEffect = sfx;
+            Entity = entity;
+            Name = name;
         }
     }
 }
