@@ -116,7 +116,7 @@ namespace MicroMarine.Scenes
             tileMapEntity.AddComponent(map);
 
             // Place Marines
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Entity unit = CreateEntity("unit", RandomPosition(map.MapCenter.ToVector2(), 60));
                 unit.AddComponent(new Marine(1));
@@ -125,7 +125,7 @@ namespace MicroMarine.Scenes
 
             // Add Blant Spawner
             Entity blantSpawner = CreateEntity("unitSpawner", map.MapCenter.ToVector2());
-            blantSpawner.AddComponent(new UnitSpawner<Blant>(map.MapCenter.ToVector2(), 1, 1, 1));
+            blantSpawner.AddComponent(new UnitSpawner<Blant>(map.MapCenter.ToVector2(), 10, 1, 1));
 
             // Center on Marines
             Camera.Position = map.MapCenter.ToVector2();

@@ -15,7 +15,7 @@ namespace MicroMarine.Components
         public override void Update()
         {
             var currentCommand = _unitCommands.Peek();
-            if (currentCommand is null)
+            if (currentCommand is null || currentCommand.EntityTarget is null)
             {
                 _machine.ChangeState<Idle>();
                 return;

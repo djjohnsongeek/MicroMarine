@@ -30,6 +30,7 @@ namespace MicroMarine.Components.Units
         {
             float max = 6.28f;
             _rotation = (float)Entity.Scene.Rng.NextDouble() * max;
+            //_rotation = 0;
             Time.AddTimer(_duration, Entity.Destroy);
         }
 
