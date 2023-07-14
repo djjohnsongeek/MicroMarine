@@ -14,7 +14,7 @@ namespace MicroMarine.Components
         public SoundEffectManager(Scene scene) : base(scene)
         {
             _soundFxBank = new Dictionary<string, List<SoundEffectInstance>>();
-            _nowPlaying = new List<TrackedSoundEffect>();
+            _nowPlaying = new List<TrackedSoundEffect>(30);
         }
 
         public void AddSoundEffect(string name, SoundEffect soundEffect, int instanceCount, float volume = 1)
@@ -32,19 +32,46 @@ namespace MicroMarine.Components
             }
         }
 
-        public void PlaySoundEffect(string name, Entity entity = null)
+        public void PlaySoundEffect(string name, bool limitPlayback = false, bool randomChoice = false, Entity entity = null)
         {
+            // If limiting playback, don't play if identical sound scape
+            if (limitPlayback && IsPlaying(name))
+            {
+                return;
+            }
+
             if (_soundFxBank.TryGetValue(name, out List<SoundEffectInstance> sfxInstances))
             {
-                int index = Scene.Rng.Next(0, sfxInstances.Count);
-                if (sfxInstances[index].State == SoundState.Playing)
+                int? index = null;
+                if (randomChoice)
                 {
-                    return;
+                    index = Scene.Rng.Next(0, sfxInstances.Count);
                 }
-                sfxInstances[index].Play();
+                else
+                {
+                    for (int i = 0; i < sfxInstances.Count; i++)
+                    {
+                        if (sfxInstances[i].State != SoundState.Playing)
+                        {
+                            index = i;
+                        }
+
+                    }
+                }
+
+                //if (sfxInstances[index].State == SoundState.Playing)
+                //{
+                //    return;
+                //}
+                if (index.HasValue)
+                {
+                    sfxInstances[index.Value].Play();
+                    _nowPlaying.Add(new TrackedSoundEffect(name, sfxInstances[index.Value], entity));
+                }
+
 
                 // new Tracked sound effect will definately cause mem ssies TODO
-                _nowPlaying.Add(new TrackedSoundEffect(name, sfxInstances[index], entity));
+
             }
         }
 
@@ -88,6 +115,19 @@ namespace MicroMarine.Components
             {
                 _nowPlaying.RemoveAt(index.Value);
             }
+        }
+
+        public bool IsPlaying(string name)
+        {
+            for (int i = 0; i < _nowPlaying.Count; i++)
+            {
+                if (_nowPlaying[i].Name == name && _nowPlaying[i].SoundEffect.State == SoundState.Playing)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
 

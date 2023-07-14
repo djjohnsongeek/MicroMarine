@@ -65,7 +65,7 @@ namespace MicroMarine.Components
 
             UpdateCommandQueues(selectedUnits, command);
 
-            _sfxManager.PlaySoundEffect("mAck");
+            _sfxManager.PlaySoundEffect("mAck", limitPlayback: true, randomChoice: true);
         }
 
         private UnitAllegiance SelectionAllegiance(List<Entity> units)

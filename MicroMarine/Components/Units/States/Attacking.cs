@@ -15,14 +15,23 @@ namespace MicroMarine.Components
         public override void Exit()
         {
             _context.Entity.GetComponent<CircleCollider>().Static = false;
-            _sfxManger.StopSoundEffect("mShoot", _context.Entity);
+
+            if (_context is Marine)
+            {
+                _sfxManger.StopSoundEffect("mShoot", _context.Entity);
+            }
+
         }
 
         public override void Enter()
         {
             _mover.Velocity = Vector2.Zero;
             _context.Entity.GetComponent<CircleCollider>().Static = true;
-            _sfxManger.PlaySoundEffect("mShoot", _context.Entity);
+
+            if (_context is Marine)
+            {
+                _sfxManger.PlaySoundEffect("mShoot", limitPlayback: false, randomChoice: false, entity: _context.Entity);
+            }
         }
 
         public override void Update()

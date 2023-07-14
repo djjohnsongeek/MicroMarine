@@ -46,27 +46,27 @@ namespace MicroMarine.Scenes
             // Audio
             var sfxManager = new SoundEffectManager(this);
 
-            sfxManager.AddSoundEffect("mReady", Content.LoadSoundEffect("readyBark1", "Content/Audio/Barks/ready_bark1.wav"), 1, .5f);
-            sfxManager.AddSoundEffect("mReady", Content.LoadSoundEffect("readyBark2", "Content/Audio/Barks/ready_bark2.wav"), 1, .5f);
-            sfxManager.AddSoundEffect("mReady", Content.LoadSoundEffect("readyBark3", "Content/Audio/Barks/ready_bark3.wav"), 1, .5f);
-            sfxManager.AddSoundEffect("mReady", Content.LoadSoundEffect("readyBark4", "Content/Audio/Barks/ready_bark4.wav"), 1, .5f);
-            sfxManager.AddSoundEffect("mReady", Content.LoadSoundEffect("readyBark5", "Content/Audio/Barks/ready_bark5.wav"), 1, .5f);
+            sfxManager.AddSoundEffect("mReady", Content.LoadSoundEffect("readyBark1", "Content/Audio/Barks/ready_bark1.wav"), 1, .2f);
+            sfxManager.AddSoundEffect("mReady", Content.LoadSoundEffect("readyBark2", "Content/Audio/Barks/ready_bark2.wav"), 1, .2f);
+            sfxManager.AddSoundEffect("mReady", Content.LoadSoundEffect("readyBark3", "Content/Audio/Barks/ready_bark3.wav"), 1, .2f);
+            sfxManager.AddSoundEffect("mReady", Content.LoadSoundEffect("readyBark4", "Content/Audio/Barks/ready_bark4.wav"), 1, .2f);
+            sfxManager.AddSoundEffect("mReady", Content.LoadSoundEffect("readyBark5", "Content/Audio/Barks/ready_bark5.wav"), 1, .2f);
 
-            sfxManager.AddSoundEffect("mAck", Content.LoadSoundEffect("ackBark1", "Content/Audio/Barks/ack_bark1.wav"), 1, .5f);
-            sfxManager.AddSoundEffect("mAck", Content.LoadSoundEffect("ackBark2", "Content/Audio/Barks/ack_bark2.wav"), 1, .5f);
-            sfxManager.AddSoundEffect("mAck", Content.LoadSoundEffect("ackBark3", "Content/Audio/Barks/ack_bark3.wav"), 1, .5f);
-            sfxManager.AddSoundEffect("mAck", Content.LoadSoundEffect("ackBark4", "Content/Audio/Barks/ack_bark4.wav"), 1, .5f);
+            sfxManager.AddSoundEffect("mAck", Content.LoadSoundEffect("ackBark1", "Content/Audio/Barks/ack_bark1.wav"), 1, .2f);
+            sfxManager.AddSoundEffect("mAck", Content.LoadSoundEffect("ackBark2", "Content/Audio/Barks/ack_bark2.wav"), 1, .2f);
+            sfxManager.AddSoundEffect("mAck", Content.LoadSoundEffect("ackBark3", "Content/Audio/Barks/ack_bark3.wav"), 1, .2f);
+            sfxManager.AddSoundEffect("mAck", Content.LoadSoundEffect("ackBark4", "Content/Audio/Barks/ack_bark4.wav"), 1, .2f);
 
-            sfxManager.AddSoundEffect("mDeath", Content.LoadSoundEffect("deathBark1", "Content/Audio/Barks/death_bark1.wav"), 1);
-            sfxManager.AddSoundEffect("mDeath", Content.LoadSoundEffect("deathBark2", "Content/Audio/Barks/death_bark2.wav"), 1);
+            sfxManager.AddSoundEffect("mDeath", Content.LoadSoundEffect("deathBark1", "Content/Audio/Barks/death_bark1.wav"), 1, .5f);
+            sfxManager.AddSoundEffect("mDeath", Content.LoadSoundEffect("deathBark2", "Content/Audio/Barks/death_bark2.wav"), 1, .5f);
 
-            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark1", "Content/Audio/Barks/blant_death1.wav"), 1);
-            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark2", "Content/Audio/Barks/blant_death2.wav"), 1);
-            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark3", "Content/Audio/Barks/blant_death3.wav"), 1);
-            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark4", "Content/Audio/Barks/blant_death4.wav"), 1);
-            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark5", "Content/Audio/Barks/blant_death5.wav"), 1);
+            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark1", "Content/Audio/Barks/blant_death1.wav"), 1, .5f);
+            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark2", "Content/Audio/Barks/blant_death2.wav"), 1, .5f);
+            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark3", "Content/Audio/Barks/blant_death3.wav"), 1, .5f);
+            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark4", "Content/Audio/Barks/blant_death4.wav"), 1, .5f);
+            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark5", "Content/Audio/Barks/blant_death5.wav"), 1, .5f);
 
-            sfxManager.AddSoundEffect("mShoot", Content.LoadSoundEffect("mFire", "Content/Audio/FX/marine_fire.wav"), 8, .1f);   
+            sfxManager.AddSoundEffect("mShoot", Content.LoadSoundEffect("mFire", "Content/Audio/FX/marine_fire.wav"), 8, .2f);   
 
 
             var music = Content.LoadSoundEffect("soundtrack", "Content/Audio/Music/tribute-to-mr-wick.wav").CreateInstance();
@@ -75,7 +75,7 @@ namespace MicroMarine.Scenes
             //Free download: https://filmmusic.io/song/11087-tribute-to-mr-wick
             //License(CC BY 4.0): https://filmmusic.io/standard-license
 
-            music.Volume = .2f;
+            music.Volume = .07f;
             music.Play();
 
             var defaultCursorTexture = Content.LoadTexture("cursor", "Content/cursor.png");

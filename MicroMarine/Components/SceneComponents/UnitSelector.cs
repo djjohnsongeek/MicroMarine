@@ -67,7 +67,7 @@ namespace MicroMarine.Components
 
             if (unitsSelected)
             {
-                _sfxManager.PlaySoundEffect("mReady");
+                _sfxManager.PlaySoundEffect("mReady", limitPlayback: true, randomChoice: true);
             }
 
             // Select All Hotkey
