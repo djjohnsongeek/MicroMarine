@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Zand;
 using Zand.AI;
-using Zand.Colliders;
 using Zand.ECS.Components;
 
 namespace MicroMarine.Components

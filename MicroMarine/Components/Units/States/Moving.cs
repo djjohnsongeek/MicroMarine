@@ -11,12 +11,18 @@ namespace MicroMarine.Components
     {
         public override void Exit()
         {
-
+            if (_context is Marine)
+            {
+                _sfxManger.StopSoundEffect("footstep", _context.Entity);
+            }
         }
 
         public override void Enter()
         {
-            // TODO Validate?
+            if (_context is Marine)
+            {
+                _sfxManger.PlaySoundEffect("footstep", false, true, _context.Entity, true);
+            }
         }
 
         public override void Update()
