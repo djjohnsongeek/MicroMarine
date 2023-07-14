@@ -14,7 +14,7 @@ namespace MicroMarine.Components
 
         public override void Exit()
         {
-            _context.Entity.GetComponent<CircleCollider>().Static = false;
+            //_context.Entity.GetComponent<CircleCollider>().Static = false;
 
             if (_context is Marine)
             {
@@ -26,7 +26,7 @@ namespace MicroMarine.Components
         public override void Enter()
         {
             _mover.Velocity = Vector2.Zero;
-            _context.Entity.GetComponent<CircleCollider>().Static = true;
+            //_context.Entity.GetComponent<CircleCollider>().Static = true;
 
             if (_context is Marine)
             {

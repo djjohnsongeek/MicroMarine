@@ -149,11 +149,18 @@ namespace MicroMarine.Components
         {
             for (int i = _nowPlaying.Count - 1; i >= 0; i--)
             {
-                if (_nowPlaying[i].SoundEffect.State == SoundState.Stopped)
+                if (_nowPlaying[i].SoundEffect.State == SoundState.Stopped || EntityDestroyed(_nowPlaying[i].Entity))
                 {
                     _nowPlaying.RemoveAt(i);
                 }
             }
+        }
+
+
+        private bool EntityDestroyed(Entity e)
+        {
+            if (e is null) return false;
+            return e.IsDestroyed;
         }
         // list of sound effects currenly playing
         // on update run through and remove those that are done

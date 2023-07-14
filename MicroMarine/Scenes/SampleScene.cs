@@ -5,7 +5,6 @@ using Zand.Assets;
 using Microsoft.Xna.Framework.Graphics;
 using Zand.UI;
 using MicroMarine.Components.Units;
-using Microsoft.Xna.Framework.Audio;
 
 namespace MicroMarine.Scenes
 
@@ -21,7 +20,7 @@ namespace MicroMarine.Scenes
         {
             // SetWindowSize(2560, 1440);
             SetWindowSize(1280, 720);
-            // SetWindowSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+            SetWindowSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
             SetFullScreen(false);
             SetMouseVisibility(false);
             Camera = new Camera(new Vector2(ScreenWidth / 2, ScreenHeight / 2), this, ScreenWidth, ScreenHeight);
@@ -133,7 +132,7 @@ namespace MicroMarine.Scenes
             // Add Blant Spawner
             Entity blantSpawner = CreateEntity("unitSpawner", map.MapCenter.ToVector2());
             blantSpawner.AddComponent(
-                new UnitSpawner<Blant>(map.MapCenter.ToVector2(), totalSpawns: 30, unitPerWave: 2, waveDelay: 5, waveStep: 1)
+                new UnitSpawner<Blant>(map.MapCenter.ToVector2(), totalSpawns: 50, unitPerWave: 2, waveDelay: 8, waveStep: 2)
             );
 
             // Center on Marines
