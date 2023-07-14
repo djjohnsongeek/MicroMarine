@@ -65,10 +65,10 @@ namespace MicroMarine.Scenes
             sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark4", "Content/Audio/Barks/blant_death4.wav"), 1, .3f);
             sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark5", "Content/Audio/Barks/blant_death5.wav"), 1, .3f);
 
-            sfxManager.AddSoundEffect("footstep", Content.LoadSoundEffect("footstep", "Content/Audio/FX/footstep0.wav"), 2, .04f);
-            sfxManager.AddSoundEffect("footstep", Content.LoadSoundEffect("footstep", "Content/Audio/FX/footstep1.wav"), 2, .04f);
-            sfxManager.AddSoundEffect("footstep", Content.LoadSoundEffect("footstep", "Content/Audio/FX/footstep2.wav"), 2, .04f);
-            sfxManager.AddSoundEffect("footstep", Content.LoadSoundEffect("footstep", "Content/Audio/FX/footstep2.wav"), 2, .04f);
+            sfxManager.AddSoundEffect("footstep", Content.LoadSoundEffect("footstep", "Content/Audio/FX/footstep0.wav"), 2, .02f);
+            sfxManager.AddSoundEffect("footstep", Content.LoadSoundEffect("footstep", "Content/Audio/FX/footstep1.wav"), 2, .02f);
+            sfxManager.AddSoundEffect("footstep", Content.LoadSoundEffect("footstep", "Content/Audio/FX/footstep2.wav"), 2, .02f);
+            sfxManager.AddSoundEffect("footstep", Content.LoadSoundEffect("footstep", "Content/Audio/FX/footstep2.wav"), 2, .02f);
 
             sfxManager.AddSoundEffect("mShoot", Content.LoadSoundEffect("mFire", "Content/Audio/FX/marine_fire.wav"), 8, .2f);   
 
