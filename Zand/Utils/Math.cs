@@ -19,6 +19,22 @@ namespace Zand
 
             return x;
         }
+
+
+        public static float ClampFloat(float min, float max, float value)
+        {
+            if (value < min)
+            {
+                return min;
+            }
+
+            if (value > max)
+            {
+                return max;
+            }
+
+            return value;
+        }
         /// <summary>
         /// Given an Entity's Screen Y coordiante and height calculate it's layer depth.
         /// </summary>

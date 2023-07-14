@@ -30,7 +30,7 @@ namespace MicroMarine.Components
 
             if (_context is Marine)
             {
-                _sfxManger.PlaySoundEffect("mShoot", limitPlayback: false, randomChoice: false, entity: _context.Entity);
+                _sfxManger.PlaySoundEffect("mShoot", limitPlayback: false, randomChoice: false, entity: _context.Entity, loop: true);
             }
         }
 

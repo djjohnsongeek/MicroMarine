@@ -32,7 +32,19 @@ namespace MicroMarine.Components
             }
         }
 
-        public void PlaySoundEffect(string name, bool limitPlayback = false, bool randomChoice = false, Entity entity = null)
+        private float RandomPitch(float min, float max)
+        {
+            double random = Scene.Rng.NextDouble();
+            int negate = Scene.Rng.Next(0, 2);
+            if (negate == 1)
+            {
+                random *= -1;
+            }
+
+            return MathUtil.ClampFloat(min, max, (float)random);
+        }
+
+        public void PlaySoundEffect(string name, bool limitPlayback = false, bool randomChoice = false, Entity entity = null, bool loop = false)
         {
             // If limiting playback, don't play if identical sound scape
             if (limitPlayback && IsPlaying(name))
@@ -65,6 +77,8 @@ namespace MicroMarine.Components
                 //}
                 if (index.HasValue)
                 {
+                    sfxInstances[index.Value].IsLooped = loop;
+                    sfxInstances[index.Value].Pitch = RandomPitch(-.18f, .18f);
                     sfxInstances[index.Value].Play();
                     _nowPlaying.Add(new TrackedSoundEffect(name, sfxInstances[index.Value], entity));
                 }
