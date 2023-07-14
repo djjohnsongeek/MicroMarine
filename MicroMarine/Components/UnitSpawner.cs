@@ -14,13 +14,14 @@ namespace MicroMarine.Components
         public int _totalSpawns;
         public int _spawnCount;
 
-        public UnitSpawner(Vector2 position, int totalSpawns, int unitPerWave, int waveDelay)
+        public UnitSpawner(Vector2 position, int totalSpawns, int unitPerWave, int waveDelay, int waveStep = 0)
         {
             _totalSpawns = totalSpawns;
             _spawnCount = 0;
             _unitPerWave = unitPerWave;
             _waveDelay = waveDelay;
             _waveTimer = 0;
+            _waveStep = waveStep;
             Position = position;
         }
 
@@ -51,7 +52,7 @@ namespace MicroMarine.Components
                 unitSelector.AddUnit(blant);
                 _spawnCount++;
             }
-
+            _unitPerWave += _waveStep;
             _waveTimer = 0;
         }
 
