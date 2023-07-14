@@ -60,11 +60,11 @@ namespace MicroMarine.Scenes
             sfxManager.AddSoundEffect("mDeath", Content.LoadSoundEffect("deathBark1", "Content/Audio/Barks/death_bark1.wav"), 1, .5f);
             sfxManager.AddSoundEffect("mDeath", Content.LoadSoundEffect("deathBark2", "Content/Audio/Barks/death_bark2.wav"), 1, .5f);
 
-            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark1", "Content/Audio/Barks/blant_death1.wav"), 1, .5f);
-            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark2", "Content/Audio/Barks/blant_death2.wav"), 1, .5f);
-            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark3", "Content/Audio/Barks/blant_death3.wav"), 1, .5f);
-            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark4", "Content/Audio/Barks/blant_death4.wav"), 1, .5f);
-            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark5", "Content/Audio/Barks/blant_death5.wav"), 1, .5f);
+            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark1", "Content/Audio/Barks/blant_death1.wav"), 1, .3f);
+            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark2", "Content/Audio/Barks/blant_death2.wav"), 1, .3f);
+            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark3", "Content/Audio/Barks/blant_death3.wav"), 1, .3f);
+            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark4", "Content/Audio/Barks/blant_death4.wav"), 1, .3f);
+            sfxManager.AddSoundEffect("bDeath", Content.LoadSoundEffect("bDeathBark5", "Content/Audio/Barks/blant_death5.wav"), 1, .3f);
 
             sfxManager.AddSoundEffect("mShoot", Content.LoadSoundEffect("mFire", "Content/Audio/FX/marine_fire.wav"), 8, .2f);   
 
