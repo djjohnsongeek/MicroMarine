@@ -121,6 +121,9 @@ namespace Zand
 
             SpriteBatch.Begin(blendState: _lightMapBlendState, transformMatrix: Camera.GetTransformation());
             Vector2 lightOrigin = new Vector2(_light.Width / 2, _light.Height / 2);
+
+            SpriteBatch.Draw(_light, Camera.Position, null, Color.White, 0, lightOrigin, new Vector2(5, 5), SpriteEffects.None, 0);
+
             foreach (var entity in Entities.FindEntities("unit"))
             {
                 SpriteBatch.Draw(_light, entity.Position, null, Color.White, 0, origin: lightOrigin, Vector2.One, SpriteEffects.None, 0);
