@@ -46,6 +46,8 @@ namespace MicroMarine.Scenes
             Content.LoadTexture("light", "Content/light.png");
             var fireTexture = Content.LoadTexture("fire", "Content/fire_sheet.png");
 
+            Content.LoadTexture("glowStick", "Content/glow_stick.png");
+
             // Audio
             var sfxManager = new SoundEffectManager(this);
 
@@ -146,13 +148,13 @@ namespace MicroMarine.Scenes
 
 
             // Place Marines
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 1; i++)
             {
                 Entity unit = CreateEntity("unit", RandomPosition(map.MapCenter.ToVector2(), 60));
                 unit.AddComponent(new Marine(1));
                 unitSelector.AddUnit(unit);
-                var marineLight = new SimpleLight(unit, Content.GetContent<Texture2D>("light"), Color.White, Vector2.One);
-                Lighting.AddLight(marineLight);
+                //var marineLight = new SimpleLight(unit, Content.GetContent<Texture2D>("light"), Color.White, Vector2.One);
+                //Lighting.AddLight(marineLight);
             }
 
             // Add Blant Spawner
