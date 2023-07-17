@@ -23,37 +23,46 @@ namespace Zand.Graphics.Lighting
             GraphicsDevice = graphicsDevice;
             RenderTarget = new RenderTarget2D(graphicsDevice, width, height);
             Camera = camera;
-            BlendState = new BlendState
+
+            // Multiply
+            BlendState = new BlendState()
             {
-                AlphaBlendFunction = BlendFunction.ReverseSubtract,
-                AlphaSourceBlend = Blend.One,
-                AlphaDestinationBlend = Blend.One,
+                AlphaSourceBlend = Blend.DestinationAlpha,
+                AlphaDestinationBlend = Blend.Zero,
+                AlphaBlendFunction = BlendFunction.Add,
+                ColorSourceBlend = Blend.DestinationColor,
+                ColorDestinationBlend = Blend.Zero,
+                ColorBlendFunction = BlendFunction.Add
             };
-            DarknessColor = new Color(25, 25, 25, 255);
+            DarknessColor = new Color(25, 25, 25, 220);
+            Lights = new List<SimpleLight>();
+        }
+
+        public void AddLight(SimpleLight light)
+        {
+            Lights.Add(light);
         }
 
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void RenderLightMap(SpriteBatch spriteBatch)
         {
             GraphicsDevice.SetRenderTarget(RenderTarget);
             GraphicsDevice.Clear(DarknessColor);
+            spriteBatch.Begin(blendState: BlendState.Additive, transformMatrix: Camera.GetTransformation());
+            for (int i = 0; i < Lights.Count; i++)
+            {
+                var light = Lights[i];
+                spriteBatch.Draw(light.LightTexture, light.Obj.Position, null, light.Color, 0, light.Origin, light.Scale, SpriteEffects.None, 0);
+            }
+            spriteBatch.End();
+            Core._instance.GraphicsDevice.SetRenderTarget(null);
+        }
 
-            spriteBatch.Begin(blendState: BlendState, transformMatrix: Camera.GetTransformation());
-            //Vector2 lightOrigin = new Vector2(_light.Width / 2, _light.Height / 2);
-
-            //SpriteBatch.Draw(_light, Camera.Position, null, Color.White, 0, lightOrigin, new Vector2(5, 5), SpriteEffects.None, 0);
-
-            //foreach (var entity in Entities.FindEntities("unit"))
-            //{
-            //    SpriteBatch.Draw(_light, entity.Position, null, Color.White, 0, origin: lightOrigin, Vector2.One, SpriteEffects.None, 0);
-            //}
-
-
-
-            ////SpriteBatch.Draw(_light, Entities.FindEntity("tileMap").GetComponent<TileMap>().MapCenter.ToVector2(), Color.White);
-            //SpriteBatch.End();
-
-            //Core._instance.GraphicsDevice.SetRenderTarget(null);
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Begin(blendState: BlendState);
+            spriteBatch.Draw(RenderTarget, Vector2.Zero, Color.White);
+            spriteBatch.End();
         }
     }
 }

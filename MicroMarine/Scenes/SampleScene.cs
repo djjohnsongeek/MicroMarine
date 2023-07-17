@@ -5,6 +5,8 @@ using Zand.Assets;
 using Microsoft.Xna.Framework.Graphics;
 using Zand.UI;
 using MicroMarine.Components.Units;
+using Zand.Graphics.Lighting;
+using Zand.Components;
 
 namespace MicroMarine.Scenes
 
@@ -41,6 +43,8 @@ namespace MicroMarine.Scenes
             Content.LoadTexture("blantSheet", "Content/blant_sheet.png");
             Content.LoadTexture("deadMarineSheet", "Content/dead_marine_sheet.png");
             Content.LoadTexture("deadBlant", "Content/blant_dead.png");
+            Content.LoadTexture("light", "Content/light_black.png");
+            var fireTexture = Content.LoadTexture("fire", "Content/fire_sheet.png");
 
             // Audio
             var sfxManager = new SoundEffectManager(this);
@@ -119,12 +123,27 @@ namespace MicroMarine.Scenes
             SceneComponents.AddComponent(new UnitGroupManager(this));
 
 
+
+
             // Initiate tile map
             Entity tileMapEntity = CreateEntity("tileMap", Vector2.Zero);
-            Texture2D mapTexture = this.Content.LoadTexture("mapSheet", "Content/grassSheet32.png");
+            Texture2D mapTexture = Content.LoadTexture("mapSheet", "Content/grassSheet32.png");
             var mapSpriteSheet = new SpriteSheet(mapTexture, 32, 32);
             var map = new TileMap(32, new Point(Config.MapWidth, Config.MapHeight), mapSpriteSheet);
             tileMapEntity.AddComponent(map);
+
+            // Fire
+            var fireSheet = new SpriteSheet(fireTexture, 49, 74);
+            var fire = CreateEntity("fire", map.MapCenter.ToVector2());
+            fire.Origin = new Vector2(fire.Dimensions.X / 2, fire.Dimensions.Y / 2);
+            var fireAnimation = new Animator();
+            fireAnimation.AddAnimation("burn", new Animation(fireTexture, fireSheet.GetFrames(0, 18), 19, Animation.LoopMode.Loop));
+            fireAnimation.Play("burn");
+            fire.AddComponent(fireAnimation);
+
+            var light = new SimpleLight(fire, Content.GetContent<Texture2D>("light"), new Color(255, 220, 160), Vector2.One);
+            Lighting.AddLight(light);
+
 
             // Place Marines
             for (int i = 0; i < 20; i++)
@@ -132,6 +151,8 @@ namespace MicroMarine.Scenes
                 Entity unit = CreateEntity("unit", RandomPosition(map.MapCenter.ToVector2(), 60));
                 unit.AddComponent(new Marine(1));
                 unitSelector.AddUnit(unit);
+                var marineLight = new SimpleLight(unit, Content.GetContent<Texture2D>("light"), Color.PowderBlue, Vector2.One);
+                Lighting.AddLight(marineLight);
             }
 
             // Add Blant Spawner

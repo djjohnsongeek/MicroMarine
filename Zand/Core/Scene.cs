@@ -6,6 +6,7 @@ using Zand.Assets;
 using Zand.Debug;
 using Zand.ECS.Collections;
 using Zand.ECS.Components;
+using Zand.Graphics.Lighting;
 using Zand.Physics;
 using Zand.UI;
 using Zand.Utils;
@@ -23,12 +24,8 @@ namespace Zand
         public PhysicsManager Physics;
         public UserInterface UI;
         public Random Rng;
+        public LightMap Lighting;
 
-        // TEST
-
-        private RenderTarget2D _lightMap;
-        private Texture2D _light;
-        private BlendState _lightMapBlendState;
 
         public bool GameIsActive => Core._instance.IsActive;
 
@@ -51,24 +48,13 @@ namespace Zand
         public virtual void Initialize()
         {
             Physics = new PhysicsManager();
-
-            _lightMap = new RenderTarget2D(Core._instance.GraphicsDevice, ScreenWidth, ScreenHeight);
-            _lightMapBlendState = new BlendState
-            {
-                AlphaBlendFunction = BlendFunction.ReverseSubtract,
-                AlphaSourceBlend = Blend.One,
-                AlphaDestinationBlend = Blend.One,
-            };
-            // Init logic goes here
-
+            Lighting = new LightMap(Core._instance.GraphicsDevice, ScreenWidth, ScreenHeight, Camera);
         }
 
         public virtual void Load()
         {
             DebugPixelTexture = new Texture2D(Core._instance.GraphicsDevice, 1, 1);
             DebugPixelTexture.SetData(new Color[] { Color.White});
-            _light = Content.LoadTexture("light", "Content/light.png");
-
             SpriteFont debugFont = Content.LoadFont("DebugFont", "Debug");
             DebugTools.SetUp(this, debugFont);
         }
@@ -116,45 +102,17 @@ namespace Zand
 
         public virtual void Draw()
         {
-            Core._instance.GraphicsDevice.SetRenderTarget(_lightMap);
-            Core._instance.GraphicsDevice.Clear(new Color(0, 0, 0, 255));
-
-            SpriteBatch.Begin(blendState: _lightMapBlendState, transformMatrix: Camera.GetTransformation());
-            Vector2 lightOrigin = new Vector2(_light.Width / 2, _light.Height / 2);
-
-            SpriteBatch.Draw(_light, Camera.Position, null, Color.White, 0, lightOrigin, new Vector2(5, 5), SpriteEffects.None, 0);
-
-            foreach (var entity in Entities.FindEntities("unit"))
-            {
-                SpriteBatch.Draw(_light, entity.Position, null, Color.White, 0, origin: lightOrigin, Vector2.One, SpriteEffects.None, 0);
-            }
-            
-
-
-            //SpriteBatch.Draw(_light, Entities.FindEntity("tileMap").GetComponent<TileMap>().MapCenter.ToVector2(), Color.White);
-            SpriteBatch.End();
-
-            Core._instance.GraphicsDevice.SetRenderTarget(null);
-
-
-
+            Lighting.RenderLightMap(SpriteBatch);
 
             // Clear Screen
             Core._instance.GraphicsDevice.Clear(Color.CornflowerBlue);
-
 
             // Game Objects/ Entities
             Entities.Draw();
 
             // Draw lightmap
-            SpriteBatch.Begin(); // transformMatrix: Camera.GetTransformation()
-            SpriteBatch.Draw(_lightMap, Vector2.Zero, Color.White);
-            SpriteBatch.End();
-
-
+            Lighting.Draw(SpriteBatch);
             SceneComponents.Draw();
-
-
 
             // Draw Effects
             // Draw UI

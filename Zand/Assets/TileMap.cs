@@ -134,7 +134,7 @@ namespace Zand.Assets
         {
             Point tileCoords = GetTileCoords(position);
 
-            if (tileCoords.X < 0 || tileCoords.Y < 0)
+            if ((tileCoords.X < 0 || tileCoords.Y < 0) || (tileCoords.X >= MapSize.X || tileCoords.Y >= MapSize.Y))
             {
                 return new Tile(true);
             }
