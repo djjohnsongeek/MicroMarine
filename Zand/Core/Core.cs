@@ -74,9 +74,12 @@ namespace Zand
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            base.Draw(gameTime);
             CurrentScene.Draw();
+
+
+
+
+            // for perf
             timer.Stop();
 
             // At the time of writing, these two lines make up the majority of allocations that needs to be collected by the GC

@@ -78,6 +78,20 @@ namespace Zand
             return null;
         }
 
+        public Entity[] FindEntities(string name)
+        {
+            List<Entity> entities = new List<Entity>();
+            for (int i = 0; i < _entities.Count; i++)
+            {
+                if (_entities[i].Name == name)
+                {
+                    entities.Add(_entities[i]);
+                }
+            }
+
+            return entities.ToArray();
+        }
+
         internal void Draw()
         {
             Matrix? matrix = Scene.Camera == null ? null : Scene.Camera.GetTransformation();

@@ -19,6 +19,9 @@ namespace MicroMarine.Components
         private Vector2 SelectBoxOrigin;
         private SoundEffectManager _sfxManager;
 
+
+        public List<Entity> SelectableUnits => _units;
+
         public UnitAllegiance Allegiance { get; private set; }
 
         public UnitSelector(Scene scene, int allegianceId) : base(scene)
