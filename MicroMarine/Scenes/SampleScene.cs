@@ -43,7 +43,7 @@ namespace MicroMarine.Scenes
             Content.LoadTexture("blantSheet", "Content/blant_sheet.png");
             Content.LoadTexture("deadMarineSheet", "Content/dead_marine_sheet.png");
             Content.LoadTexture("deadBlant", "Content/blant_dead.png");
-            Content.LoadTexture("light", "Content/light_black.png");
+            Content.LoadTexture("light", "Content/light.png");
             var fireTexture = Content.LoadTexture("fire", "Content/fire_sheet.png");
 
             // Audio
@@ -151,7 +151,7 @@ namespace MicroMarine.Scenes
                 Entity unit = CreateEntity("unit", RandomPosition(map.MapCenter.ToVector2(), 60));
                 unit.AddComponent(new Marine(1));
                 unitSelector.AddUnit(unit);
-                var marineLight = new SimpleLight(unit, Content.GetContent<Texture2D>("light"), Color.PowderBlue, Vector2.One);
+                var marineLight = new SimpleLight(unit, Content.GetContent<Texture2D>("light"), Color.White, Vector2.One);
                 Lighting.AddLight(marineLight);
             }
 

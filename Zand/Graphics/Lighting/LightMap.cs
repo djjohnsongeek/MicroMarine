@@ -34,7 +34,7 @@ namespace Zand.Graphics.Lighting
                 ColorDestinationBlend = Blend.Zero,
                 ColorBlendFunction = BlendFunction.Add
             };
-            DarknessColor = new Color(25, 25, 25, 220);
+            DarknessColor = new Color(25, 25, 50, 240);
             Lights = new List<SimpleLight>();
         }
 
