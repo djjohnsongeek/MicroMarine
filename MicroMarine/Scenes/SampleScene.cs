@@ -47,6 +47,7 @@ namespace MicroMarine.Scenes
             var fireTexture = Content.LoadTexture("fire", "Content/fire_sheet.png");
 
             Content.LoadTexture("glowStick", "Content/glow_stick.png");
+            Content.LoadTexture("tinyShadow", "Content/tiny_shadow.png");
 
             // Audio
             var sfxManager = new SoundEffectManager(this);
@@ -143,7 +144,7 @@ namespace MicroMarine.Scenes
             fireAnimation.Play("burn");
             fire.AddComponent(fireAnimation);
 
-            var light = new SimpleLight(fire, Content.GetContent<Texture2D>("light"), new Color(255, 220, 160), Vector2.One);
+            var light = new SimpleLight(fire, Content.GetContent<Texture2D>("light"), new Color(255, 255, 255), Vector2.One);
             Lighting.AddLight(light);
 
 
@@ -153,15 +154,13 @@ namespace MicroMarine.Scenes
                 Entity unit = CreateEntity("unit", RandomPosition(map.MapCenter.ToVector2(), 60));
                 unit.AddComponent(new Marine(1));
                 unitSelector.AddUnit(unit);
-                //var marineLight = new SimpleLight(unit, Content.GetContent<Texture2D>("light"), Color.White, Vector2.One);
-                //Lighting.AddLight(marineLight);
             }
 
             // Add Blant Spawner
-            Entity blantSpawner = CreateEntity("unitSpawner", map.MapCenter.ToVector2());
-            blantSpawner.AddComponent(
-                new UnitSpawner<Blant>(map.MapCenter.ToVector2(), totalSpawns: 50, unitPerWave: 2, waveDelay: 8, waveStep: 2)
-            );
+            //Entity blantSpawner = CreateEntity("unitSpawner", map.MapCenter.ToVector2());
+            //blantSpawner.AddComponent(
+            //    new UnitSpawner<Blant>(map.MapCenter.ToVector2(), totalSpawns: 50, unitPerWave: 2, waveDelay: 8, waveStep: 2)
+            //);
 
             // Center on Marines
             Camera.Position = map.MapCenter.ToVector2();
