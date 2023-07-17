@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Zand
 {
-    public class Entity : IUpdateable
+    public class Entity : GameObject, IUpdateable
     {
         public int Id { get; set;  }
         private bool _enabled = true;
@@ -19,7 +19,6 @@ namespace Zand
             get => _destroyed;
         }
 
-        public Vector2 Position;
         public Vector2 ScreenPosition => Position - Origin;
         public Vector2 Origin;
         public Point Dimensions;

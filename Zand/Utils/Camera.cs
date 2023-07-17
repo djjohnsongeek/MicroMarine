@@ -2,10 +2,9 @@
 
 namespace Zand
 {
-    public class Camera
+    public class Camera : GameObject
     {
         public Matrix Transform;
-        public Vector2 Position;
         public int Width;
         public int Height;
 

@@ -20,7 +20,7 @@ namespace MicroMarine.Scenes
         {
             // SetWindowSize(2560, 1440);
             SetWindowSize(1280, 720);
-            SetWindowSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+            //SetWindowSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
             SetFullScreen(false);
             SetMouseVisibility(false);
             Camera = new Camera(new Vector2(ScreenWidth / 2, ScreenHeight / 2), this, ScreenWidth, ScreenHeight);
