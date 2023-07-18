@@ -59,7 +59,7 @@ namespace Zand.Graphics.Lighting
             {
                 if (LightsToRemove[i].Color.A <= 0)
                 {
-                    RemoveLight(LightsToRemove[i].Obj.Id);
+                    Lights.Remove(LightsToRemove[i]);
                     LightsToRemove.RemoveAt(i);
                     continue;
                 }
@@ -76,6 +76,7 @@ namespace Zand.Graphics.Lighting
             {
                 var light = Lights[i];
                 spriteBatch.Draw(light.LightTexture, light.Obj.Position + light.Offset, null, light.Color, 0, light.Origin, light.Scale, SpriteEffects.None, 0);
+                //spriteBatch.Draw(light.LightTexture, light.Obj.Position + light.Offset, null, light.Color, 0, light.Origin, new Vector2(.2f, .2f), SpriteEffects.None, 0);
             }
             spriteBatch.End();
             Core._instance.GraphicsDevice.SetRenderTarget(null);

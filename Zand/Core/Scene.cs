@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Zand.Assets;
 using Zand.Debug;
 using Zand.ECS.Collections;
 using Zand.ECS.Components;

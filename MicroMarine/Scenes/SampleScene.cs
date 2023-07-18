@@ -20,13 +20,25 @@ namespace MicroMarine.Scenes
 
         public override void Initialize()
         {
-            // SetWindowSize(2560, 1440);
-            SetWindowSize(1280, 720);
-            //SetWindowSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
-            SetFullScreen(false);
+            InitFromFile("settings.ini");
             SetMouseVisibility(false);
             Camera = new Camera(new Vector2(ScreenWidth / 2, ScreenHeight / 2), this, ScreenWidth, ScreenHeight);
             base.Initialize();
+        }
+
+        private void InitFromFile(string filename)
+        {
+            var settings = new FileSettings(filename);
+
+            if (settings["DetectDeviceDisplayDimensions"] == 1)
+            {
+                SetWindowSize(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+            }
+            else
+            {
+                SetWindowSize(settings["Width"], settings["Height"]);
+            }
+            SetFullScreen(settings["Fullscreen"] == 1);
         }
 
         public override void Load()
@@ -149,7 +161,7 @@ namespace MicroMarine.Scenes
 
 
             // Place Marines
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 15; i++)
             {
                 Entity unit = CreateEntity("unit", RandomPosition(map.MapCenter.ToVector2(), 60));
                 unit.AddComponent(new Marine(1));
