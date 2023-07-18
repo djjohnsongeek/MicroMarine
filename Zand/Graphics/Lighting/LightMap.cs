@@ -1,10 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Zand.Graphics.Lighting
 {
@@ -74,11 +71,11 @@ namespace Zand.Graphics.Lighting
         {
             GraphicsDevice.SetRenderTarget(RenderTarget);
             GraphicsDevice.Clear(DarknessColor);
-            spriteBatch.Begin(blendState: BlendState.Additive, transformMatrix: Camera.GetTransformation());
+            spriteBatch.Begin(blendState: BlendState.NonPremultiplied, transformMatrix: Camera.GetTransformation());
             for (int i = 0; i < Lights.Count; i++)
             {
                 var light = Lights[i];
-                spriteBatch.Draw(light.LightTexture, light.Obj.Position, null, light.Color, 0, light.Origin, light.Scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(light.LightTexture, light.Obj.Position + light.Offset, null, light.Color, 0, light.Origin, light.Scale, SpriteEffects.None, 0);
             }
             spriteBatch.End();
             Core._instance.GraphicsDevice.SetRenderTarget(null);
