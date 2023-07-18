@@ -143,8 +143,10 @@ namespace MicroMarine.Scenes
             // Initiate tile map
             Entity tileMapEntity = CreateEntity("tileMap", Vector2.Zero);
             Texture2D mapTexture = Content.LoadTexture("mapSheet", "Content/grassSheet32.png");
+            Texture2D shipTexture = Content.LoadTexture("shipSheet", "Content/crashed_ship.png");
             var mapSpriteSheet = new SpriteSheet(mapTexture, 32, 32);
-            var map = new TileMap(32, new Point(Config.MapWidth, Config.MapHeight), mapSpriteSheet);
+            var shipSpriteSheet = new SpriteSheet(shipTexture, 32, 32);
+            var map = new TileMap(32, new Point(Config.MapWidth, Config.MapHeight), mapSpriteSheet, shipSpriteSheet);
             tileMapEntity.AddComponent(map);
 
             // Fire

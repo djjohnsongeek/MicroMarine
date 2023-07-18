@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using Zand.Colliders;
 using Zand.ECS.Components;
 
@@ -10,55 +11,100 @@ namespace Zand.Assets
     {
         public int TileSize { get; private set; }
         public Point MapSize { get; private set; }
-        private SpriteSheet _spriteSheet;
-        private Tile[][] _visualMap;
+        private SpriteSheet[] _spriteSheets;
+
+        private List<Tile[][]> Layers;
 
         public Point MapCenter => new Point(MapSize.X / 2 * TileSize, MapSize.Y / 2 * TileSize);
         // logical grid
 
-        public TileMap(int tileSize, Point mapSize, SpriteSheet sprites)
+        public TileMap(int tileSize, Point mapSize, SpriteSheet mapSprites, SpriteSheet objectSprites)
         {
             TileSize = tileSize;
             MapSize = mapSize;
-            _spriteSheet = sprites;
+            _spriteSheets = new SpriteSheet[2];
+            _spriteSheets[0] = mapSprites;
+            _spriteSheets[1] = objectSprites;
+            Layers = new List<Tile[][]>(2);
         }
 
         public override void OnAddedToEntity()
         {
             base.OnAddedToEntity();
-            GenerateMap();
+            Layers.Add(GenerateBaseLayer());
+            Layers.Add(GenerateObjectLayer());
         }
 
         public override void OnRemovedFromEntity()
         {
-            _spriteSheet.OnRemovedFromEntity();
-            foreach (var row in _visualMap)
+            // TODO fix later
+            //_mapSpriteSheet.OnRemovedFromEntity();
+            foreach (var layer in Layers)
             {
-                Array.Clear(row, 0, row.Length);
+                foreach (var row in layer)
+                {
+                    Array.Clear(row, 0, row.Length);
+                }
+                Array.Clear(layer, 0, layer.Length);
             }
-            Array.Clear(_visualMap, 0, _visualMap.Length);
+
             base.OnRemovedFromEntity();
         }
 
-        public void GenerateMap()
+        public Tile[][] GenerateBaseLayer()
         {
             // Instantiate
-            _visualMap = new Tile[MapSize.Y][];
-            for (int y = 0; y < _visualMap.Length; y++)
-            {
-                _visualMap[y] = new Tile[MapSize.X];
-            }
+            var baseLayer = InitLayer();
 
             // Populate
-            for (int y = 0; y < _visualMap.Length; y++)
+            for (int y = 0; y < baseLayer.Length; y++)
             {
-                for (int x = 0; x < _visualMap[y].Length; x++)
+                for (int x = 0; x < baseLayer[y].Length; x++)
                 {
-                    // use a reference to a "Tile Repo" instead of creating multiple types of tile
-                    Tile newTile = new Tile(Entity.Scene.Rng.Next(0, 64));
-                    _visualMap[y][x] = newTile;
+                    // TODO use a reference to a "Tile Repo" instead of creating multiple types of tile
+                    int id = Entity.Scene.Rng.Next(0, 64);
+                    Tile newTile = new Tile(id, id == 63);
+                    baseLayer[y][x] = newTile;
                 }
             }
+
+            return baseLayer;
+        }
+
+        public Tile[][] GenerateObjectLayer()
+        {
+            var objectLayer = InitLayer();
+
+            objectLayer[29][32] = new Tile(0, true);
+            objectLayer[29][33] = new Tile(1, true);
+            objectLayer[29][34] = new Tile(2, true);
+            objectLayer[29][35] = new Tile(3, true);
+            objectLayer[29][36] = new Tile(4, true);
+
+            objectLayer[30][32] = new Tile(5, true);
+            objectLayer[30][33] = new Tile(6, true);
+            objectLayer[30][34] = new Tile(7, true);
+            objectLayer[30][35] = new Tile(8, true);
+            objectLayer[30][36] = new Tile(9, true);
+
+            objectLayer[31][32] = new Tile(10, true);
+            objectLayer[31][33] = new Tile(11, true);
+            objectLayer[31][34] = new Tile(12, true);
+            objectLayer[31][35] = new Tile(13, true);
+            objectLayer[31][36] = new Tile(14, true);
+
+            return objectLayer;
+        }
+
+        private Tile[][] InitLayer()
+        {
+            var layer = new Tile[MapSize.Y][];
+            for (int y = 0; y < layer.Length; y++)
+            {
+                layer[y] = new Tile[MapSize.X];
+            }
+
+            return layer;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -73,17 +119,27 @@ namespace Zand.Assets
             {
                 for (int xIndex = cullingBounds.min.X; xIndex < cullingBounds.max.X; xIndex++)
                 {
-                    sbatch.Draw(
-                        _spriteSheet.Texture,
-                        new Vector2(xIndex * TileSize, yIndex * TileSize),
-                        _spriteSheet.GetFrame(_visualMap[yIndex][xIndex].Id),
-                        Color.White,
-                        0,
-                        Vector2.Zero,
-                        1,
-                        SpriteEffects.None,
-                        0
-                    );
+                    for (int layerIndex = 0; layerIndex < Layers.Count; layerIndex++)
+                    {
+                        var tile = Layers[layerIndex][yIndex][xIndex];
+
+                        if (tile.Id is null)
+                        {
+                            continue;
+                        }
+
+                        sbatch.Draw(
+                            _spriteSheets[layerIndex].Texture,
+                            new Vector2(xIndex * TileSize, yIndex * TileSize),
+                            _spriteSheets[layerIndex].GetFrame(tile.Id.Value),
+                            Color.White,
+                            0,
+                            Vector2.Zero,
+                            1,
+                            SpriteEffects.None,
+                            0
+                        );
+                    }
                 }
             }
         }
@@ -139,7 +195,16 @@ namespace Zand.Assets
                 return new Tile(true);
             }
 
-            return _visualMap[tileCoords.Y][tileCoords.X];
+            foreach (var layer in Layers)
+            {
+                Tile tile = layer[tileCoords.Y][tileCoords.X];
+                if (tile.Static)
+                {
+                    return tile;
+                }
+            }
+
+            return new Tile(true);
         }
 
         public Point GetTileCoords(Vector2 position)
