@@ -44,7 +44,7 @@ namespace MicroMarine.Components
             AddUnitStates();
             AddAllegiance();
 
-            Entity.AddComponent(new GlowStickPowerUp(Color.White));
+            Entity.AddComponent(new ChemLightPowerUp(Color.White, 29));
         }
 
         private void AddAnimationComponents()
