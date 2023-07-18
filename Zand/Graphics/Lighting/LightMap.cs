@@ -11,12 +11,12 @@ namespace Zand.Graphics.Lighting
     public class LightMap
     {
         public List<SimpleLight> Lights;
+        public List<SimpleLight> LightsToRemove;
         public BlendState BlendState;
         public RenderTarget2D RenderTarget;
         public GraphicsDevice GraphicsDevice;
         public Color DarknessColor;
         public Camera Camera;
-
 
         public LightMap(GraphicsDevice graphicsDevice, int width, int height, Camera camera)
         {
@@ -36,6 +36,7 @@ namespace Zand.Graphics.Lighting
             };
             DarknessColor = new Color(0, 0, 0, 255);
             Lights = new List<SimpleLight>();
+            LightsToRemove = new List<SimpleLight>();
         }
 
         public void AddLight(SimpleLight light)
@@ -49,9 +50,23 @@ namespace Zand.Graphics.Lighting
             {
                 if (Lights[i].Obj.Id == objectId)
                 {
-                    Lights.RemoveAt(i);
+                    LightsToRemove.Add(Lights[i]);
                     return;
                 }
+            }
+        }
+
+        public void Update()
+        {
+            for (int i = LightsToRemove.Count - 1; i >= 0; i--)
+            {
+                if (LightsToRemove[i].Color.A <= 0)
+                {
+                    RemoveLight(LightsToRemove[i].Obj.Id);
+                    LightsToRemove.RemoveAt(i);
+                    continue;
+                }
+                LightsToRemove[i].Color.A -= 1;
             }
         }
 
