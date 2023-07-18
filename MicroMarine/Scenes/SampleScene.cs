@@ -154,7 +154,7 @@ namespace MicroMarine.Scenes
                 Entity unit = CreateEntity("unit", RandomPosition(map.MapCenter.ToVector2(), 60));
                 unit.AddComponent(new Marine(1));
                 unitSelector.AddUnit(unit);
-                Lighting.AddLight(new SimpleLight(unit, lightTexture, new Color(255, 255, 255, 100), new Vector2(.2f, .2f)));
+                Lighting.AddLight(new SimpleLight(unit, lightTexture, new Color(255, 255, 255, 100), new Vector2(.4f, .4f)));
             }
 
             //Add Blant Spawner
