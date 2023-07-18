@@ -49,7 +49,7 @@ namespace MicroMarine.Components
             AddUnitStates();
             AddAllegiance();
 
-            Entity.AddComponent(new GlowStickPowerUp());
+            Entity.AddComponent(new GlowStickPowerUp(Color.White));
         }
 
         private void AddAnimationComponents()

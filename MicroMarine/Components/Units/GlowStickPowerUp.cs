@@ -18,6 +18,12 @@ namespace MicroMarine.Components.Units
         private MouseSelectCollider _selection;
         private Texture2D _texture;
         private Texture2D _lightTexture;
+        private Color _glowColor;
+
+        public GlowStickPowerUp(Color color)
+        {
+            _glowColor = color;
+        }
 
         public override void OnAddedToEntity()
         {
@@ -27,15 +33,17 @@ namespace MicroMarine.Components.Units
         }
 
 
-
         public void Update()
         {
             if (_selection.Selected && Input.KeyWasReleased(Keys.F))
             {
                 var glowStick = Entity.Scene.CreateEntity("glowStick", Entity.Position);
                 glowStick.AddComponent(
-                    new BouncingSprite(new Vector2(5, 2), 10, _texture, Scene.Content.GetContent<Texture2D>("tinyShadow"))
+                    new BouncingSprite(new Vector2(80, -80), 28, _texture, Scene.Content.GetContent<Texture2D>("tinyShadow"))
                 );
+
+                var light = new SimpleLight(glowStick, _lightTexture, _glowColor, new Vector2(1.5f, 1.5f));
+                Entity.Scene.Lighting.AddLight(light);
             }
 
             Entity.layerDepth = MathUtil.CalculateLayerDepth(Entity.Scene.Camera.GetScreenLocation(Entity.Position).Y, Entity.Dimensions.Y);
