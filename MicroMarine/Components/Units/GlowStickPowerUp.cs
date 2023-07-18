@@ -32,6 +32,12 @@ namespace MicroMarine.Components.Units
             _lightTexture = Entity.Scene.Content.GetContent<Texture2D>("light");
         }
 
+        public override void OnRemovedFromEntity()
+        {
+            _selection = null;
+            _texture = null;
+            _lightTexture = null;
+        }
 
         public void Update()
         {

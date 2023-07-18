@@ -5,5 +5,6 @@ namespace Zand
     public class GameObject
     {
         public Vector2 Position;
+        public int Id;
     }
 }

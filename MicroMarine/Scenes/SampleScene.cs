@@ -43,7 +43,7 @@ namespace MicroMarine.Scenes
             Content.LoadTexture("blantSheet", "Content/blant_sheet.png");
             Content.LoadTexture("deadMarineSheet", "Content/dead_marine_sheet.png");
             Content.LoadTexture("deadBlant", "Content/blant_dead.png");
-            Content.LoadTexture("light", "Content/light.png");
+            var lightTexture = Content.LoadTexture("light", "Content/light.png");
             var fireTexture = Content.LoadTexture("fire", "Content/fire_sheet.png");
 
             Content.LoadTexture("glowStick", "Content/glow_stick.png");
@@ -136,31 +136,32 @@ namespace MicroMarine.Scenes
             tileMapEntity.AddComponent(map);
 
             // Fire
-            var fireSheet = new SpriteSheet(fireTexture, 49, 74);
-            var fire = CreateEntity("fire", map.MapCenter.ToVector2());
-            fire.Origin = new Vector2(fire.Dimensions.X / 2, fire.Dimensions.Y / 2);
-            var fireAnimation = new Animator();
-            fireAnimation.AddAnimation("burn", new Animation(fireTexture, fireSheet.GetFrames(0, 18), 19, Animation.LoopMode.Loop));
-            fireAnimation.Play("burn");
-            fire.AddComponent(fireAnimation);
+            //var fireSheet = new SpriteSheet(fireTexture, 49, 74);
+            //var fire = CreateEntity("fire", map.MapCenter.ToVector2());
+            //fire.Origin = new Vector2(fire.Dimensions.X / 2, fire.Dimensions.Y / 2);
+            //var fireAnimation = new Animator();
+            //fireAnimation.AddAnimation("burn", new Animation(fireTexture, fireSheet.GetFrames(0, 18), 19, Animation.LoopMode.Loop));
+            //fireAnimation.Play("burn");
+            //fire.AddComponent(fireAnimation);
 
-            var light = new SimpleLight(fire, Content.GetContent<Texture2D>("light"), new Color(255, 255, 255), Vector2.One);
-            Lighting.AddLight(light);
+            //var light = new SimpleLight(fire, lightTexture, new Color(255, 255, 255), Vector2.One);
+            //Lighting.AddLight(light);
 
 
             // Place Marines
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Entity unit = CreateEntity("unit", RandomPosition(map.MapCenter.ToVector2(), 60));
                 unit.AddComponent(new Marine(1));
                 unitSelector.AddUnit(unit);
+                Lighting.AddLight(new SimpleLight(unit, lightTexture, new Color(255, 255, 255, 100), new Vector2(.2f, .2f)));
             }
 
-            // Add Blant Spawner
-            //Entity blantSpawner = CreateEntity("unitSpawner", map.MapCenter.ToVector2());
-            //blantSpawner.AddComponent(
-            //    new UnitSpawner<Blant>(map.MapCenter.ToVector2(), totalSpawns: 50, unitPerWave: 2, waveDelay: 8, waveStep: 2)
-            //);
+            //Add Blant Spawner
+            Entity blantSpawner = CreateEntity("unitSpawner", map.MapCenter.ToVector2());
+            blantSpawner.AddComponent(
+                new UnitSpawner<Blant>(map.MapCenter.ToVector2(), totalSpawns: 100, unitPerWave: 2, waveDelay: 8, waveStep: 2)
+            );
 
             // Center on Marines
             Camera.Position = map.MapCenter.ToVector2();

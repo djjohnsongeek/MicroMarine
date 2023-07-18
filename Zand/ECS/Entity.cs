@@ -5,7 +5,6 @@ namespace Zand
 {
     public class Entity : GameObject, IUpdateable
     {
-        public int Id { get; set;  }
         private bool _enabled = true;
         private bool _destroyed = false;
         public bool Enabled

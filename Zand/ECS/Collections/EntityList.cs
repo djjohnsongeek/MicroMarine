@@ -127,6 +127,7 @@ namespace Zand
             {
                 for (int i = 0; i < _entitiesToRemove.Count; i++)
                 {
+                    Scene.Lighting.RemoveLight(_entitiesToRemove[i].Id);
                     _entities.Remove(_entitiesToRemove[i]);
                     _entitiesToRemove[i].OnRemovedFromScene();
                 }

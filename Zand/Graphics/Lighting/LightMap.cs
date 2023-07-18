@@ -43,6 +43,17 @@ namespace Zand.Graphics.Lighting
             Lights.Add(light);
         }
 
+        public void RemoveLight(int objectId)
+        {
+            for (int i = Lights.Count - 1; i >= 0; i--)
+            {
+                if (Lights[i].Obj.Id == objectId)
+                {
+                    Lights.RemoveAt(i);
+                    return;
+                }
+            }
+        }
 
         public void RenderLightMap(SpriteBatch spriteBatch)
         {

@@ -17,18 +17,25 @@ namespace Zand.ECS.Components
         private float _rotation = 0f;
         private float _rotationSpeed = 5f;
 
-        public BouncingSprite(Vector2 startingVelocity, float startingHeight, Texture2D texture, Texture2D shadow)
+        public BouncingSprite(Vector2 startingVelocity, float startingHeight, Texture2D texture, Texture2D shadow, float lifetime = 30)
         {
             Z = startingHeight;
             _texture = texture;
             _shadowTexture = shadow;
             Velocity = startingVelocity;
-
+            _lifetime = lifetime;
         }
 
         public override void OnAddedToEntity()
         {
             _rotationSpeed = (float)Entity.Scene.Rng.Next(5, 10);
+            Time.AddTimer(_lifetime, Entity.Destroy);
+        }
+
+        public override void OnRemovedFromEntity()
+        {
+            _texture = null;
+            _shadowTexture = null;
         }
 
         public void Update()

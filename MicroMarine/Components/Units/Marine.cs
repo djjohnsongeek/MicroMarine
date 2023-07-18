@@ -1,16 +1,11 @@
 ﻿using MicroMarine.Components.Units;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
 using Zand;
-using Zand.AI;
 using Zand.Assets;
 using Zand.Colliders;
 using Zand.Components;
 using Zand.ECS.Components;
-using Zand.Graphics;
 
 namespace MicroMarine.Components
 {
