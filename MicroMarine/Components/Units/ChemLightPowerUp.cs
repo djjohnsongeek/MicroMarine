@@ -34,6 +34,7 @@ namespace MicroMarine.Components.Units
             _selection = null;
             _texture = null;
             _lightTexture = null;
+            _coolDown = null;
         }
 
         public void Update()
