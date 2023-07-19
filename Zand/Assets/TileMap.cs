@@ -62,8 +62,8 @@ namespace Zand.Assets
                 for (int x = 0; x < baseLayer[y].Length; x++)
                 {
                     // TODO use a reference to a "Tile Repo" instead of creating multiple types of tile
-                    int id = Entity.Scene.Rng.Next(0, 64);
-                    Tile newTile = new Tile(id, id == 63);
+                    int id = Entity.Scene.Rng.Next(0, 14);
+                    Tile newTile = new Tile(id, false);
                     baseLayer[y][x] = newTile;
                 }
             }
@@ -115,14 +115,16 @@ namespace Zand.Assets
         private void DrawMap(SpriteBatch sbatch, Camera camera)
         {
             (Point min, Point max) cullingBounds = GetCullingBounds(camera);
+
+
             for (int yIndex = cullingBounds.min.Y; yIndex < cullingBounds.max.Y; yIndex++)
             {
                 for (int xIndex = cullingBounds.min.X; xIndex < cullingBounds.max.X; xIndex++)
                 {
+
                     for (int layerIndex = 0; layerIndex < Layers.Count; layerIndex++)
                     {
                         var tile = Layers[layerIndex][yIndex][xIndex];
-
                         if (tile.Id is null)
                         {
                             continue;

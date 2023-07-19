@@ -73,6 +73,7 @@ namespace Zand.Assets
             return sprites;
         }
 
+
         public override void OnRemovedFromEntity()
         {
             Array.Clear(_sprites, 0, _sprites.Length);

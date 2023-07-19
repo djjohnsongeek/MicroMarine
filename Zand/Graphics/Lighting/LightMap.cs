@@ -31,7 +31,7 @@ namespace Zand.Graphics.Lighting
                 ColorDestinationBlend = Blend.Zero,
                 ColorBlendFunction = BlendFunction.Add
             };
-            DarknessColor = new Color(0, 0, 0, 255);
+            DarknessColor = new Color(0, 0, 10, 255);
             Lights = new List<SimpleLight>();
             LightsToRemove = new List<SimpleLight>();
         }
