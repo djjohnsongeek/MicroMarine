@@ -141,25 +141,28 @@ namespace MicroMarine.Scenes
 
 
             // Initiate tile map
-            Entity tileMapEntity = CreateEntity("tileMap", Vector2.Zero);
+            //Entity tileMapEntity = CreateEntity("tileMap", Vector2.Zero);
             Texture2D mapTexture = Content.LoadTexture("mapSheet", "Content/dirt_sheet32.png");
             Texture2D shipTexture = Content.LoadTexture("shipSheet", "Content/crashed_ship.png");
             var mapSpriteSheet = new SpriteSheet(mapTexture, 32, 32);
             var shipSpriteSheet = new SpriteSheet(shipTexture, 32, 32);
             var map = new TileMap(32, new Point(Config.MapWidth, Config.MapHeight), mapSpriteSheet, shipSpriteSheet);
-            tileMapEntity.AddComponent(map);
+            Map = map;
 
-            // Fire
-            //var fireSheet = new SpriteSheet(fireTexture, 49, 74);
-            //var fire = CreateEntity("fire", map.MapCenter.ToVector2() + new Vector2(50, -50));
-            //fire.Origin = new Vector2(fire.Dimensions.X / 2, fire.Dimensions.Y / 2);
-            //var fireAnimation = new Animator();
-            //fireAnimation.AddAnimation("burn", new Animation(fireTexture, fireSheet.GetFrames(0, 18), 19, Animation.LoopMode.Loop));
-            //fireAnimation.Play("burn");
-            //fire.AddComponent(fireAnimation);
 
-            //var light = new SimpleLight(fire, lightTexture, new Color(255, 230, 230), Vector2.One);
-            //Lighting.AddLight(light);
+            //tileMapEntity.AddComponent(map);
+
+            //Fire
+            var fireSheet = new SpriteSheet(fireTexture, 49, 74);
+            var fire = CreateEntity("fire", map.MapCenter.ToVector2() + new Vector2(80, -80));
+            fire.Origin = new Vector2(fire.Dimensions.X / 2, fire.Dimensions.Y / 2);
+            var fireAnimation = new Animator();
+            fireAnimation.AddAnimation("burn", new Animation(fireTexture, fireSheet.GetFrames(0, 18), 19, Animation.LoopMode.Loop));
+            fireAnimation.Play("burn");
+            fire.AddComponent(fireAnimation);
+
+            var light = new SimpleLight(fire, lightTexture, new Color(255, 230, 230), Vector2.One, flicker: true);
+            Lighting.AddLight(light);
 
 
             // Place Marines

@@ -57,7 +57,7 @@ namespace MicroMarine.Components.Units
                 _coolDown.Start();
             }
 
-            Entity.layerDepth = MathUtil.CalculateLayerDepth(Entity.Scene.Camera.GetScreenLocation(Entity.Position).Y, Entity.Dimensions.Y);
+            Entity.layerDepth = Calc.CalculateLayerDepth(Entity.Scene.Camera.GetScreenLocation(Entity.Position).Y, Entity.Dimensions.Y);
         }
 
     }

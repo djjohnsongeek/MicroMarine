@@ -3,8 +3,10 @@ using System;
 
 namespace Zand
 {
-    public static class MathUtil
+    public static class Calc
     {
+        public static Random Rng = new Random();
+
         public static float ClampFloat(float x)
         {
             if (x > 1f)
@@ -51,6 +53,11 @@ namespace Zand
             var x = rng.Next((int)origin.X, (int)origin.X + maxVariation);
             int y = rng.Next((int)origin.Y, (int)origin.Y + maxVariation);
             return new Vector2(x, y);
+        }
+
+        public static int Random(int min, int max)
+        {
+            return Rng.Next(min, max + 1);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace MicroMarine.Components
         {
             for (int i = 0; i < _unitPerWave; i++)
             {
-                Vector2 unitPosition = MathUtil.RandomPosition(Entity.Scene.Rng, Position, 60);
+                Vector2 unitPosition = Calc.RandomPosition(Entity.Scene.Rng, Position, 60);
                 var unitSelector = Entity.Scene.GetComponent<UnitSelector>();
                 var blant = Entity.Scene.CreateEntity("unit", unitPosition);
 

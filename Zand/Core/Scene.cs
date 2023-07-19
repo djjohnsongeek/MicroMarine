@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Zand.Assets;
 using Zand.Debug;
 using Zand.ECS.Collections;
 using Zand.ECS.Components;
@@ -24,6 +25,7 @@ namespace Zand
         public UserInterface UI;
         public Random Rng;
         public LightMap Lighting;
+        public TileMap Map;
 
 
         public bool GameIsActive => Core._instance.IsActive;
@@ -106,6 +108,12 @@ namespace Zand
 
             // Clear Screen
             Core._instance.GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            // Draw Map
+            if (Map != null)
+            {
+                Map.Draw(SpriteBatch, Camera);
+            }
 
             // Game Objects/ Entities
             Entities.Draw();

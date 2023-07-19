@@ -11,15 +11,19 @@ namespace Zand.Graphics.Lighting
         public Vector2 Origin;
         public Vector2 Scale;
         public Vector2 Offset;
+        public int InitialAlpha;
+        public bool Flicker;
 
-        public SimpleLight(GameObject obj, Texture2D lightTexture, Color color, Vector2 scale, Vector2? offset = null)
+        public SimpleLight(GameObject obj, Texture2D lightTexture, Color color, Vector2 scale, Vector2? offset = null, bool flicker = false)
         {
             Obj = obj;
             Color = color;
+            InitialAlpha = color.A;
             LightTexture = lightTexture;
             Origin = new Vector2(lightTexture.Width * .5f, lightTexture.Height * .5f);
             Scale = scale;
             Offset = offset ?? Vector2.Zero;
+            Flicker = flicker;
         }
     }
 }

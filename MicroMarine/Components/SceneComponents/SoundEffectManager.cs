@@ -41,7 +41,7 @@ namespace MicroMarine.Components
                 random *= -1;
             }
 
-            return MathUtil.ClampFloat(min, max, (float)random);
+            return Calc.ClampFloat(min, max, (float)random);
         }
 
         public void PlaySoundEffect(string name, bool limitPlayback = false, bool randomChoice = false, Entity entity = null, bool loop = false)

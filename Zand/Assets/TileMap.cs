@@ -3,19 +3,23 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Zand.Colliders;
-using Zand.ECS.Components;
 
 namespace Zand.Assets
 {
-    public class TileMap : Component, IRenderable
+    public class TileMap : IRenderable
     {
         public int TileSize { get; private set; }
         public Point MapSize { get; private set; }
         private SpriteSheet[] _spriteSheets;
-
         private List<Tile[][]> Layers;
+        private Random _rng;
+        private bool _enabled;
+
 
         public Point MapCenter => new Point(MapSize.X / 2 * TileSize, MapSize.Y / 2 * TileSize);
+
+        public bool Enabled => _enabled;
+
         // logical grid
 
         public TileMap(int tileSize, Point mapSize, SpriteSheet mapSprites, SpriteSheet objectSprites)
@@ -25,30 +29,10 @@ namespace Zand.Assets
             _spriteSheets = new SpriteSheet[2];
             _spriteSheets[0] = mapSprites;
             _spriteSheets[1] = objectSprites;
+            _rng = new Random();
             Layers = new List<Tile[][]>(2);
-        }
-
-        public override void OnAddedToEntity()
-        {
-            base.OnAddedToEntity();
             Layers.Add(GenerateBaseLayer());
             Layers.Add(GenerateObjectLayer());
-        }
-
-        public override void OnRemovedFromEntity()
-        {
-            // TODO fix later
-            //_mapSpriteSheet.OnRemovedFromEntity();
-            foreach (var layer in Layers)
-            {
-                foreach (var row in layer)
-                {
-                    Array.Clear(row, 0, row.Length);
-                }
-                Array.Clear(layer, 0, layer.Length);
-            }
-
-            base.OnRemovedFromEntity();
         }
 
         public Tile[][] GenerateBaseLayer()
@@ -62,7 +46,7 @@ namespace Zand.Assets
                 for (int x = 0; x < baseLayer[y].Length; x++)
                 {
                     // TODO use a reference to a "Tile Repo" instead of creating multiple types of tile
-                    int id = Entity.Scene.Rng.Next(0, 14);
+                    int id = _rng.Next(0, 14);
                     Tile newTile = new Tile(id, false);
                     baseLayer[y][x] = newTile;
                 }
@@ -107,21 +91,21 @@ namespace Zand.Assets
             return layer;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
-            DrawMap(spriteBatch, Scene.Camera);
+            spriteBatch.Begin(transformMatrix: camera.GetTransformation(), samplerState: SamplerState.PointClamp); ;
+            DrawMap(spriteBatch, camera);
+            spriteBatch.End();
         }
 
         private void DrawMap(SpriteBatch sbatch, Camera camera)
         {
             (Point min, Point max) cullingBounds = GetCullingBounds(camera);
 
-
             for (int yIndex = cullingBounds.min.Y; yIndex < cullingBounds.max.Y; yIndex++)
             {
                 for (int xIndex = cullingBounds.min.X; xIndex < cullingBounds.max.X; xIndex++)
                 {
-
                     for (int layerIndex = 0; layerIndex < Layers.Count; layerIndex++)
                     {
                         var tile = Layers[layerIndex][yIndex][xIndex];

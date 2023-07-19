@@ -55,6 +55,8 @@ namespace Zand.Graphics.Lighting
 
         public void Update()
         {
+            UpdateLights();
+
             for (int i = LightsToRemove.Count - 1; i >= 0; i--)
             {
                 if (LightsToRemove[i].Color.A <= 0)
@@ -64,6 +66,17 @@ namespace Zand.Graphics.Lighting
                     continue;
                 }
                 LightsToRemove[i].Color.A -= 1;
+            }
+        }
+
+        public void UpdateLights()
+        {
+            for (int i = 0; i < Lights.Count; i++)
+            {
+                if (Lights[i].Flicker)
+                {
+                    Lights[i].Color.A = (byte)Calc.Random(Lights[i].InitialAlpha - 50, 255);
+                }
             }
         }
 
