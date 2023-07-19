@@ -45,9 +45,9 @@ namespace Zand
             _timersToRemove.Clear();
         }
 
-        public static void AddTimer(double delay, Action action)
+        public static void AddTimer(double delay, Action action, bool loop = false)
         {
-            Timers.Add(new Timer(delay, action));
+            Timers.Add(new Timer(delay, action, loop));
         }
     }
 }

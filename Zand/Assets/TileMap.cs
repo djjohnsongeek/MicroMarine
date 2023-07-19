@@ -16,7 +16,7 @@ namespace Zand.Assets
         private bool _enabled;
 
 
-        public Point MapCenter => new Point(MapSize.X / 2 * TileSize, MapSize.Y / 2 * TileSize);
+        public Point Center => new Point(MapSize.X / 2 * TileSize, MapSize.Y / 2 * TileSize);
 
         public bool Enabled => _enabled;
 
