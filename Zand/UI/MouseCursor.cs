@@ -50,6 +50,7 @@ namespace Zand.UI
         Default,
         Attack,
         AttackMove,
+        Ability,
     }
 
     public struct CursorData

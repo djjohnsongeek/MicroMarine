@@ -105,6 +105,7 @@ namespace MicroMarine.Scenes
             var defaultCursorTexture = Content.LoadTexture("cursor", "Content/cursor.png");
             var attackTexture = Content.LoadTexture("attackCursor", "Content/cursor_attack.png");
             var attackMoveCursorTexture = Content.LoadTexture("attackMoveCursor", "Content/cursor_attack_move.png");
+            var abilityCursorTexture = Content.LoadTexture("abilityCursor", "Content/cursor_ability.png");
 
             // Setup Mouse Cursors
             CursorData defaultCursor = new CursorData
@@ -128,9 +129,17 @@ namespace MicroMarine.Scenes
                 Type = CursorType.AttackMove,
             };
 
+            CursorData abilityCursor = new CursorData
+            {
+                OriginOffset = new Vector2(abilityCursorTexture.Width / 2, abilityCursorTexture.Height / 2),
+                Texture = abilityCursorTexture,
+                Type = CursorType.Ability,
+            };
+
             var mouse = new MouseCursor(defaultCursor);
             mouse.AddCursor(attackCursor);
             mouse.AddCursor(attackMoveCursor);
+            mouse.AddCursor(abilityCursor);
             UI.AddElement(mouse);
 
             // Add Scene Components

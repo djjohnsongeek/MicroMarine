@@ -9,6 +9,7 @@ using Zand.Debug;
 using Zand.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MicroMarine.Components.Units;
+using Zand.UI;
 
 namespace MicroMarine.Components
 {
@@ -18,6 +19,7 @@ namespace MicroMarine.Components
         private Texture2D _waypointTexture;
         private Texture2D _waypointAttackTexture;
         private SoundEffectManager _sfxManager;
+        private bool _abilityPrimed;
 
         // DO NOT ADD or REMOVE
         private readonly List<Entity> _selectedUnits;
@@ -29,6 +31,7 @@ namespace MicroMarine.Components
             _waypointAttackTexture = scene.Content.GetContent<Texture2D>("waypointAttack");
             _allCommands = new List<UnitCommand>();
             _sfxManager = scene.GetComponent<SoundEffectManager>();
+            _abilityPrimed = false;
         }
 
         public override void Update()
@@ -43,24 +46,27 @@ namespace MicroMarine.Components
                 CullCommands();
             }
 
-            if (Input.KeyWasReleased(Keys.F))
+            if (Input.KeyWasReleased(Keys.F) && UnitsAreSelected)
             {
-                for (int i = 0; i < _selectedUnits.Count; i++)
-                {
-                    var chemLightAbility = _selectedUnits[i].GetComponent<ChemLightAbility>();
-                    if (chemLightAbility.OnCoolDown)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        chemLightAbility.SpawnChemLight();
-                        break;
-                    }
-
-                }
-
+                _abilityPrimed = true;
             }
+
+
+
+            //for (int i = 0; i < _selectedUnits.Count; i++)
+            //{
+            //    var chemLightAbility = _selectedUnits[i].GetComponent<ChemLightAbility>();
+            //    if (chemLightAbility.OnCoolDown)
+            //    {
+            //        continue;
+            //    }
+            //    else
+            //    {
+            //        chemLightAbility.SpawnChemLight();
+            //        break;
+            //    }
+
+            //}
         }
 
         private void AssignCommand()

@@ -94,6 +94,11 @@ namespace MicroMarine.Components
                     return;
                 }
 
+                if (Input.KeyWasReleased(Microsoft.Xna.Framework.Input.Keys.F))
+                {
+                    cursor.SetCursor(CursorType.Ability);
+                }
+
                 if (Input.KeyIsDown(Microsoft.Xna.Framework.Input.Keys.A))
                 {
                     cursor.SetCursor(CursorType.AttackMove);

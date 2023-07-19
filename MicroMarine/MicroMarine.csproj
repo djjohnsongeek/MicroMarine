@@ -122,7 +122,7 @@
     <None Update="Content\cursor_attack_move.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\cursor_follow.png">
+    <None Update="Content\cursor_ability.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Content\dead_marine_sheet.png">
