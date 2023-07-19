@@ -160,7 +160,7 @@ namespace MicroMarine.Components
 
         public List<Entity> GetSelectedUnits()
         {
-            return _selectedUnits.GetRange(0, _selectedUnits.Count);
+            return _selectedUnits;
         }
 
         private Point CalculateSelectBxSize()

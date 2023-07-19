@@ -8,7 +8,7 @@ using Zand.ECS.Components;
 
 namespace MicroMarine.Components.Units
 {
-    class ChemLightPowerUp : Component, Zand.IUpdateable
+    class ChemLightAbility : Component, Zand.IUpdateable
     {
         private MouseSelectCollider _selection;
         private Texture2D _texture;
@@ -16,7 +16,7 @@ namespace MicroMarine.Components.Units
         private Color _glowColor;
         private CoolDown _coolDown;
         
-        public ChemLightPowerUp(Color color, float cooldownDuration)
+        public ChemLightAbility(Color color, float cooldownDuration)
         {
             _glowColor = color;
             _coolDown = new CoolDown(cooldownDuration);
@@ -37,28 +37,28 @@ namespace MicroMarine.Components.Units
             _coolDown = null;
         }
 
+        public bool OnCoolDown => !_coolDown.Ready;
+
         public void Update()
         {
             _coolDown.Update();
-            if (_selection.Selected && Input.KeyWasReleased(Keys.F) && _coolDown.Ready)
-            {
-                var glowStick = Entity.Scene.CreateEntity("glowStick", Entity.Position);
-                glowStick.AddComponent(
-                    new BouncingSprite(
-                        new Vector2(80, -80),
-                        28,
-                        _texture,
-                        Scene.Content.GetContent<Texture2D>("tinyShadow"))
-                );
-
-                var light = new SimpleLight(glowStick, _lightTexture, _glowColor, new Vector2(1.5f, 1.5f));
-                Entity.Scene.Lighting.AddLight(light);
-
-                _coolDown.Start();
-            }
-
-            Entity.layerDepth = Calc.CalculateLayerDepth(Entity.Scene.Camera.GetScreenLocation(Entity.Position).Y, Entity.Dimensions.Y);
         }
 
+        public void SpawnChemLight()
+        {
+            var glowStick = Entity.Scene.CreateEntity("glowStick", Entity.Position);
+            glowStick.AddComponent(
+                new BouncingSprite(
+                    new Vector2(80, -80),
+                    28,
+                    _texture,
+                    Scene.Content.GetContent<Texture2D>("tinyShadow"))
+            );
+
+            var light = new SimpleLight(glowStick, _lightTexture, _glowColor, new Vector2(1.5f, 1.5f));
+            Entity.Scene.Lighting.AddLight(light);
+
+            _coolDown.Start();
+        }
     }
 }

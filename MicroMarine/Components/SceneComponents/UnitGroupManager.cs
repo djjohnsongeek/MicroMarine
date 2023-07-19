@@ -8,20 +8,23 @@ using Microsoft.Xna.Framework;
 using Zand.Debug;
 using Zand.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MicroMarine.Components.Units;
 
 namespace MicroMarine.Components
 {
     public class UnitGroupManager : SceneComponent
     {
-        private UnitSelector _unitSelector;
         private List<UnitCommand> _allCommands;
         private Texture2D _waypointTexture;
         private Texture2D _waypointAttackTexture;
         private SoundEffectManager _sfxManager;
 
+        // DO NOT ADD or REMOVE
+        private readonly List<Entity> _selectedUnits;
+
         public UnitGroupManager(Scene scene) : base(scene)
         {
-            _unitSelector = Scene.GetComponent<UnitSelector>();
+            _selectedUnits = Scene.GetComponent<UnitSelector>().GetSelectedUnits();
             _waypointTexture = scene.Content.GetContent<Texture2D>("waypoint");
             _waypointAttackTexture = scene.Content.GetContent<Texture2D>("waypointAttack");
             _allCommands = new List<UnitCommand>();
@@ -39,12 +42,30 @@ namespace MicroMarine.Components
             {
                 CullCommands();
             }
+
+            if (Input.KeyWasReleased(Keys.F))
+            {
+                for (int i = 0; i < _selectedUnits.Count; i++)
+                {
+                    var chemLightAbility = _selectedUnits[i].GetComponent<ChemLightAbility>();
+                    if (chemLightAbility.OnCoolDown)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        chemLightAbility.SpawnChemLight();
+                        break;
+                    }
+
+                }
+
+            }
         }
 
         private void AssignCommand()
         {
-            List<Entity> selectedUnits = _unitSelector.GetSelectedUnits();
-            if (selectedUnits.Count == 0) return;
+            if (_selectedUnits.Count == 0) return;
 
 
             bool isAttackMove = Input.KeyIsDown(Keys.A);
@@ -55,7 +76,7 @@ namespace MicroMarine.Components
 
             if (targetEntity != null)
             {
-                if (!TargetIsAlly(selectedUnits, targetEntity))
+                if (!TargetIsAlly(_selectedUnits, targetEntity))
                 {
                     commandType = CommandType.Attack;
                 }
@@ -63,7 +84,7 @@ namespace MicroMarine.Components
 
             command = new UnitCommand(commandType, targetEntity, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
 
-            UpdateCommandQueues(selectedUnits, command);
+            UpdateCommandQueues(_selectedUnits, command);
 
             _sfxManager.PlaySoundEffect("mAck", limitPlayback: true, randomChoice: true);
         }
@@ -125,6 +146,8 @@ namespace MicroMarine.Components
                 DrawDestinationCircles(sBatch, command, screenPos);
             }
         }
+
+        private bool UnitsAreSelected => _selectedUnits.Count > 0;
 
         private void DrawWaypoint(SpriteBatch sBatch, UnitCommand command, Vector2 commandScreenPos)
         {
