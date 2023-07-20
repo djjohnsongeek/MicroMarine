@@ -42,6 +42,9 @@ namespace MicroMarine.Components.Units
 
         public override void ExecuteAbility()
         {
+            base.ExecuteAbility();
+
+
             Vector2 entityScreenPosition = Scene.Camera.GetScreenLocation(Entity.Position);
             var diff = Input.MouseScreenPosition - entityScreenPosition;
             diff.Normalize();
@@ -62,8 +65,6 @@ namespace MicroMarine.Components.Units
 
             var light = new SimpleLight(chemLight, _lightTexture, _glowColor, new Vector2(1.5f, 1.5f));
             Entity.Scene.Lighting.AddLight(light);
-
-            base.ExecuteAbility();
         }
     }
 }

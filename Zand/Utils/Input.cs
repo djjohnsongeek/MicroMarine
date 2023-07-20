@@ -13,6 +13,8 @@ namespace Zand
 
         public static Vector2 MouseScreenPosition;
 
+        public static InputContext Context = InputContext.UnitControl;
+
         public static void Update()
         {
             _prevKeyBoardState = _keyBoardState;
@@ -69,5 +71,11 @@ namespace Zand
         {
             return RightMouseWasReleased() && KeyIsDown(Keys.LeftShift);
         }
+    }
+
+    public enum InputContext
+    {
+        UnitControl,
+        UnitAbilities,
     }
 }

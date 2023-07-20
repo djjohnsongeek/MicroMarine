@@ -21,8 +21,6 @@ namespace MicroMarine.Components
         private SoundEffectManager _sfxManager;
         private SelectedUnits _selectedUnits;
 
-        public bool AbilityPrimed { get; private set; }
-
         public UnitGroupManager(Scene scene) : base(scene)
         {
             _selectedUnits = Scene.GetComponent<SelectedUnits>();
@@ -30,12 +28,11 @@ namespace MicroMarine.Components
             _waypointAttackTexture = scene.Content.GetContent<Texture2D>("waypointAttack");
             _allCommands = new List<UnitCommand>();
             _sfxManager = scene.GetComponent<SoundEffectManager>();
-            AbilityPrimed = false;
         }
 
         public override void Update()
         {
-            if (Input.RightMouseWasReleased())
+            if (Input.RightMouseWasReleased() && _selectedUnits.UnitsAreSelected && Input.Context == InputContext.UnitControl)
             {
                 AssignCommand();
             }
@@ -45,46 +42,34 @@ namespace MicroMarine.Components
                 CullCommands();
             }
 
-            if (Input.KeyWasReleased(Keys.F) && _selectedUnits.UnitsAreSelected)
-            {
-                AbilityPrimed = true;
-            }
-            
-            if (!_selectedUnits.UnitsAreSelected)
-            {
-                AbilityPrimed = false;
-            }
-
-            if (AbilityPrimed && Input.LeftMouseWasReleased())
+            if (Input.LeftMouseWasReleased() && _selectedUnits.UnitsAreSelected && Input.Context == InputContext.UnitAbilities)
             {
                 ActivateLocalAbility<ChemLightAbility>();
             }
+
+            if (Input.KeyWasPressed(Keys.F) && Input.Context == InputContext.UnitControl && _selectedUnits.UnitsAreSelected)
+            {
+                Input.Context = InputContext.UnitAbilities;
+            }
         }
 
+        // Location meaning tha tonly one unit from the group will execute the ability in question.
         private void ActivateLocalAbility<T>() where T : UnitAbility
         {
             for (int i = 0; i < _selectedUnits.Selected.Count; i++)
             {
                 var ability = _selectedUnits.Selected[i].GetComponent<T>();
-                if (ability.OnCoolDown)
-                {
-                    continue;
-                }
-                else
-                {
-                    ability.ExecuteAbility();
-                    break;
-                }
+                if (ability.OnCoolDown) continue;
+
+                ability.ExecuteAbility();
+                break;
             }
 
-            AbilityPrimed = false;
+            Input.Context = InputContext.UnitControl;
         }
 
         private void AssignCommand()
         {
-            if (!_selectedUnits.UnitsAreSelected) return;
-
-
             bool isAttackMove = Input.KeyIsDown(Keys.A);
             UnitCommand command;
 

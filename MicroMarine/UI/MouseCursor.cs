@@ -51,9 +51,17 @@ namespace MicroMarine.Ui
 
         public override void Update()
         {
-      
+            
+            if (Input.Context == InputContext.UnitControl)
+            {
 
-            SetCursor(CursorType.Default);
+                SetCursor(CursorType.Default);
+            }
+            else if (Input.Context == InputContext.UnitAbilities)
+            {
+                SetCursor(CursorType.Ability);
+            }
+
             if (_selectedUnits.UnitsAreSelected)
             {
                 var entity = _scene.Physics.GetEntityAtPosition("unit", _scene.Camera.GetWorldLocation(Input.MouseScreenPosition));

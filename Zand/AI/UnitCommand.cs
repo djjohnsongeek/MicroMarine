@@ -29,7 +29,7 @@ namespace Zand.AI
         Move,
         Attack,
         AttackMove,
-        Harvest
+        UseAbility,
     }
 
     public enum CommandStatus : byte

@@ -59,5 +59,12 @@ namespace Zand
         {
             return Rng.Next(min, max + 1);
         }
+
+        public static Vector2 AbsVector2(Vector2 v)
+        {
+            v.X = Math.Abs(v.X);
+            v.Y = Math.Abs(v.Y);
+            return v;
+        }
     }
 }

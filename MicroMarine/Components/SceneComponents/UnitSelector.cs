@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,6 @@ using Zand;
 using Zand.Components;
 using Zand.ECS.Components;
 using Zand.Graphics;
-using Zand.UI;
 
 namespace MicroMarine.Components
 {
@@ -34,31 +32,26 @@ namespace MicroMarine.Components
 
             if (_selectedUnits is null || _unitManager is null || _sfxManager is null)
             {
-                throw new NullReferenceException("Required Scene Components 'SelectedUnits', 'UnitGroupManager', 'SoundFXManger' now found.'");
+                throw new NullReferenceException("Required Scene Components 'SelectedUnits', 'UnitGroupManager', 'SoundFXManger' not found.'");
             }
         }
 
         public override void Update()
         {
             // Define Select Box
-            if (Input.LeftMouseIsPressed())
+            if (Input.LeftMouseIsPressed() && Input.Context == InputContext.UnitControl)
             {
                 if (!_selectBox.Active)
                 {
-                    _selectBox.Origin = Input.MouseScreenPosition;
+                    _selectBox.SetOrigin(Input.MouseScreenPosition);
                 }
 
-                _selectBox.SetRect();
+                _selectBox.UpdateBounds();
             }
 
             // Clear and select units
-            if (Input.LeftMouseWasReleased())
+            if (Input.LeftMouseWasReleased() && Input.Context == InputContext.UnitControl)
             {
-                if (_unitManager.AbilityPrimed)
-                {
-                    return;
-                }
-
                 _selectedUnits.DeselectAll();
                 SelectBoxedUnits();
                 _selectBox.Clear();
@@ -71,7 +64,7 @@ namespace MicroMarine.Components
             }
 
             // Select All Hotkey
-            if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.Tab))
+            if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.Tab) && Input.Context == InputContext.UnitControl)
             {
                 _selectedUnits.SelectAll(_units);
             }
@@ -134,11 +127,26 @@ namespace MicroMarine.Components
             Active = false;
         }
 
-        public void SetRect()
+        public void SetOrigin(Vector2 origin)
         {
-            Rect = new Rectangle(Origin.ToPoint(), CalculateSelectBxSize());
-            AdjustSelectBxPosition();
+            Origin = origin;
             Active = true;
+        }
+
+        public void UpdateBounds()
+        {
+            Rect = new Rectangle(Origin.ToPoint(), GetBoxSize());
+
+            // Adjust box's coordinates based on mouse position
+            if (Input.MouseScreenPosition.X < Origin.X)
+            {
+                Rect.X -= (int)(Origin.X - Input.MouseScreenPosition.X);
+            }
+
+            if (Input.MouseScreenPosition.Y < Origin.Y)
+            {
+                Rect.Y -= (int)(Origin.Y - Input.MouseScreenPosition.Y);
+            }
         }
 
         public void Clear()
@@ -153,27 +161,9 @@ namespace MicroMarine.Components
             return Rect.Intersects(rect);
         }
 
-        private Point CalculateSelectBxSize()
+        private Point GetBoxSize()
         {
-            return AbsoluteVector(Origin - Input.MouseScreenPosition).ToPoint();
-        }
-
-        private Vector2 AbsoluteVector(Vector2 vector)
-        {
-            return new Vector2(Math.Abs(vector.X), Math.Abs(vector.Y));
-        }
-
-        private void AdjustSelectBxPosition()
-        {
-            if (Input.MouseScreenPosition.X < Origin.X)
-            {
-                Rect.X -= (int)(Origin.X - Input.MouseScreenPosition.X);
-            }
-
-            if (Input.MouseScreenPosition.Y < Origin.Y)
-            {
-                Rect.Y -= (int)(Origin.Y - Input.MouseScreenPosition.Y);
-            }
+            return Calc.AbsVector2(Origin - Input.MouseScreenPosition).ToPoint();
         }
     }
 }
