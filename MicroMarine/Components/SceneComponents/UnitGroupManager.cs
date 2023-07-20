@@ -42,7 +42,7 @@ namespace MicroMarine.Components
                 CullCommands();
             }
 
-            if (Input.LeftMouseWasReleased() && _selectedUnits.UnitsAreSelected && Input.Context == InputContext.UnitAbilities)
+            if (Input.RightMouseWasReleased() && _selectedUnits.UnitsAreSelected && Input.Context == InputContext.UnitAbilities)
             {
                 ActivateLocalAbility<ChemLightAbility>();
             }
