@@ -49,7 +49,7 @@ namespace MicroMarine.Components.Units
             var chemLight = Entity.Scene.CreateEntity("chemLight", Entity.Position);
 
 
-            var startVelocity = new Vector3(diff * Entity.GetComponent<Marine>().AttackRange * .75f, 100);
+            var startVelocity = new Vector3(diff * Entity.GetComponent<Marine>().AttackRange * .75f, 100 * (float)Time.DeltaTime);
 
 
             chemLight.AddComponent(

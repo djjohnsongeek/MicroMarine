@@ -20,7 +20,7 @@ namespace Zand.ECS.Components
         public BouncingSprite(Vector3 startingVelocity, float startingHeight, Texture2D texture, Texture2D shadow, float lifetime = 30)
         {
             Z = startingHeight;
-            Zspeed = startingVelocity.Z * (float)Time.DeltaTime;
+            Zspeed = startingVelocity.Z;
             _texture = texture;
             _shadowTexture = shadow;
             Velocity = new Vector2(startingVelocity.X, startingVelocity.Y);
