@@ -54,7 +54,6 @@ namespace MicroMarine.Ui
             
             if (Input.Context == InputContext.UnitControl)
             {
-
                 SetCursor(CursorType.Default);
             }
             else if (Input.Context == InputContext.UnitAbilities)
@@ -74,12 +73,12 @@ namespace MicroMarine.Ui
                     return;
                 }
 
-                if (Input.KeyWasReleased(Microsoft.Xna.Framework.Input.Keys.F))
+                if (Input.KeyWasReleased(Microsoft.Xna.Framework.Input.Keys.F) && Input.Context == InputContext.UnitControl)
                 {
                     SetCursor(CursorType.Ability);
                 }
 
-                if (Input.KeyIsDown(Microsoft.Xna.Framework.Input.Keys.A))
+                if (Input.KeyIsDown(Microsoft.Xna.Framework.Input.Keys.A) && Input.Context == InputContext.UnitControl)
                 {
                     SetCursor(CursorType.AttackMove);
                 }
