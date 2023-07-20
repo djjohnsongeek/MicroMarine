@@ -5,7 +5,7 @@ namespace Zand.UI
 {
     public class UserInterface : IRenderable
     {
-        public List<IRenderable> Elements;
+        public List<UIElement> Elements;
 
         private bool _enabled;
         public bool Enabled => _enabled;
@@ -26,12 +26,20 @@ namespace Zand.UI
         public UserInterface()
         {
             _enabled = true;
-            Elements = new List<IRenderable>();
+            Elements = new List<UIElement>();
         }
 
-        public void AddElement(IRenderable uiElement)
+        public void AddElement(UIElement uiElement)
         {
             Elements.Add(uiElement);
+        }
+
+        public void Update()
+        {
+            for (int i = 0; i < Elements.Count; i++ )
+            {
+                Elements[i].Update();
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

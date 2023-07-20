@@ -13,12 +13,11 @@ namespace MicroMarine.Components
 {
     class UnitSelector : SceneComponent
     {
-        private List<Entity> _selectedUnits;
         private List<Entity> _units;
         private Rectangle selectBox;
         private Vector2 SelectBoxOrigin;
         private SoundEffectManager _sfxManager;
-
+        private SelectedUnits _selectedUnits;
 
         public List<Entity> SelectableUnits => _units;
 
@@ -27,10 +26,10 @@ namespace MicroMarine.Components
         public UnitSelector(Scene scene, int allegianceId) : base(scene)
         {
             _units = new List<Entity>();
-            _selectedUnits = new List<Entity>();
             selectBox = Rectangle.Empty;
             SelectBoxOrigin = Vector2.Zero;
             Allegiance = new UnitAllegiance(allegianceId);
+            _selectedUnits = scene.GetComponent<SelectedUnits>();
             _sfxManager = scene.GetComponent<SoundEffectManager>();
         }
 
@@ -52,15 +51,13 @@ namespace MicroMarine.Components
             bool unitsSelected = false;
             if (Input.LeftMouseWasPressed() && selectBox != Rectangle.Empty)
             {
-                DeselectAll();
+                _selectedUnits.DeselectAll();
                 for (int i = 0; i < _units.Count; i++)
                 {
                     MouseSelectCollider selectCollider = _units[i].GetComponent<MouseSelectCollider>();
-                    // 
                     if (selectBox.Intersects(selectCollider.GetScreenLocation()) && SameTeam(selectCollider.Entity))
                     {
-                        SelectUnit(_units[i], selectCollider);
-                        unitsSelected = true;
+                        _selectedUnits.SelectUnit(_units[i]);
                     }
                 }
 
@@ -76,71 +73,15 @@ namespace MicroMarine.Components
             // Select All Hotkey
             if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.Tab))
             {
-                SelectAll();
-            }
-
-            // Update Cursors
-            var cursor = Scene.UI.GetElement<MouseCursor>();
-            cursor.SetCursor(CursorType.Default);
-            if (_selectedUnits.Count > 0)
-            {
-                var entity = Scene.Physics.GetEntityAtPosition("unit", Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
-                if (entity != null)
-                {
-                    if (!SameTeam(entity))
-                    {
-                        cursor.SetCursor(CursorType.Attack);
-                    }
-                    return;
-                }
-
-                if (Input.KeyWasReleased(Microsoft.Xna.Framework.Input.Keys.F))
-                {
-                    cursor.SetCursor(CursorType.Ability);
-                }
-
-                if (Input.KeyIsDown(Microsoft.Xna.Framework.Input.Keys.A))
-                {
-                    cursor.SetCursor(CursorType.AttackMove);
-                }
-
+                _selectedUnits.SelectAll(_units);
             }
         }
         
-        private bool SameTeam(Entity entity)
+        public bool SameTeam(Entity entity)
         {
             return entity.GetComponent<UnitAllegiance>().Id == Allegiance.Id;
         }
 
-        private void DeselectAll()
-        {
-            for (int i = 0; i < _selectedUnits.Count; i++)
-            {
-                // lets try and eliminate the need to do this
-                _selectedUnits[i].GetComponent<MouseSelectCollider>().Selected = false;
-            }
-
-            _selectedUnits.Clear();
-        }
-
-        private void SelectAll()
-        {
-            DeselectAll();
-            for (int i = 0; i < _units.Count; i++)
-            {
-                MouseSelectCollider selector = _units[i].GetComponent<MouseSelectCollider>();
-                SelectUnit(_units[i], selector);
-            }
-        }
-
-        private void SelectUnit(Entity entity, MouseSelectCollider selector)
-        {
-            if (SameTeam(entity))
-            {
-                selector.Selected = true;
-                _selectedUnits.Add(entity);
-            }
-        }
 
         public void AddUnit(Entity entity)
         {
@@ -150,7 +91,7 @@ namespace MicroMarine.Components
         public void RemoveUnit(Entity entity)
         {
             _units.Remove(entity);
-            _selectedUnits.Remove(entity);
+            _selectedUnits.RemoveUnit(entity);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -161,11 +102,6 @@ namespace MicroMarine.Components
                 selectBox,
                 Color.WhiteSmoke
             );
-        }
-
-        public List<Entity> GetSelectedUnits()
-        {
-            return _selectedUnits;
         }
 
         private Point CalculateSelectBxSize()

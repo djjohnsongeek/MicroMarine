@@ -98,6 +98,7 @@ namespace Zand
             SceneComponents.Update();
 
             Entities.Update();
+            UI.Update();
             Lighting.Update();
 
         }

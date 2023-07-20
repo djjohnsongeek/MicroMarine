@@ -8,13 +8,12 @@ using Zand.ECS.Components;
 
 namespace MicroMarine.Components.Units
 {
-    class ChemLightAbility : Component, Zand.IUpdateable
+    class ChemLightAbility : UnitAbility
     {
         private MouseSelectCollider _selection;
         private Texture2D _texture;
         private Texture2D _lightTexture;
         private Color _glowColor;
-        private CoolDown _coolDown;
         
         public ChemLightAbility(Color color, float cooldownDuration)
         {
@@ -37,14 +36,12 @@ namespace MicroMarine.Components.Units
             _coolDown = null;
         }
 
-        public bool OnCoolDown => !_coolDown.Ready;
-
         public void Update()
         {
             _coolDown.Update();
         }
 
-        public void SpawnChemLight()
+        public override void ExecuteAbility()
         {
             var glowStick = Entity.Scene.CreateEntity("glowStick", Entity.Position);
             glowStick.AddComponent(

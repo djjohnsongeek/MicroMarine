@@ -7,6 +7,7 @@ using Zand.UI;
 using MicroMarine.Components.Units;
 using Zand.Graphics.Lighting;
 using Zand.Components;
+using MicroMarine.Ui;
 
 namespace MicroMarine.Scenes
 
@@ -102,6 +103,13 @@ namespace MicroMarine.Scenes
             music.Volume = .07f;
             music.Play();
 
+
+            // Add Scene Components
+            SceneComponents.AddComponent(sfxManager);
+            SceneComponents.AddComponent(new SelectedUnits(this));
+            var unitSelector = SceneComponents.AddComponent(new UnitSelector(this, 1)) as UnitSelector;
+            SceneComponents.AddComponent(new UnitGroupManager(this));
+
             var defaultCursorTexture = Content.LoadTexture("cursor", "Content/cursor.png");
             var attackTexture = Content.LoadTexture("attackCursor", "Content/cursor_attack.png");
             var attackMoveCursorTexture = Content.LoadTexture("attackMoveCursor", "Content/cursor_attack_move.png");
@@ -136,16 +144,13 @@ namespace MicroMarine.Scenes
                 Type = CursorType.Ability,
             };
 
-            var mouse = new MouseCursor(defaultCursor);
+            var mouse = new MouseCursor(this, defaultCursor);
             mouse.AddCursor(attackCursor);
             mouse.AddCursor(attackMoveCursor);
             mouse.AddCursor(abilityCursor);
             UI.AddElement(mouse);
 
-            // Add Scene Components
-            SceneComponents.AddComponent(sfxManager);
-            var unitSelector = SceneComponents.AddComponent(new UnitSelector(this, 1)) as UnitSelector;
-            SceneComponents.AddComponent(new UnitGroupManager(this));
+
 
             // Initiate tile map
             //Entity tileMapEntity = CreateEntity("tileMap", Vector2.Zero);

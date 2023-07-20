@@ -19,19 +19,18 @@ namespace MicroMarine.Components
         private Texture2D _waypointTexture;
         private Texture2D _waypointAttackTexture;
         private SoundEffectManager _sfxManager;
-        private bool _abilityPrimed;
+        private SelectedUnits _selectedUnits;
 
-        // DO NOT ADD or REMOVE
-        private readonly List<Entity> _selectedUnits;
+        public bool AbilityPrimed { get; private set; }
 
         public UnitGroupManager(Scene scene) : base(scene)
         {
-            _selectedUnits = Scene.GetComponent<UnitSelector>().GetSelectedUnits();
+            _selectedUnits = Scene.GetComponent<SelectedUnits>();
             _waypointTexture = scene.Content.GetContent<Texture2D>("waypoint");
             _waypointAttackTexture = scene.Content.GetContent<Texture2D>("waypointAttack");
             _allCommands = new List<UnitCommand>();
             _sfxManager = scene.GetComponent<SoundEffectManager>();
-            _abilityPrimed = false;
+            AbilityPrimed = false;
         }
 
         public override void Update()
@@ -46,32 +45,44 @@ namespace MicroMarine.Components
                 CullCommands();
             }
 
-            if (Input.KeyWasReleased(Keys.F) && UnitsAreSelected)
+            if (Input.KeyWasReleased(Keys.F) && _selectedUnits.UnitsAreSelected)
             {
-                _abilityPrimed = true;
+                AbilityPrimed = true;
+            }
+            
+            if (!_selectedUnits.UnitsAreSelected)
+            {
+                AbilityPrimed = false;
             }
 
+            if (AbilityPrimed && Input.LeftMouseWasPressed())
+            {
+                ActivateLocalAbility<ChemLightAbility>();
+            }
+        }
 
+        private void ActivateLocalAbility<T>() where T : UnitAbility
+        {
+            for (int i = 0; i < _selectedUnits.Selected.Count; i++)
+            {
+                var ability = _selectedUnits.Selected[i].GetComponent<T>();
+                if (ability.OnCoolDown)
+                {
+                    continue;
+                }
+                else
+                {
+                    ability.ExecuteAbility();
+                    break;
+                }
+            }
 
-            //for (int i = 0; i < _selectedUnits.Count; i++)
-            //{
-            //    var chemLightAbility = _selectedUnits[i].GetComponent<ChemLightAbility>();
-            //    if (chemLightAbility.OnCoolDown)
-            //    {
-            //        continue;
-            //    }
-            //    else
-            //    {
-            //        chemLightAbility.SpawnChemLight();
-            //        break;
-            //    }
-
-            //}
+            AbilityPrimed = false;
         }
 
         private void AssignCommand()
         {
-            if (_selectedUnits.Count == 0) return;
+            if (!_selectedUnits.UnitsAreSelected) return;
 
 
             bool isAttackMove = Input.KeyIsDown(Keys.A);
@@ -82,7 +93,7 @@ namespace MicroMarine.Components
 
             if (targetEntity != null)
             {
-                if (!TargetIsAlly(_selectedUnits, targetEntity))
+                if (!TargetIsAlly(targetEntity))
                 {
                     commandType = CommandType.Attack;
                 }
@@ -90,7 +101,7 @@ namespace MicroMarine.Components
 
             command = new UnitCommand(commandType, targetEntity, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
 
-            UpdateCommandQueues(_selectedUnits, command);
+            UpdateCommandQueues(command);
 
             _sfxManager.PlaySoundEffect("mAck", limitPlayback: true, randomChoice: true);
         }
@@ -100,18 +111,18 @@ namespace MicroMarine.Components
             return units[0].GetComponent<UnitAllegiance>();
         }
 
-        private bool TargetIsAlly(List<Entity> selectedUnits, Entity targetEntity)
+        private bool TargetIsAlly(Entity targetEntity)
         {
-            var unitAllegiance = SelectionAllegiance(selectedUnits);
+            var unitAllegiance = SelectionAllegiance(_selectedUnits.Selected);
             var targetAllegiance = targetEntity.GetComponent<UnitAllegiance>();
 
             return unitAllegiance.Id == targetAllegiance.Id;
         }
 
-        private void UpdateCommandQueues(List<Entity> units, UnitCommand newCommand)
+        private void UpdateCommandQueues(UnitCommand newCommand)
         {
             bool isShiftClick = Input.RightShiftClickOccured();
-            foreach (var unit in units)
+            foreach (var unit in _selectedUnits.Selected)
             {
                 var unitCommandQueue = unit.GetComponent<CommandQueue>();
                 if (!isShiftClick)
@@ -152,8 +163,6 @@ namespace MicroMarine.Components
                 DrawDestinationCircles(sBatch, command, screenPos);
             }
         }
-
-        private bool UnitsAreSelected => _selectedUnits.Count > 0;
 
         private void DrawWaypoint(SpriteBatch sBatch, UnitCommand command, Vector2 commandScreenPos)
         {
