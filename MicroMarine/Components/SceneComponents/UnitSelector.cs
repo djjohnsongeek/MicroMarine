@@ -58,9 +58,10 @@ namespace MicroMarine.Components
             bool unitsSelected = false;
             if (Input.LeftMouseWasPressed() && selectBox != Rectangle.Empty)
             {
+                _selectedUnits.DeselectAll();
                 //if (!_unitManager.AbilityPrimed)
                 //{
-                //    _selectedUnits.DeselectAll();
+                //    
                 //}
 
                 for (int i = 0; i < _units.Count; i++)
