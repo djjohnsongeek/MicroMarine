@@ -107,8 +107,9 @@ namespace MicroMarine.Scenes
             // Add Scene Components
             SceneComponents.AddComponent(sfxManager);
             SceneComponents.AddComponent(new SelectedUnits(this));
-            var unitSelector = SceneComponents.AddComponent(new UnitSelector(this, 1)) as UnitSelector;
             SceneComponents.AddComponent(new UnitGroupManager(this));
+            var unitSelector = SceneComponents.AddComponent(new UnitSelector(this, 1)) as UnitSelector;
+
 
             var defaultCursorTexture = Content.LoadTexture("cursor", "Content/cursor.png");
             var attackTexture = Content.LoadTexture("attackCursor", "Content/cursor_attack.png");

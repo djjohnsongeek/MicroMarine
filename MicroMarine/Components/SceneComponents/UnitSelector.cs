@@ -18,6 +18,7 @@ namespace MicroMarine.Components
         private Vector2 SelectBoxOrigin;
         private SoundEffectManager _sfxManager;
         private SelectedUnits _selectedUnits;
+        private UnitGroupManager _unitManager;
 
         public List<Entity> SelectableUnits => _units;
 
@@ -30,7 +31,13 @@ namespace MicroMarine.Components
             SelectBoxOrigin = Vector2.Zero;
             Allegiance = new UnitAllegiance(allegianceId);
             _selectedUnits = scene.GetComponent<SelectedUnits>();
+            _unitManager = scene.GetComponent<UnitGroupManager>();
             _sfxManager = scene.GetComponent<SoundEffectManager>();
+
+            if (_selectedUnits is null || _unitManager is null || _sfxManager is null)
+            {
+                throw new NullReferenceException("Required Scene Components 'SelectedUnits', 'UnitGroupManager', 'SoundFXManger' now found.'");
+            }
         }
 
         public override void Update()
@@ -51,7 +58,11 @@ namespace MicroMarine.Components
             bool unitsSelected = false;
             if (Input.LeftMouseWasPressed() && selectBox != Rectangle.Empty)
             {
-                _selectedUnits.DeselectAll();
+                //if (!_unitManager.AbilityPrimed)
+                //{
+                //    _selectedUnits.DeselectAll();
+                //}
+
                 for (int i = 0; i < _units.Count; i++)
                 {
                     MouseSelectCollider selectCollider = _units[i].GetComponent<MouseSelectCollider>();
