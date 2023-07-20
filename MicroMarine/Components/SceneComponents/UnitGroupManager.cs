@@ -35,7 +35,7 @@ namespace MicroMarine.Components
 
         public override void Update()
         {
-            if (Input.RightMouseWasPressed())
+            if (Input.RightMouseWasReleased())
             {
                 AssignCommand();
             }
@@ -55,7 +55,7 @@ namespace MicroMarine.Components
                 AbilityPrimed = false;
             }
 
-            if (AbilityPrimed && Input.LeftMouseWasPressed())
+            if (AbilityPrimed && Input.LeftMouseWasReleased())
             {
                 ActivateLocalAbility<ChemLightAbility>();
             }

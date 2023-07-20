@@ -50,12 +50,12 @@ namespace Zand
             return _keyBoardState.IsKeyDown(key);
         }
 
-        public static bool LeftMouseWasPressed()
+        public static bool LeftMouseWasReleased()
         {
             return _prevMouseState.LeftButton == ButtonState.Pressed && _mouseState.LeftButton == ButtonState.Released;
         }
 
-        public static bool RightMouseWasPressed()
+        public static bool RightMouseWasReleased()
         {
             return _prevMouseState.RightButton == ButtonState.Pressed && _mouseState.RightButton == ButtonState.Released;
         }
@@ -67,26 +67,7 @@ namespace Zand
 
         public static bool RightShiftClickOccured()
         {
-            return RightMouseWasPressed() && KeyIsDown(Keys.LeftShift);
+            return RightMouseWasReleased() && KeyIsDown(Keys.LeftShift);
         }
-
-        //public static Vector2 GetMouseWorldPos()
-        //{
-        //    return Camera.GetWorldLocation(new Vector2(mState.X, mState.Y));
-        //}
-
-        //public static bool MouseCollides(Entity entity)
-        //{
-        //    Vector2 unitPosition = unit.GetPosition();
-        //    int unitHeight = unit.GetHeight();
-        //    int unitWidth = unit.GetWidth();
-
-        //    Vector2 mousePos = GetMouseWorldPos();
-
-        //    return (mousePos.X >= (unitPosition.X - unitWidth / 2)) &&
-        //           (mousePos.X <= (unitPosition.X + unitWidth / 2)) &&
-        //           (mousePos.Y >= (unitPosition.Y - unitHeight / 2)) &&
-        //           (mousePos.Y <= (unitPosition.Y + unitHeight / 2));
-        //}
     }
 }

@@ -43,11 +43,23 @@ namespace MicroMarine.Components.Units
 
         public override void ExecuteAbility()
         {
+            Vector2 mousePosition = Input.MouseScreenPosition;
+            Vector2 entityScreenPosition = Scene.Camera.GetScreenLocation(Entity.Position);
+            var diff = mousePosition - entityScreenPosition;
+            diff.Normalize();
+
+            // TODO cool down is broken
+
+
+
             var glowStick = Entity.Scene.CreateEntity("glowStick", Entity.Position);
+
+
+
             glowStick.AddComponent(
                 new BouncingSprite(
-                    new Vector2(80, -80),
-                    28,
+                    diff * 600,
+                    20,
                     _texture,
                     Scene.Content.GetContent<Texture2D>("tinyShadow"))
             );

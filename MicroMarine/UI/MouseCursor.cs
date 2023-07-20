@@ -55,7 +55,11 @@ namespace MicroMarine.Ui
 
             if (_unitManager.AbilityPrimed)
             {
-                SetCursor(CursorType.Ability);
+                if (!Input.RightMouseWasReleased())
+                {
+                    SetCursor(CursorType.Ability);
+                }
+
             }
             else
             {

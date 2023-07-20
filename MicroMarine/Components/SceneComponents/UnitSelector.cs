@@ -14,8 +14,7 @@ namespace MicroMarine.Components
     class UnitSelector : SceneComponent
     {
         private List<Entity> _units;
-        private Rectangle selectBox;
-        private Vector2 SelectBoxOrigin;
+        private SelectBox _selectBox;
         private SoundEffectManager _sfxManager;
         private SelectedUnits _selectedUnits;
         private UnitGroupManager _unitManager;
@@ -27,8 +26,7 @@ namespace MicroMarine.Components
         public UnitSelector(Scene scene, int allegianceId) : base(scene)
         {
             _units = new List<Entity>();
-            selectBox = Rectangle.Empty;
-            SelectBoxOrigin = Vector2.Zero;
+            _selectBox = new SelectBox();
             Allegiance = new UnitAllegiance(allegianceId);
             _selectedUnits = scene.GetComponent<SelectedUnits>();
             _unitManager = scene.GetComponent<UnitGroupManager>();
@@ -45,39 +43,29 @@ namespace MicroMarine.Components
             // Define Select Box
             if (Input.LeftMouseIsPressed())
             {
-                if (SelectBoxOrigin == Vector2.Zero)
+                if (!_selectBox.Active)
                 {
-                    SelectBoxOrigin = Input.MouseScreenPosition;
+                    _selectBox.Origin = Input.MouseScreenPosition;
                 }
 
-                selectBox = new Rectangle(SelectBoxOrigin.ToPoint(), CalculateSelectBxSize());
-                AdjustSelectBxPosition(ref selectBox);
+                _selectBox.SetRect();
             }
 
-            // Clear Select Box and Select Units
-            bool unitsSelected = false;
-            if (Input.LeftMouseWasPressed() && selectBox != Rectangle.Empty)
+            // Clear and select units
+            if (Input.LeftMouseWasReleased())
             {
-                _selectedUnits.DeselectAll();
-                //if (!_unitManager.AbilityPrimed)
+                //if (_unitManager.AbilityPrimed)
                 //{
-                //    
+                //    _selectedUnits.DeselectAll();
                 //}
 
-                for (int i = 0; i < _units.Count; i++)
-                {
-                    MouseSelectCollider selectCollider = _units[i].GetComponent<MouseSelectCollider>();
-                    if (selectBox.Intersects(selectCollider.GetScreenLocation()) && SameTeam(selectCollider.Entity))
-                    {
-                        _selectedUnits.SelectUnit(_units[i]);
-                    }
-                }
-
-                selectBox = Rectangle.Empty;
-                SelectBoxOrigin = Vector2.Zero;
+                _selectedUnits.DeselectAll();
+                SelectBoxedUnits();
+                _selectBox.Clear();
             }
 
-            if (unitsSelected)
+            // this... probably shoudl not be here ...
+            if (_selectedUnits.UnitsAreSelected)
             {
                 _sfxManager.PlaySoundEffect("mReady", limitPlayback: true, randomChoice: true);
             }
@@ -108,17 +96,66 @@ namespace MicroMarine.Components
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Shapes.DrawEmptyRect(
-                spriteBatch,
-                Scene.DebugPixelTexture,
-                selectBox,
-                Color.WhiteSmoke
-            );
+            if (_selectBox.Active)
+            {
+                Shapes.DrawEmptyRect(
+                    spriteBatch,
+                    Scene.DebugPixelTexture,
+                    _selectBox.Rect,
+                    Color.WhiteSmoke
+                );
+            }
+        }
+
+
+        private void SelectBoxedUnits()
+        {
+            for (int i = 0; i < _units.Count; i++)
+            {
+                MouseSelectCollider selectCollider = _units[i].GetComponent<MouseSelectCollider>();
+                if (_selectBox.Intersects(selectCollider.GetScreenLocation()) && SameTeam(selectCollider.Entity))
+                {
+                    _selectedUnits.SelectUnit(_units[i]);
+                }
+            }
+        }
+    }
+
+    public class SelectBox
+    {
+        public Vector2 Origin;
+        public Rectangle Rect;
+        public bool Active { get; private set; }
+
+        public SelectBox()
+        {
+            Origin = Vector2.Zero;
+            Rect = Rectangle.Empty;
+            Active = false;
+        }
+
+        public void SetRect()
+        {
+            Rect = new Rectangle(Origin.ToPoint(), CalculateSelectBxSize());
+            AdjustSelectBxPosition();
+            Active = true;
+        }
+
+        public void Clear()
+        {
+            Rect = Rectangle.Empty;
+            Origin = Vector2.Zero;
+            Active = false;
+        }
+
+        public bool Intersects(Rectangle rect)
+        {
+            return Rect.Intersects(rect);
         }
 
         private Point CalculateSelectBxSize()
         {
-            return AbsoluteVector((SelectBoxOrigin - Input.MouseScreenPosition)).ToPoint();
+            return AbsoluteVector(Origin - Input.MouseScreenPosition).ToPoint();
         }
 
         private Vector2 AbsoluteVector(Vector2 vector)
@@ -126,16 +163,16 @@ namespace MicroMarine.Components
             return new Vector2(Math.Abs(vector.X), Math.Abs(vector.Y));
         }
 
-        private void AdjustSelectBxPosition(ref Rectangle selectBox)
+        private void AdjustSelectBxPosition()
         {
-            if (Input.MouseScreenPosition.X < SelectBoxOrigin.X)
+            if (Input.MouseScreenPosition.X < Origin.X)
             {
-                selectBox.X -= (int)(SelectBoxOrigin.X - Input.MouseScreenPosition.X);
+                Rect.X -= (int)(Origin.X - Input.MouseScreenPosition.X);
             }
 
-            if (Input.MouseScreenPosition.Y < SelectBoxOrigin.Y)
+            if (Input.MouseScreenPosition.Y < Origin.Y)
             {
-                selectBox.Y -= (int)(SelectBoxOrigin.Y - Input.MouseScreenPosition.Y);
+                Rect.Y -= (int)(Origin.Y - Input.MouseScreenPosition.Y);
             }
         }
     }
