@@ -17,12 +17,13 @@ namespace Zand.ECS.Components
         private float _rotation = 0f;
         private float _rotationSpeed = 5f;
 
-        public BouncingSprite(Vector2 startingVelocity, float startingHeight, Texture2D texture, Texture2D shadow, float lifetime = 30)
+        public BouncingSprite(Vector3 startingVelocity, float startingHeight, Texture2D texture, Texture2D shadow, float lifetime = 30)
         {
             Z = startingHeight;
+            Zspeed = startingVelocity.Z * (float)Time.DeltaTime;
             _texture = texture;
             _shadowTexture = shadow;
-            Velocity = startingVelocity;
+            Velocity = new Vector2(startingVelocity.X, startingVelocity.Y);
             _lifetime = lifetime;
         }
 

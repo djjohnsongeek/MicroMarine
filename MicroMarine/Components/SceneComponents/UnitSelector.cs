@@ -54,10 +54,10 @@ namespace MicroMarine.Components
             // Clear and select units
             if (Input.LeftMouseWasReleased())
             {
-                //if (_unitManager.AbilityPrimed)
-                //{
-                //    _selectedUnits.DeselectAll();
-                //}
+                if (_unitManager.AbilityPrimed)
+                {
+                    return;
+                }
 
                 _selectedUnits.DeselectAll();
                 SelectBoxedUnits();

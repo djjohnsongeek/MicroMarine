@@ -14,11 +14,10 @@ namespace MicroMarine.Components.Units
         private Texture2D _texture;
         private Texture2D _lightTexture;
         private Color _glowColor;
-        
-        public ChemLightAbility(Color color, float cooldownDuration)
+
+        public ChemLightAbility(Color color, float cooldownDuration) : base(cooldownDuration)
         {
             _glowColor = color;
-            _coolDown = new CoolDown(cooldownDuration);
         }
 
         public override void OnAddedToEntity()
@@ -33,41 +32,38 @@ namespace MicroMarine.Components.Units
             _selection = null;
             _texture = null;
             _lightTexture = null;
-            _coolDown = null;
+            base.OnRemovedFromEntity();
         }
 
-        public void Update()
+        public override void Update()
         {
-            _coolDown.Update();
+            base.Update();
         }
 
         public override void ExecuteAbility()
         {
-            Vector2 mousePosition = Input.MouseScreenPosition;
             Vector2 entityScreenPosition = Scene.Camera.GetScreenLocation(Entity.Position);
-            var diff = mousePosition - entityScreenPosition;
+            var diff = Input.MouseScreenPosition - entityScreenPosition;
             diff.Normalize();
 
-            // TODO cool down is broken
+            var chemLight = Entity.Scene.CreateEntity("chemLight", Entity.Position);
 
 
-
-            var glowStick = Entity.Scene.CreateEntity("glowStick", Entity.Position);
-
+            var startVelocity = new Vector3(diff * Entity.GetComponent<Marine>().AttackRange * .75f, 100);
 
 
-            glowStick.AddComponent(
+            chemLight.AddComponent(
                 new BouncingSprite(
-                    diff * 600,
+                    startVelocity,
                     20,
                     _texture,
                     Scene.Content.GetContent<Texture2D>("tinyShadow"))
             );
 
-            var light = new SimpleLight(glowStick, _lightTexture, _glowColor, new Vector2(1.5f, 1.5f));
+            var light = new SimpleLight(chemLight, _lightTexture, _glowColor, new Vector2(1.5f, 1.5f));
             Entity.Scene.Lighting.AddLight(light);
 
-            _coolDown.Start();
+            base.ExecuteAbility();
         }
     }
 }
