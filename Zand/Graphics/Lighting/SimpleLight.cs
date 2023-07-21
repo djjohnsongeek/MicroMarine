@@ -7,6 +7,7 @@ namespace Zand.Graphics.Lighting
     {
         public GameObject Obj;
         public Color Color;
+        public Color? InnerColor;
         public Texture2D LightTexture;
         public Vector2 Origin;
         public Vector2 Scale;
@@ -14,10 +15,11 @@ namespace Zand.Graphics.Lighting
         public int InitialAlpha;
         public bool Flicker;
 
-        public SimpleLight(GameObject obj, Texture2D lightTexture, Color color, Vector2 scale, Vector2? offset = null, bool flicker = false)
+        public SimpleLight(GameObject obj, Texture2D lightTexture, Color color, Vector2 scale, Vector2? offset = null, bool flicker = false, Color? innerColor = null)
         {
             Obj = obj;
             Color = color;
+            InnerColor = innerColor;
             InitialAlpha = color.A;
             LightTexture = lightTexture;
             Origin = new Vector2(lightTexture.Width * .5f, lightTexture.Height * .5f);

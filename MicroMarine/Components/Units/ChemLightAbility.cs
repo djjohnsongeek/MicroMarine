@@ -63,7 +63,7 @@ namespace MicroMarine.Components.Units
                     Scene.Content.GetContent<Texture2D>("tinyShadow"))
             );
 
-            var light = new SimpleLight(chemLight, _lightTexture, _glowColor, new Vector2(1.5f, 1.5f));
+            var light = new SimpleLight(chemLight, _lightTexture, _glowColor, new Vector2(1.5f, 1.5f), innerColor: new Color(0, 255, 0, 100));
             Entity.Scene.Lighting.AddLight(light);
         }
     }

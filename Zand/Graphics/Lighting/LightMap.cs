@@ -89,6 +89,10 @@ namespace Zand.Graphics.Lighting
             {
                 var light = Lights[i];
                 spriteBatch.Draw(light.LightTexture, light.Obj.Position + light.Offset, null, light.Color, 0, light.Origin, light.Scale, SpriteEffects.None, 0);
+                if (light.InnerColor.HasValue)
+                {
+                    spriteBatch.Draw(light.LightTexture, light.Obj.Position + light.Offset, null, light.InnerColor.Value, 0, light.Origin, light.Scale / 5f, SpriteEffects.None, 0);
+                }
                 //spriteBatch.Draw(light.LightTexture, light.Obj.Position + light.Offset, null, light.Color, 0, light.Origin, new Vector2(.2f, .2f), SpriteEffects.None, 0);
             }
             spriteBatch.End();
