@@ -71,7 +71,7 @@ namespace MicroMarine.Components
 
         private void AddCollisionComponents()
         {
-            MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle(Entity.Position.ToPoint(), new Point(19, 26)), new Vector2(-9, -13)); // new Vector2(6, 4)
+            MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle(Entity.Position.ToPoint(), new Point(21, 30)), new Vector2(-10, -14)); // new Vector2(6, 4)
             Entity.AddComponent(mouseCollider);
 
             CircleCollider collider = new CircleCollider(9, new Vector2(0, 6));

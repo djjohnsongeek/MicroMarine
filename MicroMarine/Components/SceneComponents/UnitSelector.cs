@@ -151,13 +151,13 @@ namespace MicroMarine.Components
 
         private void SelectTopUnit()
         {
-            Entity topUnit = _units[0];
+            Entity topUnit = null;
             for (int i = 0; i < _units.Count; i++)
             {
                 MouseSelectCollider selectCollider = _units[i].GetComponent<MouseSelectCollider>();
                 if (_selectBox.Intersects(selectCollider.GetScreenLocation()) && SameTeam(selectCollider.Entity))
                 {
-                    if (_units[i].Position.Y > topUnit.Position.Y)
+                    if (topUnit is null || _units[i].Position.Y > topUnit.Position.Y)
                     {
                         topUnit = _units[i];
                     }
@@ -165,7 +165,10 @@ namespace MicroMarine.Components
 
             }
 
-            _selectedUnits.SelectUnit(topUnit);
+            if (topUnit != null)
+            {
+                _selectedUnits.SelectUnit(topUnit);
+            }
         }
     }
 }

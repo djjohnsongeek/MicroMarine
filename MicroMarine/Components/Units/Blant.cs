@@ -53,7 +53,7 @@ namespace MicroMarine.Components.Units
             Entity.AddComponent(animator);
 
             // colliders
-            MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle(Entity.Position.ToPoint(), new Point(19, 26)), new Vector2(-9, -13)); // new Vector2(6, 4)
+            MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle(Entity.Position.ToPoint(), new Point(26, 30)), new Vector2(-13, -14));
             Entity.AddComponent(mouseCollider);
 
 
