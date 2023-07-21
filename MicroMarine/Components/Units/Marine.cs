@@ -122,8 +122,8 @@ namespace MicroMarine.Components
                 Entity.Position,
                 Color.White,
                 0,
-                new Vector2(35, 60),
-                new Vector2(.3f, .3f),
+                new Vector2(-12, -8),
+                Vector2.One,
                 SpriteEffects.None,
                 1);
         }
