@@ -42,7 +42,6 @@ namespace Zand.Colliders
 
         public override void OnRemovedFromEntity()
         {
-            DebugTools.Log("Remove collider");
             Scene.Physics.RemoveCollider(this);
             base.OnRemovedFromEntity();
         }

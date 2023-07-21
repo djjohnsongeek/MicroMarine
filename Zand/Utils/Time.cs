@@ -18,8 +18,6 @@ namespace Zand
             TweenHelper.UpdateSetup(gameTime);
             UpdateTimers(gameTime);
             RemoveFinshedTimers();
-
-            Debug.DebugTools.Log($"{Timers.Count} timers in play");
         }
 
         public static void UpdateTimers(GameTime gameTime)

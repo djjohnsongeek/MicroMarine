@@ -136,6 +136,8 @@ namespace MicroMarine.Components
         {
             Rect = new Rectangle(Origin.ToPoint(), GetBoxSize());
 
+            Zand.Debug.DebugTools.Log($"W: {Rect.Width} H: {Rect.Height}");
+
             // Adjust box's coordinates based on mouse position
             if (Input.MouseScreenPosition.X < Origin.X)
             {

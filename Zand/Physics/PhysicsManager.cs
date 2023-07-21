@@ -29,7 +29,6 @@ namespace Zand.Physics
 
         public void RemoveCollider(ICollider collider)
         {
-            DebugTools.Log("removed collider)");
             _spatialHash.RemoveCollider(collider);
             _colliders.Remove(collider);
         }
