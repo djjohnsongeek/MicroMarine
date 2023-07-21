@@ -9,10 +9,16 @@ namespace MicroMarine.Components.Units
 {
     class Blant: Unit, Zand.IUpdateable
     {
-        public Blant(int allegianceId) : base(allegianceId)
+        public Blant(int allegianceId) : base(allegianceId,
+            attackRange: 35,
+            sightRange: 250,
+            followRange: 120,
+            speed: 80,
+            damage: 30,
+            attacksPerSec: 4)
         {
-        }
 
+        }
         public Blant()
         {
 
@@ -21,13 +27,7 @@ namespace MicroMarine.Components.Units
         public override void OnAddedToEntity()
         {
             Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
-            AttackRange = 35;
-            SightRange = 250;
-            FollowRange = 120;
-            Speed = 80;
-            Damage = 7;
-            AttacksPerSecond = 1f;
-            AttackInterval = 1 / 60f;
+
 
             Entity.AddComponent(new Health(250, 250)); //250
             Entity.AddComponent(new Mover(Speed));

@@ -20,6 +20,8 @@ namespace MicroMarine.Components
                 _sfxManger.StopSoundEffect("mShoot", _context.Entity);
             }
 
+            _elapsedTime = 0;
+
         }
 
         public override void Enter()
@@ -31,11 +33,14 @@ namespace MicroMarine.Components
             {
                 _sfxManger.PlaySoundEffect("mShoot", limitPlayback: false, randomChoice: false, entity: _context.Entity, loop: true);
             }
+
+            _elapsedTime = 0;
         }
 
         public override void Update()
         {
             base.Update();
+            _elapsedTime += Time.DeltaTime;
 
             if (CurrentCommand is null || CurrentCommand.EntityTarget is null)
             {
@@ -75,14 +80,8 @@ namespace MicroMarine.Components
             if (_elapsedTime >= _context.AttackInterval)
             {
                 _elapsedTime = 0;
-            }
-
-            if (_elapsedTime == 0)
-            {
                 target.GetComponent<Health>().ApplyDamage(_context.Damage);
             }
-
-            _elapsedTime += Time.DeltaTime;
         }
     }
 }

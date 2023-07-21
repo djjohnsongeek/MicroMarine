@@ -12,7 +12,13 @@ namespace MicroMarine.Components
     // Acts as 'Loading Component' for a Marine
     class Marine : Unit, Zand.IUpdateable
     {
-        public Marine(int allegianceId) : base(allegianceId)
+        public Marine(int allegianceId) : base(allegianceId,
+            attackRange: 200,
+            sightRange: 250,
+            followRange: 120,
+            speed: 100,
+            damage: 5,
+            attacksPerSec: 5)
         {
 
         }
@@ -20,13 +26,7 @@ namespace MicroMarine.Components
         public override void OnAddedToEntity()
         {
             Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
-            AttackRange = 200;
-            SightRange = 250;
-            FollowRange = 120;
-            Speed = 100;
-            Damage = 3;
-            AttacksPerSecond = 5f;
-            AttackInterval = 5 / 60f;
+
 
             Entity.AddComponent(new Health(100, 100));
             Entity.AddComponent(new Mover(Speed));
