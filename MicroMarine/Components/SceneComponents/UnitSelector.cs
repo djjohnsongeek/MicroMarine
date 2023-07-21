@@ -55,7 +55,7 @@ namespace MicroMarine.Components
             if (Input.LeftMouseWasReleased())
             {
                 _selectedUnits.DeselectAll();
-                SelectBoxedUnits();
+                SelectUnits();
                 _selectBox.Clear();
                 Input.Context = InputContext.UnitControl;
             }
@@ -120,6 +120,23 @@ namespace MicroMarine.Components
             }
         }
 
+        private void SelectUnits()
+        {
+            if (_selectBox.IsTiny)
+            {
+                SelectTopUnit();
+            }
+            else
+            {
+                SelectBoxedUnits();
+            }
+
+            if (_selectedUnits.UnitsAreSelected)
+            {
+                _sfxManager.PlaySoundEffect("mReady", limitPlayback: true, randomChoice: true);
+            }
+        }
+
         private void SelectBoxedUnits()
         {
             for (int i = 0; i < _units.Count; i++)
@@ -130,11 +147,25 @@ namespace MicroMarine.Components
                     _selectedUnits.SelectUnit(_units[i]);
                 }
             }
+        }
 
-            if (_selectedUnits.UnitsAreSelected)
+        private void SelectTopUnit()
+        {
+            Entity topUnit = _units[0];
+            for (int i = 0; i < _units.Count; i++)
             {
-                _sfxManager.PlaySoundEffect("mReady", limitPlayback: true, randomChoice: true);
+                MouseSelectCollider selectCollider = _units[i].GetComponent<MouseSelectCollider>();
+                if (_selectBox.Intersects(selectCollider.GetScreenLocation()) && SameTeam(selectCollider.Entity))
+                {
+                    if (_units[i].Position.Y > topUnit.Position.Y)
+                    {
+                        topUnit = _units[i];
+                    }
+                }
+
             }
+
+            _selectedUnits.SelectUnit(topUnit);
         }
     }
 }

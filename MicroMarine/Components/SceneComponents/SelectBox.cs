@@ -52,6 +52,8 @@ namespace MicroMarine.Components
             return Rect.Intersects(rect);
         }
 
+        public bool IsTiny => Rect.Width < 3 && Rect.Height < 3;
+
         private Point GetBoxSize()
         {
             return Calc.AbsVector2(Origin - Input.MouseScreenPosition).ToPoint();
