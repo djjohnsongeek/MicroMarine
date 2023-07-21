@@ -76,5 +76,24 @@ namespace MicroMarine.Components
             string animation = animationVerb + _mover.Orientation.ToString();
             _animator.Play(animation);
         }
+
+        protected void DetermineState(UnitCommand cmd)
+        {
+            switch (cmd.Type)
+            {
+                case CommandType.Move:
+                case CommandType.AttackMove:
+                    _machine.ChangeState<Moving>();
+                    break;
+                case CommandType.Attack:
+                    _machine.ChangeState<Attacking>();
+                    break;
+                case CommandType.UseAbility:
+                    _machine.ChangeState<ExecuteAbility>();
+                    break;
+                default:
+                    throw new NotImplementedException($"Unknown Command: {CurrentCommand}");
+            }
+        }
     }
 }
