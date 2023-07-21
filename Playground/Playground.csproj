@@ -6,7 +6,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MicroMarine\MicroMarine.csproj" />
+    <ProjectReference Include="..\Zand\Zand.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="AppFiles\Dirt.tsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppFiles\Rocks.tsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppFiles\ShipParts.tsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppFiles\Simple.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
