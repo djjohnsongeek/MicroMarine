@@ -5,7 +5,7 @@ using Zand.Physics;
 
 namespace Zand.Colliders
 {
-    public class BoxCollider : Collider, ICollider
+    public class BoxCollider : Collider, ICollider, IRenderable
     {
         public Rectangle HitBox;
 
@@ -27,8 +27,11 @@ namespace Zand.Colliders
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Rectangle rect = Scene.Camera.GetScreenLocation(HitBox);
-            Shapes.DrawRect(spriteBatch, Scene.DebugPixelTexture, rect, new Color(180, 255, 0, 175));
+            if (Debug.DebugTools.Active)
+            {
+                Shapes.DrawRect(spriteBatch, Entity.Scene.DebugPixelTexture, HitBox, Color.Yellow);
+            }
+
         }
     }
 }
