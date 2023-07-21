@@ -77,7 +77,8 @@ namespace Zand
         public Rectangle GetScreenLocation(Rectangle worldRect)
         {
             Vector2 screenLocation = Vector2.Transform(new Vector2(worldRect.X, worldRect.Y), GetTransformation());
-            return new Rectangle((int)screenLocation.X, (int)screenLocation.Y, worldRect.Width, worldRect.Height);
+            Vector2 dimensions = worldRect.Size.ToVector2() * Zoom;
+            return new Rectangle(screenLocation.ToPoint(), dimensions.ToPoint());
         }
 
         private Vector2 GetCameraVelocity(double dt)
