@@ -10,6 +10,8 @@
 
         public override void Update()
         {
+            base.Update();
+
             if (_animator.CurrentAnimation.IsSuspended())
             {
                 _machine.ChangeState<Idle>();

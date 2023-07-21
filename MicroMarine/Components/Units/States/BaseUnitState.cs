@@ -14,6 +14,7 @@ namespace MicroMarine.Components
         protected Mover _mover;
         protected Animator _animator;
         protected SoundEffectManager _sfxManger;
+        protected UnitCommand CurrentCommand;
 
         public override void OnInitialize()
         {
@@ -21,6 +22,12 @@ namespace MicroMarine.Components
             _mover = _context.Entity.GetComponent<Mover>(false);
             _animator = _context.Entity.GetComponent<Animator>(false);
             _sfxManger = _context.Entity.Scene.GetComponent<SoundEffectManager>();
+        }
+
+        public override void Update()
+        {
+            CurrentCommand = _unitCommands.Peek();
+
         }
 
         protected bool TargetsAreNearby(out Entity entity)

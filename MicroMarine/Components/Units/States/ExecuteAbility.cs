@@ -17,8 +17,8 @@ namespace MicroMarine.Components
 
         public override void Update()
         {
-            var currentCommand = _unitCommands.Peek();
-            if (currentCommand is null || currentCommand.Type != CommandType.UseAbility)
+            base.Update();
+            if (CurrentCommand is null || CurrentCommand.Type != CommandType.UseAbility)
             {
                 _machine.ChangeState<Idle>();
                 return;
@@ -26,7 +26,7 @@ namespace MicroMarine.Components
 
             var ability = _context.Entity.GetComponent<UnitAbility>();
             ability.ExecuteAbility();
-            currentCommand.SetStatus(CommandStatus.Completed);
+            CurrentCommand.SetStatus(CommandStatus.Completed);
             _unitCommands.Dequeue();
             _machine.ChangeState<Idle>();
         }

@@ -21,14 +21,13 @@ namespace MicroMarine.Components
 
         public override void Update()
         {
-            var nextCommand = _unitCommands.Peek();
-
-            if (nextCommand is null)
+            base.Update();
+            if (CurrentCommand is null)
             {
                 if (TargetsAreNearby(out Entity nextTarget))
                 {
-                    nextCommand = new UnitCommand(CommandType.Attack, nextTarget, nextTarget.Position);
-                    _unitCommands.AddCommand(nextCommand);
+                    CurrentCommand = new UnitCommand(CommandType.Attack, nextTarget, nextTarget.Position);
+                    _unitCommands.AddCommand(CurrentCommand);
                 }
                 else
                 {
@@ -36,7 +35,7 @@ namespace MicroMarine.Components
                 }
             }
 
-            switch(nextCommand.Type)
+            switch(CurrentCommand.Type)
             {
                 case CommandType.Move:
                 case CommandType.AttackMove:
@@ -49,7 +48,7 @@ namespace MicroMarine.Components
                     _machine.ChangeState<ExecuteAbility>();
                     break;
                 default:
-                    throw new NotImplementedException($"Unknown Command: {nextCommand}");
+                    throw new NotImplementedException($"Unknown Command: {CurrentCommand}");
             }
         }
     }

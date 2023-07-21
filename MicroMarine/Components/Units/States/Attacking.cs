@@ -35,27 +35,28 @@ namespace MicroMarine.Components
 
         public override void Update()
         {
-            var currentCommand = _unitCommands.Peek();
-            if (currentCommand is null || currentCommand.EntityTarget is null)
+            base.Update();
+
+            if (CurrentCommand is null || CurrentCommand.EntityTarget is null)
             {
                 _machine.ChangeState<Idle>();
                 return;
             }
 
-            if (currentCommand.EntityTarget.IsDestroyed)
+            if (CurrentCommand.EntityTarget.IsDestroyed)
             {
-                currentCommand.SetStatus(CommandStatus.Completed);
+                CurrentCommand.SetStatus(CommandStatus.Completed);
                 _unitCommands.Dequeue();
                 return;
             }
 
-            if (!TargetIsInRange(currentCommand.EntityTarget, 60))
+            if (!TargetIsInRange(CurrentCommand.EntityTarget, 60))
             {
                 _machine.ChangeState<Following>();
                 return;
             }
-            PlayAttackAnimation(currentCommand.EntityTarget);
-            AttackTarget(currentCommand.EntityTarget);
+            PlayAttackAnimation(CurrentCommand.EntityTarget);
+            AttackTarget(CurrentCommand.EntityTarget);
         }
 
         public bool InRangePeriodIsOver()

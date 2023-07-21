@@ -14,25 +14,25 @@ namespace MicroMarine.Components
 
         public override void Update()
         {
-            var currentCommand = _unitCommands.Peek();
-            if (currentCommand is null || currentCommand.EntityTarget is null)
+            base.Update();
+            if (CurrentCommand is null || CurrentCommand.EntityTarget is null)
             {
                 _machine.ChangeState<Idle>();
                 return;
             }
 
-            bool targetIsInRange = TargetIsInRange(currentCommand.EntityTarget, 100);
+            bool targetIsInRange = TargetIsInRange(CurrentCommand.EntityTarget, 100);
 
             if (!targetIsInRange)
             {
-                Vector2 unitVelocity = Vector2.Normalize(currentCommand.EntityTarget.Position - _context.Entity.Position) * _context.Speed;
+                Vector2 unitVelocity = Vector2.Normalize(CurrentCommand.EntityTarget.Position - _context.Entity.Position) * _context.Speed;
                 _mover.Velocity = unitVelocity;
                 SetUnitAnimation("Walk");
             }
 
             if (targetIsInRange)
             {
-                if (currentCommand.Type == CommandType.Attack)
+                if (CurrentCommand.Type == CommandType.Attack)
                 {
                     _machine.ChangeState<Attacking>();
                 }

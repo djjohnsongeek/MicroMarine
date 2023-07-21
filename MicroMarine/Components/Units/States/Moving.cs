@@ -27,8 +27,9 @@ namespace MicroMarine.Components
 
         public override void Update()
         {
-            var currentCommand = GetCommand();
-            if (!SupportedCommand(currentCommand))
+            base.Update();
+
+            if (!SupportedCommand(CurrentCommand))
             {
                 _machine.ChangeState<Idle>();
                 return;
@@ -36,7 +37,7 @@ namespace MicroMarine.Components
 
 
             // check for targets
-            if (currentCommand.Type == CommandType.AttackMove)
+            if (CurrentCommand.Type == CommandType.AttackMove)
             {
                 if (TargetsAreNearby(out Entity nextTarget))
                 {
@@ -47,18 +48,18 @@ namespace MicroMarine.Components
 
 
             // check if unit is arrived
-            if (UnitArrivedAt(currentCommand.Destination))
+            if (UnitArrivedAt(CurrentCommand.Destination))
             {
-                currentCommand.SetStatus(CommandStatus.Completed);
+                CurrentCommand.SetStatus(CommandStatus.Completed);
                 _mover.Velocity = Vector2.Zero;
                 _machine.ChangeState<Idle>();
-                currentCommand.Destination.Radius += (float)Math.Cbrt(currentCommand.Destination.Radius);
+                CurrentCommand.Destination.Radius += (float)Math.Cbrt(CurrentCommand.Destination.Radius);
                 _unitCommands.Dequeue();
                 return;
             }
             
 
-            Vector2 unitVelocity = Vector2.Normalize(currentCommand.Destination.Position - _context.Entity.Position) * _context.Speed;
+            Vector2 unitVelocity = Vector2.Normalize(CurrentCommand.Destination.Position - _context.Entity.Position) * _context.Speed;
             _mover.Velocity = unitVelocity;
             SetUnitAnimation("Walk");
         }
@@ -89,11 +90,6 @@ namespace MicroMarine.Components
         private bool UnitArrivedAt(Destination destination)
         {
             return Collisions.CircleToPoint(destination, _context.Entity.Position);
-        }
-
-        private UnitCommand GetCommand()
-        {
-            return _unitCommands.Peek();
         }
     }
 }
