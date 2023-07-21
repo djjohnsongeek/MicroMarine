@@ -70,7 +70,6 @@ namespace MicroMarine.Components
             return entity.GetComponent<UnitAllegiance>().Id == Allegiance.Id;
         }
 
-
         public void AddUnit(Entity entity)
         {
             _units.Add(entity);
