@@ -11,7 +11,7 @@ namespace Zand.ECS.Components
         public Vector2 Velocity;
         public float Z;
         public float Zspeed = 0;
-        private float _gravity = -.5f;
+        private float _gravity = -1f;
         private float _groundFriction = -.6f;
         private float _elasticity = .6f;
         private float _rotation = 0f;

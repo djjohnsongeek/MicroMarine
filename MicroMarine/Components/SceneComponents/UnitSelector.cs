@@ -50,11 +50,12 @@ namespace MicroMarine.Components
             }
 
             // Clear and select units
-            if (Input.LeftMouseWasReleased() && Input.Context == InputContext.UnitControl)
+            if (Input.LeftMouseWasReleased())
             {
                 _selectedUnits.DeselectAll();
                 SelectBoxedUnits();
                 _selectBox.Clear();
+                Input.Context = InputContext.UnitControl;
             }
 
             // this... probably shoudl not be here ...
