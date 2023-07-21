@@ -30,6 +30,7 @@ namespace MicroMarine.Components
             var currentCommand = GetCommand();
             if (!SupportedCommand(currentCommand))
             {
+                _machine.ChangeState<Idle>();
                 return;
             }
 

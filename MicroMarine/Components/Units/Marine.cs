@@ -83,6 +83,7 @@ namespace MicroMarine.Components
             _stateMachine.AddState(new Moving());
             _stateMachine.AddState(new Following());
             _stateMachine.AddState(new Attacking());
+            _stateMachine.AddState(new ExecuteAbility());
             _stateMachine.SetInitialState<Idle>();
         }
 

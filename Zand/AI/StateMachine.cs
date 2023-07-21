@@ -60,7 +60,12 @@ namespace Zand.AI
         {
             _currentState.Exit();
             _states.Pop();
-            _currentState = _states.Peek();
+
+            if (_states.Count > 0)
+            {
+                _currentState = _states.Peek();
+            }
+
             _currentState.Enter();
         }
 

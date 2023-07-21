@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using Zand;
 using Zand.AI;
 
@@ -44,8 +45,11 @@ namespace MicroMarine.Components
                 case CommandType.Attack:
                     _machine.ChangeState<Attacking>();
                     break;
-                default:
+                case CommandType.UseAbility:
+                    _machine.ChangeState<ExecuteAbility>();
                     break;
+                default:
+                    throw new NotImplementedException($"Unknown Command: {nextCommand}");
             }
         }
     }

@@ -53,7 +53,7 @@ namespace MicroMarine.Components
             }
         }
 
-        // Location meaning tha tonly one unit from the group will execute the ability in question.
+        // Local only one unit from the group will execute the ability in question.
         private void ActivateLocalAbility<T>() where T : UnitAbility
         {
             bool executed = false;
@@ -61,7 +61,16 @@ namespace MicroMarine.Components
             {
                 var ability = _selectedUnits.Selected[i].GetComponent<T>();
                 if (ability.OnCoolDown) continue;
-                ability.ExecuteAbility();
+
+                var cmd = new UnitCommand(CommandType.UseAbility, null, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
+                var unitCommandQueue = _selectedUnits.Selected[i].GetComponent<CommandQueue>();
+
+                if (!Input.RightShiftClickOccured())
+                {
+                    unitCommandQueue.Clear();
+                }
+                unitCommandQueue.AddCommand(cmd);
+                _allCommands.Add(cmd);
                 executed = true;
                 break;
             }
