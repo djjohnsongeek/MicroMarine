@@ -58,12 +58,6 @@ namespace MicroMarine.Components
                 Input.Context = InputContext.UnitControl;
             }
 
-            // this... probably shoudl not be here ...
-            if (_selectedUnits.UnitsAreSelected)
-            {
-                _sfxManager.PlaySoundEffect("mReady", limitPlayback: true, randomChoice: true);
-            }
-
             // Select All Hotkey
             if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.Tab) && Input.Context == InputContext.UnitControl)
             {
@@ -111,6 +105,11 @@ namespace MicroMarine.Components
                 {
                     _selectedUnits.SelectUnit(_units[i]);
                 }
+            }
+
+            if (_selectedUnits.UnitsAreSelected)
+            {
+                _sfxManager.PlaySoundEffect("mReady", limitPlayback: true, randomChoice: true);
             }
         }
     }

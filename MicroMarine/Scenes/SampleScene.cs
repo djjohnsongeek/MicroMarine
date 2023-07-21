@@ -91,7 +91,8 @@ namespace MicroMarine.Scenes
             sfxManager.AddSoundEffect("footstep", Content.LoadSoundEffect("footstep", "Content/Audio/FX/footstep2.wav"), 2, .06f);
             sfxManager.AddSoundEffect("footstep", Content.LoadSoundEffect("footstep", "Content/Audio/FX/footstep2.wav"), 2, .06f);
 
-            sfxManager.AddSoundEffect("mShoot", Content.LoadSoundEffect("mFire", "Content/Audio/FX/marine_fire.wav"), 8, .2f);   
+            sfxManager.AddSoundEffect("mShoot", Content.LoadSoundEffect("mFire", "Content/Audio/FX/marine_fire.wav"), 8, .2f);
+            sfxManager.AddSoundEffect("error", Content.LoadSoundEffect("error", "Content/Audio/FX/error_1.wav"), 2, .5f);
 
 
             var music = Content.LoadSoundEffect("soundtrack", "Content/Audio/Music/tribute-to-mr-wick.wav").CreateInstance();

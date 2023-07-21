@@ -56,13 +56,19 @@ namespace MicroMarine.Components
         // Location meaning tha tonly one unit from the group will execute the ability in question.
         private void ActivateLocalAbility<T>() where T : UnitAbility
         {
+            bool executed = false;
             for (int i = 0; i < _selectedUnits.Selected.Count; i++)
             {
                 var ability = _selectedUnits.Selected[i].GetComponent<T>();
                 if (ability.OnCoolDown) continue;
-
                 ability.ExecuteAbility();
+                executed = true;
                 break;
+            }
+
+            if (!executed)
+            {
+                _sfxManager.PlaySoundEffect("error");
             }
 
             Input.Context = InputContext.UnitControl;
