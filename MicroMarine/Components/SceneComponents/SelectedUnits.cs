@@ -10,6 +10,8 @@ namespace MicroMarine.Components
     {
         private List<Entity> _selectedUnits;
 
+        public IReadOnlyList<Entity> Units => _selectedUnits;
+
         public SelectedUnits(Scene scene) : base(scene)
         {
             _selectedUnits = new List<Entity>();

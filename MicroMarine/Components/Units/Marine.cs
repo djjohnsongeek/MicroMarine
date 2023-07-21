@@ -10,8 +10,10 @@ using Zand.ECS.Components;
 namespace MicroMarine.Components
 {
     // Acts as 'Loading Component' for a Marine
-    class Marine : Unit, Zand.IUpdateable
+    class Marine : Unit, Zand.IUpdateable, IRenderable
     {
+        public byte ControlGroup = 0;
+
         public Marine(int allegianceId) : base(allegianceId,
             attackRange: 200,
             sightRange: 250,
@@ -107,6 +109,23 @@ namespace MicroMarine.Components
         private void AddAllegiance()
         {
             Entity.AddComponent(Allegiance);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            if (ControlGroup == 0) return;
+
+            var font = Scene.Content.GetContent<SpriteFont>("DebugFont");
+            spriteBatch.DrawString(
+                font,
+                ControlGroup.ToString(),
+                Entity.Position,
+                Color.White,
+                0,
+                new Vector2(35, 60),
+                new Vector2(.3f, .3f),
+                SpriteEffects.None,
+                1);
         }
     }
 }

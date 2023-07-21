@@ -16,6 +16,7 @@ namespace MicroMarine.Components
         private SoundEffectManager _sfxManager;
         private SelectedUnits _selectedUnits;
         private UnitGroupManager _unitManager;
+        private ControlGroupManager _controlGroups;
 
         public List<Entity> SelectableUnits => _units;
 
@@ -29,6 +30,7 @@ namespace MicroMarine.Components
             _selectedUnits = scene.GetComponent<SelectedUnits>();
             _unitManager = scene.GetComponent<UnitGroupManager>();
             _sfxManager = scene.GetComponent<SoundEffectManager>();
+            _controlGroups = new ControlGroupManager();
 
             if (_selectedUnits is null || _unitManager is null || _sfxManager is null)
             {
@@ -58,11 +60,25 @@ namespace MicroMarine.Components
                 Input.Context = InputContext.UnitControl;
             }
 
+
             // Select All Hotkey
             if (Input.KeyWasPressed(Microsoft.Xna.Framework.Input.Keys.Tab) && Input.Context == InputContext.UnitControl)
             {
                 _selectedUnits.SelectAll(_units);
             }
+
+            // Defining Control Groups
+            if (Input.KeyIsDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) && Input.ControlGroupDigitWasPressed())
+            {
+                _controlGroups.AddToGroup(Input.GetControlGroupNumer(), _selectedUnits.Units);
+            }
+
+            // Selecting Control Groups
+            if (Input.ControlGroupDigitWasPressed() && !Input.KeyIsDown(Microsoft.Xna.Framework.Input.Keys.LeftControl))
+            {
+                SelectControlGroup(Input.GetControlGroupNumer());
+            }
+
         }
         
         public bool SameTeam(Entity entity)
@@ -94,6 +110,15 @@ namespace MicroMarine.Components
             }
         }
 
+        private void SelectControlGroup(byte key)
+        {
+            _selectedUnits.DeselectAll();
+
+            foreach (Entity e in _controlGroups.RetrieveGroup(key))
+            {
+                _selectedUnits.SelectUnit(e);
+            }
+        }
 
         private void SelectBoxedUnits()
         {
@@ -110,61 +135,6 @@ namespace MicroMarine.Components
             {
                 _sfxManager.PlaySoundEffect("mReady", limitPlayback: true, randomChoice: true);
             }
-        }
-    }
-
-    public class SelectBox
-    {
-        public Vector2 Origin;
-        public Rectangle Rect;
-        public bool Active { get; private set; }
-
-        public SelectBox()
-        {
-            Origin = Vector2.Zero;
-            Rect = Rectangle.Empty;
-            Active = false;
-        }
-
-        public void SetOrigin(Vector2 origin)
-        {
-            Origin = origin;
-            Active = true;
-        }
-
-        public void UpdateBounds()
-        {
-            Rect = new Rectangle(Origin.ToPoint(), GetBoxSize());
-
-            Zand.Debug.DebugTools.Log($"W: {Rect.Width} H: {Rect.Height}");
-
-            // Adjust box's coordinates based on mouse position
-            if (Input.MouseScreenPosition.X < Origin.X)
-            {
-                Rect.X -= (int)(Origin.X - Input.MouseScreenPosition.X);
-            }
-
-            if (Input.MouseScreenPosition.Y < Origin.Y)
-            {
-                Rect.Y -= (int)(Origin.Y - Input.MouseScreenPosition.Y);
-            }
-        }
-
-        public void Clear()
-        {
-            Rect = Rectangle.Empty;
-            Origin = Vector2.Zero;
-            Active = false;
-        }
-
-        public bool Intersects(Rectangle rect)
-        {
-            return Rect.Intersects(rect);
-        }
-
-        private Point GetBoxSize()
-        {
-            return Calc.AbsVector2(Origin - Input.MouseScreenPosition).ToPoint();
         }
     }
 }
