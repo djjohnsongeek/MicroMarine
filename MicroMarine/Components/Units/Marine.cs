@@ -91,8 +91,12 @@ namespace MicroMarine.Components
 
         public override void OnRemovedFromEntity()
         {
-            Entity.Scene.GetComponent<SoundEffectManager>().StopAllSoundEffects(Entity);
-            Entity.Scene.GetComponent<SoundEffectManager>().PlaySoundEffect("mDeath", limitPlayback: true, randomChoice: true);
+            var sfxManger = Entity.Scene.GetComponent<SoundEffectManager>();
+            var controlGroups = Entity.Scene.GetComponent<UnitSelector>().ControlGroups;
+
+            sfxManger.StopAllSoundEffects(Entity);
+            sfxManger.PlaySoundEffect("mDeath", limitPlayback: true, randomChoice: true);
+            controlGroups.RemoveEntity(Entity);
             CreateDeadBody();
         }
 

@@ -58,11 +58,12 @@ namespace MicroMarine.Components
             }
         }
 
-        private void RemoveEntity(Entity e)
+        public void RemoveEntity(Entity e)
         {
-            byte key = e.GetComponent<Marine>().ControlGroup;
-            EnsureKeyHasValue(key);
-            _groups[key].Remove(e);
+            var marine = e.GetComponent<Marine>();
+            EnsureKeyHasValue(marine.ControlGroup);
+            _groups[marine.ControlGroup].Remove(e);
+            marine.ControlGroup = 0;
         }
 
         private void AddToGroup(byte key, Entity entity)

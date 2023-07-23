@@ -16,7 +16,8 @@ namespace MicroMarine.Components
         private SoundEffectManager _sfxManager;
         private SelectedUnits _selectedUnits;
         private UnitGroupManager _unitManager;
-        private ControlGroupManager _controlGroups;
+        public ControlGroupManager ControlGroups;
+
 
         public List<Entity> SelectableUnits => _units;
 
@@ -30,13 +31,15 @@ namespace MicroMarine.Components
             _selectedUnits = scene.GetComponent<SelectedUnits>();
             _unitManager = scene.GetComponent<UnitGroupManager>();
             _sfxManager = scene.GetComponent<SoundEffectManager>();
-            _controlGroups = new ControlGroupManager();
+            ControlGroups = new ControlGroupManager();
 
             if (_selectedUnits is null || _unitManager is null || _sfxManager is null)
             {
                 throw new NullReferenceException("Required Scene Components 'SelectedUnits', 'UnitGroupManager', 'SoundFXManger' not found.'");
             }
         }
+
+
 
         public override void Update()
         {
@@ -70,7 +73,7 @@ namespace MicroMarine.Components
             // Defining Control Groups
             if (Input.KeyIsDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) && Input.ControlGroupDigitWasPressed())
             {
-                _controlGroups.AddToGroup(Input.GetControlGroupNumer(), _selectedUnits.Units);
+                ControlGroups.AddToGroup(Input.GetControlGroupNumer(), _selectedUnits.Units);
             }
 
             // Selecting Control Groups
@@ -114,7 +117,7 @@ namespace MicroMarine.Components
         {
             _selectedUnits.DeselectAll();
 
-            foreach (Entity e in _controlGroups.RetrieveGroup(key))
+            foreach (Entity e in ControlGroups.RetrieveGroup(key))
             {
                 _selectedUnits.SelectUnit(e);
             }
