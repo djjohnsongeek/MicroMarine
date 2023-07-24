@@ -37,6 +37,18 @@ namespace Zand
 
             return value;
         }
+
+        public static int CompareFloat(float x, float y)
+        {
+            if (x == y)
+            {
+                return 0;
+            }
+
+            return (int)(x - y);
+        }
+
+
         /// <summary>
         /// Given an Entity's Screen Y coordiante and height calculate it's layer depth.
         /// </summary>

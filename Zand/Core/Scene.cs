@@ -25,7 +25,6 @@ namespace Zand
         public UserInterface UI;
         public Random Rng;
         public LightMap Lighting;
-        public TileMap Map;
 
 
         public bool GameIsActive => Core._instance.IsActive;
@@ -110,12 +109,6 @@ namespace Zand
 
             // Clear Screen
             Core._instance.GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // Draw Map
-            if (Map != null)
-            {
-                Map.Draw(SpriteBatch, Camera);
-            }
 
             // Game Objects/ Entities
             Entities.Draw();

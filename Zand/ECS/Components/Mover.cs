@@ -15,7 +15,6 @@ namespace Zand.ECS.Components
     {
         private float maxSpeed;
         public Vector2 Velocity = Vector2.Zero;
-        private TileMap _tileMap = null;
         public UnitDirection Orientation { get; private set; }
 
         public Mover (float maxSpeed)
@@ -28,13 +27,11 @@ namespace Zand.ECS.Components
         {
             Entity.Position += Velocity * (float)Time.DeltaTime;
             Orientation = DetermineUnitDirection(Velocity);
-            GetTileMap().ResolveMapCollisions(Entity.GetComponent<CircleCollider>());
             UpdateEntityLayerDepth();
         }
 
         public override void OnRemovedFromEntity()
         {
-            _tileMap = null;
             base.OnRemovedFromEntity();
         }
 
@@ -47,18 +44,6 @@ namespace Zand.ECS.Components
         {
             Vector2 screenPos = Scene.Camera.GetScreenLocation(Entity.Position);
             Entity.layerDepth = Calc.CalculateLayerDepth(screenPos.Y, Entity.Dimensions.Y);
-        }
-
-        private TileMap GetTileMap()
-        {
-            if (_tileMap != null)
-            {
-                return _tileMap;
-            }
-
-            _tileMap = Scene.Map;
-                       //Scene.FindEntity("tileMap").GetComponent<TileMap>();
-            return _tileMap;
         }
 
         public UnitDirection DetermineUnitDirection(Vector2 velocity)

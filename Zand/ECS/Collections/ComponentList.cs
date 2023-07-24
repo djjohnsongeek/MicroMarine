@@ -35,7 +35,7 @@ namespace Zand
 
         public void Remove(Component component)
         {
-            _componentsToRemove.Remove(component);
+            _componentsToRemove.Add(component);
         }
 
         public void RemoveAll()
