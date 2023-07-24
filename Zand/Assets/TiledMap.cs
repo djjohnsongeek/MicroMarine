@@ -17,13 +17,13 @@ namespace Zand.Assets
         public int NextObjectId;
 
         public List<TileSet> TileSets;
+        public List<Layer> Layers;
 
 
         public TiledMap(string filename)
         {
             var doc = new XmlDocument();
             doc.Load(filename);
-
 
             var mapNode = doc.DocumentElement.FirstChild;
             var attributes = mapNode.Attributes;
@@ -53,14 +53,10 @@ namespace Zand.Assets
 
             foreach (XmlNode layerNode in layerNodes)
             {
-
+                Layers.Add(new Layer(layerNode));
             }
 
-            //Read in the TMX file.
-            //Parse the TMX file as an XML file.
-            //Load all the tileset images.
-            //Arrange the tileset images into our map layout, layer by layer.
-            //Read map object.
+            // load object layers
         }
     }
 }
