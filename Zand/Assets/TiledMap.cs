@@ -49,6 +49,13 @@ namespace Zand.Assets
                 TileSets.Add(new TileSet(firstgId, source));
             }
 
+            var layerNodes = doc.GetElementsByTagName("layer");
+
+            foreach (XmlNode layerNode in layerNodes)
+            {
+
+            }
+
             //Read in the TMX file.
             //Parse the TMX file as an XML file.
             //Load all the tileset images.
