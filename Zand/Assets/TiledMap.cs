@@ -18,6 +18,7 @@ namespace Zand.Assets
 
         public List<TileSet> TileSets;
         public List<Layer> Layers;
+        public List<ObjectGroup> ObjectGroups;
 
 
         public TiledMap(string filename)
@@ -25,7 +26,7 @@ namespace Zand.Assets
             var doc = new XmlDocument();
             doc.Load(filename);
 
-            var mapNode = doc.DocumentElement.FirstChild;
+            var mapNode = doc.DocumentElement;
             var attributes = mapNode.Attributes;
 
             Width = int.Parse(attributes.GetNamedItem("width").Value);
@@ -35,11 +36,12 @@ namespace Zand.Assets
             NextLayerId = int.Parse(attributes.GetNamedItem("nextlayerid").Value);
             NextObjectId = int.Parse(attributes.GetNamedItem("nextobjectid").Value);
 
-            TileSets = new List<TileSet>();
+
 
             var tileSetNodes = doc.GetElementsByTagName("tileset");
 
             // Parse Tilesets
+            TileSets = new List<TileSet>();
             foreach (XmlNode node in tileSetNodes)
             {
                 attributes = node.Attributes;
@@ -51,12 +53,18 @@ namespace Zand.Assets
 
             var layerNodes = doc.GetElementsByTagName("layer");
 
+            Layers = new List<Layer>();
             foreach (XmlNode layerNode in layerNodes)
             {
                 Layers.Add(new Layer(layerNode));
             }
 
             // load object layers
+            ObjectGroups = new List<ObjectGroup>();
+            foreach (XmlNode objGroupNode in doc.GetElementsByTagName("objectgroup"))
+            {
+                ObjectGroups.Add(new ObjectGroup(objGroupNode));
+            }
         }
     }
 }

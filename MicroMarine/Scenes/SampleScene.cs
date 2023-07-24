@@ -45,6 +45,9 @@ namespace MicroMarine.Scenes
         {
             base.Load();
 
+
+            TiledMap tiledMap = new TiledMap("Content/Maps/Simple.tmx");
+
             // Textures...
             Content.LoadTexture("waypoint", "Content/waypoint.png");
             Content.LoadTexture("waypointAttack", "Content/waypoint_attack.png");

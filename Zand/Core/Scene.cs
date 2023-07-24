@@ -38,6 +38,7 @@ namespace Zand
 
         public Scene()
         {
+            SetWindowSize(800, 400);
             Entities = new EntityList(this);
             Content = new ZandContentManager(Core._instance.Services, Core._instance.Content.RootDirectory);
             SpriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);

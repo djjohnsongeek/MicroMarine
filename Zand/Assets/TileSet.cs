@@ -28,7 +28,7 @@ namespace Zand.Assets
             var doc = new XmlDocument();
             doc.Load(path);
 
-            var tilesetNode = doc.DocumentElement.FirstChild;
+            var tilesetNode = doc.DocumentElement;
             var tilesetImageNode = tilesetNode.FirstChild;
             var attributes = tilesetNode.Attributes;
 

@@ -3,11 +3,11 @@
  <editorsettings>
   <export target="Simple..tmx" format="tmx"/>
  </editorsettings>
- <tileset firstgid="1" source="Content/Maps/Dirt.tsx"/>
- <tileset firstgid="25" source="Content/Maps/CrashedShip.tsx"/>
- <tileset firstgid="85" source="Content/Maps/Marine.tsx"/>
- <tileset firstgid="181" source="Content/Maps/Rocks.tsx"/>
- <tileset firstgid="485" source="Content/Maps/ShipParts.tsx"/>
+ <tileset firstgid="1" source="Dirt.tsx"/>
+ <tileset firstgid="25" source="CrashedShip.tsx"/>
+ <tileset firstgid="85" source="Marine.tsx"/>
+ <tileset firstgid="181" source="Rocks.tsx"/>
+ <tileset firstgid="485" source="ShipParts.tsx"/>
  <layer id="1" name="Background" width="100" height="100">
   <data encoding="csv">
 7,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,9,
