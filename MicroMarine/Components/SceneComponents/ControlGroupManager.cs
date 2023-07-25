@@ -26,7 +26,7 @@ namespace MicroMarine.Components
             // Add Entities to their new group
             for (int i = 0; i < entities.Count; i++)
             {
-                entities[i].GetComponent<Marine>().ControlGroup = key;
+                entities[i].GetComponent<ControlGroup>().SetControlGroup(key);
                 AddToGroup(key, entities[i]);
             }
         }
@@ -37,7 +37,7 @@ namespace MicroMarine.Components
             {
                 for (int i = 0; i < _groups[key].Count; i++)
                 {
-                    _groups[key][i].GetComponent<Marine>().ControlGroup = 0;
+                    _groups[key][i].GetComponent<ControlGroup>().SetControlGroup(0);
                 }
 
                 _groups[key].Clear();
@@ -60,10 +60,10 @@ namespace MicroMarine.Components
 
         public void RemoveEntity(Entity e)
         {
-            var marine = e.GetComponent<Marine>();
-            EnsureKeyHasValue(marine.ControlGroup);
-            _groups[marine.ControlGroup].Remove(e);
-            marine.ControlGroup = 0;
+            var controlGroup = e.GetComponent<ControlGroup>();
+            EnsureKeyHasValue(controlGroup.Id);
+            _groups[controlGroup.Id].Remove(e);
+            controlGroup.SetControlGroup(0);
         }
 
         private void AddToGroup(byte key, Entity entity)

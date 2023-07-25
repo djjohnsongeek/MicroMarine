@@ -12,8 +12,6 @@ namespace MicroMarine.Components
     // Acts as 'Loading Component' for a Marine
     class Marine : Unit, Zand.IUpdateable
     {
-        public byte ControlGroup = 0;
-
         public Marine(int allegianceId) : base(allegianceId,
             attackRange: 200,
             sightRange: 250,
@@ -52,6 +50,10 @@ namespace MicroMarine.Components
             AddAllegiance();
 
             Entity.AddComponent(new ChemLightAbility(Color.White, 29));
+
+            var controlGroup = new ControlGroup();
+            controlGroup.RenderLayer = 6;
+            Entity.AddComponent(controlGroup);
         }
 
         private void AddAnimationComponents()
@@ -122,22 +124,5 @@ namespace MicroMarine.Components
         {
             Entity.AddComponent(Allegiance);
         }
-
-        //public void Draw(SpriteBatch spriteBatch)
-        //{
-        //    if (ControlGroup == 0) return;
-
-        //    var font = Scene.Content.GetContent<SpriteFont>("DebugFont");
-        //    spriteBatch.DrawString(
-        //        font,
-        //        ControlGroup.ToString(),
-        //        Entity.Position,
-        //        Color.White,
-        //        0,
-        //        new Vector2(-12, -8),
-        //        Vector2.One,
-        //        SpriteEffects.None,
-        //        1);
-        //}
     }
 }

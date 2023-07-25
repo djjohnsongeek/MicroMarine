@@ -5,7 +5,6 @@ using Zand.Assets;
 using Microsoft.Xna.Framework.Graphics;
 using MicroMarine.Components.Units;
 using Zand.Graphics.Lighting;
-using Zand.Components;
 using MicroMarine.Ui;
 
 namespace MicroMarine.Scenes
