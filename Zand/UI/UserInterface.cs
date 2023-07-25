@@ -6,6 +6,7 @@ namespace Zand.UI
     public class UserInterface
     {
         public List<UIElement> Elements;
+        private Scene _scene;
 
         private bool _enabled;
         public bool Enabled => _enabled;
@@ -23,9 +24,10 @@ namespace Zand.UI
             return default(T);
         }
 
-        public UserInterface()
+        public UserInterface(Scene scene)
         {
             _enabled = true;
+            _scene = scene;
             Elements = new List<UIElement>();
         }
 
@@ -45,18 +47,12 @@ namespace Zand.UI
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-
-            foreach (var element in Elements)
+            for (int i = 0; i < Elements.Count; i++)
             {
-                if (element.Enabled)
-                {
-                    element.Draw(spriteBatch);
-                }
-
+                Elements[i].Draw(spriteBatch);
             }
 
             spriteBatch.End();
         }
-
     }
 }

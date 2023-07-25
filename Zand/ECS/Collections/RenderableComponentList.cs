@@ -41,7 +41,11 @@ namespace Zand.ECS.Collections
         {
             foreach (var c in _components)
             {
-                c.RenderDepth = c.Entity.RenderDepth;
+                if (c.Entity != null)
+                {
+                    c.RenderDepth = c.Entity.RenderDepth;
+                }
+
             }
 
             if (_needsSorting)

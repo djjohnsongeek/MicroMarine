@@ -2,14 +2,17 @@
 
 namespace Zand.UI
 {
-    public abstract class UIElement : IUpdateable
+    public abstract class UIElement
     {
         protected bool _enabled;
         protected Scene _scene;
 
-        public bool Enabled => _enabled;
+        public bool Enabled => throw new System.NotImplementedException();
 
         public abstract void Update();
-        public abstract void Draw(SpriteBatch spriteBatch);
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+        }
     }
 }

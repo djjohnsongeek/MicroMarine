@@ -18,7 +18,7 @@ namespace Zand
 
                 if (_prevRenderDepth != _renderDepth)
                 {
-                    Entity.Scene.RenderableComponents.MarkAsUnSorted();
+                    Entity?.Scene.RenderableComponents.MarkAsUnSorted();
                 }
             }
         }
@@ -28,7 +28,7 @@ namespace Zand
             set
             {
                 _renderLayer = value;
-                Entity.Scene.RenderableComponents.MarkAsUnSorted();
+                Entity?.Scene.RenderableComponents.MarkAsUnSorted();
             }
         }
 

@@ -96,7 +96,7 @@ namespace MicroMarine.Ui
                 Cursors[CurrentCursor].OriginOffset,
                 Vector2.One,
                 SpriteEffects.None,
-                1);
+                0);
         }
     }
 

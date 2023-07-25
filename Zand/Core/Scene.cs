@@ -44,7 +44,7 @@ namespace Zand
             SpriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);
             SceneComponents = new SceneComponentList(this);
             RenderableComponents = new RenderableComponentList(this);
-            UI = new UserInterface();
+            UI = new UserInterface(this);
             Rng = new Random();
         }
 
@@ -123,7 +123,7 @@ namespace Zand
             // Draw Effects
             // Draw UI
 
-            // UI.Draw(SpriteBatch);
+            UI.Draw(SpriteBatch);
 
             if (DebugTools.Active)
             {
