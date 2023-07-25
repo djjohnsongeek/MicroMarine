@@ -28,10 +28,12 @@ namespace MicroMarine.Components.Units
 
         public override void OnAddedToEntity()
         {
+            Entity.Dimensions = new Point(texture.Width, texture.Height);
             float max = 6.28f;
             _rotation = (float)Entity.Scene.Rng.NextDouble() * max;
-            //_rotation = 0;
             Time.AddTimer(_duration, Entity.Destroy);
+            RenderLayer = 1;
+            RenderDepth = Calc.CalculateRenderDepth(Entity.Position.Y, Entity.Dimensions.Y);
         }
 
         public override void Draw(SpriteBatch sbatch)

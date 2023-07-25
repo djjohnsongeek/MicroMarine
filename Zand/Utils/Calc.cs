@@ -55,7 +55,7 @@ namespace Zand
         /// <param name="entityYPos"></param>
         /// <param name="entityHeight"></param>
         /// <returns>A float between 1.0 and 0.0 </returns>
-        public static float CalculateLayerDepth(float entityYPos, int entityHeight)
+        public static float CalculateRenderDepth(float entityYPos, int entityHeight)
         {
             return ((entityYPos + entityHeight) * 0.00001f) + 0.00001f;
         }

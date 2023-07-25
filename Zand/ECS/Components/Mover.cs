@@ -43,7 +43,7 @@ namespace Zand.ECS.Components
         private void UpdateEntityLayerDepth()
         {
             Vector2 screenPos = Scene.Camera.GetScreenLocation(Entity.Position);
-            Entity.RenderDepth = Calc.CalculateLayerDepth(screenPos.Y, Entity.Dimensions.Y);
+            Entity.RenderDepth = Calc.CalculateRenderDepth(screenPos.Y, Entity.Dimensions.Y);
         }
 
         public UnitDirection DetermineUnitDirection(Vector2 velocity)

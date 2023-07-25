@@ -32,7 +32,7 @@ namespace MicroMarine.Components
 
             var health = new Health(100, 100);
             Entity.AddComponent(health);
-            health.RenderLayer = 1;
+            health.RenderLayer = 2;
 
             Entity.AddComponent(new Mover(Speed));
             Entity.AddComponent(new CommandQueue());
@@ -71,8 +71,8 @@ namespace MicroMarine.Components
 
             Entity.AddComponent(animator);
 
-            // 0 is map, 1 is units, 2 is map forground
-            animator.RenderLayer = 1;
+            // 0 is map, 1 is decals, 2 is units, 3 is map forground
+            animator.RenderLayer = 2;
         }
 
         private void AddCollisionComponents()

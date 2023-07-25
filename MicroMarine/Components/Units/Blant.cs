@@ -52,8 +52,8 @@ namespace MicroMarine.Components.Units
             animator.AddAnimation("AttackWest", new Animation(blantSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
             Entity.AddComponent(animator);
 
-            // 0 is map, 1 is units, 2 map top
-            animator.RenderLayer = 1;
+            // 0 is map, 1 is decals,  2 is units, 3 map top
+            animator.RenderLayer = 2;
 
             // colliders
             MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle(Entity.Position.ToPoint(), new Point(26, 30)), new Vector2(-13, -14));
