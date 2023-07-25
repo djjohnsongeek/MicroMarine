@@ -69,7 +69,6 @@ namespace Zand.ECS.Collections
             }
 
             Scene.SpriteBatch.End();
-
         }
 
         private void SortComponents()
@@ -84,7 +83,6 @@ namespace Zand.ECS.Collections
         public override int Compare(RenderableComponent x, RenderableComponent y)
         {
             // higher values need to be first
-            // x - y
             var res = x.RenderLayer.CompareTo(y.RenderLayer);
             if (res == 0)
             {
