@@ -25,6 +25,7 @@ namespace Zand
         public UserInterface UI;
         public Random Rng;
         public LightMap Lighting;
+        public RenderableComponentList RenderableComponents;
 
 
         public bool GameIsActive => Core._instance.IsActive;
@@ -42,6 +43,7 @@ namespace Zand
             Content = new ZandContentManager(Core._instance.Services, Core._instance.Content.RootDirectory);
             SpriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);
             SceneComponents = new SceneComponentList(this);
+            RenderableComponents = new RenderableComponentList(this);
             UI = new UserInterface();
             Rng = new Random();
         }
@@ -101,6 +103,7 @@ namespace Zand
             UI.Update();
             Lighting.Update();
 
+            RenderableComponents.Update();
         }
 
         public virtual void Draw()
@@ -111,7 +114,7 @@ namespace Zand
             Core._instance.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // Game Objects/ Entities
-            Entities.Draw();
+            RenderableComponents.Draw();
 
             // Draw lightmap
             Lighting.Draw(SpriteBatch);
@@ -120,7 +123,7 @@ namespace Zand
             // Draw Effects
             // Draw UI
 
-            UI.Draw(SpriteBatch);
+            // UI.Draw(SpriteBatch);
 
             if (DebugTools.Active)
             {

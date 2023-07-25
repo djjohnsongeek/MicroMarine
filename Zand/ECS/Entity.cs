@@ -21,7 +21,7 @@ namespace Zand
         public Vector2 ScreenPosition => Position - Origin;
         public Vector2 Origin;
         public Point Dimensions;
-        public float layerDepth = 0;
+        public float RenderDepth = 0;
 
         public string Name { get; set; }
         public Scene Scene;
@@ -49,11 +49,6 @@ namespace Zand
         public T GetComponent<T>(bool onlyInitialized = false) where T: Component
         {
             return Components.GetComponent<T>(onlyInitialized);
-        }
-
-        internal void Draw(SpriteBatch spriteBatch)
-        {
-            Components.Draw(spriteBatch);
         }
 
         public void Destroy()

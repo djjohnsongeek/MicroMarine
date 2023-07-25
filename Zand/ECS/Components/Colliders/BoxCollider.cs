@@ -5,7 +5,7 @@ using Zand.Physics;
 
 namespace Zand.Colliders
 {
-    public class BoxCollider : Collider, ICollider, IRenderable
+    public class BoxCollider : Collider, ICollider
     {
         public Rectangle HitBox;
 

@@ -4,20 +4,18 @@ using Zand;
 
 namespace MicroMarine.Components.Units
 {
-    class Decale : Component, IRenderable
+    class Decale : RenderableComponent
     {
         protected Texture2D texture;
         protected Vector2 _entityOffset;
-        protected float _layer;
 
         public Decale(Texture2D texture, Vector2 entityOffset)
         {
             this.texture = texture;
-            _layer = 0.0000001f;
             _entityOffset = entityOffset;
         }
 
-        public virtual void Draw(SpriteBatch sbatch)
+        public override void Draw(SpriteBatch sbatch)
         {
             sbatch.Draw(
                 texture,
@@ -28,7 +26,7 @@ namespace MicroMarine.Components.Units
                 _entityOffset,
                 1,
                 SpriteEffects.None,
-                _layer
+                0 // ignored now
              );
         }
     }

@@ -7,7 +7,7 @@ using Zand.Graphics;
 
 namespace Zand.Components
 {
-    public class MouseSelectCollider : BoxCollider, IUpdateable, IRenderable
+    public class MouseSelectCollider : BoxCollider, IUpdateable
     {
         public bool Selected = false;
 

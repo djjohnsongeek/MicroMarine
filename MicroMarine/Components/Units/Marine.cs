@@ -10,7 +10,7 @@ using Zand.ECS.Components;
 namespace MicroMarine.Components
 {
     // Acts as 'Loading Component' for a Marine
-    class Marine : Unit, Zand.IUpdateable, IRenderable
+    class Marine : Unit, Zand.IUpdateable
     {
         public byte ControlGroup = 0;
 
@@ -30,7 +30,10 @@ namespace MicroMarine.Components
             Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
 
 
-            Entity.AddComponent(new Health(100, 100));
+            var health = new Health(100, 100);
+            Entity.AddComponent(health);
+            health.RenderLayer = 1;
+
             Entity.AddComponent(new Mover(Speed));
             Entity.AddComponent(new CommandQueue());
 
@@ -67,6 +70,9 @@ namespace MicroMarine.Components
             animator.AddAnimation("AttackWest", new Animation(marineSheet, spriteSheet.GetFrames(88, 95), 24, Animation.LoopMode.Loop));
 
             Entity.AddComponent(animator);
+
+            // 0 is map, 1 is units, 2 is map forground
+            animator.RenderLayer = 1;
         }
 
         private void AddCollisionComponents()
@@ -115,21 +121,21 @@ namespace MicroMarine.Components
             Entity.AddComponent(Allegiance);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            if (ControlGroup == 0) return;
+        //public void Draw(SpriteBatch spriteBatch)
+        //{
+        //    if (ControlGroup == 0) return;
 
-            var font = Scene.Content.GetContent<SpriteFont>("DebugFont");
-            spriteBatch.DrawString(
-                font,
-                ControlGroup.ToString(),
-                Entity.Position,
-                Color.White,
-                0,
-                new Vector2(-12, -8),
-                Vector2.One,
-                SpriteEffects.None,
-                1);
-        }
+        //    var font = Scene.Content.GetContent<SpriteFont>("DebugFont");
+        //    spriteBatch.DrawString(
+        //        font,
+        //        ControlGroup.ToString(),
+        //        Entity.Position,
+        //        Color.White,
+        //        0,
+        //        new Vector2(-12, -8),
+        //        Vector2.One,
+        //        SpriteEffects.None,
+        //        1);
+        //}
     }
 }

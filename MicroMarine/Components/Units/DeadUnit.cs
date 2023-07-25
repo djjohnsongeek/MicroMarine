@@ -45,7 +45,7 @@ namespace MicroMarine.Components.Units
                 _entityOffset,
                 1,
                 SpriteEffects.None,
-                _layer
+                0 // ignored now
              );
         }
     }

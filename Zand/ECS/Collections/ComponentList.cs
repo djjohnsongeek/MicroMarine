@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
+using Zand.ECS;
 
 namespace Zand
 {
@@ -10,7 +11,6 @@ namespace Zand
         private List<Component> _components;
         private List<Component> _componentsToAdd;
         private List<Component> _componentsToRemove;
-        private List<IRenderable> _renderableComponents;
         private List<IUpdateable> _updatableComponents;
 
         internal int Count
@@ -23,7 +23,6 @@ namespace Zand
             _components = new List<Component>();
             _componentsToAdd = new List<Component>();
             _componentsToRemove = new List<Component>();
-            _renderableComponents = new List<IRenderable>();
             _updatableComponents = new List<IUpdateable>();
             Entity = entity;
         }
@@ -42,12 +41,16 @@ namespace Zand
         {
             foreach (var component in _components)
             {
+                if (component is RenderableComponent)
+                {
+                    Entity.Scene.RenderableComponents.Remove(component as RenderableComponent);
+                }
+
                 HandleRemoval(component);
             }
             _componentsToAdd.Clear();
             _componentsToRemove.Clear();
             _components.Clear();
-            _renderableComponents.Clear();
             _updatableComponents.Clear();
             Entity = null;
         }
@@ -103,17 +106,6 @@ namespace Zand
             UpdateComponentLists();
         }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            for (int i = 0; i < _renderableComponents.Count; i++)
-            {
-                if (_renderableComponents[i].Enabled)
-                {
-                    _renderableComponents[i].Draw(spriteBatch);
-                }
-            }
-        }
-
         private void HandleRemovals()
         {
             if (_componentsToRemove.Count > 0)
@@ -125,9 +117,9 @@ namespace Zand
                         _updatableComponents.Remove(_componentsToRemove[i] as IUpdateable);
                     }
 
-                    if (_componentsToRemove[i] is IRenderable)
+                    if (_componentsToRemove[i] is RenderableComponent)
                     {
-                        _renderableComponents.Remove(_componentsToRemove[i] as IRenderable);
+                        Entity.Scene.RenderableComponents.Remove(_componentsToRemove[i] as RenderableComponent);
                     }
 
                     _componentsToRemove[i].OnRemovedFromEntity();
@@ -151,9 +143,9 @@ namespace Zand
                         _updatableComponents.Add(_componentsToAdd[i] as IUpdateable);
                     }
 
-                    if (_componentsToAdd[i] is IRenderable)
+                    if (_componentsToAdd[i] is RenderableComponent)
                     {
-                        _renderableComponents.Add(_componentsToAdd[i] as IRenderable);
+                        Entity.Scene.RenderableComponents.Add(_componentsToAdd[i] as RenderableComponent);
                     }
 
                     _components.Add(_componentsToAdd[i]);

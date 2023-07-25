@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Zand.UI
 {
-    public class UserInterface : IRenderable
+    public class UserInterface
     {
         public List<UIElement> Elements;
 

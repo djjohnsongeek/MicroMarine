@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace MicroMarine.Components
 {
-    class DropShip : Component, Zand.IUpdateable, IRenderable
+    class DropShip : RenderableComponent, Zand.IUpdateable
     {
 
         FloatTween Z;
@@ -36,7 +36,7 @@ namespace MicroMarine.Components
 
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
                 _texture,
@@ -47,7 +47,8 @@ namespace MicroMarine.Components
                 _origin,
                 Vector2.One,
                 SpriteEffects.None,
-                0);
+                0 // ignored now
+           );
         }
     }
 }

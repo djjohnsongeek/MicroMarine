@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Zand.ECS.Components
 {
-    public class BouncingSprite : Component, IUpdateable, IRenderable
+    public class BouncingSprite : RenderableComponent, IUpdateable
     {
         private Texture2D _texture;
         private Texture2D _shadowTexture;
@@ -49,7 +49,7 @@ namespace Zand.ECS.Components
             Entity.Position += Velocity * (float)Time.DeltaTime;
             _rotation += _rotationSpeed * (float)Time.DeltaTime;
 
-            Entity.layerDepth = Calc.CalculateLayerDepth(Entity.Scene.Camera.GetScreenLocation(Entity.Position).Y, _texture.Height);
+            Entity.RenderDepth = Calc.CalculateLayerDepth(Entity.Scene.Camera.GetScreenLocation(Entity.Position).Y, _texture.Height);
 
             Zspeed += _gravity * (float)Time.DeltaTime;
             Z += Zspeed;
@@ -62,7 +62,7 @@ namespace Zand.ECS.Components
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
                 _texture,
@@ -73,7 +73,7 @@ namespace Zand.ECS.Components
                 new Vector2(_texture.Width / 2, _texture.Height / 2),
                 Vector2.One,
                 SpriteEffects.None,
-                Entity.layerDepth
+                0 // no longer used
             );
 
 
@@ -88,7 +88,7 @@ namespace Zand.ECS.Components
                     new Vector2(_shadowTexture.Width / 2, _shadowTexture.Height - 5),
                     CalculateShadowScale(),
                     SpriteEffects.None,
-                    Entity.layerDepth - .000000001f
+                    0 // no longer used
                 );
             }
         }

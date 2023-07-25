@@ -92,29 +92,6 @@ namespace Zand
             return entities.ToArray();
         }
 
-        internal void Draw()
-        {
-            Matrix? matrix = Scene.Camera == null ? null : Scene.Camera.GetTransformation();
-            Scene.SpriteBatch.Begin(
-                SpriteSortMode.FrontToBack,
-                BlendState.NonPremultiplied,
-                SamplerState.PointClamp,
-                null,
-                null,
-                null,
-                matrix
-            );
-            for (int i = 0; i < _entities.Count; i++)
-            {
-                if (_entities[i].Enabled)
-                {
-                    _entities[i].Draw(Scene.SpriteBatch);
-                }
-
-            }
-            Scene.SpriteBatch.End();
-        }
-
         internal void UpdateEntityLists()
         {
             HandleRemovals();

@@ -1,27 +1,81 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace Zand.ECS.Collections
 {
     public class RenderableComponentList: IUpdateable
     {
+        public Scene Scene;
         public List<RenderableComponent> _components;
         private bool _needsSorting;
         private static readonly Comparer<RenderableComponent> RenderableComparer = new RenderableComparer();
 
         public bool Enabled => true;
 
-        public RenderableComponentList()
+
+        public void MarkAsUnSorted()
         {
             _needsSorting = true;
         }
 
+        public RenderableComponentList(Scene scene)
+        {
+            _needsSorting = true;
+            _components = new List<RenderableComponent>();
+            Scene = scene;
+        }
+
+        public void Add(RenderableComponent c)
+        {
+            _components.Add(c);
+            MarkAsUnSorted();
+        }
+
+        public void Remove(RenderableComponent c)
+        {
+            _components.Remove(c);
+        }
 
         public void Update()
         {
+            foreach (var c in _components)
+            {
+                c.RenderDepth = c.Entity.RenderDepth;
+            }
+
             if (_needsSorting)
             {
-                _components.Sort(RenderableComparer);
+                SortComponents();
             }
+        }
+
+        public void Draw()
+        {
+            Matrix? matrix = Scene.Camera?.GetTransformation();
+            Scene.SpriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.NonPremultiplied,
+                SamplerState.PointClamp,
+                null,
+                null,
+                null,
+                matrix
+            );
+
+            for (int i = 0; i < _components.Count; i++)
+            {
+                _components[i].Draw(Scene.SpriteBatch);
+            }
+
+            Scene.SpriteBatch.End();
+
+        }
+
+        private void SortComponents()
+        {
+            _components.Sort(RenderableComparer);
+            _needsSorting = false;
         }
     }
 
@@ -31,16 +85,13 @@ namespace Zand.ECS.Collections
         {
             // higher values need to be first
             // x - y
-            var diff = x.RenderLayer - y.RenderLayer;
-            if (diff == 0)
+            var res = x.RenderLayer.CompareTo(y.RenderLayer);
+            if (res == 0)
             {
-                float depthDiff = x.RenderDepth - x.RenderLayer;
-                return Calc.CompareFloat(x.RenderDepth, y.RenderDepth);
+                return x.RenderDepth.CompareTo(y.RenderDepth);
             }
-            else
-            {
-                return diff;
-            }
+
+            return res;
         }
     }
 }

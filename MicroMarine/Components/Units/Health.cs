@@ -6,7 +6,7 @@ using Zand.Graphics;
 
 namespace MicroMarine.Components
 {
-    internal class Health : Component, Zand.IUpdateable, IRenderable
+    internal class Health : RenderableComponent, Zand.IUpdateable
     {
         public int HitPoints;
         public int MaxHitPoints;
@@ -51,7 +51,7 @@ namespace MicroMarine.Components
             DamageRect.Y = HealthRect.Y;
         }
 
-        public void Draw(SpriteBatch sbatch)
+        public override void Draw(SpriteBatch sbatch)
         {
             if (HitPoints < MaxHitPoints)
             {
@@ -66,8 +66,6 @@ namespace MicroMarine.Components
                 Vector2 healthEnd = new Vector2(end.X - pixelDamage, end.Y);
 
                 var color = Entity.GetComponent<UnitAllegiance>().Color;
-
-
 
                 Shapes.DrawLine(sbatch, Scene.DebugPixelTexture, start, end, DamageRect.Height, _damageColor, .8f);
                 Shapes.DrawLine(sbatch, Scene.DebugPixelTexture, start, healthEnd, HealthRect.Height, color, 1);

@@ -3,10 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Zand.Assets;
+using Zand.ECS;
 
 namespace Zand.Components
 {
-    public class Animator : Component, IRenderable, IUpdateable
+    public class Animator : RenderableComponent, IUpdateable
     {
         private Dictionary<string, Animation> _animations;
         private Animation _currentAnimation;
@@ -95,7 +96,7 @@ namespace Zand.Components
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
                 _currentAnimation.Texture,
@@ -106,7 +107,7 @@ namespace Zand.Components
                 Entity.Origin,
                 1,
                 SpriteEffects.None,
-                Entity.layerDepth
+                0 // ignored now
            );
         }
 
