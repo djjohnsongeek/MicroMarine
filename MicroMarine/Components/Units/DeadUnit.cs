@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Zand;
 namespace MicroMarine.Components.Units
 {
-    class DeadUnit : Decale
+    class DeadUnit : SimpleSprite
     {
         private Rectangle? _srcRect;
         private float _duration;

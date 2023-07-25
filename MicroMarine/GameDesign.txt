@@ -4,3 +4,11 @@
 Chem Lights:
 Required to see your surroundings
 Why would you NOT use a chem light as soon as the cooldown is finished?
+
+
+0 map
+1 decals
+2 shadows
+3 selection
+4 units
+5 map top

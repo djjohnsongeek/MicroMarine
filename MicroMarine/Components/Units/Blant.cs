@@ -28,8 +28,9 @@ namespace MicroMarine.Components.Units
         {
             Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
 
-
-            Entity.AddComponent(new Health(250, 250)); //250
+            var health = new Health(250, 250);
+            health.RenderLayer = 4;
+            Entity.AddComponent(health);
             Entity.AddComponent(new Mover(Speed));
             Entity.AddComponent(new CommandQueue());
 
@@ -52,8 +53,7 @@ namespace MicroMarine.Components.Units
             animator.AddAnimation("AttackWest", new Animation(blantSheet, spriteSheet.GetFrames(0, 3), 8, Animation.LoopMode.Loop));
             Entity.AddComponent(animator);
 
-            // 0 is map, 1 is decals,  2 is units, 3 map top
-            animator.RenderLayer = 2;
+            animator.RenderLayer = 4;
 
             // colliders
             MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle(Entity.Position.ToPoint(), new Point(26, 30)), new Vector2(-13, -14));
@@ -66,7 +66,9 @@ namespace MicroMarine.Components.Units
 
 
             // shadows
-            Entity.AddComponent(new Decale(Scene.Content.GetContent<Texture2D>("mediumUnitShadow"), new Vector2(16, -12)));
+            var shadow = new SimpleSprite(Scene.Content.GetContent<Texture2D>("mediumUnitShadow"), new Vector2(16, -12));
+            shadow.RenderLayer = 2;
+            Entity.AddComponent(shadow);
 
             // states
             _stateMachine.AddState(new BlantSpawn());

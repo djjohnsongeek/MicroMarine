@@ -32,15 +32,19 @@ namespace MicroMarine.Components
 
             var health = new Health(100, 100);
             Entity.AddComponent(health);
-            health.RenderLayer = 2;
+            health.RenderLayer = 4;
 
             Entity.AddComponent(new Mover(Speed));
             Entity.AddComponent(new CommandQueue());
 
             Texture2D shadowTexture = Scene.Content.GetContent<Texture2D>("smallUnitShadow");
             Texture2D selectTexture = Scene.Content.GetContent<Texture2D>("smallUnitSelect");
-            Entity.AddComponent(new Decale(shadowTexture, new Vector2(10, -12)));
-            Entity.AddComponent(new SelectionIndicator(selectTexture, new Vector2(10, -12)));
+            var unitShadow = new SimpleSprite(shadowTexture, new Vector2(10, -12));
+            var selectionShadow = new SelectionIndicator(selectTexture, new Vector2(10, -12));
+            unitShadow.RenderLayer = 2;
+            selectionShadow.RenderLayer = 3;
+            Entity.AddComponent(unitShadow);
+            Entity.AddComponent(selectionShadow);
 
             AddAnimationComponents();
             AddCollisionComponents();
@@ -70,9 +74,7 @@ namespace MicroMarine.Components
             animator.AddAnimation("AttackWest", new Animation(marineSheet, spriteSheet.GetFrames(88, 95), 24, Animation.LoopMode.Loop));
 
             Entity.AddComponent(animator);
-
-            // 0 is map, 1 is decals, 2 is units, 3 is map forground
-            animator.RenderLayer = 2;
+            animator.RenderLayer = 4;
         }
 
         private void AddCollisionComponents()

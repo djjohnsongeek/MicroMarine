@@ -4,12 +4,12 @@ using Zand;
 
 namespace MicroMarine.Components.Units
 {
-    class Decale : RenderableComponent
+    class SimpleSprite : RenderableComponent
     {
         protected Texture2D texture;
         protected Vector2 _entityOffset;
 
-        public Decale(Texture2D texture, Vector2 entityOffset)
+        public SimpleSprite(Texture2D texture, Vector2 entityOffset)
         {
             this.texture = texture;
             _entityOffset = entityOffset;
