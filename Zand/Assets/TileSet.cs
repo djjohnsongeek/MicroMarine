@@ -16,25 +16,23 @@ namespace Zand.Assets
         public int TileCount;
         public int Columns;
         public int Rows;
-        public string ImagePath;
+        public string ImageSource;
         public int ImageWidth;
         public int ImageHeight;
         public Texture2D Texture;
+        public TiledMap Map;
 
         public Dictionary<int, Rectangle> TileBank;
 
-        public TileSet(int firstgid, string path)
+        public TileSet(TiledMap map, XmlNode tilesetNode)
         {
-            FirstGId = firstgid;
-            var doc = new XmlDocument();
-            doc.Load(path);
-
-            var tilesetNode = doc.DocumentElement;
+            Map = map;
             var tilesetImageNode = tilesetNode.FirstChild;
 
             // Parse Attributes
             var attributes = tilesetNode.Attributes;
 
+            FirstGId = int.Parse(attributes.GetNamedItem("firstgid").Value);
             Name = attributes.GetNamedItem("name").Value;
             TileWidth = int.Parse(attributes.GetNamedItem("tilewidth").Value);
             TileHeight = int.Parse(attributes.GetNamedItem("tileheight").Value);
@@ -42,7 +40,7 @@ namespace Zand.Assets
             Columns = int.Parse(attributes.GetNamedItem("columns").Value);
 
             attributes = tilesetImageNode.Attributes;
-            ImagePath = attributes.GetNamedItem("source").Value;
+            ImageSource = attributes.GetNamedItem("source").Value;
             ImageWidth = int.Parse(attributes.GetNamedItem("width").Value);
             ImageHeight = int.Parse(attributes.GetNamedItem("height").Value);
 
@@ -63,7 +61,10 @@ namespace Zand.Assets
             TileBank.TrimExcess();
 
             // Load Texture
-            Texture = Texture2D.FromStream(Core.GraphicsManager.GraphicsDevice, File.OpenRead(ImagePath));
+            Texture = Texture2D.FromStream(
+                Core.GraphicsManager.GraphicsDevice,
+                File.OpenRead(Path.Join(Map.CustomProperties["ContentDirectory"], ImageSource))
+            );
         }
 
         public Rectangle GetSrcRect(int tileId)
