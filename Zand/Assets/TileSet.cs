@@ -25,6 +25,8 @@ namespace Zand.Assets
         public int ImageHeight;
         public Texture2D Texture;
 
+        public Dictionary<int, Rectangle> TileBank;
+
         public TileSet(int firstgid, string path)
         {
             FirstGId = firstgid;
@@ -33,6 +35,8 @@ namespace Zand.Assets
 
             var tilesetNode = doc.DocumentElement;
             var tilesetImageNode = tilesetNode.FirstChild;
+
+            // Parse Attributes
             var attributes = tilesetNode.Attributes;
 
             Name = attributes.GetNamedItem("name").Value;
@@ -49,24 +53,31 @@ namespace Zand.Assets
             Rows = ImageHeight / TileWidth;
             LastGId = TileCount + FirstGId - 1;
 
+            // Populate Tile Bank
+            int tileGid = FirstGId;
+            TileBank = new Dictionary<int, Rectangle>(TileCount);
+            for (int y = 0; y < Rows; y++)
+            {
+                for (int x = 0; x < Columns; x++)
+                {
+                    TileBank[tileGid] = new Rectangle(x * TileWidth, y * TileHeight, TileWidth, TileHeight);
+                    tileGid++;
+                }
+            }
+            TileBank.TrimExcess();
 
-
-
+            // Load Texture
             Texture = Texture2D.FromStream(Core.GraphicsManager.GraphicsDevice, File.OpenRead(ImagePath));
         }
 
         public Rectangle GetTileBounds(int tileId)
         {
-            if (tileId > LastGId || tileId < FirstGId)
-            {
-                throw new ArgumentOutOfRangeException($"Tile Id {tileId} does not exist in the {Name} Tileset");
-            }
-
-
-
-
-            return new Rectangle();
+            return TileBank[tileId];
         }
 
+        public bool Contains(int gid)
+        {
+            return gid >= FirstGId && gid <= LastGId;
+        }
     }
 }

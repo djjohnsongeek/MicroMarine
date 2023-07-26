@@ -67,9 +67,17 @@ namespace Zand.Assets
             }
         }
 
-        public void InitMap()
+        public TileSet GetGIdTileSet(int gId)
         {
+            for (int i = 0; i < TileSets.Count; i++)
+            {
+                if (TileSets[i].Contains(gId))
+                {
+                    return TileSets[i];
+                }
+            }
 
+            return null;
         }
     }
 }
