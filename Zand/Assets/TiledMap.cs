@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Xml;
 
@@ -12,6 +13,7 @@ namespace Zand.Assets
         public int TileHeight;
         public int NextLayerId;
         public int NextObjectId;
+        public Vector2 Center => new Vector2(Width * TileWidth * .5f, Height * TileWidth * .5f);
 
         public List<TileSet> TileSets;
         public List<Layer> Layers;

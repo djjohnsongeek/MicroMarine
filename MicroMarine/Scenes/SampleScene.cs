@@ -184,7 +184,7 @@ namespace MicroMarine.Scenes
             // Place Marines
             for (int i = 0; i < 15; i++)
             {
-                Entity unit = CreateEntity("unit", RandomPosition(Vector2.Zero, 60));
+                Entity unit = CreateEntity("unit", RandomPosition(tiledMap.Center, 60));
                 unit.AddComponent(new Marine(1));
                 unitSelector.AddUnit(unit);
                 Lighting.AddLight(new SimpleLight(unit, lightTexture, new Color(255, 255, 255, 255), new Vector2(.4f, .4f), new Vector2(0, -5f)));
@@ -197,7 +197,7 @@ namespace MicroMarine.Scenes
             );
 
             // Center on Marines
-            Camera.Position = Vector2.Zero;
+            Camera.Position = tiledMap.Center;
 
             //
             var command = CreateEntity("marineCommand", Vector2.Zero);
