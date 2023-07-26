@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
-using System.Threading.Tasks;
-using System.IO;
 
 namespace Zand.Assets
 {
-    public class TiledMap
+    public class TiledMap : Component
     {
         public int Width;
         public int Height;
@@ -35,9 +32,6 @@ namespace Zand.Assets
             TileHeight = int.Parse(attributes.GetNamedItem("tileheight").Value);
             NextLayerId = int.Parse(attributes.GetNamedItem("nextlayerid").Value);
             NextObjectId = int.Parse(attributes.GetNamedItem("nextobjectid").Value);
-
-
-
             var tileSetNodes = doc.GetElementsByTagName("tileset");
 
             // Parse Tilesets
@@ -56,7 +50,8 @@ namespace Zand.Assets
             Layers = new List<Layer>();
             foreach (XmlNode layerNode in layerNodes)
             {
-                Layers.Add(new Layer(this, layerNode));
+                var layer = new Layer(this, layerNode);
+                Layers.Add(layer);
             }
 
             // load object layers
@@ -65,6 +60,39 @@ namespace Zand.Assets
             {
                 ObjectGroups.Add(new ObjectGroup(this, objGroupNode));
             }
+        }
+
+        public override void OnAddedToEntity()
+        {
+            foreach (var layer in Layers)
+            {
+                Scene.RenderableComponents.Add(layer);
+            }
+        }
+
+        private Layer GetLayer(string name)
+        {
+            for (int i = 0; i < Layers.Count; i++)
+            {
+                if (Layers[i].Name == name)
+                {
+                    return Layers[i];
+                }
+            }
+
+            return null;
+        }
+
+        public void SetLayerRenderLayer(string name, int renderLayer, float renderDepth = 0)
+        {
+            var layer = GetLayer(name);
+            if (layer is null)
+            {
+                throw new NullReferenceException($"No layer with the name {name} could be found.");
+            }
+
+            layer.RenderLayer = renderLayer;
+            layer.RenderDepth = renderDepth;
         }
 
         public TileSet GetGIdTileSet(int gId)

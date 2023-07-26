@@ -44,8 +44,13 @@ namespace MicroMarine.Scenes
         {
             base.Load();
 
-
+            // Map
+            var map = CreateEntity("sampleMap", Vector2.Zero);
             TiledMap tiledMap = new TiledMap("Content/Maps/Simple.tmx");
+            tiledMap.SetLayerRenderLayer("Background", 0, 0);
+            tiledMap.SetLayerRenderLayer("Foreground", 0, .5f);
+            tiledMap.SetLayerRenderLayer("Top", 5);
+            map.AddComponent(tiledMap);
 
             // Textures...
             Content.LoadTexture("waypoint", "Content/waypoint.png");

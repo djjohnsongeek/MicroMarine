@@ -70,7 +70,7 @@ namespace Zand.Assets
             Texture = Texture2D.FromStream(Core.GraphicsManager.GraphicsDevice, File.OpenRead(ImagePath));
         }
 
-        public Rectangle GetTileBounds(int tileId)
+        public Rectangle GetSrcRect(int tileId)
         {
             return TileBank[tileId];
         }

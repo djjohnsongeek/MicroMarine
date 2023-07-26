@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +9,7 @@ using System.Xml;
 
 namespace Zand.Assets
 {
-    public class Layer
+    public class Layer : RenderableComponent
     {
         public TiledMap Map;
         public string Name;
@@ -16,6 +18,7 @@ namespace Zand.Assets
         public int Height;
         public int[] Data;
         public Tile[] Tiles;
+        public int TileCount;
 
         public Layer(TiledMap map, XmlNode layerNode)
         {
@@ -53,13 +56,40 @@ namespace Zand.Assets
                     // Ignore 0, means empty tile
                     if (gIds[index] > 0)
                     {
-                        tiles.Add(new Tile(gIds[index], x * Map.TileWidth, y * Map.TileHeight, Map.GetGIdTileSet(gIds[index])));
+                        var tile = new Tile
+                        {
+                            GId = gIds[index],
+                            X = x * Map.TileWidth,
+                            Y = y * Map.TileHeight,
+                            TileSet = Map.GetGIdTileSet(gIds[index])
+                        };
+                        tiles.Add(tile);
                     }
                     index++;
                 }
             }
 
+            TileCount = tiles.Count;
             return tiles.ToArray();
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            for (int i = 0; i < TileCount; i++)
+            {
+                var tile = Tiles[i];
+                spriteBatch.Draw(
+                    texture: tile.TileSet.Texture,
+                    position: new Vector2(tile.X, tile.Y),
+                    sourceRectangle: tile.TileSet.GetSrcRect(tile.GId),
+                    color: Color.White,
+                    rotation: 0,
+                    origin: Vector2.Zero,
+                    scale: Vector2.One,
+                    effects: SpriteEffects.None,
+                    layerDepth: 0
+                );
+            }
         }
     }
 }
