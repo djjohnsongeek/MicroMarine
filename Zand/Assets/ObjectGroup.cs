@@ -1,5 +1,6 @@
-﻿using System.Numerics;
+﻿using Microsoft.Xna.Framework;
 using System.Xml;
+using Zand.Colliders;
 
 namespace Zand.Assets
 {
@@ -24,7 +25,6 @@ namespace Zand.Assets
             {
                 Objects[i] = new TiledObject(objectNodes[i]);
             }
-
         }
     }
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using Zand.Colliders;
 
 namespace Zand.Assets
 {
@@ -74,9 +75,30 @@ namespace Zand.Assets
 
         public override void OnAddedToEntity()
         {
+            // register renderables
             foreach (var layer in Layers)
             {
                 Scene.RenderableComponents.Add(layer);
+            }
+
+            // register colliders
+            foreach (var objectGroup in ObjectGroups)
+            {
+                if(CustomProperties["CollisionLayer"] == objectGroup.Name)
+                {
+                    foreach (var obj in objectGroup.Objects)
+                    {
+                        if (obj.Type == TiledObjectType.Rect)
+                        {
+                            var colliderEntity = Scene.CreateEntity("mapCollider", obj.Position);
+                            var collider = new BoxCollider(new Rectangle(obj.Position.ToPoint(), obj.Dimensions.Value.ToPoint()), Vector2.Zero);
+                            collider.Static = true;
+                            colliderEntity.AddComponent(collider);
+                            Scene.RegisterCollider(collider);
+                        }
+                    }
+                }
+                
             }
         }
 

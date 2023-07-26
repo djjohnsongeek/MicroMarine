@@ -193,7 +193,7 @@ namespace MicroMarine.Scenes
             //Add Blant Spawner
             Entity blantSpawner = CreateEntity("unitSpawner", Vector2.Zero + new Vector2(-20, 60));
             blantSpawner.AddComponent(
-                new UnitSpawner<Blant>(Vector2.Zero, totalSpawns: 100, unitPerWave: 2, waveDelay: 8, waveStep: 2)
+                new UnitSpawner<Blant>(new Vector2(200, 200), totalSpawns: 100, unitPerWave: 2, waveDelay: 8, waveStep: 2)
             );
 
             // Center on Marines
