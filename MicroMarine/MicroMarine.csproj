@@ -109,7 +109,7 @@
     <None Update="Content\blant_sheet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\crashed_ship.png">
+    <None Update="Content\Maps\crashed_ship.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Content\creature-sheet.png">
@@ -133,7 +133,7 @@
     <None Update="Content\Debug.spritefont">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\dirt_sheet16.png">
+    <None Update="Content\Maps\dirt_sheet16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Content\dirt_sheet32.png">
@@ -166,9 +166,6 @@
     <None Update="Content\Maps\Dirt.tsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\Maps\Marine.tsx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Content\Maps\Rocks.tsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -190,13 +187,13 @@
     <None Update="Content\medium_unit_shadow.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\rocks_sheet.png">
+    <None Update="Content\Maps\rocks_sheet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Content\ship.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\ship_parts32.png">
+    <None Update="Content\Maps\ship_parts32.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Content\small_unit_select.png">
