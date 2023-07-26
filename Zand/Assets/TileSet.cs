@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,12 +12,14 @@ namespace Zand.Assets
 {
     public class TileSet
     {
-        public int FirstGID;
+        public int FirstGId;
+        public int LastGId;
         public string Name;
         public int TileWidth;
         public int TileHeight;
         public int TileCount;
         public int Columns;
+        public int Rows;
         public string ImagePath;
         public int ImageWidth;
         public int ImageHeight;
@@ -24,7 +27,7 @@ namespace Zand.Assets
 
         public TileSet(int firstgid, string path)
         {
-            FirstGID = firstgid;
+            FirstGId = firstgid;
             var doc = new XmlDocument();
             doc.Load(path);
 
@@ -43,7 +46,26 @@ namespace Zand.Assets
             ImageWidth = int.Parse(attributes.GetNamedItem("width").Value);
             ImageHeight = int.Parse(attributes.GetNamedItem("height").Value);
 
+            Rows = ImageHeight / TileWidth;
+            LastGId = TileCount + FirstGId - 1;
+
+
+
+
             Texture = Texture2D.FromStream(Core.GraphicsManager.GraphicsDevice, File.OpenRead(ImagePath));
+        }
+
+        public Rectangle GetTileBounds(int tileId)
+        {
+            if (tileId > LastGId || tileId < FirstGId)
+            {
+                throw new ArgumentOutOfRangeException($"Tile Id {tileId} does not exist in the {Name} Tileset");
+            }
+
+
+
+
+            return new Rectangle();
         }
 
     }

@@ -8,10 +8,11 @@ namespace Zand.Assets
         public int Id;
         public string Name;
         public TiledObject[] Objects;
+        public TiledMap Map;
 
-
-        public ObjectGroup(XmlNode node)
+        public ObjectGroup(TiledMap map, XmlNode node)
         {
+            Map = map;
             var attributes = node.Attributes;
 
             Id = int.Parse(attributes.GetNamedItem("id").Value);

@@ -9,14 +9,16 @@ namespace Zand.Assets
 {
     public class Layer
     {
+        public TiledMap Map;
         public string Name;
         public int Id;
         public int Width;
         public int Height;
         public int[] Data;
 
-        public Layer(XmlNode layerNode)
+        public Layer(TiledMap map, XmlNode layerNode)
         {
+            Map = map;
             var attributes = layerNode.Attributes;
 
             Name = attributes.GetNamedItem("name").Value;

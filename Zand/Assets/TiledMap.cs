@@ -56,15 +56,20 @@ namespace Zand.Assets
             Layers = new List<Layer>();
             foreach (XmlNode layerNode in layerNodes)
             {
-                Layers.Add(new Layer(layerNode));
+                Layers.Add(new Layer(this, layerNode));
             }
 
             // load object layers
             ObjectGroups = new List<ObjectGroup>();
             foreach (XmlNode objGroupNode in doc.GetElementsByTagName("objectgroup"))
             {
-                ObjectGroups.Add(new ObjectGroup(objGroupNode));
+                ObjectGroups.Add(new ObjectGroup(this, objGroupNode));
             }
+        }
+
+        public void InitMap()
+        {
+
         }
     }
 }
