@@ -40,6 +40,11 @@ namespace Zand.ECS.Components
             Entity.Position += velocity * (float)Time.DeltaTime;
         }
 
+        public void SetPosition(Vector2 newPosition)
+        {
+            Entity.Position = newPosition;
+        }
+
         private void UpdateEntityLayerDepth()
         {
             Vector2 screenPos = Scene.Camera.GetScreenLocation(Entity.Position);

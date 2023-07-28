@@ -89,10 +89,13 @@ namespace Zand.Physics
 
         public void AddCollider(ICollider collider)
         {
-            AddToCell(GetCellHash(collider.BottomRight), collider);
-            AddToCell(GetCellHash(collider.TopLeft), collider);
-            AddToCell(GetCellHash(collider.TopRight), collider);
-            AddToCell(GetCellHash(collider.BottomLeft), collider);
+            for (float x = collider.TopLeft.X; x <= collider.BottomRight.X; x++)
+            {
+                for (float y = collider.TopLeft.Y; y <= collider.BottomRight.Y; y++)
+                {
+                    AddToCell(GetCellHash(new Vector2(x, y)), collider);
+                }
+            }
         }
 
         private void AddToCell(long cellHash, ICollider collider)

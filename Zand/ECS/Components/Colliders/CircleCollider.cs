@@ -38,7 +38,7 @@ namespace Zand.Colliders
 
         public override void Draw(SpriteBatch sbatch)
         {
-            sbatch.Draw(Shapes.CreateCircleTexture(Radius * 2), Entity.Scene.Camera.GetScreenLocation(Center), null, Tint, 0, Origin, 1, SpriteEffects.None, 0);
+            sbatch.Draw(Shapes.CreateCircleTexture(Radius * 2), Center, null, Tint, 0, Origin, 1, SpriteEffects.None, 0);
         }
     }
 }

@@ -118,7 +118,7 @@ namespace Zand.Physics
 
                     if (result.Collides)
                     {
-                        ApplyRepel(_colliders[i].Entity, possibles.ElementAt(j).Entity, result);
+                        ApplyRepel(_colliders[i], possibles.ElementAt(j), result);
                     }
                 }
             }
@@ -145,8 +145,60 @@ namespace Zand.Physics
         }
 
 
-        private void ApplyRepel(Entity entity1, Entity entity2, CollisionResult collision)
+        private void ApplyRepel(ICollider collider1, ICollider collider2, CollisionResult collision)
         {
+
+            var entity1 = collider1.Entity;
+            var entity2 = collider2.Entity;
+
+            var entity1Movement = entity1.GetComponent<Mover>();
+            var entity2Movement = entity2.GetComponent<Mover>();
+
+            var mapCollider = GetCollider("mapCollider", collider1, collider2);
+            var unitCollider = GetCollider("unit", collider1, collider2);
+
+            if (mapCollider != null && unitCollider != null)
+            {
+
+                Vector2 newPosition = unitCollider.Entity.Position;
+
+                // Y
+
+
+                //if (unitCollider.TopLeft.Y <= mapCollider.BottomLeft.Y)
+                //{
+                //    if (unitCollider is CircleCollider cc)
+                //    {
+                //        newPosition.Y = mapCollider.BottomLeft.Y + 4;
+                //    }
+
+                //}
+                //else if (unitCollider.BottomLeft.Y <= mapCollider.TopLeft.Y)
+                //{
+                //    if (unitCollider is CircleCollider cc)
+                //    {
+                //        newPosition.Y = mapCollider.TopLeft.Y - 4;
+                //    }
+
+                //}
+
+                // X
+                //if (unitCollider.Center.X < mapCollider.Center.X)
+                //{
+                //    if (unitCollider is CircleCollider cc)
+                //    {
+                //        newPosition.X = mapCollider.TopLeft.X - 8;
+                //    }
+
+                //}
+
+
+
+                var mover = unitCollider.Entity.GetComponent<Mover>();
+                mover.SetPosition(newPosition);
+                return;
+            }
+
             var repelVelocity1 = new Vector2(
                 GetRepelX(collision.Angle, collision.RepelStrength),
                 GetRepelY(collision.Angle, collision.RepelStrength)
@@ -164,9 +216,6 @@ namespace Zand.Physics
             {
                 repelVelocity2 = Vector2.Zero;
             }
-
-            var entity1Movement = entity1.GetComponent<Mover>();
-            var entity2Movement = entity2.GetComponent<Mover>();
 
             // adjustments
             //if (entity1Movement.CurrentWayPoint == null && entity2Movement.CurrentWayPoint != null)
@@ -201,6 +250,21 @@ namespace Zand.Physics
             //}
 
 
+        }
+
+        private ICollider GetCollider(string filter, ICollider c1, ICollider c2)
+        {
+            if (c1.Entity.Name == filter)
+            {
+                return c1;
+            }
+
+            if (c2.Entity.Name == filter)
+            {
+                return c2;
+            }
+
+            return null;
         }
 
         private float GetRepelX(double angle, float power)

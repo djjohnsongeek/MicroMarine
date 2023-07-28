@@ -26,14 +26,14 @@ namespace Zand.Debug
         public static void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(
-                SpriteSortMode.Deferred,
-                BlendState.NonPremultiplied,
-                null, null, null, null, null
+                sortMode: SpriteSortMode.Deferred,
+                blendState: BlendState.NonPremultiplied,
+                transformMatrix: _scene.Camera.GetTransformation()
             );
 
             if (Active)
             {
-                _debugConsole.Draw(spriteBatch);
+                //_debugConsole.Draw(spriteBatch);
                 _scene.Physics.Draw(spriteBatch);
             }
 
