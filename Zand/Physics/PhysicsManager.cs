@@ -108,6 +108,7 @@ namespace Zand.Physics
         {
             for (int i = 0; i < _colliders.Count; i++)
             {
+                _colliders[i].Tint = Color.White;
                 IReadOnlyCollection<Collider> possibles = _spatialHash.GetNearby(_colliders[i].Center);
                 for (int j = 0; j < possibles.Count; j++)
                 {
@@ -122,6 +123,7 @@ namespace Zand.Physics
                     if (result.Collides)
                     {
                         ApplyRepel(_colliders[i], possibles.ElementAt(j), result);
+                        _colliders[i].Tint = Color.Red;
                     }
                 }
             }

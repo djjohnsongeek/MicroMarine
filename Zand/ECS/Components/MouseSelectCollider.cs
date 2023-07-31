@@ -1,9 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Zand;
 using Zand.Colliders;
-using Zand.ECS.Components;
-using Zand.Graphics;
 
 namespace Zand.Components
 {
@@ -16,6 +12,11 @@ namespace Zand.Components
         public Rectangle GetScreenLocation()
         {
             return Scene.Camera.GetScreenLocation(HitBox);
+        }
+
+        public override void Update()
+        {
+            HitBox.Location = Entity.Position.ToPoint() + Offset.ToPoint();
         }
     }
 }
