@@ -31,7 +31,7 @@ namespace MicroMarine.Components.Units
             var health = new Health(250, 250);
             health.RenderLayer = 4;
             Entity.AddComponent(health);
-            Entity.AddComponent(new Mover(Speed));
+
             Entity.AddComponent(new CommandQueue());
 
             // animations
@@ -63,6 +63,7 @@ namespace MicroMarine.Components.Units
             CircleCollider collider = new CircleCollider(11, new Vector2(0, 6));
             Entity.AddComponent(collider);
             Scene.RegisterCollider(collider);
+            Entity.AddComponent(new Mover(Speed));
 
 
             // shadows

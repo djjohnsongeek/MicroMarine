@@ -12,7 +12,7 @@ namespace Zand.Physics
 {
     class SpatialHash
     {
-        private Dictionary<long, List<ICollider>> _grid;
+        private Dictionary<long, List<Collider>> _grid;
         private Dictionary<int, List<long>> _entityCoordinates;
         private double _conversionFactor;
         private int _cellSize;
@@ -21,23 +21,23 @@ namespace Zand.Physics
         {
             _conversionFactor = 1d / cellSize;
             _cellSize = cellSize;
-            _grid = new Dictionary<long, List<ICollider>>(1000);
+            _grid = new Dictionary<long, List<Collider>>(1000);
             _entityCoordinates = new Dictionary<int, List<long>>();
         }
 
-        public IReadOnlyCollection<ICollider> GetNearby(Vector2 position)
+        public IReadOnlyCollection<Collider> GetNearby(Vector2 position)
         {
             long cellHash = GetCellHash(position);
             if (!CellExists(cellHash))
             {
-                return new Collection<ICollider>();
+                return new Collection<Collider>();
             }
             return _grid[cellHash];
         }
 
-        public IReadOnlyCollection<ICollider> GetWithin(RectangleF boundingBox)
+        public IReadOnlyCollection<Collider> GetWithin(RectangleF boundingBox)
         {
-            HashSet<ICollider> colliders = new HashSet<ICollider>();
+            HashSet<Collider> colliders = new HashSet<Collider>();
 
             // too much instantiation....
             var topLeft = new Point(GetCellAxis(boundingBox.X), GetCellAxis(boundingBox.Y));
@@ -64,13 +64,13 @@ namespace Zand.Physics
             return colliders;
         }
 
-        public IReadOnlyCollection<ICollider> GetWithin(Vector2 position, float distance)
+        public IReadOnlyCollection<Collider> GetWithin(Vector2 position, float distance)
         {
             var boundingCircle = new Circle(position, distance);
             var boundingBox = new RectangleF(position.X - distance, position.Y - distance, distance * 2, distance * 2);
 
 
-            var colliders = new HashSet<ICollider>();
+            var colliders = new HashSet<Collider>();
             var possibleColliders = GetWithin(boundingBox);
 
             foreach (var collider in possibleColliders)
@@ -87,7 +87,7 @@ namespace Zand.Physics
             return colliders;
         }
 
-        public void AddCollider(ICollider collider)
+        public void AddCollider(Collider collider)
         {
             for (float x = collider.TopLeft.X; x <= collider.BottomRight.X; x++)
             {
@@ -96,14 +96,16 @@ namespace Zand.Physics
                     AddToCell(GetCellHash(new Vector2(x, y)), collider);
                 }
             }
+
+            collider.Dirty = false;
         }
 
-        private void AddToCell(long cellHash, ICollider collider)
+        private void AddToCell(long cellHash, Collider collider)
         {
             // Create New Cell if none exists
             if (!CellExists(cellHash))
             {
-                _grid.Add(cellHash, new List<ICollider>(8));
+                _grid.Add(cellHash, new List<Collider>(8));
             }
 
             // Add collider if it is not already there
@@ -124,7 +126,7 @@ namespace Zand.Physics
             _entityCoordinates[id].Add(cellHash);
         }
 
-        public void RemoveCollider(ICollider collider)
+        public void RemoveCollider(Collider collider)
         {
             // No need to remove if it's not there
             if (!_entityCoordinates.ContainsKey(collider.Entity.Id))
@@ -144,7 +146,7 @@ namespace Zand.Physics
             _entityCoordinates[collider.Entity.Id].Clear();
         }
 
-        private int DetermineColliderIndex(List<ICollider> colliders, ICollider collider)
+        private int DetermineColliderIndex(List<Collider> colliders, Collider collider)
         {
             for (int i = 0; i < colliders.Count; i++)
             {
@@ -157,7 +159,7 @@ namespace Zand.Physics
             return -1;
         }
 
-        private bool ColliderExists(long cellHash, ICollider circleCollider)
+        private bool ColliderExists(long cellHash, Collider circleCollider)
         {
             foreach (var collider in _grid[cellHash])
             {

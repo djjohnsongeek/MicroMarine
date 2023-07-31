@@ -84,7 +84,7 @@ namespace Zand.Assets
             // register colliders
             foreach (var objectGroup in ObjectGroups)
             {
-                if(CustomProperties["CollisionLayer"] == objectGroup.Name)
+                if (CustomProperties["CollisionLayer"] == objectGroup.Name)
                 {
                     foreach (var obj in objectGroup.Objects)
                     {
@@ -98,7 +98,7 @@ namespace Zand.Assets
                         }
                     }
                 }
-                
+
             }
         }
 

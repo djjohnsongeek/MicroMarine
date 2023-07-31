@@ -31,8 +31,6 @@ namespace MicroMarine.Components
             var health = new Health(100, 100);
             Entity.AddComponent(health);
             health.RenderLayer = 4;
-
-            Entity.AddComponent(new Mover(Speed));
             Entity.AddComponent(new CommandQueue());
 
             Texture2D shadowTexture = Scene.Content.GetContent<Texture2D>("smallUnitShadow");
@@ -87,6 +85,8 @@ namespace MicroMarine.Components
             CircleCollider collider = new CircleCollider(9, new Vector2(0, 6));
             Entity.AddComponent(collider);
             Scene.RegisterCollider(collider);
+
+            Entity.AddComponent(new Mover(Speed));
         }
 
         private void AddUnitStates()

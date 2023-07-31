@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Zand.Assets;
+﻿using Microsoft.Xna.Framework;
 using Zand.Colliders;
-using Zand.Components;
-using Zand.Debug;
 
 namespace Zand.ECS.Components
 {
@@ -16,11 +8,18 @@ namespace Zand.ECS.Components
         private float maxSpeed;
         public Vector2 Velocity = Vector2.Zero;
         public UnitDirection Orientation { get; private set; }
+        private CircleCollider _collider;
 
         public Mover (float maxSpeed)
         {
             this.maxSpeed = maxSpeed;
             Orientation = UnitDirection.South;
+
+        }
+
+        public override void OnAddedToEntity()
+        {
+            _collider = Entity.GetComponent<CircleCollider>(onlyInitialized: false);
         }
 
         public void Update()
@@ -28,6 +27,11 @@ namespace Zand.ECS.Components
             Entity.Position += Velocity * (float)Time.DeltaTime;
             Orientation = DetermineUnitDirection(Velocity);
             UpdateEntityLayerDepth();
+
+            if ((Velocity.X > 0 || Velocity.Y > 0) && _collider != null)
+            {
+                _collider.Dirty = true;
+            }
         }
 
         public override void OnRemovedFromEntity()
@@ -38,11 +42,17 @@ namespace Zand.ECS.Components
         public void Nudge(Vector2 velocity)
         {
             Entity.Position += velocity * (float)Time.DeltaTime;
+            if (_collider != null)
+            {
+                _collider.Dirty = true;
+            }
+
         }
 
         public void SetPosition(Vector2 newPosition)
         {
             Entity.Position = newPosition;
+            _collider.Dirty = true;
         }
 
         private void UpdateEntityLayerDepth()

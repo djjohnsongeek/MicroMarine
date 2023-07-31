@@ -12,6 +12,7 @@ namespace Zand.Colliders
         public Vector2 Offset;
         public Vector2 Center => Entity.Position + Offset;
         public Color Tint = Color.White;
+        public bool Dirty = true;
 
         public virtual float Right { get; }
         public virtual float Left { get;  }

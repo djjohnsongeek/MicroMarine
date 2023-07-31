@@ -83,8 +83,8 @@ namespace Zand
             timer.Stop();
 
             // At the time of writing, these two lines make up the majority of allocations that needs to be collected by the GC
-            //DrawFPS();
-            //Window.Title = $"MicroMarine - ms: {timer.ElapsedMilliseconds}";
+            DrawFPS();
+            Window.Title = $"MicroMarine - ms: {timer.ElapsedMilliseconds}";
         }
         #endregion
 

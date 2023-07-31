@@ -14,20 +14,20 @@ namespace Zand.Physics
     public class PhysicsManager
     {
         private SpatialHash _spatialHash;
-        private List<ICollider> _colliders;
+        private List<Collider> _colliders;
 
         public PhysicsManager()
         {
             _spatialHash = new SpatialHash(64);
-            _colliders = new List<ICollider>();
+            _colliders = new List<Collider>();
         }
 
-        public void AddCollider(ICollider collider)
+        public void AddCollider(Collider collider)
         {
             _colliders.Add(collider);
         }
 
-        public void RemoveCollider(ICollider collider)
+        public void RemoveCollider(Collider collider)
         {
             _spatialHash.RemoveCollider(collider);
             _colliders.Remove(collider);
@@ -97,15 +97,18 @@ namespace Zand.Physics
             // Further optimization: only reset colliders that are in motion
             for (int i = 0; i < _colliders.Count; i++)
             {
-                _spatialHash.RemoveCollider(_colliders[i]);
-                _spatialHash.AddCollider(_colliders[i]);
+                if (_colliders[i].Dirty)
+                {
+                    _spatialHash.RemoveCollider(_colliders[i]);
+                    _spatialHash.AddCollider(_colliders[i]);
+                }
             }
         }
         private void ResolveCollisions()
         {
             for (int i = 0; i < _colliders.Count; i++)
             {
-                IReadOnlyCollection<ICollider> possibles = _spatialHash.GetNearby(_colliders[i].Center);
+                IReadOnlyCollection<Collider> possibles = _spatialHash.GetNearby(_colliders[i].Center);
                 for (int j = 0; j < possibles.Count; j++)
                 {
                     // Don't Collide with self
@@ -124,7 +127,7 @@ namespace Zand.Physics
             }
         }
 
-        private CollisionResult TestCollision(ICollider collider1, ICollider collider2)
+        private CollisionResult TestCollision(Collider collider1, Collider collider2)
         {
             if (collider1 is CircleCollider && collider2 is CircleCollider)
             {
@@ -145,7 +148,7 @@ namespace Zand.Physics
         }
 
 
-        private void ApplyRepel(ICollider collider1, ICollider collider2, CollisionResult collision)
+        private void ApplyRepel(Collider collider1, Collider collider2, CollisionResult collision)
         {
 
             var entity1 = collider1.Entity;
@@ -252,7 +255,7 @@ namespace Zand.Physics
 
         }
 
-        private ICollider GetCollider(string filter, ICollider c1, ICollider c2)
+        private Collider GetCollider(string filter, Collider c1, Collider c2)
         {
             if (c1.Entity.Name == filter)
             {

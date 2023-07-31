@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Zand.Assets;
+using Zand.Colliders;
 using Zand.Debug;
 using Zand.ECS.Collections;
 using Zand.ECS.Components;
@@ -136,7 +137,7 @@ namespace Zand
             return SceneComponents.GetSceneComponent<T>();
         }
 
-        public void RegisterCollider(ICollider collider)
+        public void RegisterCollider(Collider collider)
         {
             Physics.AddCollider(collider);
         }
