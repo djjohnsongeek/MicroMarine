@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="2021.03.23" orientation="orthogonal" renderorder="left-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="61">
+<map version="1.5" tiledversion="2021.03.23" orientation="orthogonal" renderorder="left-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="80">
  <editorsettings>
   <export target="Simple.tmx" format="tmx"/>
  </editorsettings>
@@ -232,7 +232,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="4" name="Top" width="100" height="100">
+ <layer id="4" name="Top" width="100" height="100" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -337,16 +337,18 @@
 </data>
  </layer>
  <objectgroup id="3" name="Collision">
-  <object id="28" x="736" y="656" width="48" height="32"/>
-  <object id="29" x="768" y="688" width="80" height="48"/>
-  <object id="31" x="784" y="672" width="32" height="16"/>
-  <object id="33" x="848" y="704" width="32" height="31.6364"/>
-  <object id="34" x="880" y="720" width="16" height="15.6364"/>
-  <object id="38" x="806.75" y="1045.13" width="33.375" height="23.25"/>
+  <object id="38" x="806.75" y="1033.13" width="33.375" height="35.25"/>
   <object id="50" x="0" y="0" width="1599.92" height="28"/>
   <object id="53" x="-8" y="29.25" width="16" height="1570.25"/>
   <object id="54" x="9.75" y="1594" width="1589.75" height="10"/>
   <object id="55" x="1594" y="30" width="9.5" height="1561.5"/>
+  <object id="72" x="833" y="697" width="46.5" height="47.5"/>
+  <object id="73" x="770.5" y="680.5" width="76.5" height="54.5"/>
+  <object id="74" x="880.5" y="715" width="15" height="27"/>
+  <object id="75" x="736" y="666" width="12.5" height="12.5"/>
+  <object id="76" x="773" y="665.5" width="43" height="19.5"/>
+  <object id="77" x="761" y="655.5" width="23.5" height="18"/>
+  <object id="79" x="751.5" y="674" width="17.5" height="19.5"/>
  </objectgroup>
  <objectgroup id="6" name="MapObjects" visible="0">
   <object id="56" name="small-fire" x="824.667" y="723.667">
