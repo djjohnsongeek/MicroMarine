@@ -200,8 +200,8 @@ namespace MicroMarine.Scenes
             Camera.Position = tiledMap.Center;
 
             //
-            var command = CreateEntity("marineCommand", Vector2.Zero);
-            command.AddComponent(new MarineCommand());
+            //var command = CreateEntity("marineCommand", Vector2.Zero);
+            //command.AddComponent(new MarineCommand());
 
         }
 
