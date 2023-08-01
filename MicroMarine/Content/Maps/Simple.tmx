@@ -336,12 +336,12 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="3" name="Collision" visible="0">
+ <objectgroup id="3" name="Collision">
   <object id="38" x="802.417" y="1049.13" width="42.375" height="22.5833"/>
   <object id="50" x="38.6667" y="35.3333" width="1522.59" height="25.3333"/>
-  <object id="53" x="25.3333" y="35.25" width="12" height="1536.92"/>
-  <object id="54" x="35.0833" y="1562" width="1525.08" height="10"/>
-  <object id="55" x="1559.33" y="34" width="9.5" height="1533.5"/>
+  <object id="53" x="29.3333" y="35.25" width="12.6667" height="1536.92"/>
+  <object id="54" x="35.0833" y="1558" width="1525.08" height="14"/>
+  <object id="55" x="1556.67" y="34" width="12.1667" height="1533.5"/>
   <object id="90" x="736.667" y="657" width="160" height="80"/>
  </objectgroup>
  <objectgroup id="6" name="MapObjects">
