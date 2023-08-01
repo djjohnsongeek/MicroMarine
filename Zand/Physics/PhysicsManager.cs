@@ -94,7 +94,6 @@ namespace Zand.Physics
 
         private void UpdateSpatialHash()
         {
-            // Further optimization: only reset colliders that are in motion
             for (int i = 0; i < _colliders.Count; i++)
             {
                 if (_colliders[i].Dirty)
@@ -167,36 +166,30 @@ namespace Zand.Physics
 
                 Vector2 newPosition = unitCollider.Entity.Position;
 
-                // Y
 
+                //If the circle is to the RIGHT of the square, check against the RIGHT edge.
+                if (unitCollider.Center.X > mapCollider.Right)
+                {
+                    newPosition.X = mapCollider.Right + 11;
+                }
 
-                //if (unitCollider.TopLeft.Y <= mapCollider.BottomLeft.Y)
-                //{
-                //    if (unitCollider is CircleCollider cc)
-                //    {
-                //        newPosition.Y = mapCollider.BottomLeft.Y + 4;
-                //    }
+                //If the circle is to the LEFT of the square, check against the LEFT edge.
+                if (unitCollider.Center.X < mapCollider.Left)
+                {
+                    newPosition.X = mapCollider.Left - 11;
+                }
 
-                //}
-                //else if (unitCollider.BottomLeft.Y <= mapCollider.TopLeft.Y)
-                //{
-                //    if (unitCollider is CircleCollider cc)
-                //    {
-                //        newPosition.Y = mapCollider.TopLeft.Y - 4;
-                //    }
+                //If the circle is ABOVE the square, check against the TOP edge.
+                if (unitCollider.Center.Y < mapCollider.Top)
+                {
+                    newPosition.Y = mapCollider.Top - 16;
+                }
 
-                //}
-
-                // X
-                //if (unitCollider.Center.X < mapCollider.Center.X)
-                //{
-                //    if (unitCollider is CircleCollider cc)
-                //    {
-                //        newPosition.X = mapCollider.TopLeft.X - 8;
-                //    }
-
-                //}
-
+                //If the circle is to the BELOW the square, check against the BOTTOM edge.
+                if (unitCollider.Center.Y > mapCollider.Bottom)
+                {
+                    newPosition.Y = mapCollider.Bottom + 4;
+                }
 
 
                 var mover = unitCollider.Entity.GetComponent<Mover>();

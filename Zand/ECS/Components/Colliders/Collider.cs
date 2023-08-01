@@ -26,11 +26,6 @@ namespace Zand.Colliders
         public virtual Vector2 BottomLeft { get; }
         public virtual Vector2 BottomRight { get; }
 
-        public virtual Vector2 TopCenter { get; }
-        public virtual Vector2 RightCenter  { get; }
-        public virtual Vector2 BottomCenter { get; }
-        public virtual Vector2 LeftCenter { get; }
-
         public virtual void Update()
         {
         }

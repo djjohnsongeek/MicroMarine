@@ -22,13 +22,6 @@ namespace Zand.Colliders
         public override Vector2 BottomLeft => new Vector2(Center.X - Radius, Center.Y + Radius);
         public override Vector2 BottomRight => new Vector2(Center.X + Radius, Center.Y + Radius);
 
-        // Center Edges
-        public override Vector2 TopCenter => new Vector2(Center.X, Top);
-        public override Vector2 RightCenter => new Vector2(Right, Center.Y);
-        public override Vector2 BottomCenter => new Vector2(Center.X, Bottom);
-        public override Vector2 LeftCenter => new Vector2(Left, Center.Y);
-
-
         // Edges
         public override float Right => Center.X + Radius;
         public override float Left => Center.X - Radius;

@@ -182,7 +182,7 @@ namespace MicroMarine.Scenes
 
 
             // Place Marines
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 15; i++)
             {
                 Entity unit = CreateEntity("unit", RandomPosition(tiledMap.Center, 60));
                 unit.AddComponent(new Marine(1));
@@ -191,10 +191,10 @@ namespace MicroMarine.Scenes
             }
 
             //Add Blant Spawner
-            Entity blantSpawner = CreateEntity("unitSpawner", Vector2.Zero + new Vector2(-20, 60));
-            blantSpawner.AddComponent(
-                new UnitSpawner<Blant>(new Vector2(200, 200), totalSpawns: 100, unitPerWave: 2, waveDelay: 8, waveStep: 2)
-            );
+            //Entity blantSpawner = CreateEntity("unitSpawner", Vector2.Zero + new Vector2(-20, 60));
+            //blantSpawner.AddComponent(
+            //    new UnitSpawner<Blant>(new Vector2(200, 200), totalSpawns: 100, unitPerWave: 2, waveDelay: 8, waveStep: 2)
+            //);
 
             // Center on Marines
             Camera.Position = tiledMap.Center;

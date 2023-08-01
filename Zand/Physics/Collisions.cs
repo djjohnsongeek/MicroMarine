@@ -63,27 +63,27 @@ namespace Zand.Physics
 
 
             //If the circle is to the RIGHT of the square, check against the RIGHT edge.
-            if (circle.Center.X > box.HitBox.Right)
+            if (circle.Center.X > box.Right)
             {
-                testX = box.HitBox.Right;
+                testX = box.Right;
             }
 
             //If the circle is to the LEFT of the square, check against the LEFT edge.
-            if (circle.Center.X < box.HitBox.X)
+            if (circle.Center.X < box.Left)
             {
-                testX = box.HitBox.Left;
+                testX = box.Left;
             }
 
             //If the circle is ABOVE the square, check against the TOP edge.
-            if (circle.Center.Y < box.HitBox.Top)
+            if (circle.Center.Y < box.Top)
             {
-                testY = box.HitBox.Top;
+                testY = box.Top;
             }
 
             //If the circle is to the BELOW the square, check against the BOTTOM edge.
-            if (circle.Center.Y > box.HitBox.Bottom)
+            if (circle.Center.Y > box.Bottom)
             {
-                testY = box.HitBox.Bottom;
+                testY = box.Bottom;
             }
 
             float distanceX = circle.Center.X - testX;
@@ -93,6 +93,12 @@ namespace Zand.Physics
             result.Angle = Collisions.GetAngle(circle, box);
             result.Collides = result.Distance < result.SafeDistance;
             result.SetRepelStrength();
+
+            if (result.Collides)
+            {
+                Debug.DebugTools.Log("");
+            }
+
             return result;
         }
 
