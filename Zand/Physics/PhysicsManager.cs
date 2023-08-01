@@ -182,13 +182,13 @@ namespace Zand.Physics
                 //If the circle is ABOVE the square, check against the TOP edge.
                 if (unitCollider.Center.Y < mapCollider.Top)
                 {
-                    newPosition.Y = mapCollider.Top - 16;
+                    newPosition.Y = mapCollider.Top - 15;
                 }
 
                 //If the circle is to the BELOW the square, check against the BOTTOM edge.
                 if (unitCollider.Center.Y > mapCollider.Bottom)
                 {
-                    newPosition.Y = mapCollider.Bottom + 4;
+                    newPosition.Y = mapCollider.Bottom + 3;
                 }
 
 
