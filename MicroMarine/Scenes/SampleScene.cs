@@ -190,11 +190,11 @@ namespace MicroMarine.Scenes
                 Lighting.AddLight(new SimpleLight(unit, lightTexture, new Color(255, 255, 255, 255), new Vector2(.4f, .4f), new Vector2(0, -5f)));
             }
 
-            //Add Blant Spawner
-            //Entity blantSpawner = CreateEntity("unitSpawner", Vector2.Zero + new Vector2(-20, 60));
-            //blantSpawner.AddComponent(
-            //    new UnitSpawner<Blant>(new Vector2(200, 200), totalSpawns: 100, unitPerWave: 2, waveDelay: 8, waveStep: 2)
-            //);
+            // Add Blant Spawner
+            Entity blantSpawner = CreateEntity("unitSpawner", Vector2.Zero + new Vector2(-20, 60));
+            blantSpawner.AddComponent(
+                new UnitSpawner<Blant>(new Vector2(200, 200), totalSpawns: 100, unitPerWave: 2, waveDelay: 8, waveStep: 2)
+            );
 
             // Center on Marines
             Camera.Position = tiledMap.Center;
