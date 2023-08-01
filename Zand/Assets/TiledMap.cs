@@ -96,6 +96,12 @@ namespace Zand.Assets
                             colliderEntity.AddComponent(collider);
                             Scene.RegisterCollider(collider);
                         }
+
+                        if (obj.Type == TiledObjectType.Ellipse)
+                        {
+                            var colliderEntity = Scene.CreateEntity("mapCollider", obj.Position);
+                            var collider = new CircleCollider()
+                        }
                     }
                 }
 
