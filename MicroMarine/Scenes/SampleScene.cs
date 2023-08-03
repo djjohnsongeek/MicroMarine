@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MicroMarine.Components.Units;
 using Zand.Graphics.Lighting;
 using MicroMarine.Ui;
+using Zand.Components;
 
 namespace MicroMarine.Scenes
 
@@ -169,16 +170,20 @@ namespace MicroMarine.Scenes
             //Map = new TileMap(32, new Point(Config.MapWidth, Config.MapHeight), mapSpriteSheet, shipSpriteSheet);
 
             //Fire
-            //var fireSheet = new SpriteSheet(fireTexture, 49, 74);
-            //var fire = CreateEntity("fire", Map.Center.ToVector2() + new Vector2(80, -80));
-            //fire.Origin = new Vector2(fire.Dimensions.X / 2, fire.Dimensions.Y / 2);
-            //var fireAnimation = new Animator();
-            //fireAnimation.AddAnimation("burn", new Animation(fireTexture, fireSheet.GetFrames(0, 18), 19, Animation.LoopMode.Loop));
-            //fireAnimation.Play("burn");
-            //fire.AddComponent(fireAnimation);
 
-            //var light = new SimpleLight(fire, lightTexture, new Color(255, 230, 230), Vector2.One, flicker: true);
-            //Lighting.AddLight(light);
+            var fireObject = tiledMap.GetObject("MapObjects", "small-fire");
+
+            var fireSheet = new SpriteSheet(fireTexture, 49, 74);
+            var fire = CreateEntity("fire", fireObject.Position);
+            fire.Origin = new Vector2(24, 74);
+            var fireAnimation = new Animator();
+            fireAnimation.AddAnimation("burn", new Animation(fireTexture, fireSheet.GetFrames(0, 18), 19, Animation.LoopMode.Loop));
+            fireAnimation.Play("burn");
+            fire.AddComponent(fireAnimation);
+            fireAnimation.RenderLayer = 6;
+
+            var light = new SimpleLight(fire, lightTexture, new Color(255, 230, 230), Vector2.One, flicker: true);
+            Lighting.AddLight(light);
 
 
             // Place Marines

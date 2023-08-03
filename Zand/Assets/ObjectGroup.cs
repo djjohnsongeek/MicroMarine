@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Xml;
+using System;
 using Zand.Colliders;
 
 namespace Zand.Assets
@@ -25,6 +26,19 @@ namespace Zand.Assets
             {
                 Objects[i] = new TiledObject(objectNodes[i]);
             }
+        }
+
+        public TiledObject GetObject(string name)
+        {
+            foreach (var tiledObject in Objects)
+            {
+                if (tiledObject.Name == name)
+                {
+                    return tiledObject;
+                }
+            }
+
+            throw new Exception($"Object '{name}' does not exits.");
         }
     }
 

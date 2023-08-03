@@ -139,5 +139,23 @@ namespace Zand.Assets
 
             return null;
         }
+
+        public TiledObject GetObject(string groupName, string objectName)
+        {
+            return GetObjectGroup(groupName).GetObject(objectName);
+        }
+
+        private ObjectGroup GetObjectGroup(string name)
+        {
+            for (int i = 0; i < ObjectGroups.Count; i++)
+            {
+                if (ObjectGroups[i].Name == name)
+                {
+                    return ObjectGroups[i];
+                }
+            }
+
+            throw new Exception("Object Group not found.");
+        }
     }
 }
