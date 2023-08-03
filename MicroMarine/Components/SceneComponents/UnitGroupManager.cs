@@ -64,12 +64,7 @@ namespace MicroMarine.Components
 
                 var cmd = new UnitCommand(CommandType.UseAbility, null, Scene.Camera.GetWorldLocation(Input.MouseScreenPosition));
                 var unitCommandQueue = _selectedUnits.Selected[i].GetComponent<CommandQueue>();
-
-                if (!Input.RightShiftClickOccured())
-                {
-                    unitCommandQueue.Clear();
-                }
-                unitCommandQueue.AddCommand(cmd);
+                unitCommandQueue.InsertCommand(cmd);
                 _allCommands.Add(cmd);
                 executed = true;
                 break;
