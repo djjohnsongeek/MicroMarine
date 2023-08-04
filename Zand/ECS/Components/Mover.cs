@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Zand.Colliders;
+using Zand.Components;
 
 namespace Zand.ECS.Components
 {
@@ -9,6 +10,7 @@ namespace Zand.ECS.Components
         public Vector2 Velocity = Vector2.Zero;
         public UnitDirection Orientation { get; private set; }
         private CircleCollider _collider;
+        private Animator _animator;
 
         public Mover (float maxSpeed)
         {
@@ -20,6 +22,7 @@ namespace Zand.ECS.Components
         public override void OnAddedToEntity()
         {
             _collider = Entity.GetComponent<CircleCollider>(onlyInitialized: false);
+            _animator = Entity.GetComponent<Animator>();
         }
 
         public void Update()
@@ -58,7 +61,7 @@ namespace Zand.ECS.Components
         private void UpdateEntityLayerDepth()
         {
             Vector2 screenPos = Scene.Camera.GetScreenLocation(Entity.Position);
-            Entity.RenderDepth = Calc.CalculateRenderDepth(screenPos.Y, Entity.Dimensions.Y);
+           _animator.RenderDepth = Calc.CalculateRenderDepth(screenPos.Y, Entity.Dimensions.Y);
         }
 
         public UnitDirection DetermineUnitDirection(Vector2 velocity)

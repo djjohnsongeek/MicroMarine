@@ -117,7 +117,8 @@ namespace MicroMarine.Components
             int index = Entity.Scene.Rng.Next(0, 3);
             Rectangle frame = spriteSheet.GetFrame(index);
             var entity = Scene.CreateEntity("deadUnit", Entity.Position);
-            entity.AddComponent(new DeadUnit(deadMarineSheet, new Vector2(15, 0), frame, fadeDuration: 30));
+            var component = new DeadUnit(deadMarineSheet, new Vector2(15, 0), frame, fadeDuration: 30);
+            entity.AddComponent(component);
         }
 
         private void AddAllegiance()

@@ -87,7 +87,8 @@ namespace MicroMarine.Components.Units
         {
             var entity = Scene.CreateEntity("deadUnit", Entity.Position);
             Entity.Scene.GetComponent<SoundEffectManager>().PlaySoundEffect("bDeath", limitPlayback: true, randomChoice: true);
-            entity.AddComponent(new DeadUnit(Scene.Content.GetContent<Texture2D>("deadBlant"), new Vector2(15, 10), null, 30));
+            var component = new DeadUnit(Scene.Content.GetContent<Texture2D>("deadBlant"), new Vector2(15, 10), null, 30);
+            entity.AddComponent(component);
         }
     }
 

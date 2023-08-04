@@ -21,7 +21,6 @@ namespace Zand
         public Vector2 ScreenPosition => Position - Origin;
         public Vector2 Origin;
         public Point Dimensions;
-        public float RenderDepth = 0;
 
         public string Name { get; set; }
         public Scene Scene;

@@ -39,15 +39,6 @@ namespace Zand.ECS.Collections
 
         public void Update()
         {
-            foreach (var c in _components)
-            {
-                if (c.Entity != null)
-                {
-                    c.RenderDepth = c.Entity.RenderDepth;
-                }
-
-            }
-
             if (_needsSorting)
             {
                 SortComponents();

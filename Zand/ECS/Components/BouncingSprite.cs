@@ -49,7 +49,7 @@ namespace Zand.ECS.Components
             Entity.Position += Velocity * (float)Time.DeltaTime;
             _rotation += _rotationSpeed * (float)Time.DeltaTime;
 
-            Entity.RenderDepth = Calc.CalculateRenderDepth(Entity.Scene.Camera.GetScreenLocation(Entity.Position).Y, _texture.Height);
+            RenderDepth = Calc.CalculateRenderDepth(Entity.Scene.Camera.GetScreenLocation(Entity.Position).Y, _texture.Height);
 
             Zspeed += _gravity * (float)Time.DeltaTime;
             Z += Zspeed;
