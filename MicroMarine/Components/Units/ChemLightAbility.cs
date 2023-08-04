@@ -54,14 +54,14 @@ namespace MicroMarine.Components.Units
 
             var startVelocity = new Vector3(diff * Entity.GetComponent<Marine>().AttackRange * .75f, 100 * (float)Time.DeltaTime);
 
-
-            chemLight.AddComponent(
-                new BouncingSprite(
+            var sprite = new BouncingSprite(
                     startVelocity,
                     20,
                     _texture,
-                    Scene.Content.GetContent<Texture2D>("tinyShadow"))
-            );
+                    Scene.Content.GetContent<Texture2D>("tinyShadow"));
+
+            sprite.RenderLayer = 4;
+            chemLight.AddComponent(sprite);
 
             var light = new SimpleLight(chemLight, _lightTexture, _glowColor, new Vector2(1.5f, 1.5f), innerColor: new Color(0, 255, 0, 100));
             Entity.Scene.Lighting.AddLight(light);

@@ -64,18 +64,6 @@ namespace Zand.ECS.Components
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(
-                _texture,
-                new Vector2(Entity.Position.X, Entity.Position.Y - Z),
-                null,
-                Color.White,
-                _rotation,
-                new Vector2(_texture.Width / 2, _texture.Height / 2),
-                Vector2.One,
-                SpriteEffects.None,
-                0 // no longer used
-            );
-
 
             if (true)
             {
@@ -91,6 +79,18 @@ namespace Zand.ECS.Components
                     0 // no longer used
                 );
             }
+
+            spriteBatch.Draw(
+                _texture,
+                new Vector2(Entity.Position.X, Entity.Position.Y - Z),
+                null,
+                Color.White,
+                _rotation,
+                new Vector2(_texture.Width / 2, _texture.Height / 2),
+                Vector2.One,
+                SpriteEffects.None,
+                0 // no longer used
+            );
         }
 
         private Vector2 CalculateShadowScale()

@@ -187,10 +187,10 @@ namespace MicroMarine.Scenes
                 Lighting.AddLight(new SimpleLight(unit, lightTexture, new Color(255, 255, 255, 255), new Vector2(.4f, .4f), new Vector2(0, -5f)));
             }
 
-            // Add Blant Spawner
+            // Add Spawner
             Entity enemySpawner = CreateEntity("unitSpawner", Vector2.Zero + new Vector2(-20, 60));
             enemySpawner.AddComponent(
-                new UnitSpawner<Scuttle>(new Vector2(200, 200), totalSpawns: 100, unitPerWave: 5, waveDelay: 2, waveStep: 4)
+                new UnitSpawner<Scuttle>(new Vector2(200, 200), totalSpawns: 45, unitPerWave: 5, waveDelay: 2, waveStep: 4)
             );
 
             // Center on Marines

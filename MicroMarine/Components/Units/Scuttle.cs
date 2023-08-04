@@ -11,10 +11,10 @@ namespace MicroMarine.Components.Units
     {
         public Scuttle(int allegianceId) : base(
             allegianceId,
-            attackRange: 35,
+            attackRange: 30,
             sightRange: 300,
             followRange: 80,
-            speed: 120,
+            speed: 100,
             damage: 3,
             attacksPerSec: 6)
         {
@@ -30,7 +30,7 @@ namespace MicroMarine.Components.Units
         {
             Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
 
-            var health = new Health(80, 80);
+            var health = new Health(60, 60);
             health.RenderLayer = 5;
             Entity.AddComponent(health);
             Entity.AddComponent(new CommandQueue());
@@ -60,7 +60,7 @@ namespace MicroMarine.Components.Units
             Entity.AddComponent(mouseCollider);
 
 
-            CircleCollider collider = new CircleCollider(6, new Vector2(-8, -4));
+            CircleCollider collider = new CircleCollider(6, new Vector2(-8, -8));
             Entity.AddComponent(collider);
             Scene.RegisterCollider(collider);
             Entity.AddComponent(new Mover(Speed));
