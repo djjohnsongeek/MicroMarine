@@ -38,6 +38,7 @@ namespace Zand
         {
             IsFixedTimeStep = false;
             GraphicsManager.SynchronizeWithVerticalRetrace = false;
+            GraphicsManager.HardwareModeSwitch = false;
             GraphicsManager.ApplyChanges();
 
             if (CurrentScene == null)
