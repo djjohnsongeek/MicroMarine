@@ -200,6 +200,8 @@ namespace Zand.Physics
                 return;
             }
 
+
+
             var repelVelocity1 = new Vector2(
                 GetRepelX(collision.Angle, collision.RepelStrength),
                 GetRepelY(collision.Angle, collision.RepelStrength)
@@ -208,15 +210,15 @@ namespace Zand.Physics
             var repelVelocity2 = Vector2.Multiply(repelVelocity1, -1);
 
 
-            if (entity1.GetComponent<Collider>().Static)
-            {
-                repelVelocity1 = Vector2.Zero;
-            }
+            //if (entity1.GetComponent<Collider>().Static)
+            //{
+            //    repelVelocity1 = Vector2.Zero;
+            //}
 
-            if (entity2.GetComponent<Collider>().Static)
-            {
-                repelVelocity2 = Vector2.Zero;
-            }
+            //if (entity2.GetComponent<Collider>().Static)
+            //{
+            //    repelVelocity2 = Vector2.Zero;
+            //}
 
             // adjustments
             //if (entity1Movement.CurrentWayPoint == null && entity2Movement.CurrentWayPoint != null)
@@ -229,9 +231,20 @@ namespace Zand.Physics
             //    repelVelocity2 = Vector2.Multiply(repelVelocity2, 3);
             //}
 
-            entity1Movement?.Nudge(repelVelocity1);
-            entity2Movement?.Nudge(repelVelocity2);
 
+            if (collider1.Weight > collider2.Weight)
+            {
+                entity2Movement?.Nudge(repelVelocity2);
+            }
+            else if (collider1.Weight < collider2.Weight)
+            {
+                entity1Movement?.Nudge(repelVelocity1);
+            }
+            else
+            {
+                entity1Movement?.Nudge(repelVelocity1);
+                entity2Movement?.Nudge(repelVelocity2);
+            }
 
 
             //if (entity1Movement.CurrentWayPoint == null && entity2Movement.CurrentWayPoint != null)

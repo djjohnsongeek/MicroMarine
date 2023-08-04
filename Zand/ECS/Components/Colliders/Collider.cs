@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Zand.Debug;
 using Zand.Physics;
 
 namespace Zand.Colliders
@@ -10,6 +9,7 @@ namespace Zand.Colliders
         public bool Static = false;
         public Vector2 Origin;
         public Vector2 Offset;
+        public int Weight;
         public Vector2 Center => Entity.Position + Offset;
         public Color Tint = Color.White;
 
