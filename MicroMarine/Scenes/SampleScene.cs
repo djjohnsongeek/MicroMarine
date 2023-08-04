@@ -61,6 +61,7 @@ namespace MicroMarine.Scenes
             Content.LoadTexture("smallUnitSelect", "Content/small_unit_select.png");
             Content.LoadTexture("marineSheet", "Content/marineSheet32_2.png");
             Content.LoadTexture("blantSheet", "Content/blant_sheet.png");
+            Content.LoadTexture("scuttleSheet", "Content/scuttle_sheet.png");
             Content.LoadTexture("deadMarineSheet", "Content/dead_marine_sheet.png");
             Content.LoadTexture("deadBlant", "Content/blant_dead.png");
             Content.LoadTexture("dropShip", "Content/drop_ship.png");
@@ -187,9 +188,9 @@ namespace MicroMarine.Scenes
             }
 
             // Add Blant Spawner
-            Entity blantSpawner = CreateEntity("unitSpawner", Vector2.Zero + new Vector2(-20, 60));
-            blantSpawner.AddComponent(
-                new UnitSpawner<Blant>(new Vector2(200, 200), totalSpawns: 100, unitPerWave: 2, waveDelay: 8, waveStep: 2)
+            Entity enemySpawner = CreateEntity("unitSpawner", Vector2.Zero + new Vector2(-20, 60));
+            enemySpawner.AddComponent(
+                new UnitSpawner<Scuttle>(new Vector2(200, 200), totalSpawns: 100, unitPerWave: 5, waveDelay: 2, waveStep: 4)
             );
 
             // Center on Marines

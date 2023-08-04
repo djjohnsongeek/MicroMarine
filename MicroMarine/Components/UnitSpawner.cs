@@ -48,7 +48,7 @@ namespace MicroMarine.Components
                 var unitSelector = Entity.Scene.GetComponent<UnitSelector>();
                 var blant = Entity.Scene.CreateEntity("unit", unitPosition);
 
-                blant.AddComponent(new Blant(2)); // not correct, should be T ...
+                blant.AddComponent(new Scuttle(2)); // not correct, should be T ...
                 unitSelector.AddUnit(blant);
                 _spawnCount++;
             }

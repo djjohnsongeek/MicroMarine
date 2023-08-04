@@ -181,6 +181,9 @@
     <None Update="Content\Maps\rocks_sheet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Content\scuttle_sheet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Content\ship.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
