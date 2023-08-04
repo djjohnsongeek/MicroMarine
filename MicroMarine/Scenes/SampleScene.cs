@@ -108,7 +108,7 @@ namespace MicroMarine.Scenes
             //Free download: https://filmmusic.io/song/11087-tribute-to-mr-wick
             //License(CC BY 4.0): https://filmmusic.io/standard-license
 
-            music.Volume = .01f;
+            music.Volume = .03f;
             music.Play();
 
 
@@ -161,18 +161,9 @@ namespace MicroMarine.Scenes
 
 
 
-            // Initiate tile map
-            //Entity tileMapEntity = CreateEntity("tileMap", Vector2.Zero);
-            //Texture2D mapTexture = Content.LoadTexture("mapSheet", "Content/dirt_sheet32.png");
-            //Texture2D shipTexture = Content.LoadTexture("shipSheet", "Content/crashed_ship.png");
-            //var mapSpriteSheet = new SpriteSheet(mapTexture, 32, 32);
-            //var shipSpriteSheet = new SpriteSheet(shipTexture, 32, 32);
-            //Map = new TileMap(32, new Point(Config.MapWidth, Config.MapHeight), mapSpriteSheet, shipSpriteSheet);
-
             //Fire
 
             var fireObject = tiledMap.GetObject("MapObjects", "small-fire");
-
             var fireSheet = new SpriteSheet(fireTexture, 49, 74);
             var fire = CreateEntity("fire", fireObject.Position);
             fire.Origin = new Vector2(24, 74);
@@ -182,7 +173,7 @@ namespace MicroMarine.Scenes
             fire.AddComponent(fireAnimation);
             fireAnimation.RenderLayer = 6;
 
-            var light = new SimpleLight(fire, lightTexture, new Color(255, 230, 230), Vector2.One, flicker: true);
+            var light = new SimpleLight(fire, lightTexture, new Color(255, 230, 230), new Vector2(2, 2), flicker: true);
             Lighting.AddLight(light);
 
 

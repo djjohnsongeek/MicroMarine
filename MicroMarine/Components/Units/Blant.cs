@@ -29,7 +29,7 @@ namespace MicroMarine.Components.Units
             Entity.Origin = new Vector2(Entity.Dimensions.X / 2, Entity.Dimensions.Y / 2);
 
             var health = new Health(250, 250);
-            health.RenderLayer = 4;
+            health.RenderLayer = 5;
             Entity.AddComponent(health);
 
             Entity.AddComponent(new CommandQueue());

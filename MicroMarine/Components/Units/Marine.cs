@@ -30,7 +30,7 @@ namespace MicroMarine.Components
 
             var health = new Health(100, 100);
             Entity.AddComponent(health);
-            health.RenderLayer = 4;
+            health.RenderLayer = 5;
             Entity.AddComponent(new CommandQueue());
 
             Texture2D shadowTexture = Scene.Content.GetContent<Texture2D>("smallUnitShadow");
