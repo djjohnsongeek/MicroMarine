@@ -26,6 +26,7 @@ namespace Zand
         public Core()
         {
             GraphicsManager = new GraphicsDeviceManager(this);
+            GraphicsManager.GraphicsProfile = GraphicsProfile.HiDef;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             _instance = this;
@@ -40,6 +41,7 @@ namespace Zand
             GraphicsManager.SynchronizeWithVerticalRetrace = false;
             GraphicsManager.HardwareModeSwitch = false;
             GraphicsManager.ApplyChanges();
+
 
             if (CurrentScene == null)
             {

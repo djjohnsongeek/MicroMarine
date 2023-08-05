@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Apos.Shapes;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Zand.Physics;
 
@@ -34,7 +35,7 @@ namespace Zand.Colliders
         // but then registerd to the phyics sustem by the scene/ entity later
         // Physics handles the collisions, component handles update logic
 
-        public virtual void Draw(SpriteBatch sBatch)
+        public virtual void Draw(ShapeBatch sBatch)
         {
         }
 

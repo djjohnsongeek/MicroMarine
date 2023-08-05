@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-
+using Apos.Shapes;
 
 namespace Zand.Debug
 {
@@ -8,6 +8,7 @@ namespace Zand.Debug
         private static DebugConsole _debugConsole;
         private static Scene _scene;
         public static bool Active = false;
+        private static ShapeBatch _shapeBatch;
 
         public static void SetUp(Scene scene, SpriteFont font)
         {
@@ -23,21 +24,17 @@ namespace Zand.Debug
             }
         }
 
-        public static void Draw(SpriteBatch spriteBatch)
+        public static void Draw(ShapeBatch shapeBatch)
         {
-            spriteBatch.Begin(
-                sortMode: SpriteSortMode.Deferred,
-                blendState: BlendState.NonPremultiplied,
-                transformMatrix: _scene.Camera.GetTransformation()
-            );
+            shapeBatch.Begin(view: _scene.Camera.GetTransformation());
 
             if (Active)
             {
                 //_debugConsole.Draw(spriteBatch);
-                _scene.Physics.Draw(spriteBatch);
+                _scene.Physics.Draw(shapeBatch);
             }
 
-            spriteBatch.End();
+            shapeBatch.End();
         }
 
         public static void Log(string message)

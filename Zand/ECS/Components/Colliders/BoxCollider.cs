@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Apos.Shapes;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Zand.Graphics;
 using Zand.Physics;
@@ -27,9 +28,9 @@ namespace Zand.Colliders
         public override Vector2 BottomLeft => new Vector2(Left, Bottom);
         public override Vector2 BottomRight => new Vector2(Right, Bottom);
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(ShapeBatch shapeBatch)
         {
-            Shapes.DrawRect(spriteBatch, Entity.Scene.DebugPixelTexture, HitBox, Tint);
+            shapeBatch.DrawRectangle(HitBox.Location.ToVector2(), HitBox.Size.ToVector2(), Color.Yellow, Color.White);
         }
     }
 }

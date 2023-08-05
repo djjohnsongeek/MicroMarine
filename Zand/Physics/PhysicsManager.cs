@@ -8,6 +8,7 @@ using Zand.Colliders;
 using Zand.Debug;
 using Zand.Components;
 using Zand.Graphics;
+using Apos.Shapes;
 
 namespace Zand.Physics
 {
@@ -39,7 +40,7 @@ namespace Zand.Physics
             ResolveCollisions();
         }
 
-        public void Draw(SpriteBatch sBatch)
+        public void Draw(ShapeBatch sBatch)
         {
             if (DebugTools.Active)
             {

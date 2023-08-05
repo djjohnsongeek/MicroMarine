@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Apos.Shapes;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Zand.Graphics;
 using Zand.Physics;
@@ -29,9 +30,9 @@ namespace Zand.Colliders
         public override float Top => Center.Y - Radius;
 
 
-        public override void Draw(SpriteBatch sbatch)
+        public override void Draw(ShapeBatch sbatch)
         {
-            sbatch.Draw(Shapes.CreateCircleTexture(Radius * 2), Center, null, Tint, 0, Origin, 1, SpriteEffects.None, 0);
+            sbatch.DrawCircle(Center, Radius, Color.White, Color.White);
         }
     }
 }

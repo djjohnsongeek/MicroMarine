@@ -1,4 +1,5 @@
 ﻿using System;
+using Apos.Shapes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -33,6 +34,7 @@ namespace Zand
 
 
         public SpriteBatch SpriteBatch;
+        public ShapeBatch ShapeBatch;
 
         public int ScreenWidth;
         public int ScreenHeight;
@@ -43,6 +45,7 @@ namespace Zand
             Entities = new EntityList(this);
             Content = new ZandContentManager(Core._instance.Services, Core._instance.Content.RootDirectory);
             SpriteBatch = new SpriteBatch(Core._instance.GraphicsDevice);
+            ShapeBatch = new ShapeBatch(Core._instance.GraphicsDevice, Content);
             SceneComponents = new SceneComponentList(this);
             RenderableComponents = new RenderableComponentList(this);
             UI = new UserInterface(this);
@@ -128,7 +131,7 @@ namespace Zand
 
             if (DebugTools.Active)
             {
-                DebugTools.Draw(SpriteBatch);
+                DebugTools.Draw(ShapeBatch);
             }
         }
 

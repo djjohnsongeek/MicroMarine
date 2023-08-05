@@ -179,7 +179,7 @@ namespace MicroMarine.Scenes
 
 
             // Place Marines
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 15; i++)
             {
                 Entity unit = CreateEntity("unit", RandomPosition(tiledMap.Center, 60));
                 unit.AddComponent(new Marine(1));
@@ -190,7 +190,7 @@ namespace MicroMarine.Scenes
             // Add Spawner
             Entity enemySpawner = CreateEntity("unitSpawner", Vector2.Zero + new Vector2(-20, 60));
             enemySpawner.AddComponent(
-                new UnitSpawner<Scuttle>(new Vector2(200, 200), totalSpawns: 5, unitPerWave: 5, waveDelay: 2, waveStep: 4)
+                new UnitSpawner<Scuttle>(new Vector2(200, 200), totalSpawns: 40, unitPerWave: 5, waveDelay: 2, waveStep: 4)
             );
 
             // Center on Marines
