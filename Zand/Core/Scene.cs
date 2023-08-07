@@ -66,9 +66,9 @@ namespace Zand
             DebugTools.SetUp(this, debugFont);
         }
 
-        public Entity CreateEntity(string name, Vector2 position)
+        public Entity CreateEntity(string name, Vector2 position, Point dimensions)
         {
-            var entity = new Entity(name, position, new Point(32, 32));
+            var entity = new Entity(name, position, dimensions);
             return AddEntity(entity);
         }
 

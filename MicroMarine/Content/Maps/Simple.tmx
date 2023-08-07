@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="2021.03.23" orientation="orthogonal" renderorder="left-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="96">
+<map version="1.5" tiledversion="2021.03.23" orientation="orthogonal" renderorder="left-down" width="100" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="97">
  <editorsettings>
   <export target="Simple.tmx" format="tmx"/>
  </editorsettings>
@@ -347,6 +347,9 @@
  </objectgroup>
  <objectgroup id="6" name="MapObjects">
   <object id="95" name="small-fire" x="817.25" y="716.75">
+   <point/>
+  </object>
+  <object id="96" name="enemySpawner" x="808.667" y="920.667">
    <point/>
   </object>
  </objectgroup>

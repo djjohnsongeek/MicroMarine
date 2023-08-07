@@ -116,7 +116,7 @@ namespace MicroMarine.Components
             var spriteSheet = new SpriteSheet(deadMarineSheet, 32, 32);
             int index = Entity.Scene.Rng.Next(0, 3);
             Rectangle frame = spriteSheet.GetFrame(index);
-            var entity = Scene.CreateEntity("deadUnit", Entity.Position);
+            var entity = Scene.CreateEntity("deadUnit", Entity.Position, new Point(32, 32));
             var component = new DeadUnit(deadMarineSheet, new Vector2(15, 0), frame, fadeDuration: 30);
             entity.AddComponent(component);
         }

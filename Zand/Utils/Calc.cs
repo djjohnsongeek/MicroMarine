@@ -57,7 +57,7 @@ namespace Zand
         /// <returns>A float between 1.0 and 0.0 </returns>
         public static float CalculateRenderDepth(float entityYPos, int entityHeight)
         {
-            return ((entityYPos) * 0.00001f) + 0.00001f;
+            return ((entityYPos + entityHeight) * 0.00001f) + 0.00001f;
         }
 
         public static Vector2 RandomPosition(Random rng, Vector2 origin, int maxVariation)

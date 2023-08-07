@@ -46,7 +46,7 @@ namespace MicroMarine.Components
             {
                 Vector2 unitPosition = Calc.RandomPosition(Entity.Scene.Rng, Position, 60);
                 var unitSelector = Entity.Scene.GetComponent<UnitSelector>();
-                var blant = Entity.Scene.CreateEntity("unit", unitPosition);
+                var blant = Entity.Scene.CreateEntity("unit", unitPosition, new Point(16, 16));
 
                 blant.AddComponent(new Scuttle(2)); // not correct, should be T ...
                 unitSelector.AddUnit(blant);

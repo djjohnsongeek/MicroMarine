@@ -30,7 +30,7 @@ namespace Zand.Colliders
 
         public override void Draw(ShapeBatch shapeBatch)
         {
-            shapeBatch.DrawRectangle(HitBox.Location.ToVector2(), HitBox.Size.ToVector2(), Color.Yellow, Color.White);
+            shapeBatch.DrawRectangle(HitBox.Location.ToVector2(), HitBox.Size.ToVector2(), Color.White, Color.Black);
         }
     }
 }

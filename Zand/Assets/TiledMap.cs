@@ -90,7 +90,7 @@ namespace Zand.Assets
                     {
                         if (obj.Type == TiledObjectType.Rect)
                         {
-                            var colliderEntity = Scene.CreateEntity("mapCollider", obj.Position);
+                            var colliderEntity = Scene.CreateEntity("mapCollider", obj.Position, obj.Dimensions.Value.ToPoint());
                             var collider = new BoxCollider(new Rectangle(obj.Position.ToPoint(), obj.Dimensions.Value.ToPoint()), Vector2.Zero);
                             collider.Static = true;
                             colliderEntity.AddComponent(collider);

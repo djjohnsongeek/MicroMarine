@@ -169,6 +169,9 @@ namespace Zand.Physics
 
                 if (unitCollider.Center.Y < mapCollider.Top || unitCollider.Center.Y > mapCollider.Bottom)
                 {
+                    // TODO hard coded values are a terrible idea, us unitcollider.radius
+
+
                     //If the circle is ABOVE the square, check against the TOP edge.
                     if (unitCollider.Center.Y < mapCollider.Top)
                     {
@@ -186,13 +189,13 @@ namespace Zand.Physics
                     //If the circle is to the RIGHT of the square, check against the RIGHT edge.
                     if (unitCollider.Center.X > mapCollider.Right)
                     {
-                        newPosition.X = mapCollider.Right + 11;
+                        newPosition.X = mapCollider.Right + 9;
                     }
 
                     //If the circle is to the LEFT of the square, check against the LEFT edge.
                     if (unitCollider.Center.X < mapCollider.Left)
                     {
-                        newPosition.X = mapCollider.Left - 11;
+                        newPosition.X = mapCollider.Left - 9;
                     }
                 }
 

@@ -11,7 +11,7 @@ namespace MicroMarine.Components.Units
     {
         public Scuttle(int allegianceId) : base(
             allegianceId,
-            attackRange: 5,
+            attackRange: 20,
             sightRange: 300,
             followRange: 80,
             speed: 100,
@@ -60,7 +60,7 @@ namespace MicroMarine.Components.Units
             Entity.AddComponent(mouseCollider);
 
 
-            CircleCollider collider = new CircleCollider(6, new Vector2(-8, -8));
+            CircleCollider collider = new CircleCollider(6, Vector2.Zero);
             collider.Weight = -1;
             Entity.AddComponent(collider);
             Scene.RegisterCollider(collider);
@@ -68,7 +68,7 @@ namespace MicroMarine.Components.Units
 
 
             // shadows
-            var shadow = new SimpleSprite(Scene.Content.GetContent<Texture2D>("tinyShadow"), new Vector2(12, 8));
+            var shadow = new SimpleSprite(Scene.Content.GetContent<Texture2D>("tinyShadow"), new Vector2(-4, 2));
             shadow.RenderLayer = 2;
             Entity.AddComponent(shadow);
 

@@ -85,7 +85,7 @@ namespace MicroMarine.Components.Units
 
         public override void OnRemovedFromEntity()
         {
-            var entity = Scene.CreateEntity("deadUnit", Entity.Position);
+            var entity = Scene.CreateEntity("deadUnit", Entity.Position, new Point(32, 32));
             Entity.Scene.GetComponent<SoundEffectManager>().PlaySoundEffect("bDeath", limitPlayback: true, randomChoice: true);
             var component = new DeadUnit(Scene.Content.GetContent<Texture2D>("deadBlant"), new Vector2(15, 10), null, 30);
             entity.AddComponent(component);

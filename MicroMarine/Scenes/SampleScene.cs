@@ -46,7 +46,7 @@ namespace MicroMarine.Scenes
             base.Load();
 
             // Map
-            var map = CreateEntity("sampleMap", Vector2.Zero);
+            var map = CreateEntity("sampleMap", Vector2.Zero, Point.Zero);
             TiledMap tiledMap = new TiledMap("Content/Maps/Simple.tmx");
             tiledMap.SetLayerRenderLayer("Background", 0, 0);
             tiledMap.SetLayerRenderLayer("Foreground", 0, .5f);
@@ -166,7 +166,7 @@ namespace MicroMarine.Scenes
 
             var fireObject = tiledMap.GetObject("MapObjects", "small-fire");
             var fireSheet = new SpriteSheet(fireTexture, 49, 74);
-            var fire = CreateEntity("fire", fireObject.Position);
+            var fire = CreateEntity("fire", fireObject.Position, Point.Zero);
             fire.Origin = new Vector2(24, 74);
             var fireAnimation = new Animator();
             fireAnimation.AddAnimation("burn", new Animation(fireTexture, fireSheet.GetFrames(0, 18), 19, Animation.LoopMode.Loop));
@@ -181,16 +181,18 @@ namespace MicroMarine.Scenes
             // Place Marines
             for (int i = 0; i < 15; i++)
             {
-                Entity unit = CreateEntity("unit", RandomPosition(tiledMap.Center, 60));
+                Entity unit = CreateEntity("unit", RandomPosition(tiledMap.Center, 60), new Point(32, 32));
                 unit.AddComponent(new Marine(1));
                 unitSelector.AddUnit(unit);
                 Lighting.AddLight(new SimpleLight(unit, lightTexture, new Color(255, 255, 255, 255), new Vector2(.4f, .4f), new Vector2(0, -5f)));
             }
 
             // Add Spawner
-            Entity enemySpawner = CreateEntity("unitSpawner", Vector2.Zero + new Vector2(-20, 60));
+
+            var spawnerObject = tiledMap.GetObject("MapObjects", "enemySpawner");
+            Entity enemySpawner = CreateEntity("unitSpawner", Vector2.Zero + new Vector2(-20, 60), Point.Zero);
             enemySpawner.AddComponent(
-                new UnitSpawner<Scuttle>(new Vector2(200, 200), totalSpawns: 40, unitPerWave: 5, waveDelay: 2, waveStep: 4)
+                new UnitSpawner<Scuttle>(spawnerObject.Position, totalSpawns: 100, unitPerWave: 5, waveDelay: 2, waveStep: 4)
             );
 
             // Center on Marines

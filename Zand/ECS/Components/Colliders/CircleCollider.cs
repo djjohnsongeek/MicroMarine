@@ -1,7 +1,5 @@
 ﻿using Apos.Shapes;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Zand.Graphics;
 using Zand.Physics;
 
 namespace Zand.Colliders
@@ -32,7 +30,7 @@ namespace Zand.Colliders
 
         public override void Draw(ShapeBatch sbatch)
         {
-            sbatch.DrawCircle(Center, Radius, Color.White, Color.White);
+            sbatch.DrawCircle(Center, Radius, Color.White, Color.Black);
         }
     }
 }

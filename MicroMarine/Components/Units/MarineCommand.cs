@@ -25,7 +25,7 @@ namespace MicroMarine.Components.Units
 
         public void CreateDropShip()
         {
-            Scene.CreateEntity("dropShip", Vector2.Zero + new Vector2(-80, -400));
+            Scene.CreateEntity("dropShip", Vector2.Zero + new Vector2(-80, -400), new Point(86, 97));
             Entity.AddComponent(new DropShip(600));
         }
     }

@@ -39,7 +39,7 @@ namespace MicroMarine.Components
 
         protected bool TargetIsInRange(Entity target, float buffer = 0)
         {
-            var distanceSquared = Vector2.DistanceSquared(_context.Entity.Position, target.Position);
+            var distanceSquared = Vector2.DistanceSquared(_context.Entity.ScreenPosition, target.ScreenPosition);
             var attackRangeSquared = Math.Pow(_context.AttackRange, 2d);
 
             return attackRangeSquared - distanceSquared > buffer;
