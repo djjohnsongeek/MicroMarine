@@ -68,7 +68,7 @@ namespace MicroMarine.Components.Units
 
 
             // shadows
-            var shadow = new SimpleSprite(Scene.Content.GetContent<Texture2D>("tinyShadow"), new Vector2(-4, 2));
+            var shadow = new SimpleSprite(Scene.Content.GetContent<Texture2D>("tinyShadow"), new Vector2(4, 0));
             shadow.RenderLayer = 2;
             Entity.AddComponent(shadow);
 
