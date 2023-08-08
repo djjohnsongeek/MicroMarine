@@ -37,7 +37,7 @@ namespace Zand.Physics
             {
                 SafeDistance = collider1.Radius + collider2.Radius,
                 Distance = Vector2.Distance(collider1.Center, collider2.Center),
-                Angle = Collisions.GetAngle(collider1, collider2)
+                Angle = Collisions.GetAngle(collider1, collider2),
             };
 
             result.Collides = result.Distance <= result.SafeDistance;

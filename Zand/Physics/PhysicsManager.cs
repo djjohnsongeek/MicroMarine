@@ -214,27 +214,20 @@ namespace Zand.Physics
             var repelVelocity2 = Vector2.Multiply(repelVelocity1, -1);
 
 
-            //if (entity1.GetComponent<Collider>().Static)
-            //{
-            //    repelVelocity1 = Vector2.Zero;
-            //}
+            // We need to handle Weights and statics correctly
+                // a static unit cannot be pushed. It is fixed.
+                // all other units must not collider = hard push outside of the radius
+                // if both are static ... for now ignore collision
 
-            //if (entity2.GetComponent<Collider>().Static)
-            //{
-            //    repelVelocity2 = Vector2.Zero;
-            //}
+            if (entity1.GetComponent<Collider>().Static)
+            {
+                repelVelocity1 = Vector2.Zero;
+            }
 
-            // adjustments
-            //if (entity1Movement.CurrentWayPoint == null && entity2Movement.CurrentWayPoint != null)
-            //{
-            //    repelVelocity1 = Vector2.Multiply(repelVelocity1, 3);
-            //}
-
-            //if (entity2Movement.CurrentWayPoint == null && entity1Movement.CurrentWayPoint != null)
-            //{
-            //    repelVelocity2 = Vector2.Multiply(repelVelocity2, 3);
-            //}
-
+            if (entity2.GetComponent<Collider>().Static)
+            {
+                repelVelocity2 = Vector2.Zero;
+            }
 
             if (collider1.Weight > collider2.Weight)
             {
@@ -249,25 +242,6 @@ namespace Zand.Physics
                 entity1Movement?.Nudge(repelVelocity1);
                 entity2Movement?.Nudge(repelVelocity2);
             }
-
-
-            //if (entity1Movement.CurrentWayPoint == null && entity2Movement.CurrentWayPoint != null)
-            //{
-            //    entity1Movement.Nudge(repelVelocity1);
-            //}
-            //else if (entity2Movement.CurrentWayPoint == null && entity1Movement.CurrentWayPoint != null)
-            //{
-            //    entity2Movement.Nudge(repelVelocity2);
-            //}
-            //else if ((entity1Movement.CurrentWayPoint != null && entity2Movement.CurrentWayPoint != null)
-            //    ||
-            //        (entity1Movement.CurrentWayPoint == null && entity2Movement.CurrentWayPoint == null))
-            //{
-            //    entity1Movement.Nudge(repelVelocity1);
-            //    entity2Movement.Nudge(repelVelocity2);
-            //}
-
-
         }
 
         private Collider GetCollider(string filter, Collider c1, Collider c2)

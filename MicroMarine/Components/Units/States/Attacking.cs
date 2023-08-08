@@ -14,7 +14,7 @@ namespace MicroMarine.Components
 
         public override void Exit()
         {
-            //_context.Entity.GetComponent<CircleCollider>().Static = false;
+            _context.Entity.GetComponent<CircleCollider>().Static = false;
 
             if (_context is Marine)
             {
@@ -22,19 +22,17 @@ namespace MicroMarine.Components
             }
 
             _elapsedTime = 0;
-
         }
 
         public override void Enter()
         {
             _mover.Velocity = Vector2.Zero;
-            //_context.Entity.GetComponent<CircleCollider>().Static = true;
+            _context.Entity.GetComponent<CircleCollider>().Static = true;
 
             if (_context is Marine)
             {
                 _sfxManger.PlaySoundEffect("mShoot", limitPlayback: false, randomChoice: false, entity: _context.Entity, loop: true);
             }
-
             _elapsedTime = 0;
         }
 

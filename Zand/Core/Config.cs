@@ -5,7 +5,7 @@ namespace Zand
     public static class Config
     {
         // Physics
-        public const float UnitRepelMangitude = 4f;
+        public const float UnitRepelMangitude = 3f;
 
         // Group Movement
         public const int FollowLeaderBaseDistance = 255;
