@@ -179,7 +179,7 @@ namespace MicroMarine.Scenes
 
 
             // Place Marines
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Entity unit = CreateEntity("unit", RandomPosition(tiledMap.Center, 60), new Point(32, 32));
                 unit.AddComponent(new Marine(1));

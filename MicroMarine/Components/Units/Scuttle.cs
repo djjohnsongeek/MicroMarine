@@ -15,7 +15,7 @@ namespace MicroMarine.Components.Units
             sightRange: 300,
             followRange: 80,
             speed: 100,
-            damage: 2,
+            damage: 0,
             attacksPerSec: 6)
         {
 
@@ -68,7 +68,7 @@ namespace MicroMarine.Components.Units
 
 
             // shadows
-            var shadow = new SimpleSprite(Scene.Content.GetContent<Texture2D>("tinyShadow"), new Vector2(4, 0));
+            var shadow = new SimpleSprite(Scene.Content.GetContent<Texture2D>("tinyShadow"), new Vector2(4, -1));
             shadow.RenderLayer = 2;
             Entity.AddComponent(shadow);
 

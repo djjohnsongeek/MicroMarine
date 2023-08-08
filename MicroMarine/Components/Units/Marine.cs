@@ -82,7 +82,7 @@ namespace MicroMarine.Components
             MouseSelectCollider mouseCollider = new MouseSelectCollider(new Rectangle(Entity.Position.ToPoint(), new Point(21, 30)), new Vector2(-10, -14)); // new Vector2(6, 4)
             Entity.AddComponent(mouseCollider);
 
-            CircleCollider collider = new CircleCollider(9, new Vector2(0, 6));
+            CircleCollider collider = new CircleCollider(9, new Vector2(0, 8));
             collider.Weight = 2;
             Entity.AddComponent(collider);
             Scene.RegisterCollider(collider);

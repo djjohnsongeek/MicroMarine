@@ -12,8 +12,6 @@ namespace Zand.Colliders
         public Vector2 Offset;
         public int Weight;
         public Vector2 Center => Entity.Position + Offset;
-        public Color Tint = Color.White;
-
         public bool Dirty = true;
         public bool InCollision;
 

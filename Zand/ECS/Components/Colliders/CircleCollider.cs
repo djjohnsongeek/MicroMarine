@@ -30,7 +30,8 @@ namespace Zand.Colliders
 
         public override void Draw(ShapeBatch sbatch)
         {
-            sbatch.DrawCircle(Center, Radius, Color.White, Color.Black);
+
+            sbatch.DrawCircle(Center, Radius, InCollision ? Color.Red : Color.White, Color.Black);
         }
     }
 }

@@ -108,7 +108,7 @@ namespace Zand.Physics
         {
             for (int i = 0; i < _colliders.Count; i++)
             {
-                _colliders[i].Tint = Color.White;
+                _colliders[i].InCollision = false;
                 IReadOnlyCollection<Collider> possibles = _spatialHash.GetNearby(_colliders[i].Center);
                 for (int j = 0; j < possibles.Count; j++)
                 {
@@ -123,7 +123,7 @@ namespace Zand.Physics
                     if (result.Collides)
                     {
                         ApplyRepel(_colliders[i], possibles.ElementAt(j), result);
-                        _colliders[i].Tint = Color.Red;
+                        _colliders[i].InCollision = true;
                     }
                 }
             }
@@ -159,8 +159,8 @@ namespace Zand.Physics
             var entity1Movement = entity1.GetComponent<Mover>();
             var entity2Movement = entity2.GetComponent<Mover>();
 
-            var mapCollider = GetCollider("mapCollider", collider1, collider2);
-            var unitCollider = GetCollider("unit", collider1, collider2);
+            var mapCollider = GetCollider<Collider>("mapCollider", collider1, collider2);
+            var unitCollider = GetCollider<CircleCollider>("unit", collider1, collider2);
 
             if (mapCollider != null && unitCollider != null)
             {
@@ -169,19 +169,16 @@ namespace Zand.Physics
 
                 if (unitCollider.Center.Y < mapCollider.Top || unitCollider.Center.Y > mapCollider.Bottom)
                 {
-                    // TODO hard coded values are a terrible idea, us unitcollider.radius
-
-
                     //If the circle is ABOVE the square, check against the TOP edge.
                     if (unitCollider.Center.Y < mapCollider.Top)
                     {
-                        newPosition.Y = mapCollider.Top - 15;
+                        newPosition.Y = mapCollider.Top - (unitCollider.Radius + unitCollider.Offset.Y); // + unitCollider.Offset.Y
                     }
 
                     //If the circle is to the BELOW the square, check against the BOTTOM edge.
                     if (unitCollider.Center.Y > mapCollider.Bottom)
                     {
-                        newPosition.Y = mapCollider.Bottom + 3;
+                        newPosition.Y = mapCollider.Bottom + (unitCollider.Radius - unitCollider.Offset.Y);
                     }
                 }
                 else
@@ -189,13 +186,13 @@ namespace Zand.Physics
                     //If the circle is to the RIGHT of the square, check against the RIGHT edge.
                     if (unitCollider.Center.X > mapCollider.Right)
                     {
-                        newPosition.X = mapCollider.Right + 9;
+                        newPosition.X = mapCollider.Right + unitCollider.Radius;
                     }
 
                     //If the circle is to the LEFT of the square, check against the LEFT edge.
                     if (unitCollider.Center.X < mapCollider.Left)
                     {
-                        newPosition.X = mapCollider.Left - 9;
+                        newPosition.X = mapCollider.Left - unitCollider.Radius;
                     }
                 }
 
@@ -208,26 +205,28 @@ namespace Zand.Physics
 
             var repelVelocity1 = new Vector2(
                 GetRepelX(collision.Angle, collision.RepelStrength),
-                GetRepelY(collision.Angle, collision.RepelStrength)
-            );
+                GetRepelY(collision.Angle, collision.RepelStrength));
 
             var repelVelocity2 = Vector2.Multiply(repelVelocity1, -1);
+
+            if (collider1.Static && !collider2.Static)
+            {
+                repelVelocity2.Normalize();
+                entity2Movement.SetPosition(entity2Movement.Entity.Position += (repelVelocity2 * collision.OverlapDistance));
+                return;
+            }
+            else if (!collider1.Static && collider2.Static)
+            {
+                repelVelocity1.Normalize();
+                entity1Movement.SetPosition(entity1Movement.Entity.Position += (repelVelocity1 * collision.OverlapDistance));
+                return;
+            }
 
 
             // We need to handle Weights and statics correctly
                 // a static unit cannot be pushed. It is fixed.
                 // all other units must not collider = hard push outside of the radius
                 // if both are static ... for now ignore collision
-
-            if (entity1.GetComponent<Collider>().Static)
-            {
-                repelVelocity1 = Vector2.Zero;
-            }
-
-            if (entity2.GetComponent<Collider>().Static)
-            {
-                repelVelocity2 = Vector2.Zero;
-            }
 
             if (collider1.Weight > collider2.Weight)
             {
@@ -244,16 +243,16 @@ namespace Zand.Physics
             }
         }
 
-        private Collider GetCollider(string filter, Collider c1, Collider c2)
+        private T GetCollider<T>(string filter, Collider c1, Collider c2) where T : Collider
         {
             if (c1.Entity.Name == filter)
             {
-                return c1;
+                return c1 as T;
             }
 
             if (c2.Entity.Name == filter)
             {
-                return c2;
+                return c2 as T;
             }
 
             return null;
@@ -267,6 +266,13 @@ namespace Zand.Physics
         private float GetRepelY(double angle, float power)
         {
             return (float)Math.Sin(angle) * power * Config.UnitRepelMangitude;
+        }
+
+        private Vector2 GetNorminalizedCollisionVector(double angle, float power)
+        {
+            var v = new Vector2(GetRepelX(angle, power), GetRepelY(angle, power));
+            v.Normalize();
+            return v;
         }
     }
 }

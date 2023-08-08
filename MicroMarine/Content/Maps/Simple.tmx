@@ -343,7 +343,7 @@
   <object id="54" x="35.0833" y="1558" width="1525.08" height="14"/>
   <object id="55" x="1556.67" y="34" width="12.1667" height="1533.5"/>
   <object id="93" x="736" y="672" width="160" height="64"/>
-  <object id="94" x="864" y="656" width="32" height="16"/>
+  <object id="94" x="868.5" y="656" width="26" height="16"/>
  </objectgroup>
  <objectgroup id="6" name="MapObjects">
   <object id="95" name="small-fire" x="817.25" y="716.75">
