@@ -11,11 +11,11 @@ namespace MicroMarine.Components.Units
     {
         public Scuttle(int allegianceId) : base(
             allegianceId,
-            attackRange: 20,
+            attackRange: 25,
             sightRange: 300,
             followRange: 80,
             speed: 100,
-            damage: 0,
+            damage: 1,
             attacksPerSec: 6)
         {
 

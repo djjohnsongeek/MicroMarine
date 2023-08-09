@@ -21,7 +21,7 @@ namespace MicroMarine.Components
                 return;
             }
 
-            bool targetIsInRange = TargetIsInRange(CurrentCommand.EntityTarget, 100);
+            bool targetIsInRange = TargetIsInRange(CurrentCommand.EntityTarget);
 
             if (!targetIsInRange)
             {

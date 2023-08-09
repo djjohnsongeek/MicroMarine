@@ -2,6 +2,7 @@
 using Zand;
 using Zand.AI;
 using Zand.Colliders;
+using Zand.Components;
 using Zand.ECS.Components;
 
 namespace MicroMarine.Components
@@ -16,6 +17,8 @@ namespace MicroMarine.Components
         {
             _context.Entity.GetComponent<CircleCollider>().Static = false;
 
+          //  _context.Entity.GetComponent<Animator>().SetColorFilter(Color.White);
+
             if (_context is Marine)
             {
                 _sfxManger.StopSoundEffect("mShoot", _context.Entity);
@@ -28,6 +31,8 @@ namespace MicroMarine.Components
         {
             _mover.Velocity = Vector2.Zero;
             _context.Entity.GetComponent<CircleCollider>().Static = true;
+         //   _context.Entity.GetComponent<Animator>().SetColorFilter(Color.Red);
+
 
             if (_context is Marine)
             {
@@ -54,7 +59,7 @@ namespace MicroMarine.Components
                 return;
             }
 
-            if (!TargetIsInRange(CurrentCommand.EntityTarget, 60))
+            if (!TargetIsInRange(CurrentCommand.EntityTarget))
             {
                 _machine.ChangeState<Following>();
                 return;

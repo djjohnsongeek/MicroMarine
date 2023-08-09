@@ -20,6 +20,11 @@ namespace Zand.Components
         private float _suppressDuration = 0;
         private Color _colorFilter;
 
+        public void SetColorFilter(Color color)
+        {
+            _colorFilter = color;
+        }
+
         public Animation CurrentAnimation => _currentAnimation;
 
         public Animator()

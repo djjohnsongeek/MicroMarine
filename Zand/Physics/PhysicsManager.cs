@@ -209,24 +209,24 @@ namespace Zand.Physics
 
             var repelVelocity2 = Vector2.Multiply(repelVelocity1, -1);
 
-            if (collider1.Static && !collider2.Static)
-            {
-                repelVelocity2.Normalize();
-                entity2Movement.SetPosition(entity2Movement.Entity.Position += (repelVelocity2 * collision.OverlapDistance));
-                return;
-            }
-            else if (!collider1.Static && collider2.Static)
-            {
-                repelVelocity1.Normalize();
-                entity1Movement.SetPosition(entity1Movement.Entity.Position += (repelVelocity1 * collision.OverlapDistance));
-                return;
-            }
+            //if (collider1.Static && !collider2.Static)
+            //{
+            //    repelVelocity2.Normalize();
+            //    entity2Movement.SetPosition(entity2Movement.Entity.Position += (repelVelocity2 * collision.OverlapDistance));
+            //    return;
+            //}
+            //else if (!collider1.Static && collider2.Static)
+            //{
+            //    repelVelocity1.Normalize();
+            //    entity1Movement.SetPosition(entity1Movement.Entity.Position += (repelVelocity1 * collision.OverlapDistance));
+            //    return;
+            //}
 
 
             // We need to handle Weights and statics correctly
-                // a static unit cannot be pushed. It is fixed.
-                // all other units must not collider = hard push outside of the radius
-                // if both are static ... for now ignore collision
+            // a static unit cannot be pushed. It is fixed.
+            // all other units must not collider = hard push outside of the radius
+            // if both are static ... for now ignore collision
 
             if (collider1.Weight > collider2.Weight)
             {
