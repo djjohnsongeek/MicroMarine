@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace Boids
@@ -25,8 +26,8 @@ namespace Boids
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            _graphics.PreferredBackBufferWidth = 1200;
-            _graphics.PreferredBackBufferHeight = 800;
+            _graphics.PreferredBackBufferWidth = Config.ScreenWidth;
+            _graphics.PreferredBackBufferHeight = Config.ScreenHeight;
             _graphics.GraphicsProfile = GraphicsProfile.HiDef;
             _graphics.SynchronizeWithVerticalRetrace = true;
             _graphics.ApplyChanges();
@@ -38,14 +39,22 @@ namespace Boids
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _shapeBatch = new ShapeBatch(GraphicsDevice, Content);
-            Boids = new List<Boid>
+            LoadBoids();
+        }
+
+        private void LoadBoids()
+        {
+            Boids = new List<Boid>();
+            for (int i = 0; i < Config.BoidCount; i++)
             {
-                new Boid(1, Vector2.Zero, new Vector2(2, 3)),
-                new Boid(2, new Vector2(50, 100), new Vector2(125, 111)),
-                new Boid(3, new Vector2(70, 200), new Vector2(130, 133)),
-                new Boid(4, new Vector2(80, 300), new Vector2(110, 132)),
-            };
-            // TODO: use this.Content to load your game content here
+                Boids.Add(
+                    new Boid(
+                        id: i,
+                        position: new Vector2(Calc.RandomFloat() * Config.ScreenWidth, Calc.RandomFloat() * Config.ScreenHeight),
+                        velocity: new Vector2(Calc.RandomFloat() * 100, Calc.RandomFloat() * 100)
+                    )
+                );
+            }
         }
 
         protected override void Update(GameTime gameTime)
@@ -64,52 +73,42 @@ namespace Boids
         {
             foreach (Boid b in Boids)
             {
-                var cohesion = GetCohesionVelocity(b);
-                var seperation = GetSeperationVelocity(b);
+                var cohesionV = GetCohesionVelocity(b);
+                var seperationV = GetAvoidanceVelocity(b);
                 var groupV = GetGroupVelocity(b);
+                var boundsV = GetBoundsVelocity(b);
 
-                b.Velocity = cohesion + seperation + groupV + b.Velocity;
-
-                if (b.Velocity.Length() > 200)
-                {
-                    b.Velocity.Normalize();
-                    b.Velocity *= 200;
-                }
+                b.Velocity = cohesionV + seperationV + groupV + b.Velocity + boundsV;
+                b.Velocity = ClampVelocity(b.Velocity);
 
                 b.Position += b.Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                if (b.Position.X > _graphics.PreferredBackBufferWidth)
-                {
-                    b.Position.X = -b.Radius;
-                }
-
-                if (b.Position.Y > _graphics.PreferredBackBufferHeight)
-                {
-                    b.Position.Y = -b.Radius;
-                }
             }
         }
 
         private Vector2 GetCohesionVelocity(Boid boid)
         {
             Vector2 center = Vector2.Zero;
-            float cohesionFactor = 0.005f;
+            int count = 0;
 
             foreach (Boid b in Boids)
             {
-                center += b.Position;
+                if (Vector2.DistanceSquared(boid.Position, b.Position) < Config.BoidVisionSquared)
+                {
+                    center += b.Position;
+                    count++;
+                }
+
             }
 
-            center /= Boids.Count;
+            center /= count;
 
-            return (center - boid.Position) * cohesionFactor;
+            return (center - boid.Position) * Config.CohesionFactor;
         }
 
-        private Vector2 GetSeperationVelocity(Boid boid)
+        private Vector2 GetAvoidanceVelocity(Boid boid)
         {
             Vector2 seperationVelocity = Vector2.Zero;
-            int minDistance = 20;
-            float avoidFactor = .05f;
+            // Do we need count?
 
             foreach (Boid b in Boids)
             {
@@ -117,28 +116,70 @@ namespace Boids
                 {
                     var distance = Vector2.Distance(boid.Position, b.Position);
 
-                    if (distance < minDistance)
+                    if (distance < Config.AvoidaceMinDistance)
                     {
-                        seperationVelocity += (b.Position - boid.Position);
+                        seperationVelocity += (boid.Position - b.Position);
                     }
                 }
             }
 
-            return seperationVelocity * avoidFactor;
+            return seperationVelocity * Config.AvoidanceFactor;
         }
 
         private Vector2 GetGroupVelocity(Boid boid)
         {
-            float groupingFactor = .05f;
             Vector2 averageVelocity = Vector2.Zero;
+            int count = 0;
             foreach (Boid b in Boids)
             {
-                averageVelocity += boid.Velocity;
+                if (Vector2.DistanceSquared(boid.Position, b.Position) < Config.BoidVisionSquared)
+                {
+                    averageVelocity += boid.Velocity;
+                    count++;
+                }
+
             }
 
-            averageVelocity /= Boids.Count;
+            averageVelocity /= count;
 
-            return (averageVelocity - boid.Velocity) * groupingFactor;
+            return (averageVelocity - boid.Velocity) * Config.MatchVelocityFactor;
+        }
+
+
+        private Vector2 GetBoundsVelocity(Boid boid)
+        {
+            Vector2 turnVelocity = Vector2.Zero;
+
+            if (boid.Position.X < Config.BoundsMargin)
+            {
+                turnVelocity.X += Config.BoundsTurnFactor;
+            }
+            if (boid.Position.X > Config.ScreenWidth - Config.BoundsMargin)
+            {
+                turnVelocity.X -= Config.BoundsTurnFactor;
+            }
+            if (boid.Position.Y < Config.BoundsMargin)
+            {
+                turnVelocity.Y += Config.BoundsTurnFactor;
+            }
+            if (boid.Position.Y > Config.ScreenHeight - Config.BoundsMargin)
+            {
+                turnVelocity.Y -= Config.BoundsTurnFactor;
+            }
+
+
+            return turnVelocity;
+        }
+
+        private Vector2 ClampVelocity(Vector2 velocity)
+        {
+            if (velocity.Length() > Config.MaxSpeed)
+            {
+                velocity.Normalize();
+                velocity *= Config.MaxSpeed;
+            }
+
+            return velocity;
         }
 
 
