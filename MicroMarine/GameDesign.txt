@@ -4,11 +4,40 @@
 Chem Lights:
 Required to see your surroundings
 Why would you NOT use a chem light as soon as the cooldown is finished?
+- Enemies are attracked to light?
 
-
+Drawing Layers
 0 map
 1 decals
 2 shadows
 3 selection
 4 units
 5 map top
+
+
+Pathing for RTS
+Planning
+- Constrained Delaunay Triangulation instead of grid?
+- A* search
+	- terrain type: Ground, cliff, building, none
+Steering (Boids)
+- Following (Goals)
+- Flocking
+- Grouping
+- Separation
+- Avoidance
+  - All units moving in your general direction
+  - Ignore units that you can push (idle, friendlies)
+  - Builds a site horizon
+  - Plot obsticles radius, turn towards the gap closest to the center
+  - Read mines of units going to opposite dir
+- Arrival -> Custom solution
+Collision
+- Units can push other units
+  - Friendly vs Enemy
+  - Moving vs Stationary
+  - Faster vs Slower
+  - Enemy, both pushed
+Nearest Neighbor Searches
+- lots of them required
+- targetting searches (who to attack)
