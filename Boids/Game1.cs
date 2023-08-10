@@ -132,11 +132,19 @@ namespace Boids
                 Config.MaxSpeed = value.NewValue;
             };
 
+
             var resetBtn = project.Root.FindWidgetById("ResetBtn") as ImageTextButton;
             resetBtn.Click += (src, value) =>
             {
                 Boids.Clear();
                 LoadBoids();
+            };
+
+            var toggleCollisionsBtn = project.Root.FindWidgetById("ToggleCollisonsBtn") as ImageTextButton;
+            toggleCollisionsBtn.Click += (src, value) =>
+            {
+                Config.CollisionsEnabled = !Config.CollisionsEnabled;
+                toggleCollisionsBtn.Text = Config.CollisionsEnabled ? "True" : "False";
             };
 
             // Add it to the desktop
@@ -160,6 +168,11 @@ namespace Boids
             }
 
             UpdateBoidPositions(gameTime);
+            if (Config.CollisionsEnabled)
+            {
+                Physics.ResolveCollisions(Boids);
+            }
+
 
             base.Update(gameTime);
         }
@@ -179,6 +192,7 @@ namespace Boids
                 b.Position += b.Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
         }
+
 
         private Vector2 GetCohesionVelocity(Boid boid)
         {
