@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
 using Myra;
 using Myra.Graphics2D.UI;
@@ -289,6 +288,8 @@ namespace Boids
             {
                 _shapeBatch.DrawCircle(b.Position, b.Radius, Color.White, Color.Black, 1);
             }
+
+            _shapeBatch.DrawRectangle(Config.BoundsOrigin, Config.BoundsSize, Color.Transparent, Color.White);
 
             _shapeBatch.End();
 
