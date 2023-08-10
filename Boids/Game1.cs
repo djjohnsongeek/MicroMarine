@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using Myra;
+using Myra.Graphics2D.UI;
+using System.IO;
 
 namespace Boids
 {
@@ -11,6 +14,7 @@ namespace Boids
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private Desktop _desktop;
 
         List<Boid> Boids;
 
@@ -30,7 +34,9 @@ namespace Boids
             _graphics.PreferredBackBufferHeight = Config.ScreenHeight;
             _graphics.GraphicsProfile = GraphicsProfile.HiDef;
             _graphics.SynchronizeWithVerticalRetrace = true;
+            IsMouseVisible = true;
             _graphics.ApplyChanges();
+            Boids = new List<Boid>();
 
             base.Initialize();
         }
@@ -40,11 +46,11 @@ namespace Boids
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _shapeBatch = new ShapeBatch(GraphicsDevice, Content);
             LoadBoids();
+            LoadUI();
         }
 
         private void LoadBoids()
         {
-            Boids = new List<Boid>();
             for (int i = 0; i < Config.BoidCount; i++)
             {
                 Boids.Add(
@@ -57,12 +63,102 @@ namespace Boids
             }
         }
 
+        private void LoadUI()
+        {
+            MyraEnvironment.Game = this;
+            string importData = File.ReadAllText("ui.xml");
+            var project = Project.LoadFromXml(importData, MyraEnvironment.DefaultAssetManager);
+
+            HorizontalSlider cohesionSlider = project.Root.FindWidgetById("CohesionSlider") as HorizontalSlider;
+            Label cohesionValueLabel = project.Root.FindWidgetById("CohesionValueLabel") as Label;
+            cohesionSlider.ValueChanged += (src, value) =>
+            {
+                cohesionValueLabel.Text = value.NewValue.ToString();
+                Config.CohesionFactor = value.NewValue;
+            };
+
+            HorizontalSlider avoidanceSlider = project.Root.FindWidgetById("AvoidanceSlider") as HorizontalSlider;
+            Label avoidanceValueLabel = project.Root.FindWidgetById("AvoidanceValueLabel") as Label;
+            avoidanceSlider.ValueChanged += (src, value) =>
+            {
+                avoidanceValueLabel.Text = value.NewValue.ToString();
+                Config.AvoidanceFactor = value.NewValue;
+            };
+
+            HorizontalSlider avoidanceDistSlider = project.Root.FindWidgetById("AvoidanceDistSlider") as HorizontalSlider;
+            Label avoidanceDistValueLabel = project.Root.FindWidgetById("AvoidanceDistValueLabel") as Label;
+            avoidanceDistSlider.ValueChanged += (src, value) =>
+            {
+                avoidanceDistValueLabel.Text = value.NewValue.ToString();
+                Config.AvoidanceMinDist = value.NewValue;
+            };
+
+            HorizontalSlider groupAlignmentSlider = project.Root.FindWidgetById("GroupAlignmentSlider") as HorizontalSlider;
+            Label groupAlignmentValueLabel = project.Root.FindWidgetById("GroupAlignmentValueLabel") as Label;
+            groupAlignmentSlider.ValueChanged += (src, value) =>
+            {
+                groupAlignmentValueLabel.Text = value.NewValue.ToString();
+                Config.GroupAlignmentFactor = value.NewValue;
+            };
+
+            HorizontalSlider boundsMarginSlider = project.Root.FindWidgetById("BoundsMarginSlider") as HorizontalSlider;
+            Label boundsMarginValueLabel = project.Root.FindWidgetById("BoundsMarginValueLabel") as Label;
+            boundsMarginSlider.ValueChanged += (src, value) =>
+            {
+                boundsMarginValueLabel.Text = value.NewValue.ToString();
+                Config.BoundsMargin = value.NewValue;
+            };
+
+            HorizontalSlider boundsRepelSlider = project.Root.FindWidgetById("BoundsRepelSlider") as HorizontalSlider;
+            Label boundsRepelValueLabel = project.Root.FindWidgetById("BoundsRepelValueLabel") as Label;
+            boundsRepelSlider.ValueChanged += (src, value) =>
+            {
+                boundsRepelValueLabel.Text = value.NewValue.ToString();
+                Config.BoundRepelFactor = value.NewValue;
+            };
+
+            HorizontalSlider boidVisionSlider = project.Root.FindWidgetById("BoidVisionSlider") as HorizontalSlider;
+            Label boidVisionValueLabel = project.Root.FindWidgetById("BoidVisonValueLabel") as Label;
+            boidVisionSlider.ValueChanged += (src, value) =>
+            {
+                boidVisionValueLabel.Text = value.NewValue.ToString();
+                Config.BoidVision = value.NewValue;
+            };
+
+            HorizontalSlider maxSpeedSlider = project.Root.FindWidgetById("MaxSpeedSlider") as HorizontalSlider;
+            Label maxSpeedValueLabel = project.Root.FindWidgetById("MaxSpeedValueLabel") as Label;
+            maxSpeedSlider.ValueChanged += (src, value) =>
+            {
+                maxSpeedValueLabel.Text = value.NewValue.ToString();
+                Config.MaxSpeed = value.NewValue;
+            };
+
+            var resetBtn = project.Root.FindWidgetById("ResetBtn") as ImageTextButton;
+            resetBtn.Click += (src, value) =>
+            {
+                Boids.Clear();
+                LoadBoids();
+            };
+
+            // Add it to the desktop
+            _desktop = new Desktop();
+            _desktop.Root = project.Root;
+            _desktop.Root.Visible = false;
+        }
+
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            Input.Update(gameTime);
 
-            // TODO: Add your update logic here
+            if (Input.KeyWasPressed(Keys.Escape))
+            {
+                Exit();
+            }
+
+            if (Input.KeyWasPressed(Keys.Tab))
+            {
+                _desktop.Root.Visible = !_desktop.Root.Visible;
+            }
 
             UpdateBoidPositions(gameTime);
 
@@ -116,7 +212,7 @@ namespace Boids
                 {
                     var distance = Vector2.Distance(boid.Position, b.Position);
 
-                    if (distance < Config.AvoidaceMinDistance)
+                    if (distance < Config.AvoidanceMinDist)
                     {
                         seperationVelocity += (boid.Position - b.Position);
                     }
@@ -142,7 +238,7 @@ namespace Boids
 
             averageVelocity /= count;
 
-            return (averageVelocity - boid.Velocity) * Config.MatchVelocityFactor;
+            return (averageVelocity - boid.Velocity) * Config.GroupAlignmentFactor;
         }
 
 
@@ -152,19 +248,19 @@ namespace Boids
 
             if (boid.Position.X < Config.BoundsMargin)
             {
-                turnVelocity.X += Config.BoundsTurnFactor;
+                turnVelocity.X += Config.BoundRepelFactor;
             }
             if (boid.Position.X > Config.ScreenWidth - Config.BoundsMargin)
             {
-                turnVelocity.X -= Config.BoundsTurnFactor;
+                turnVelocity.X -= Config.BoundRepelFactor;
             }
             if (boid.Position.Y < Config.BoundsMargin)
             {
-                turnVelocity.Y += Config.BoundsTurnFactor;
+                turnVelocity.Y += Config.BoundRepelFactor;
             }
             if (boid.Position.Y > Config.ScreenHeight - Config.BoundsMargin)
             {
-                turnVelocity.Y -= Config.BoundsTurnFactor;
+                turnVelocity.Y -= Config.BoundRepelFactor;
             }
 
 
@@ -196,7 +292,7 @@ namespace Boids
 
             _shapeBatch.End();
 
-
+            _desktop.Render();
 
 
 
