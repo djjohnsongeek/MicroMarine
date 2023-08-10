@@ -41,9 +41,9 @@ namespace Boids
             Boids = new List<Boid>
             {
                 new Boid(1, Vector2.Zero, new Vector2(2, 3)),
-                new Boid(2, new Vector2(50, 100), new Vector2(2, 2)),
-                new Boid(3, new Vector2(70, 200), new Vector2(2, 2)),
-                new Boid(4, new Vector2(80, 300), new Vector2(2, 2)),
+                new Boid(2, new Vector2(50, 100), new Vector2(125, 111)),
+                new Boid(3, new Vector2(70, 200), new Vector2(130, 133)),
+                new Boid(4, new Vector2(80, 300), new Vector2(110, 132)),
             };
             // TODO: use this.Content to load your game content here
         }
@@ -55,12 +55,12 @@ namespace Boids
 
             // TODO: Add your update logic here
 
-            UpdateBoidPositions();
+            UpdateBoidPositions(gameTime);
 
             base.Update(gameTime);
         }
 
-        private void UpdateBoidPositions()
+        private void UpdateBoidPositions(GameTime gameTime)
         {
             foreach (Boid b in Boids)
             {
@@ -69,60 +69,76 @@ namespace Boids
                 var groupV = GetGroupVelocity(b);
 
                 b.Velocity = cohesion + seperation + groupV + b.Velocity;
-                b.Position += b.Velocity;
+
+                if (b.Velocity.Length() > 200)
+                {
+                    b.Velocity.Normalize();
+                    b.Velocity *= 200;
+                }
+
+                b.Position += b.Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (b.Position.X > _graphics.PreferredBackBufferWidth)
+                {
+                    b.Position.X = -b.Radius;
+                }
+
+                if (b.Position.Y > _graphics.PreferredBackBufferHeight)
+                {
+                    b.Position.Y = -b.Radius;
+                }
             }
         }
 
         private Vector2 GetCohesionVelocity(Boid boid)
         {
             Vector2 center = Vector2.Zero;
+            float cohesionFactor = 0.005f;
+
             foreach (Boid b in Boids)
             {
-                if (b.Id != boid.Id)
-                {
-                    center += b.Position;
-                }
-
+                center += b.Position;
             }
 
-            center /= Boids.Count - 1;
+            center /= Boids.Count;
 
-            return (center - boid.Position) / 100;
+            return (center - boid.Position) * cohesionFactor;
         }
 
         private Vector2 GetSeperationVelocity(Boid boid)
         {
             Vector2 seperationVelocity = Vector2.Zero;
+            int minDistance = 20;
+            float avoidFactor = .05f;
+
             foreach (Boid b in Boids)
             {
                 if (b.Id != boid.Id)
                 {
                     var distance = Vector2.Distance(boid.Position, b.Position);
 
-                    if (distance < (boid.Radius + b.Radius + 2))
+                    if (distance < minDistance)
                     {
-                        seperationVelocity -= (b.Position - boid.Position);
+                        seperationVelocity += (b.Position - boid.Position);
                     }
                 }
             }
 
-            return seperationVelocity;
+            return seperationVelocity * avoidFactor;
         }
 
         private Vector2 GetGroupVelocity(Boid boid)
         {
-            Vector2 groupV = Vector2.Zero;
+            float groupingFactor = .05f;
+            Vector2 averageVelocity = Vector2.Zero;
             foreach (Boid b in Boids)
             {
-                if (b.Id != boid.Id)
-                {
-                    groupV += boid.Velocity;
-                }
+                averageVelocity += boid.Velocity;
             }
 
-            groupV /= Boids.Count - 1;
+            averageVelocity /= Boids.Count;
 
-            return (groupV - boid.Velocity) / 8;
+            return (averageVelocity - boid.Velocity) * groupingFactor;
         }
 
 
