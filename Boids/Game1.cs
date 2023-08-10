@@ -33,7 +33,7 @@ namespace Boids
             _graphics.PreferredBackBufferWidth = Config.ScreenWidth;
             _graphics.PreferredBackBufferHeight = Config.ScreenHeight;
             _graphics.GraphicsProfile = GraphicsProfile.HiDef;
-            _graphics.SynchronizeWithVerticalRetrace = true;
+            _graphics.SynchronizeWithVerticalRetrace = false;
             IsMouseVisible = true;
             _graphics.ApplyChanges();
             Boids = new List<Boid>();
