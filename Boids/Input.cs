@@ -34,5 +34,11 @@ namespace Boids
                 _currentMouseState.LeftButton == ButtonState.Released;
         }
 
+        public static bool RightMouseBtnWasPressed()
+        {
+            return _prevMouseState.RightButton == ButtonState.Pressed &&
+                _currentMouseState.RightButton == ButtonState.Released;
+        }
+
     }
 }

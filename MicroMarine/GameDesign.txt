@@ -41,3 +41,8 @@ Collision
 Nearest Neighbor Searches
 - lots of them required
 - targetting searches (who to attack)
+
+
+Possible arrival solution:
+-- large circle, once inside the cirle, no longer follow destination
+-- if on edge of the circle, stop all movement

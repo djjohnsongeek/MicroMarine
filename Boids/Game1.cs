@@ -143,6 +143,14 @@ namespace Boids
                 Config.BoidCount = (int)value.NewValue;
             };
 
+            HorizontalSlider destinationAlignmentSlider = project.Root.FindWidgetById("DestinationAlignmentSlider") as HorizontalSlider;
+            Label destAlignmentValueLabel = project.Root.FindWidgetById("DestinationAlignmentValueLabel") as Label;
+            destinationAlignmentSlider.ValueChanged += (src, value) =>
+            {
+                destAlignmentValueLabel.Text = value.NewValue.ToString();
+                Config.DestinationFactor = value.NewValue;
+            };
+
             var resetBtn = project.Root.FindWidgetById("ResetBtn") as ImageTextButton;
             resetBtn.Click += (src, value) =>
             {
@@ -166,6 +174,7 @@ namespace Boids
                 exportString += $"BoundMargin: {Config.BoundsMargin}\n";
                 exportString += $"BoundsRepelFactor: {Config.BoundRepelFactor}\n";
                 exportString += $"GroupAlignmentFactor: {Config.GroupAlignmentFactor}\n";
+                exportString += $"DestinationFactor: {Config.DestinationFactor}\n";
                 exportString += $"MaxSpeed: {Config.MaxSpeed}\n";
                 exportString += $"CollisionsEnabled: {Config.CollisionsEnabled}\n";
                 exportString += $"BoidCount: {Config.BoundRepelFactor}\n";
@@ -197,6 +206,11 @@ namespace Boids
             {
                 Waypoint.Position = Input.MousePosition;
                 Waypoint.Enabled = true;
+            }
+            else if (Input.RightMouseBtnWasPressed() && !_desktop.Root.Visible)
+            {
+                Waypoint.Position = Vector2.Zero;
+                Waypoint.Enabled = false;
             }
 
             UpdateBoids(gameTime);
