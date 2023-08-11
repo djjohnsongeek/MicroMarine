@@ -169,6 +169,7 @@ namespace Boids
             exportBtn.Click += (src, value) =>
             {
                 string exportString = "";
+                exportString += $"CohesionFactor: {Config.CohesionFactor}\n";
                 exportString += $"AvoidanceFactor: {Config.AvoidanceFactor}\n";
                 exportString += $"AvoidanceMinDistance: {Config.AvoidanceMinDist}\n";
                 exportString += $"BoundMargin: {Config.BoundsMargin}\n";
