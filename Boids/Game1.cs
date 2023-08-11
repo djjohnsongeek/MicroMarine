@@ -16,6 +16,7 @@ namespace Boids
         private Desktop _desktop;
 
         List<Boid> Boids;
+        private Waypoint Waypoint;
 
         private ShapeBatch _shapeBatch;
 
@@ -45,6 +46,7 @@ namespace Boids
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _shapeBatch = new ShapeBatch(GraphicsDevice, Content);
 
+            Waypoint = new Waypoint(Vector2.Zero, 5f);
             LoadBoids();
             LoadUIAndSettings();
         }
@@ -191,17 +193,21 @@ namespace Boids
                 _desktop.Root.Visible = !_desktop.Root.Visible;
             }
 
-            UpdateBoidPositions(gameTime);
+            if (Input.LeftMouseBtnWasPressed() && !_desktop.Root.Visible)
+            {
+                Waypoint.Position = Input.MousePosition;
+                Waypoint.Enabled = true;
+            }
+
+            UpdateBoids(gameTime);
             if (Config.CollisionsEnabled)
             {
                 Physics.ResolveCollisions(Boids);
             }
-
-
             base.Update(gameTime);
         }
 
-        private void UpdateBoidPositions(GameTime gameTime)
+        private void UpdateBoids(GameTime gameTime)
         {
             foreach (Boid b in Boids)
             {
@@ -209,14 +215,14 @@ namespace Boids
                 var seperationV = GetAvoidanceVelocity(b);
                 var groupV = GetGroupVelocity(b);
                 var boundsV = GetBoundsVelocity(b);
+                var destinationV = GetDestinationVelocity(b);
 
-                b.Velocity = cohesionV + seperationV + groupV + b.Velocity + boundsV;
+                b.Velocity = cohesionV + seperationV + groupV + b.Velocity + boundsV + destinationV;
                 b.Velocity = ClampVelocity(b.Velocity);
 
                 b.Position += b.Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
         }
-
 
         private Vector2 GetCohesionVelocity(Boid boid)
         {
@@ -279,7 +285,6 @@ namespace Boids
             return (averageVelocity - boid.Velocity) * Config.GroupAlignmentFactor;
         }
 
-
         private Vector2 GetBoundsVelocity(Boid boid)
         {
             Vector2 turnVelocity = Vector2.Zero;
@@ -305,6 +310,19 @@ namespace Boids
             return turnVelocity;
         }
 
+        private Vector2 GetDestinationVelocity(Boid boid)
+        {
+            var destVelocity = Vector2.Zero;
+            if (Waypoint.Enabled)
+            {
+                destVelocity = Waypoint.Position - boid.Position;
+                destVelocity.Normalize();
+                destVelocity *= Config.MaxSpeed;
+            }
+
+            return destVelocity * Config.DestinationFactor;
+        }
+
         private Vector2 ClampVelocity(Vector2 velocity)
         {
             if (velocity.Length() > Config.MaxSpeed)
@@ -315,7 +333,6 @@ namespace Boids
 
             return velocity;
         }
-
 
         protected override void Draw(GameTime gameTime)
         {
@@ -329,6 +346,11 @@ namespace Boids
             }
 
             _shapeBatch.DrawRectangle(Config.BoundsOrigin, Config.BoundsSize, Color.Transparent, Color.White);
+
+            if (Waypoint.Enabled)
+            {
+                _shapeBatch.DrawCircle(Waypoint.Position, Waypoint.Radius, Color.Red, Color.White);
+            }
 
             _shapeBatch.End();
 

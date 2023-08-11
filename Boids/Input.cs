@@ -8,18 +8,30 @@ namespace Boids
 {
     static class Input
     {
-        private static KeyboardState _previousState;
-        private static KeyboardState _currentState;
+        private static KeyboardState _prevKeyboardState;
+        private static KeyboardState _currentKeyboardState;
+        private static MouseState _prevMouseState;
+        private static MouseState _currentMouseState;
+
+        public static Vector2 MousePosition => _currentMouseState.Position.ToVector2();
 
         public static void Update(GameTime gameTime)
         {
-            _previousState = _currentState;
-            _currentState = Keyboard.GetState();
+            _prevKeyboardState = _currentKeyboardState;
+            _currentKeyboardState = Keyboard.GetState();
+            _prevMouseState = _currentMouseState;
+            _currentMouseState = Mouse.GetState();
         }
 
         public static bool KeyWasPressed(Keys key)
         {
-            return _previousState.IsKeyDown(key) && _currentState.IsKeyUp(key);
+            return _prevKeyboardState.IsKeyDown(key) && _currentKeyboardState.IsKeyUp(key);
+        }
+
+        public static bool LeftMouseBtnWasPressed()
+        {
+            return _prevMouseState.LeftButton == ButtonState.Pressed &&
+                _currentMouseState.LeftButton == ButtonState.Released;
         }
 
     }
