@@ -17,6 +17,8 @@
       <Proportion Type="Auto" />
       <Proportion Type="Auto" />
 	  <Proportion Type="Auto" />
+      <Proportion Type="Auto" />
+      <Proportion Type="Auto" />
     </Grid.RowsProportions>
     <Label Text="Cohesion" />
     <Label Id="CohesionValueLabel" Text="0.25" Width="100" GridColumn="2" />
@@ -48,9 +50,23 @@
     <Label Text="Boid Count" GridRow="9" />
     <Label Id="BoidCountValueLabel" Text="50" Width="100" GridColumn="2" GridRow="9" />
     <HorizontalSlider Id="BoidCountSlider" Value="50" Minimun="0" Maximum="1000" Width="300" GridColumn="1" GridRow="9" />
-	<Label Text="Collisions Enabled:" GridRow="10" GridColumn="0" />
-    <Button Id="ToggleCollisonsBtn" Text="True" GridRow="10" GridColumn="1" Padding="4" />
-    <Button Id="ResetBtn" Text="Reset Sim" GridRow="11" GridColumn="0" Padding="4" />
-    <Button Id="ExportBtn" Text="Export Settings" GridRow="11" GridColumn="1" Padding="4" />
+
+
+
+	  <Label Text="Arrival Speed Clamp" GridRow="10" />
+	  <Label Id="ArrivalSpeedClampValueLabel" Text="8" Width="100" GridColumn="2" GridRow="10" />
+	  <HorizontalSlider Id="ArrivalSpeedClampSlider" Value="8" Minimun="0" Maximum="50" Width="300" GridColumn="1" GridRow="10" />
+
+	  <Label Text="Arrival Drag" GridRow="11" />
+	  <Label Id="ArrivalDragValueLabel" Text="0.1" Width="100" GridColumn="2" GridRow="11" />
+	  <HorizontalSlider Id="ArrivalDragSlider" Value="0.1" Minimun="0" Maximum="1" Width="300" GridColumn="1" GridRow="11" />
+	  
+	  
+	  
+	<Label Text="Collisions Enabled:" GridRow="12" GridColumn="0" />
+    <Button Id="ToggleCollisonsBtn" Text="True" GridRow="12" GridColumn="1" Padding="4" />
+	  
+    <Button Id="ResetBtn" Text="Reset Sim" GridRow="13" GridColumn="0" Padding="4" />
+    <Button Id="ExportBtn" Text="Export Settings" GridRow="13" GridColumn="1" Padding="4" />
   </Grid>
 </Project>

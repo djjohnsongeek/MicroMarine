@@ -161,6 +161,22 @@ namespace Boids
                 Config.DestinationFactor = value.NewValue;
             };
 
+            HorizontalSlider arrivalSpeedClampSlider = project.Root.FindWidgetById("ArrivalSpeedClampSlider") as HorizontalSlider;
+            Label arrivalSpeedClampValueLabel = project.Root.FindWidgetById("ArrivalSpeedClampValueLabel") as Label;
+            arrivalSpeedClampSlider.ValueChanged += (src, value) =>
+            {
+                arrivalSpeedClampValueLabel.Text = value.NewValue.ToString();
+                Config.ArrivalSpeedLimit = value.NewValue;
+            };
+
+            HorizontalSlider arrivalDragSlider = project.Root.FindWidgetById("ArrivalDragSlider") as HorizontalSlider;
+            Label arrivalDragValueLabel = project.Root.FindWidgetById("ArrivalDragValueLabel") as Label;
+            arrivalDragSlider.ValueChanged += (src, value) =>
+            {
+                arrivalDragValueLabel.Text = value.NewValue.ToString();
+                Config.ArrivalDrag = value.NewValue;
+            };
+
             var resetBtn = project.Root.FindWidgetById("ResetBtn") as ImageTextButton;
             resetBtn.Click += (src, value) =>
             {
@@ -187,6 +203,8 @@ namespace Boids
                 exportString += $"GroupAlignmentFactor: {Config.GroupAlignmentFactor}\n";
                 exportString += $"DestinationFactor: {Config.DestinationFactor}\n";
                 exportString += $"MaxSpeed: {Config.MaxSpeed}\n";
+                exportString += $"Arrival Drag: {Config.ArrivalDrag}\n";
+                exportString += $"Arrival Speed Clamp Limit: {Config.ArrivalSpeedLimit}\n";
                 exportString += $"CollisionsEnabled: {Config.CollisionsEnabled}\n";
                 exportString += $"BoidCount: {Config.BoundRepelFactor}\n";
                 exportString += $"BoidVision: {Config.BoidVision}\n";
@@ -251,12 +269,16 @@ namespace Boids
 
                     b.Velocity = cohesionV + seperationV + groupV + b.Velocity + boundsV + destinationV;
 
-                    if (BoidArrived(b))
+                    if (BoidInArrivalCircle(b))
                     {
-                        b.Idle = true;
-                        b.Waypoint = null;
-                        b.Velocity = Vector2.Zero;
-                        Waypoint.Radius += (float)Math.Cbrt(BoidsRadiusAverage);
+                        b.Velocity = b.Velocity * Config.ArrivalDrag;
+                        if (b.Velocity.Length() < Config.ArrivalSpeedLimit)
+                        {
+                            b.Idle = true;
+                            b.Waypoint = null;
+
+                            Waypoint.Radius += (float)Math.Cbrt(BoidsRadiusAverage);
+                        }
                     }
 
 
@@ -267,7 +289,7 @@ namespace Boids
             }
         }
 
-        private bool BoidArrived(Boid b)
+        private bool BoidInArrivalCircle(Boid b)
         {
             return Vector2.DistanceSquared(b.Position, Waypoint.Position) < Waypoint.Radius * Waypoint.Radius;
         }
@@ -405,29 +427,17 @@ namespace Boids
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _shapeBatch.Begin();
-
-
             if (Waypoint.Enabled)
             {
                 _shapeBatch.DrawCircle(Waypoint.Position, Waypoint.Radius, Color.Transparent, Color.White);
             }
-            _desktop.Render();
-
             foreach (Boid b in Boids)
             {
                 _shapeBatch.DrawCircle(b.Position, b.Radius, b.Color, b.BorderColor, 1);
             }
-
             _shapeBatch.DrawRectangle(Config.BoundsOrigin, Config.BoundsSize, Color.Transparent, Color.White);
-
-
             _shapeBatch.End();
-
-
-
-
-
-            // TODO: Add your drawing code here
+            _desktop.Render();
 
             base.Draw(gameTime);
         }
