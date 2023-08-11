@@ -25,8 +25,8 @@ namespace Boids
                         float angle = GetAngle(boid.Position, possible.Position);
                         float overlap = safeDistance - distance;
                         var repelVelocity = GetRepelVelocity(angle, power, overlap);
-                        boid.Position += repelVelocity;
-                        //possible.Position -= repelVelocity / 2;
+                        boid.Position += repelVelocity / 2;
+                        possible.Position -= repelVelocity / 2;
                     }
                 }
             }

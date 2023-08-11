@@ -132,6 +132,13 @@ namespace Boids
                 Config.MaxSpeed = value.NewValue;
             };
 
+            HorizontalSlider boidCountSlider = project.Root.FindWidgetById("BoidCountSlider") as HorizontalSlider;
+            Label boidCountValueLabel = project.Root.FindWidgetById("BoidCountValueLabel") as Label;
+            boidCountSlider.ValueChanged += (src, value) =>
+            {
+                boidCountValueLabel.Text = ((int)value.NewValue).ToString();
+                Config.BoidCount = (int)value.NewValue;
+            };
 
             var resetBtn = project.Root.FindWidgetById("ResetBtn") as ImageTextButton;
             resetBtn.Click += (src, value) =>
