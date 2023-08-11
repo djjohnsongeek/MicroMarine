@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Myra;
 using Myra.Graphics2D.UI;
 using System.IO;
+using System;
 
 namespace Boids
 {
@@ -16,6 +17,8 @@ namespace Boids
         private Desktop _desktop;
 
         List<Boid> Boids;
+        float BoidsRadiusAverage;
+
         private Waypoint Waypoint;
 
         private ShapeBatch _shapeBatch;
@@ -53,16 +56,23 @@ namespace Boids
 
         private void LoadBoids()
         {
+            BoidsRadiusAverage = 0;
+
             for (int i = 0; i < Config.BoidCount; i++)
             {
                 Boids.Add(
                     new Boid(
                         id: i,
                         position: new Vector2(Calc.RandomFloat() * Config.ScreenWidth, Calc.RandomFloat() * Config.ScreenHeight),
-                        velocity: new Vector2(Calc.RandomFloat() * 1000, Calc.RandomFloat() * 1000)
+                        velocity: Vector2.Zero
                     )
                 );
+
+                BoidsRadiusAverage += Boids[i].Radius;
+
+                // new Vector2(Calc.RandomFloat() * 1000, Calc.RandomFloat() * 1000)
             }
+            BoidsRadiusAverage /= Boids.Count;
         }
 
         private void LoadUIAndSettings()
@@ -207,11 +217,16 @@ namespace Boids
             {
                 Waypoint.Position = Input.MousePosition;
                 Waypoint.Enabled = true;
+                Waypoint.Radius = BoidsRadiusAverage;
+
+                SetBoidsWaypoint(true);
             }
             else if (Input.RightMouseBtnWasPressed() && !_desktop.Root.Visible)
             {
                 Waypoint.Position = Vector2.Zero;
                 Waypoint.Enabled = false;
+
+                SetBoidsWaypoint(false);
             }
 
             UpdateBoids(gameTime);
@@ -226,16 +241,52 @@ namespace Boids
         {
             foreach (Boid b in Boids)
             {
-                var cohesionV = GetCohesionVelocity(b);
-                var seperationV = GetAvoidanceVelocity(b);
-                var groupV = GetGroupVelocity(b);
-                var boundsV = GetBoundsVelocity(b);
-                var destinationV = GetDestinationVelocity(b);
+                if (!b.Idle)
+                {
+                    var cohesionV = GetCohesionVelocity(b);
+                    var seperationV = GetAvoidanceVelocity(b);
+                    var groupV = GetGroupVelocity(b);
+                    var boundsV = GetBoundsVelocity(b);
+                    var destinationV = GetDestinationVelocity(b);
 
-                b.Velocity = cohesionV + seperationV + groupV + b.Velocity + boundsV + destinationV;
-                b.Velocity = ClampVelocity(b.Velocity);
+                    b.Velocity = cohesionV + seperationV + groupV + b.Velocity + boundsV + destinationV;
 
-                b.Position += b.Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    if (BoidArrived(b))
+                    {
+                        b.Idle = true;
+                        b.Waypoint = null;
+                        b.Velocity = Vector2.Zero;
+                        Waypoint.Radius += (float)Math.Cbrt(BoidsRadiusAverage);
+                    }
+
+
+                    b.Velocity = ClampVelocity(b.Velocity);
+
+                    b.Position += b.Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                }
+            }
+        }
+
+        private bool BoidArrived(Boid b)
+        {
+            return Vector2.DistanceSquared(b.Position, Waypoint.Position) < Waypoint.Radius * Waypoint.Radius;
+        }
+
+        private void SetBoidsWaypoint(bool active)
+        {
+            foreach (var boid in Boids)
+            {
+                if (active)
+                {
+                    boid.Waypoint = Waypoint;
+                    boid.Idle = false;
+                }
+                else
+                {
+                    boid.Waypoint = null;
+                    boid.Idle = true;
+                }
+
             }
         }
 
@@ -355,21 +406,24 @@ namespace Boids
 
             _shapeBatch.Begin();
 
+
+            if (Waypoint.Enabled)
+            {
+                _shapeBatch.DrawCircle(Waypoint.Position, Waypoint.Radius, Color.Transparent, Color.White);
+            }
+            _desktop.Render();
+
             foreach (Boid b in Boids)
             {
-                _shapeBatch.DrawCircle(b.Position, b.Radius, Color.White, Color.Black, 1);
+                _shapeBatch.DrawCircle(b.Position, b.Radius, b.Color, b.BorderColor, 1);
             }
 
             _shapeBatch.DrawRectangle(Config.BoundsOrigin, Config.BoundsSize, Color.Transparent, Color.White);
 
-            if (Waypoint.Enabled)
-            {
-                _shapeBatch.DrawCircle(Waypoint.Position, Waypoint.Radius, Color.Red, Color.White);
-            }
 
             _shapeBatch.End();
 
-            _desktop.Render();
+
 
 
 

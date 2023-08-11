@@ -12,5 +12,10 @@ namespace Boids
         {
             return (float)rng.NextDouble();
         }
+
+        internal static int RandomInt(int min, int max)
+        {
+            return rng.Next(min, max + 1);
+        }
     }
 }
