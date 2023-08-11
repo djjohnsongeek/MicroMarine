@@ -44,8 +44,9 @@ namespace Boids
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _shapeBatch = new ShapeBatch(GraphicsDevice, Content);
+
             LoadBoids();
-            LoadUI();
+            LoadUIAndSettings();
         }
 
         private void LoadBoids()
@@ -56,13 +57,13 @@ namespace Boids
                     new Boid(
                         id: i,
                         position: new Vector2(Calc.RandomFloat() * Config.ScreenWidth, Calc.RandomFloat() * Config.ScreenHeight),
-                        velocity: new Vector2(Calc.RandomFloat() * 100, Calc.RandomFloat() * 100)
+                        velocity: new Vector2(Calc.RandomFloat() * 1000, Calc.RandomFloat() * 1000)
                     )
                 );
             }
         }
 
-        private void LoadUI()
+        private void LoadUIAndSettings()
         {
             MyraEnvironment.Game = this;
             string importData = File.ReadAllText("ui.xml");
@@ -154,6 +155,22 @@ namespace Boids
                 toggleCollisionsBtn.Text = Config.CollisionsEnabled ? "True" : "False";
             };
 
+            var exportBtn = project.Root.FindWidgetById("ExportBtn") as ImageTextButton;
+            exportBtn.Click += (src, value) =>
+            {
+                string exportString = "";
+                exportString += $"AvoidanceFactor: {Config.AvoidanceFactor}\n";
+                exportString += $"AvoidanceMinDistance: {Config.AvoidanceMinDist}\n";
+                exportString += $"BoundMargin: {Config.BoundsMargin}\n";
+                exportString += $"BoundsRepelFactor: {Config.BoundRepelFactor}\n";
+                exportString += $"GroupAlignmentFactor: {Config.GroupAlignmentFactor}\n";
+                exportString += $"MaxSpeed: {Config.MaxSpeed}\n";
+                exportString += $"CollisionsEnabled: {Config.CollisionsEnabled}\n";
+                exportString += $"BoidCount: {Config.BoundRepelFactor}\n";
+                exportString += $"BoidVision: {Config.BoidVision}\n";
+                File.WriteAllText("configExport.txt", exportString);
+            };
+
             // Add it to the desktop
             _desktop = new Desktop();
             _desktop.Root = project.Root;
@@ -231,8 +248,9 @@ namespace Boids
                 if (b.Id != boid.Id)
                 {
                     var distance = Vector2.Distance(boid.Position, b.Position);
+                    var avoidDistance = b.Radius + boid.Radius + Config.AvoidanceMinDist;
 
-                    if (distance < Config.AvoidanceMinDist)
+                    if (distance < avoidDistance)
                     {
                         seperationVelocity += (boid.Position - b.Position);
                     }

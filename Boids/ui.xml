@@ -24,8 +24,8 @@
     <Label Id="AvoidanceValueLabel" Text="0.1" Width="100" GridColumn="2" GridRow="1" />
     <HorizontalSlider Id="AvoidanceSlider" Maximum="1" Value="0.1" Width="300" GridColumn="1" GridRow="1" />
     <Label Text="Avoidance Dist" GridRow="2" />
-    <Label Id="AvoidanceDistValueLabel" Text="18" Width="100" GridColumn="2" GridRow="2" />
-    <HorizontalSlider Id="AvoidanceDistSlider" Value="18" Width="300" GridColumn="1" GridRow="2" />
+    <Label Id="AvoidanceDistValueLabel" Text="2" Width="100" GridColumn="2" GridRow="2" />
+    <HorizontalSlider Id="AvoidanceDistSlider" Value="2" Width="300" GridColumn="1" GridRow="2" />
     <Label Text="Group Alignment" GridRow="3" />
     <Label Id="GroupAlignmentValueLabel" Text=".05" Width="100" GridColumn="2" GridRow="3" />
     <HorizontalSlider Id="GroupAlignmentSlider" Value=".05" Maximum="1" Width="300" GridColumn="1" GridRow="3" />
@@ -41,13 +41,12 @@
     <Label Text="Max Speed" GridRow="7" />
     <Label Id="MaxSpeedValueLabel" Text="400" Width="100" GridColumn="2" GridRow="7" />
     <HorizontalSlider Id="MaxSpeedSlider" Value="400" Minimun="0" Maximum="1000" Width="300" GridColumn="1" GridRow="7" />
-
     <Label Text="Boid Count" GridRow="8" />
     <Label Id="BoidCountValueLabel" Text="50" Width="100" GridColumn="2" GridRow="8" />
     <HorizontalSlider Id="BoidCountSlider" Value="50" Minimun="0" Maximum="1000" Width="300" GridColumn="1" GridRow="8" />
-    
 	  <Label Text="Collisions Enabled:" GridRow="9" GridColumn="0" />
     <Button Id="ToggleCollisonsBtn" Text="True" GridRow="9" GridColumn="1" Padding="4" />
     <Button Id="ResetBtn" Text="Reset Sim" GridRow="10" GridColumn="0" Padding="4" />
+    <Button Id="ExportBtn" Text="Export Settings" GridRow="10" GridColumn="1" Padding="4" />
   </Grid>
 </Project>

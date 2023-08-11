@@ -7,7 +7,7 @@ namespace Boids
         internal static float BoundsMargin = 20; //200
         internal static float BoundRepelFactor = 10; //1
         internal static float CohesionFactor = .2f; //.005
-        internal static float AvoidanceMinDist = 18f; //20
+        internal static float AvoidanceMinDist = 2f; //20
         internal static float AvoidanceFactor = .1f; //.05
         internal static float GroupAlignmentFactor = .05f; //.05
         internal static int BoidCount = 50; //50
