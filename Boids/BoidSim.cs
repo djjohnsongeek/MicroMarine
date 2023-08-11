@@ -10,7 +10,7 @@ using System;
 
 namespace Boids
 {
-    public class Game1 : Game
+    public class BoidSim : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -18,7 +18,7 @@ namespace Boids
         private UI UI;
         private ShapeBatch _shapeBatch;
 
-        public Game1()
+        public BoidSim()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
