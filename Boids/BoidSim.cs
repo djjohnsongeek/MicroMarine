@@ -2,11 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
-using Myra;
-using Myra.Graphics2D.UI;
-using System.IO;
-using System;
 
 namespace Boids
 {
@@ -61,19 +56,31 @@ namespace Boids
                 UI.ToggleVisibility();
             }
 
-            if (Input.LeftMouseBtnWasPressed() && !UI.Visible)
+            if (Input.RightMouseBtnWasPressed() && !UI.Visible && !Input.LeftControlClick())
             {
                 BoidManager.SetBoidsWaypoint(true);
             }
-            else if (Input.RightMouseBtnWasPressed() && !UI.Visible)
+            else if (Input.LeftMouseBtnWasPressed() && !UI.Visible)
             {
                 BoidManager.SetBoidsWaypoint(false);
             }
 
+            // Adding static boids.
+            if (Input.LeftControlClick())
+            {
+                BoidManager.AddStaticBoid();
+            }
+
+            if (Input.LeftShiftClick())
+            {
+                BoidManager.AddIdleBoid();
+            }
+
+
             BoidManager.UpdateBoids(gameTime);
             if (Config.CollisionsEnabled)
             {
-                Physics.ResolveCollisions(BoidManager.ActiveBoids);
+                Physics.ResolveCollisions(BoidManager.AllBoids);
             }
             base.Update(gameTime);
         }

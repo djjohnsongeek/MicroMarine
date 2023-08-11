@@ -28,6 +28,16 @@ namespace Boids
             return _prevKeyboardState.IsKeyDown(key) && _currentKeyboardState.IsKeyUp(key);
         }
 
+        public static bool KeyIsPressed(Keys key)
+        {
+            return _currentKeyboardState.IsKeyDown(key);
+        }
+
+        public static bool LeftControlClick()
+        {
+            return KeyIsPressed(Keys.LeftControl) && LeftMouseBtnWasPressed();
+        }
+
         public static bool LeftMouseBtnWasPressed()
         {
             return _prevMouseState.LeftButton == ButtonState.Pressed &&
@@ -40,5 +50,9 @@ namespace Boids
                 _currentMouseState.RightButton == ButtonState.Released;
         }
 
+        internal static bool LeftShiftClick()
+        {
+            return KeyIsPressed(Keys.LeftShift) && LeftMouseBtnWasPressed();
+        }
     }
 }

@@ -19,6 +19,7 @@ namespace Boids
         internal static int ScreenHeight = 800; //800
         internal static float BoidVision = 100; // 75
         internal static bool CollisionsEnabled = true;
+        internal static bool WaypointMovementOnly = false;
         internal static float BoidVisionSquared = BoidVision * BoidVision;
         internal static Vector2 BoundsOrigin => new Vector2(BoundsMargin, BoundsMargin);
         internal static Vector2 BoundsSize => new Vector2(ScreenWidth - BoundsMargin * 2, ScreenHeight - BoundsMargin * 2);

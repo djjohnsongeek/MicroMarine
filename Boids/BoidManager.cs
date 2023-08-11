@@ -7,13 +7,29 @@ namespace Boids
 {
     class BoidManager
     {
+        // Responds to waypoints, needs to be updated
         public List<Boid> ActiveBoids;
+
+        // Cannot be pushed
+        public List<Boid> StaticBoids;
+
+        // Don't respond to waypoint commands or other updates
+        public List<Boid> IdleBoids;
+
+        // Used for physics, and drawing
+        public List<Boid> AllBoids;
+
+
         public Waypoint Waypoint;
         public float BoidsRadiusAverage;
 
         public BoidManager()
         {
+            AllBoids = new List<Boid>();
             ActiveBoids = new List<Boid>();
+            StaticBoids = new List<Boid>();
+            IdleBoids = new List<Boid>();
+
             Waypoint = new Waypoint(Vector2.Zero, 5f);
         }
 
@@ -83,22 +99,45 @@ namespace Boids
 
             for (int i = 0; i < Config.BoidCount; i++)
             {
-                ActiveBoids.Add(
-                    new Boid(
-                        id: i,
-                        position: new Vector2(Calc.RandomFloat() * Config.ScreenWidth, Calc.RandomFloat() * Config.ScreenHeight),
-                        velocity: Vector2.Zero
-                    )
-                );
+                var activeBoid = new Boid(
+                    id: i,
+                    position: new Vector2(Calc.RandomFloat() * Config.ScreenWidth, Calc.RandomFloat() * Config.ScreenHeight),
+                    velocity: Vector2.Zero
+                 );
+
+
+                ActiveBoids.Add(activeBoid);
+                AllBoids.Add(activeBoid);
 
                 BoidsRadiusAverage += ActiveBoids[i].Radius;
             }
             BoidsRadiusAverage /= ActiveBoids.Count;
         }
 
+        public void AddStaticBoid()
+        {
+            var newBoid = new Boid(AllBoids.Count, Input.MousePosition, Vector2.Zero);
+            newBoid.Idle = true;
+            newBoid.Static = true;
+
+            StaticBoids.Add(newBoid);
+            AllBoids.Add(newBoid);
+        }
+
+        public void AddIdleBoid()
+        {
+            var newBoid = new Boid(AllBoids.Count, Input.MousePosition, Vector2.Zero);
+            newBoid.Idle = true;
+            IdleBoids.Add(newBoid);
+            AllBoids.Add(newBoid);
+        }
+
         public void Reset()
         {
             ActiveBoids.Clear();
+            AllBoids.Clear();
+            StaticBoids.Clear();
+            IdleBoids.Clear();
             LoadBoids();
         }
 
@@ -108,7 +147,7 @@ namespace Boids
             {
                 shapeBatch.DrawCircle(Waypoint.Position, Waypoint.Radius, Color.Transparent, Color.White);
             }
-            foreach (Boid b in ActiveBoids)
+            foreach (Boid b in AllBoids)
             {
                 shapeBatch.DrawCircle(b.Position, b.Radius, b.Color, b.BorderColor, 1);
             }

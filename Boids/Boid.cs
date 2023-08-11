@@ -11,7 +11,7 @@ namespace Boids
         public int Radius;
         private Color _color;
         public Color BorderColor;
-        public bool Colliding = false;
+        public bool Static = false;
 
         public Color Color
         {

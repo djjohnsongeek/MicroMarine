@@ -25,6 +25,9 @@ namespace Boids
                         float angle = GetAngle(boid.Position, possible.Position);
                         float overlap = safeDistance - distance;
                         var repelVelocity = GetRepelVelocity(angle, power, overlap);
+
+                        // TOOD Need to implement STATIC collisions
+
                         boid.Position += repelVelocity / 2;
                         possible.Position -= repelVelocity / 2;
                     }
