@@ -19,16 +19,16 @@
     </Grid.RowsProportions>
     <Label Text="Cohesion" />
     <Label Id="CohesionValueLabel" Text="0.2" Width="100" GridColumn="2" />
-    <HorizontalSlider Id="CohesionSlider" Maximum="1" Value="0.2" Width="300" GridColumn="1" />
+    <HorizontalSlider Id="CohesionSlider" Maximum="5" Value="0.2" Width="300" GridColumn="1" />
     <Label Text="Avoidance" GridRow="1" />
     <Label Id="AvoidanceValueLabel" Text="0.1" Width="100" GridColumn="2" GridRow="1" />
-    <HorizontalSlider Id="AvoidanceSlider" Maximum="1" Value="0.1" Width="300" GridColumn="1" GridRow="1" />
+    <HorizontalSlider Id="AvoidanceSlider" Value="0.1" Maximum="5" Width="300" GridColumn="1" GridRow="1" />
     <Label Text="Avoidance Dist" GridRow="2" />
     <Label Id="AvoidanceDistValueLabel" Text="2" Width="100" GridColumn="2" GridRow="2" />
     <HorizontalSlider Id="AvoidanceDistSlider" Value="2" Width="300" GridColumn="1" GridRow="2" />
     <Label Text="Group Alignment" GridRow="3" />
     <Label Id="GroupAlignmentValueLabel" Text=".05" Width="100" GridColumn="2" GridRow="3" />
-    <HorizontalSlider Id="GroupAlignmentSlider" Value=".05" Maximum="1" Width="300" GridColumn="1" GridRow="3" />
+    <HorizontalSlider Id="GroupAlignmentSlider" Value=".05" Maximum="5" Width="300" GridColumn="1" GridRow="3" />
     <Label Text="Bounds" GridRow="4" />
     <Label Id="BoundsMarginValueLabel" Text="20" Width="100" GridColumn="2" GridRow="4" />
     <HorizontalSlider Id="BoundsMarginSlider" Value="20" Minimun="0" Maximum="1200" Width="300" GridColumn="1" GridRow="4" />
