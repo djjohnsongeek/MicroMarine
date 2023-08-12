@@ -10,7 +10,7 @@ namespace Boids
         private Desktop _desktop;
         public bool Visible => _desktop.Root.Visible;
 
-        public UI(BoidSim game, BoidManager boidManager)
+        public UI(BoidGame game, BoidManager boidManager)
         {
             LoadUIAndSettings(game, boidManager);
         }
@@ -25,7 +25,7 @@ namespace Boids
             _desktop.Root.Visible = !_desktop.Root.Visible;
         }
 
-        private void LoadUIAndSettings(BoidSim game, BoidManager boidManager)
+        private void LoadUIAndSettings(BoidGame game, BoidManager boidManager)
         {
             MyraEnvironment.Game = game;
             string importData = File.ReadAllText("ui.xml");

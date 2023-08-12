@@ -7,7 +7,7 @@ namespace Boids
         [STAThread]
         static void Main()
         {
-            using (var game = new BoidSim())
+            using (var game = new BoidGame())
                 game.Run();
         }
     }

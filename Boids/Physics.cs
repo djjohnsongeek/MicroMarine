@@ -28,8 +28,22 @@ namespace Boids
 
                         // TOOD Need to implement STATIC collisions
 
-                        boid.Position += repelVelocity / 2;
-                        possible.Position -= repelVelocity / 2;
+                        if  (boid.Static && possible.Static || !boid.Static && !possible.Static)
+                        {
+                            boid.Position += repelVelocity / 2;
+                            possible.Position -= repelVelocity / 2;
+                        }
+                        else if (boid.Static)
+                        {
+                            possible.Position -= repelVelocity;
+                        }
+                        else if (possible.Static)
+                        {
+                            boid.Position -= repelVelocity;
+                        }
+
+                        //boid.Position += repelVelocity / 2;
+                        //possible.Position -= repelVelocity / 2;
                     }
                 }
             }

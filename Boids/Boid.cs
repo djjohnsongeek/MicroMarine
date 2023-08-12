@@ -17,7 +17,17 @@ namespace Boids
         {
             get
             {
-                return Idle ? Color.White : Color.LawnGreen;
+                if (Static)
+                {
+                    return Color.Black;
+                }
+
+                if (Idle)
+                {
+                    return Color.White;
+                }
+
+                return Color.LawnGreen;
             }
             set
             {

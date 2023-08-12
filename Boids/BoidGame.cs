@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Boids
 {
-    public class BoidSim : Game
+    public class BoidGame : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -13,7 +13,7 @@ namespace Boids
         private UI UI;
         private ShapeBatch _shapeBatch;
 
-        public BoidSim()
+        public BoidGame()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
