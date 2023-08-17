@@ -80,7 +80,7 @@ namespace Boids
             BoidManager.UpdateBoids(gameTime);
             if (Config.CollisionsEnabled)
             {
-                Physics.ResolveCollisions(BoidManager.AllBoids);
+                Physics.ResolveCollisions(BoidManager.AllBoids, gameTime);
             }
             base.Update(gameTime);
         }

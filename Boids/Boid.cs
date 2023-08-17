@@ -43,7 +43,7 @@ namespace Boids
             Id = id;
             Position = position;
             Velocity = velocity;
-            Radius = Calc.RandomInt(8, 12);
+            Radius = 12; // Calc.RandomInt(8, 12);
             Idle = true;
             Waypoint = null;
 

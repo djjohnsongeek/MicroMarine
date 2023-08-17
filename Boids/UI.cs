@@ -127,6 +127,14 @@ namespace Boids
                 Config.ArrivalDrag = value.NewValue;
             };
 
+            HorizontalSlider collisionRepelSlider = project.Root.FindWidgetById("CollisionRepelSlider") as HorizontalSlider;
+            Label collisionRepelValueLabel = project.Root.FindWidgetById("CollisionRepelValueLabel") as Label;
+            collisionRepelSlider.ValueChanged += (src, value) =>
+            {
+                collisionRepelValueLabel.Text = value.NewValue.ToString();
+                Config.CollisionRepelMultiplier = value.NewValue;
+            };
+
             var resetBtn = project.Root.FindWidgetById("ResetBtn") as ImageTextButton;
             resetBtn.Click += (src, value) =>
             {
