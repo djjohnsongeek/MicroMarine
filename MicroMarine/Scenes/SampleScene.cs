@@ -192,7 +192,7 @@ namespace MicroMarine.Scenes
             var spawnerObject = tiledMap.GetObject("MapObjects", "enemySpawner");
             Entity enemySpawner = CreateEntity("unitSpawner", Vector2.Zero + new Vector2(-20, 60), Point.Zero);
             enemySpawner.AddComponent(
-                new UnitSpawner<Scuttle>(spawnerObject.Position, totalSpawns: 500, unitPerWave: 5, waveDelay: 2, waveStep: 4)
+                new UnitSpawner<Scuttle>(spawnerObject.Position, totalSpawns: 100, unitPerWave: 5, waveDelay: 2, waveStep: 4)
             );
 
             // Center on Marines
