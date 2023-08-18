@@ -262,7 +262,7 @@ namespace Boids
                     avoidVelocity += (boid.Position - b.Position);
                 }
             }
-
+            // make the avoid velocity taper off depeding on the distance
             return avoidVelocity * Config.AvoidanceFactor;
         }
 
