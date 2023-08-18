@@ -39,20 +39,20 @@ namespace Boids
                 Config.CohesionFactor = value.NewValue;
             };
 
-            HorizontalSlider avoidanceSlider = project.Root.FindWidgetById("AvoidanceSlider") as HorizontalSlider;
-            Label avoidanceValueLabel = project.Root.FindWidgetById("AvoidanceValueLabel") as Label;
-            avoidanceSlider.ValueChanged += (src, value) =>
+            HorizontalSlider seperationSlider = project.Root.FindWidgetById("SeperationSlider") as HorizontalSlider;
+            Label seperationValueLabel = project.Root.FindWidgetById("SeperationValueLabel") as Label;
+            seperationSlider.ValueChanged += (src, value) =>
             {
-                avoidanceValueLabel.Text = value.NewValue.ToString();
-                Config.AvoidanceFactor = value.NewValue;
+                seperationValueLabel.Text = value.NewValue.ToString();
+                Config.SeperationFactor = value.NewValue;
             };
 
-            HorizontalSlider avoidanceDistSlider = project.Root.FindWidgetById("AvoidanceDistSlider") as HorizontalSlider;
-            Label avoidanceDistValueLabel = project.Root.FindWidgetById("AvoidanceDistValueLabel") as Label;
-            avoidanceDistSlider.ValueChanged += (src, value) =>
+            HorizontalSlider seperationMinDistanceSlider = project.Root.FindWidgetById("SeperationDistSlider") as HorizontalSlider;
+            Label seperationMinDistValueLabel = project.Root.FindWidgetById("SeperationDistValueLabel") as Label;
+            seperationMinDistanceSlider.ValueChanged += (src, value) =>
             {
-                avoidanceDistValueLabel.Text = value.NewValue.ToString();
-                Config.AvoidanceMinDist = value.NewValue;
+                seperationMinDistValueLabel.Text = value.NewValue.ToString();
+                Config.SeperationMinDistance = value.NewValue;
             };
 
             HorizontalSlider groupAlignmentSlider = project.Root.FindWidgetById("GroupAlignmentSlider") as HorizontalSlider;
@@ -135,6 +135,22 @@ namespace Boids
                 Config.CollisionRepelMultiplier = value.NewValue;
             };
 
+            HorizontalSlider avoidanceSlider = project.Root.FindWidgetById("AvoidanceSlider") as HorizontalSlider;
+            Label avoidanceValueLabel = project.Root.FindWidgetById("AvoidanceValueLabel") as Label;
+            avoidanceSlider.ValueChanged += (src, value) =>
+            {
+                avoidanceValueLabel.Text = value.NewValue.ToString();
+                Config.AvoidanceFactor = value.NewValue;
+            };
+
+            HorizontalSlider avoidanceMinDistSlider = project.Root.FindWidgetById("AvoidanceDistanceSlider") as HorizontalSlider;
+            Label avoidanceMinDistValueLabel = project.Root.FindWidgetById("AvoidanceDistanceValueLabel") as Label;
+            avoidanceMinDistSlider.ValueChanged += (src, value) =>
+            {
+                avoidanceMinDistValueLabel.Text = value.NewValue.ToString();
+                Config.AvoidanceMinDistance = value.NewValue;
+            };
+
             var resetBtn = project.Root.FindWidgetById("ResetBtn") as ImageTextButton;
             resetBtn.Click += (src, value) =>
             {
@@ -153,8 +169,8 @@ namespace Boids
             {
                 string exportString = "";
                 exportString += $"CohesionFactor: {Config.CohesionFactor}\n";
-                exportString += $"AvoidanceFactor: {Config.AvoidanceFactor}\n";
-                exportString += $"AvoidanceMinDistance: {Config.AvoidanceMinDist}\n";
+                exportString += $"AvoidanceFactor: {Config.SeperationFactor}\n";
+                exportString += $"AvoidanceMinDistance: {Config.SeperationMinDistance}\n";
                 exportString += $"BoundMargin: {Config.BoundsMargin}\n";
                 exportString += $"BoundsRepelFactor: {Config.BoundRepelFactor}\n";
                 exportString += $"GroupAlignmentFactor: {Config.GroupAlignmentFactor}\n";

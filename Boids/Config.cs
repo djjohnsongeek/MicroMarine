@@ -7,8 +7,8 @@ namespace Boids
         internal static float BoundsMargin = 60; //200
         internal static float BoundRepelFactor = 50; //1
         internal static float CohesionFactor = .25f; //.005
-        internal static float AvoidanceMinDist = 3.5f; //20
-        internal static float AvoidanceFactor = .8f; //.05
+        internal static float SeperationMinDistance = 3.5f; //20
+        internal static float SeperationFactor = .8f; //.05
         internal static float GroupAlignmentFactor = 5f; //.05
         internal static float DestinationFactor = 0.339f; // 1
         internal static float ArrivalDrag = 0;
@@ -22,6 +22,8 @@ namespace Boids
         internal static float CollisionRepelMultiplier = 1.5f;
         internal static bool WaypointMovementOnly = false;
         internal static float BoidVisionSquared = BoidVision * BoidVision;
+        internal static float AvoidanceFactor = 1;
+        internal static float AvoidanceMinDistance = 0;
         internal static Vector2 BoundsOrigin => new Vector2(BoundsMargin, BoundsMargin);
         internal static Vector2 BoundsSize => new Vector2(ScreenWidth - BoundsMargin * 2, ScreenHeight - BoundsMargin * 2);
     }

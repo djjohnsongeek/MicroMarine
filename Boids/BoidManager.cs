@@ -69,12 +69,13 @@ namespace Boids
                 if (!b.Idle)
                 {
                     var cohesionV = GetCohesionVelocity(b);
-                    var seperationV = GetAvoidanceVelocity(b);
+                    var seperationV = GetSeperationVelocity(b);
                     var groupV = GetGroupVelocity(b);
                     var boundsV = GetBoundsVelocity(b);
                     var destinationV = GetDestinationVelocity(b);
+                    var avoidV = GetAvoidVelocity(b);
 
-                    b.Velocity = cohesionV + seperationV + groupV + b.Velocity + boundsV + destinationV;
+                    b.Velocity = cohesionV + seperationV + groupV + b.Velocity + boundsV + destinationV + avoidV;
 
                     if (BoidInArrivalCircle(b))
                     {
@@ -172,7 +173,7 @@ namespace Boids
             return (center - boid.Position) * Config.CohesionFactor;
         }
 
-        private Vector2 GetAvoidanceVelocity(Boid boid)
+        private Vector2 GetSeperationVelocity(Boid boid)
         {
             Vector2 seperationVelocity = Vector2.Zero;
             // Do we need count?
@@ -182,7 +183,7 @@ namespace Boids
                 if (b.Id != boid.Id)
                 {
                     var distance = Vector2.Distance(boid.Position, b.Position);
-                    var avoidDistance = b.Radius + boid.Radius + Config.AvoidanceMinDist;
+                    var avoidDistance = b.Radius + boid.Radius + Config.SeperationMinDistance;
 
                     if (distance < avoidDistance)
                     {
@@ -191,7 +192,7 @@ namespace Boids
                 }
             }
 
-            return seperationVelocity * Config.AvoidanceFactor;
+            return seperationVelocity * Config.SeperationFactor;
         }
 
         private Vector2 GetGroupVelocity(Boid boid)
@@ -245,6 +246,24 @@ namespace Boids
                 destVelocity *= Config.MaxSpeed;
             }
             return destVelocity * Config.DestinationFactor;
+        }
+
+        private Vector2 GetAvoidVelocity(Boid boid)
+        {
+            Vector2 avoidVelocity = Vector2.Zero;
+
+            foreach (Boid b in StaticBoids)
+            {
+                var distance = Vector2.Distance(boid.Position, b.Position);
+                var avoidDistance = b.Radius + boid.Radius + Config.AvoidanceMinDistance;
+
+                if (distance < avoidDistance)
+                {
+                    avoidVelocity += (boid.Position - b.Position);
+                }
+            }
+
+            return avoidVelocity * Config.AvoidanceFactor;
         }
 
         private bool BoidInArrivalCircle(Boid b)
