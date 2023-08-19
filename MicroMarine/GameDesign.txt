@@ -46,3 +46,16 @@ Nearest Neighbor Searches
 Possible arrival solution:
 -- large circle, once inside the cirle, no longer follow destination
 -- if on edge of the circle, stop all movement
+
+
+Story
+- Start with a single, special unit
+	- game ends if this unit dies
+- Command send down 3 clone units
+	- 3 different "classes"
+		- Commander: flair
+		- Recon: radar
+		- Medic: healing circle cannot use weapon while healing is active
+		- Grenadier: throw grenades
+		- flame thrower?
+- End of game: command sends a pick up pod that only the special unit can get on. Clones are left to die.
