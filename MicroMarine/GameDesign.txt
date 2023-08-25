@@ -49,12 +49,12 @@ Possible arrival solution:
 
 
 Story
-- Start with a single, special unit
+- Start with a single, special unit (commander)
 	- game ends if this unit dies
-- Command send down 3 clone units
+- Command sends down 3 clone units
 	- 3 different "classes"
 		- Commander: flair
-		- Recon: radar
+		- Recon: radar for scouting
 		- Medic: healing circle cannot use weapon while healing is active
 		- Grenadier: throw grenades
 		- flame thrower?

@@ -27,7 +27,6 @@ namespace MicroMarine.Components
         public override void Update()
         {
             CurrentCommand = _unitCommands.Peek();
-
         }
 
         protected bool TargetsAreNearby(out Entity entity)
