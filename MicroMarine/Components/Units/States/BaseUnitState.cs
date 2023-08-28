@@ -94,5 +94,60 @@ namespace MicroMarine.Components
                     throw new NotImplementedException($"Unknown Command: {CurrentCommand}");
             }
         }
+
+        protected Vector2 GetUnitVelocity(Entity entity)
+        {
+            float entityMaxSpeed = entity.GetComponent<Mover>().MaxSpeed;
+
+            var cohesionV = GetCohesionVelocity(_context.Entity);
+            var seperationV = GetSeperationVelocity(_context.Entity);
+            var groupV = GetGroupVelocity(_context.Entity);
+            var destinationV = GetDestinationVelocity(_context.Entity);
+            var avoidV = GetAvoidVelocity(_context.Entity);
+
+
+            var unitVelocity = cohesionV + seperationV + groupV + destinationV + avoidV;
+            unitVelocity = ClampVelocity(unitVelocity, entityMaxSpeed);
+
+            // TODO arrival checks?
+
+
+            return unitVelocity;
+        }
+
+        private Vector2 GetCohesionVelocity(Entity e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Vector2 GetSeperationVelocity(Entity e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Vector2 GetGroupVelocity(Entity e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Vector2 GetDestinationVelocity(Entity e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Vector2 GetAvoidVelocity(Entity e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Vector2 ClampVelocity(Vector2 velocity, float maxSpeed)
+        {
+            if (velocity.Length() > maxSpeed)
+            {
+                velocity.Normalize();
+                velocity *= maxSpeed;
+            }
+            return velocity;
+        }
     }
 }

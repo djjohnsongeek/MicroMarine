@@ -6,7 +6,7 @@ namespace Zand.ECS.Components
 {
     public class Mover : Component, IUpdateable
     {
-        private float maxSpeed;
+        public float MaxSpeed;
         public Vector2 Velocity = Vector2.Zero;
         public UnitDirection Orientation { get; private set; }
         private CircleCollider _collider;
@@ -14,7 +14,7 @@ namespace Zand.ECS.Components
 
         public Mover (float maxSpeed)
         {
-            this.maxSpeed = maxSpeed;
+            MaxSpeed = maxSpeed;
             Orientation = UnitDirection.South;
 
         }

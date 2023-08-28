@@ -202,7 +202,6 @@ namespace Zand.Physics
                 return;
             }
 
-
             // unit to unit collisions
             var repelVelocity = new Vector2(
                 GetRepelX(collision.Angle, collision.RepelStrength),
