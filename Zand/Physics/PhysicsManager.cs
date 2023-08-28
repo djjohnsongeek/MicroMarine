@@ -162,6 +162,7 @@ namespace Zand.Physics
             var mapCollider = GetCollider<Collider>("mapCollider", collider1, collider2);
             var unitCollider = GetCollider<CircleCollider>("unit", collider1, collider2);
 
+            // map collisions
             if (mapCollider != null && unitCollider != null)
             {
 
@@ -202,44 +203,25 @@ namespace Zand.Physics
             }
 
 
-
-            var repelVelocity1 = new Vector2(
+            // unit to unit collisions
+            var repelVelocity = new Vector2(
                 GetRepelX(collision.Angle, collision.RepelStrength),
                 GetRepelY(collision.Angle, collision.RepelStrength));
 
-            var repelVelocity2 = Vector2.Multiply(repelVelocity1, -1);
+            var brutalRepelVelocity = GetBrutalRepelVelocity(collision.Angle, collision.RepelStrength, collision.OverlapDistance);
 
-            //if (collider1.Static && !collider2.Static)
-            //{
-            //    repelVelocity2.Normalize();
-            //    entity2Movement.SetPosition(entity2Movement.Entity.Position += (repelVelocity2 * collision.OverlapDistance));
-            //    return;
-            //}
-            //else if (!collider1.Static && collider2.Static)
-            //{
-            //    repelVelocity1.Normalize();
-            //    entity1Movement.SetPosition(entity1Movement.Entity.Position += (repelVelocity1 * collision.OverlapDistance));
-            //    return;
-            //}
-
-
-            // We need to handle Weights and statics correctly
-            // a static unit cannot be pushed. It is fixed.
-            // all other units must not collider = hard push outside of the radius
-            // if both are static ... for now ignore collision
-
-            if (collider1.Weight > collider2.Weight)
+            if (collider1.Static && collider2.Static || !collider1.Static && !collider2.Static)
             {
-                entity2Movement?.Nudge(repelVelocity2);
+                entity1Movement?.Nudge(repelVelocity);
+                entity2Movement?.Nudge(-repelVelocity);
             }
-            else if (collider1.Weight < collider2.Weight)
+            else if (collider1.Static)
             {
-                entity1Movement?.Nudge(repelVelocity1);
+                entity2Movement.SetPosition(entity2.Position - brutalRepelVelocity);
             }
-            else
+            else if(collider2.Static)
             {
-                entity1Movement?.Nudge(repelVelocity1);
-                entity2Movement?.Nudge(repelVelocity2);
+                entity1Movement.SetPosition(entity1.Position + brutalRepelVelocity);
             }
         }
 
@@ -268,10 +250,12 @@ namespace Zand.Physics
             return (float)Math.Sin(angle) * power * Config.UnitRepelMangitude;
         }
 
-        private Vector2 GetNorminalizedCollisionVector(double angle, float power)
+        private Vector2 GetBrutalRepelVelocity(double angle, float power, float overlap)
         {
             var v = new Vector2(GetRepelX(angle, power), GetRepelY(angle, power));
             v.Normalize();
+
+            v *= overlap;
             return v;
         }
     }
