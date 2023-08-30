@@ -64,22 +64,22 @@ namespace Zand.Physics
             return colliders;
         }
 
-        public IReadOnlyCollection<Collider> GetWithin(Vector2 position, float distance)
+        public List<CircleCollider> GetWithin(Vector2 position, float distance)
         {
             var boundingCircle = new Circle(position, distance);
             var boundingBox = new RectangleF(position.X - distance, position.Y - distance, distance * 2, distance * 2);
 
 
-            var colliders = new HashSet<Collider>();
+            var colliders = new List<CircleCollider>();
             var possibleColliders = GetWithin(boundingBox);
 
             foreach (var collider in possibleColliders)
             {
-                if (collider is CircleCollider)
+                if (collider is CircleCollider c)
                 {
-                    if (Collisions.CircleOverLaps(boundingCircle, collider as CircleCollider))
+                    if (Collisions.CircleOverLaps(boundingCircle, c))
                     {
-                        colliders.Add(collider);
+                        colliders.Add(c);
                     }
                 }
             }

@@ -81,6 +81,11 @@ namespace Zand.Physics
             return entities;
         }
 
+        public List<CircleCollider> GetCollidersWithin(Vector2 position, float distance)
+        {
+            return _spatialHash.GetWithin(position, distance);
+        }
+
         public List<Entity> GetEntitiesWithin(Vector2 position, float distance)
         {
             var entities = new List<Entity>();

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Zand;
 using Zand.AI;
+using Zand.Colliders;
 using Zand.Components;
 using Zand.ECS.Components;
 
@@ -97,7 +98,8 @@ namespace MicroMarine.Components
 
         protected Vector2 GetUnitVelocity(Entity entity)
         {
-            float entityMaxSpeed = entity.GetComponent<Mover>().MaxSpeed;
+            var units = _context.Entity.Scene.Physics.GetCollidersWithin(_context.Entity.ScreenPosition, BoidConfig.BoidVision);
+            var (friendlies, statics) = SortNearbyUnits(units);
 
             var cohesionV = GetCohesionVelocity(_context.Entity);
             var seperationV = GetSeperationVelocity(_context.Entity);
@@ -107,13 +109,39 @@ namespace MicroMarine.Components
 
 
             var unitVelocity = cohesionV + seperationV + groupV + destinationV + avoidV;
-            unitVelocity = ClampVelocity(unitVelocity, entityMaxSpeed);
+            unitVelocity = ClampVelocity(unitVelocity, _mover.MaxSpeed);
 
             // TODO arrival checks?
 
 
             return unitVelocity;
         }
+
+
+        private (List<CircleCollider> friendlies, List<CircleCollider> statics) SortNearbyUnits(List<CircleCollider> colliders)
+        {
+            // we are assuming a circle collider means it is a unit ...
+            var statics = new List<CircleCollider>();
+            var friendlies = new List<CircleCollider>();
+
+            var unitAllegiance = _context.Entity.GetComponent<UnitAllegiance>();
+
+            for (int i = 0; i < colliders.Count; i++)
+            {
+                if (colliders[i].Static)
+                {
+                    statics.Add(colliders[i]);
+                }
+
+                if (colliders[i].Entity.GetComponent<UnitAllegiance>().Id == unitAllegiance.Id)
+                {
+                    friendlies.Add(colliders[i]);
+                }
+            }
+
+            return (friendlies, statics);
+        }
+
 
         private Vector2 GetCohesionVelocity(Entity e)
         {
