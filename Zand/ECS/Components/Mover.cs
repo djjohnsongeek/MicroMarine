@@ -30,7 +30,6 @@ namespace Zand.ECS.Components
             Entity.Position += Velocity * (float)Time.DeltaTime;
             Orientation = DetermineUnitDirection(Velocity);
             UpdateEntityLayerDepth();
-
             if ((Velocity.X > 0 || Velocity.Y > 0) && _collider != null)
             {
                 _collider.Dirty = true;

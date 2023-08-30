@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Apos.Shapes;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Zand.ECS.Components
 {
@@ -21,7 +22,7 @@ namespace Zand.ECS.Components
 
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch, ShapeBatch shapeBatch)
         {
         }
     }

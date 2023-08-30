@@ -10,6 +10,7 @@ using Zand.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MicroMarine.Components.Units;
 using Zand.UI;
+using Apos.Shapes;
 
 namespace MicroMarine.Components
 {
@@ -140,22 +141,22 @@ namespace MicroMarine.Components
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, ShapeBatch shapeBatch)
         {
             foreach (var command in _allCommands)
             {
-                DrawCommand(spriteBatch, command);
+                DrawCommand(shapeBatch, spriteBatch, command);
             }
         }
 
-        private void DrawCommand(SpriteBatch sBatch, UnitCommand command)
+        private void DrawCommand(ShapeBatch shapeBatch, SpriteBatch spriteBatch, UnitCommand command)
         {
             Vector2 screenPos = Scene.Camera.GetScreenLocation(command.Destination.Position);
-            DrawWaypoint(sBatch, command, screenPos);
+            DrawWaypoint(spriteBatch, command, screenPos);
 
             if (DebugTools.Active)
             {
-                DrawDestinationCircles(sBatch, command, screenPos);
+                DrawDestinationCircles(shapeBatch, command, screenPos);
             }
         }
 
@@ -189,20 +190,9 @@ namespace MicroMarine.Components
 
         }
 
-        private void DrawDestinationCircles(SpriteBatch sBatch, UnitCommand command, Vector2 commandScreenPos)
+        private void DrawDestinationCircles(ShapeBatch sBatch, UnitCommand command, Vector2 commandScreenPos)
         {
-            var circleTexture = Shapes.CreateCircleTexture(command.Destination.Radius * 2);
-            sBatch.Draw(
-                texture: circleTexture,
-                position: commandScreenPos,
-                sourceRectangle: null,
-                color: new Color(200, 100, 100, 100),
-                rotation: 0,
-                origin: new Vector2(circleTexture.Width / 2, circleTexture.Height / 2),
-                scale: 1,
-                effects: SpriteEffects.None,
-                layerDepth: 1
-            );
+            sBatch.DrawCircle(command.Destination.Position, command.Destination.Radius, Color.Transparent, Color.Yellow, 2);
         }
     }
 }

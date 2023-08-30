@@ -100,15 +100,16 @@ namespace MicroMarine.Components
         {
             var units = _context.Entity.Scene.Physics.GetCollidersWithin(_context.Entity.ScreenPosition, BoidConfig.BoidVision);
             var (friendlies, statics) = SortNearbyUnits(units);
+            var unitCollider = _context.Entity.GetComponent<CircleCollider>();
 
-            var cohesionV = GetCohesionVelocity(_context.Entity);
-            var seperationV = GetSeperationVelocity(_context.Entity);
-            var groupV = GetGroupVelocity(_context.Entity);
-            var destinationV = GetDestinationVelocity(_context.Entity);
-            var avoidV = GetAvoidVelocity(_context.Entity);
+            //var cohesionV = GetCohesionVelocity(unitCollider, friendlies);
+            //var seperationV = GetSeperationVelocity(unitCollider, friendlies);
+            //var groupV = GetGroupVelocity(unitCollider, friendlies);
+            var destinationV = GetDestinationVelocity(unitCollider);
+            var avoidV = GetAvoidVelocity(unitCollider, statics);
 
 
-            var unitVelocity = cohesionV + seperationV + groupV + destinationV + avoidV;
+            var unitVelocity =  destinationV + avoidV; //cohesionV + seperationV + groupV +
             unitVelocity = ClampVelocity(unitVelocity, _mover.MaxSpeed);
 
             // TODO arrival checks?
@@ -133,7 +134,7 @@ namespace MicroMarine.Components
                     statics.Add(colliders[i]);
                 }
 
-                if (colliders[i].Entity.GetComponent<UnitAllegiance>().Id == unitAllegiance.Id)
+                if (colliders[i].Entity.GetComponent<UnitAllegiance>().Id == unitAllegiance.Id && UnitHasSaveMoveCommand(colliders[i]))
                 {
                     friendlies.Add(colliders[i]);
                 }
@@ -142,30 +143,92 @@ namespace MicroMarine.Components
             return (friendlies, statics);
         }
 
-
-        private Vector2 GetCohesionVelocity(Entity e)
+        private bool UnitHasSaveMoveCommand(CircleCollider unitCollider)
         {
-            throw new NotImplementedException();
+            return unitCollider.Entity.GetComponent<CommandQueue>().Peek()?.Destination.Position == CurrentCommand.Destination.Position;
         }
 
-        private Vector2 GetSeperationVelocity(Entity e)
+
+        private Vector2 GetCohesionVelocity(CircleCollider unitCollider, List<CircleCollider> colliders)
         {
-            throw new NotImplementedException();
+            Vector2 center = Vector2.Zero;
+            foreach (CircleCollider c in colliders)
+            {
+                center += c.Center;
+            }
+
+            center /= colliders.Count;
+            return (center - unitCollider.Center) * Config.CohesionFactor;
         }
 
-        private Vector2 GetGroupVelocity(Entity e)
+        private Vector2 GetSeperationVelocity(CircleCollider unitCollider, List<CircleCollider> colliders)
         {
-            throw new NotImplementedException();
+            Vector2 seperationVelocity = Vector2.Zero;
+
+            foreach (CircleCollider c in colliders)
+            {
+                if (c.Entity.Id != unitCollider.Entity.Id)
+                {
+                    var distance = Vector2.Distance(unitCollider.Center, c.Center);
+                    var avoidDistance = c.Radius + unitCollider.Radius + BoidConfig.SeperationMinDistance;
+
+                    if (distance < avoidDistance)
+                    {
+                        seperationVelocity += (unitCollider.Center - c.Center);
+                    }
+                }
+            }
+
+            return seperationVelocity * BoidConfig.SeperationFactor;
         }
 
-        private Vector2 GetDestinationVelocity(Entity e)
+        private Vector2 GetGroupVelocity(CircleCollider unitCollider, List<CircleCollider> colliders)
         {
-            throw new NotImplementedException();
+            Vector2 averageVelocity = Vector2.Zero;
+            int count = 0;
+            foreach (CircleCollider c in colliders)
+            {
+                if (Vector2.DistanceSquared(unitCollider.Center, c.Center) < BoidConfig.BoidVisionSquared)
+                {
+                    averageVelocity += c.Entity.GetComponent<Mover>().Velocity;
+                    count++;
+                }
+
+            }
+
+            averageVelocity /= count;
+            return (averageVelocity - _mover.Velocity) * BoidConfig.GroupAlignmentFactor;
         }
 
-        private Vector2 GetAvoidVelocity(Entity e)
+        private Vector2 GetDestinationVelocity(CircleCollider unit)
         {
-            throw new NotImplementedException();
+            var destVelocity = Vector2.Zero;
+            if (CurrentCommand.Type == CommandType.Move)
+            {
+                destVelocity = CurrentCommand.Destination.Position - unit.Center;
+                destVelocity.Normalize();
+                destVelocity *= BoidConfig.MaxSpeed;
+            }
+            return destVelocity * BoidConfig.DestinationFactor;
+        }
+
+        private Vector2 GetAvoidVelocity(CircleCollider unitCollider, List<CircleCollider> unitColliders)
+        {
+            Vector2 avoidVelocity = Vector2.Zero;
+
+            foreach (CircleCollider c in unitColliders)
+            {
+                var distance = Vector2.DistanceSquared(unitCollider.Center, c.Center);
+                var avoidDistance = c.Radius + unitCollider.Radius + BoidConfig.AvoidOtherMinDist;
+                avoidDistance = avoidDistance * avoidDistance;
+
+                if (distance < avoidDistance)
+                {
+                    avoidVelocity += (unitCollider.Center - c.Center);
+                }
+            }
+            // make the avoid velocity taper off depeding on the distance?
+            return avoidVelocity * BoidConfig.AvoidOtherFactor;
         }
 
         private Vector2 ClampVelocity(Vector2 velocity, float maxSpeed)

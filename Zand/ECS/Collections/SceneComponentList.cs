@@ -33,14 +33,18 @@ namespace Zand.ECS.Collections
                 SpriteSortMode.Deferred,
                 BlendState.NonPremultiplied,
                 null, null, null, null, null
-            ); ;
+            );
+
+            Scene.ShapeBatch.Begin(Scene.Camera.GetTransformation());
 
             for (int i = 0; i < _components.Count; i++)
             {
-                _components[i].Draw(Scene.SpriteBatch);
+                _components[i].Draw(Scene.SpriteBatch, Scene.ShapeBatch);
             }
 
+
             Scene.SpriteBatch.End();
+            Scene.ShapeBatch.End();
         }
 
         public SceneComponent AddComponent(SceneComponent component)

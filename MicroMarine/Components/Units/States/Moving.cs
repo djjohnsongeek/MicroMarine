@@ -58,11 +58,7 @@ namespace MicroMarine.Components
                 return;
             }
 
-
-
-
-            Vector2 unitVelocity = Vector2.Normalize(CurrentCommand.Destination.Position - _context.Entity.Position) * _context.Speed;
-            _mover.Velocity = unitVelocity;
+            _mover.Velocity = GetUnitVelocity(_context.Entity);
             SetUnitAnimation("Walk");
         }
 

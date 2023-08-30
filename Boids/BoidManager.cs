@@ -203,7 +203,7 @@ namespace Boids
             {
                 if (Vector2.DistanceSquared(boid.Position, b.Position) < Config.BoidVisionSquared)
                 {
-                    averageVelocity += boid.Velocity;
+                    averageVelocity += b.Velocity;
                     count++;
                 }
 

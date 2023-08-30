@@ -16,7 +16,7 @@ namespace MicroMarine.Components
             attackRange: 200,
             sightRange: 250,
             followRange: 120,
-            speed: 100,
+            speed: 160,
             damage: 5,
             attacksPerSec: 5)
         {

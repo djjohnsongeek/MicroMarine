@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Apos.Shapes;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -100,16 +101,11 @@ namespace MicroMarine.Components
             _selectedUnits.RemoveUnit(entity);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, ShapeBatch shapeBatch)
         {
             if (_selectBox.Active)
             {
-                Shapes.DrawEmptyRect(
-                    spriteBatch,
-                    Scene.DebugPixelTexture,
-                    _selectBox.Rect,
-                    Color.WhiteSmoke
-                );
+                shapeBatch.DrawRectangle(_selectBox.Origin, _selectBox.Rect.Size.ToVector2(), Color.Transparent, Color.White);
             }
         }
 
