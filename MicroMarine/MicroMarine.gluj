@@ -6,9 +6,53 @@
   "OrthogonalHeight": 600,
   "Screens": [],
   "Entities": [],
-  "GlobalFiles": [],
+  "GlobalFiles": [
+    {
+      "Name": "GumProject/GumProject.gumx",
+      "Properties": [
+        {
+          "Name": "FileAdditionBehavior",
+          "Value": 1,
+          "Type": "int"
+        },
+        {
+          "Name": "AutoCreateGumScreens",
+          "Value": true,
+          "Type": "Boolean"
+        },
+        {
+          "Name": "ShowMouse",
+          "Value": true,
+          "Type": "Boolean"
+        },
+        {
+          "Name": "MakeGumInstancesPublic",
+          "Value": true,
+          "Type": "Boolean"
+        },
+        {
+          "Name": "IsMatchGameResolutionInGumChecked",
+          "Value": true,
+          "Type": "Boolean"
+        },
+        {
+          "Name": "IncludeFormsInComponents",
+          "Value": true
+        },
+        {
+          "Name": "IncludeComponentToFormsAssociation",
+          "Value": true
+        }
+      ],
+      "IsSharedStatic": true,
+      "DestroyOnUnload": false,
+      "HasPublicProperty": true,
+      "ProjectsToExcludeFrom": []
+    }
+  ],
   "GlobalContentSettingsSave": {},
   "SyncedProjects": [],
+  "StartUpScreen": "Screens\\GameScreen",
   "ResolutionPresets": [],
   "PerformanceSettingsSave": {},
   "IgnoredDirectories": [],
@@ -35,7 +79,11 @@
   "ExternallyBuiltFileDirectory": "../../",
   "CustomGameClass": "GameMain",
   "FileVersion": 45,
-  "ScreenReferences": [],
+  "ScreenReferences": [
+    {
+      "Name": "Screens\\GameScreen"
+    }
+  ],
   "EntityReferences": [],
   "Bookmarks": [],
   "PluginData": {

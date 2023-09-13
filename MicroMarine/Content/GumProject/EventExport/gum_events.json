@@ -1,0 +1,55 @@
+{
+  "UserEvents": {
+    "vchel": [
+      {
+        "NewName": "GameScreenGum",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 0,
+        "TimestampUtc": "2023-09-13T22:28:47.2117416Z"
+      },
+      {
+        "NewName": "GameScreenGum.ButtonStandardInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2023-09-13T22:28:53.3730887Z"
+      },
+      {
+        "NewName": "GameScreenGum.ButtonStandardInstance1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2023-09-13T22:29:27.8179064Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreenGum.Controls/ButtonStandard ButtonStandardInstance in GameScreenGum",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2023-09-13T22:30:22.7682687Z"
+      },
+      {
+        "NewName": "GameScreenGum.ListBoxInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2023-09-13T22:30:37.5733114Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreenGum.Controls/ListBox ListBoxInstance in GameScreenGum",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2023-09-13T22:32:32.9142461Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreenGum.Controls/ButtonStandard ButtonStandardInstance1 in GameScreenGum",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2023-09-13T22:32:32.915246Z"
+      }
+    ]
+  }
+}

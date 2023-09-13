@@ -1,6 +1,8 @@
 ﻿using Zand;
 using MicroMarine.Scenes;
 using Microsoft.Xna.Framework;
+using FlatRedBall;
+using FlatRedBall.Math.Geometry;
 
 namespace MicroMarine
 {
@@ -10,21 +12,31 @@ namespace MicroMarine
         {
             GeneratedInitializeEarly();
             CurrentScene = new SampleScene();
+            FlatRedBallServices.InitializeFlatRedBall(this, graphics);
+
+            ShapeManager.AddCircle().Radius = 32;
+
             GeneratedInitialize();
             base.Initialize();
         }
 
         protected override void Update(GameTime gameTime)
         {
+            FlatRedBallServices.Update(gameTime);
+
+            FlatRedBall.Screens.ScreenManager.Activity();
             GeneratedUpdate(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GeneratedDrawEarly(gameTime);
-            GeneratedDraw(gameTime);
             base.Draw(gameTime);
+            FlatRedBall.Camera.Main.BackgroundColor = Color.Transparent;
+            GeneratedDrawEarly(gameTime);
+            FlatRedBallServices.Draw();
+
+            GeneratedDraw(gameTime);
         }
 
 
