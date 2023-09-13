@@ -1,5 +1,6 @@
 ﻿using Zand;
 using MicroMarine.Scenes;
+using Microsoft.Xna.Framework;
 
 namespace MicroMarine
 {
@@ -7,9 +8,25 @@ namespace MicroMarine
     {
         protected override void Initialize()
         {
+            GeneratedInitializeEarly();
             CurrentScene = new SampleScene();
+            GeneratedInitialize();
             base.Initialize();
         }
+
+        protected override void Update(GameTime gameTime)
+        {
+            GeneratedUpdate(gameTime);
+            base.Update(gameTime);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            GeneratedDrawEarly(gameTime);
+            GeneratedDraw(gameTime);
+            base.Draw(gameTime);
+        }
+
 
         partial void GeneratedInitializeEarly();
         partial void GeneratedInitialize();
