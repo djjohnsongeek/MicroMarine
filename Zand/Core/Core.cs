@@ -10,6 +10,7 @@ namespace Zand
 {
     public class Core : Game
     {
+        public static GraphicsDeviceManager graphics => GraphicsManager;
         public static GraphicsDeviceManager GraphicsManager;
         //public static new GraphicsDevice GraphicsDevice;
         public static ZandContentManager GlobalContent;
