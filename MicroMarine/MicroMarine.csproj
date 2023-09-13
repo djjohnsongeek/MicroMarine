@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
+	  <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -12,6 +13,41 @@
   <ItemGroup>
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BoidConfig.cs" />
+    <Compile Include="Components\DropShip.cs" />
+    <Compile Include="Components\SceneComponents\ControlGroupManager.cs" />
+    <Compile Include="Components\SceneComponents\SelectBox.cs" />
+    <Compile Include="Components\SceneComponents\SelectedUnits.cs" />
+    <Compile Include="Components\SceneComponents\SoundEffectManager.cs" />
+    <Compile Include="Components\SceneComponents\UnitGroupManager.cs" />
+    <Compile Include="Components\SceneComponents\UnitSelector.cs" />
+    <Compile Include="Components\UnitSpawner.cs" />
+    <Compile Include="Components\Units\Blant.cs" />
+    <Compile Include="Components\Units\ChemLightAbility.cs" />
+    <Compile Include="Components\Units\ControlGroup.cs" />
+    <Compile Include="Components\Units\DeadUnit.cs" />
+    <Compile Include="Components\Units\Health.cs" />
+    <Compile Include="Components\Units\Marine.cs" />
+    <Compile Include="Components\Units\MarineCommand.cs" />
+    <Compile Include="Components\Units\Scuttle.cs" />
+    <Compile Include="Components\Units\SelectionIndicator.cs" />
+    <Compile Include="Components\Units\SimpleSprite.cs" />
+    <Compile Include="Components\Units\States\Attacking.cs" />
+    <Compile Include="Components\Units\States\BaseUnitState.cs" />
+    <Compile Include="Components\Units\States\BlantSpawn.cs" />
+    <Compile Include="Components\Units\States\ExecuteAbility.cs" />
+    <Compile Include="Components\Units\States\Following.cs" />
+    <Compile Include="Components\Units\States\Idle.cs" />
+    <Compile Include="Components\Units\States\Moving.cs" />
+    <Compile Include="Components\Units\Unit.cs" />
+    <Compile Include="Components\Units\UnitAbility.cs" />
+    <Compile Include="Extensions\BitArrayExtensions.cs" />
+    <Compile Include="GameMain.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Scenes\SampleScene.cs" />
+    <Compile Include="UI\MouseCursor.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
