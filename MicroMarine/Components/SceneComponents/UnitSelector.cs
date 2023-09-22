@@ -105,11 +105,8 @@ namespace MicroMarine.Components
         {
             if (_selectBox.Active)
             {
-                //shapeBatch.DrawRectangle(_selectBox.Origin, _selectBox.Rect.Size.ToVector2(), Color.Transparent, Color.White);
                 Shapes.DrawEmptyRect(spriteBatch, Scene.DebugPixelTexture, _selectBox.Rect, Color.White);
             }
-
-
         }
 
         private void SelectControlGroup(byte key)

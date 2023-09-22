@@ -203,12 +203,9 @@ namespace MicroMarine.Components
         private Vector2 GetDestinationVelocity(CircleCollider unit)
         {
             var destVelocity = Vector2.Zero;
-            if (CurrentCommand.Type == CommandType.Move)
-            {
-                destVelocity = CurrentCommand.Destination.Position - unit.Center;
-                destVelocity.Normalize();
-                destVelocity *= BoidConfig.MaxSpeed;
-            }
+            destVelocity = CurrentCommand.EntityTarget is null ? CurrentCommand.Destination.Position - unit.Center : CurrentCommand.EntityTarget.Position - unit.Center;
+            destVelocity.Normalize();
+            destVelocity *= BoidConfig.MaxSpeed;
             return destVelocity * BoidConfig.DestinationFactor;
         }
 
