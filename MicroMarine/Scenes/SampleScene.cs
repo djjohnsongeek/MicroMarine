@@ -174,29 +174,32 @@ namespace MicroMarine.Scenes
             fire.AddComponent(fireAnimation);
             fireAnimation.RenderLayer = 6;
 
-            var light = new SimpleLight(fire, lightTexture, new Color(255, 230, 230), new Vector2(2, 2), flicker: true);
+            var light = new SimpleLight(fire, lightTexture, new Color(255, 230, 230), new Vector2(2, 2), flicker: false);
             Lighting.AddLight(light);
 
 
-            // Place Marines
-            for (int i = 0; i < 15; i++)
-            {
-                Entity unit = CreateEntity("unit", RandomPosition(tiledMap.Center, 60), new Point(32, 32));
-                unit.AddComponent(new Marine(1));
-                unitSelector.AddUnit(unit);
-                Lighting.AddLight(new SimpleLight(unit, lightTexture, new Color(255, 255, 255, 255), new Vector2(.4f, .4f), new Vector2(0, -5f)));
-            }
+            // Place Marine
+            var playerSpawn = tiledMap.GetObject("MapObjects", "player-spawn");
+            Entity unit = CreateEntity("unit", playerSpawn.Position, new Point(32, 32));
+            unit.AddComponent(new Marine(1));
+            unitSelector.AddUnit(unit);
+            Lighting.AddLight(new SimpleLight(unit, lightTexture, new Color(255, 255, 255, 255), new Vector2(.4f, .4f), new Vector2(0, -5f)));
 
             // Add Spawner
 
             var spawnerObject = tiledMap.GetObject("MapObjects", "enemySpawner");
             Entity enemySpawner = CreateEntity("unitSpawner", Vector2.Zero + new Vector2(-20, 60), Point.Zero);
             enemySpawner.AddComponent(
-                new UnitSpawner<Scuttle>(spawnerObject.Position, totalSpawns: 100, unitPerWave: 5, waveDelay: 2, waveStep: 4)
+                new UnitSpawner<Scuttle>(spawnerObject.Position, totalSpawns: 10, unitPerWave: 5, waveDelay: 2, waveStep: 4)
             );
 
             // Center on Marines
             Camera.Position = tiledMap.Center;
+
+            // DropShip
+            var dropShipSpawn = tiledMap.GetObject("MapObjects", "first-dropship-spawn");
+            var dropShip = CreateEntity("dropShip", dropShipSpawn.Position, new Point(86, 97));
+            dropShip.AddComponent(new DropShip(600, 3000));
 
             //
             //var command = CreateEntity("marineCommand", Vector2.Zero);

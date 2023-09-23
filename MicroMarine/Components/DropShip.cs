@@ -13,9 +13,9 @@ namespace MicroMarine.Components
         private Vector2 _origin;
 
 
-        public DropShip(float startHeight)
+        public DropShip(float startHeight, long delay)
         {
-            Z = new FloatTween(startHeight, 0, 1500, Easing.CubeOut);
+            Z = new FloatTween(startHeight, 0, 1500, Easing.CubeOut, delay);
         }
 
 
@@ -33,6 +33,8 @@ namespace MicroMarine.Components
 
         public void Update()
         {
+            if (Z.Value != 0) return;
+
 
         }
 
