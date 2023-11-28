@@ -46,23 +46,31 @@ Possible arrival solution:
 -- if on edge of the circle, stop all movement
 
 
-Story
-Congratulations soldier, you have just been promoted to sergeant. You are now to entrusted to lead a fireteam. We will be sending you to ___ to help
+Game in a Nutshell
+Congratulations soldier, you have just been promoted to sergeant. You are now to entrusted to lead a fireteam. We will be sending you to ______ to help
 put a stop to the _____ rebellion.
 
 While in-transit to the mission location your ship crashes on an alien location. Command indicates there are multiple alien hostiles in your proximity. You will need to survive until
-extraction resources can be mustered, it will be a while. Command is able to send you certain drops at your request. The first available drop is contains 3 "clone" soldiers.
+extraction resources can be mustered, it will be a while. Command is able to send you certain drops at your request. The first available drop is contains four soliders. Four clones.
 
-As you fight to survive you must rely on Command for important resouces such as cloneing chambers (increase your numbers), orbital strikes (powerful aoe), field kits (upgrades).
+There five different "classes". Each with a unique ability.
+	- Sergeant: Throw a chem light that attracts aliens, and provides valuable vision.
+	- Recon: Activate a personal radar that reveals position, size, and aggro level of nearby aliens.
+	- Medic: Activate a healing circle, cannot use weapon or move while healing is active
+	- Grenadier: Throw a frag grenade that deals powerful aoe damage
+	- Engineer: Buildr usefullstructures using a limited pool of supplies. Permanent light source, auto turret, wall.
+		All structures can be reclaimed for 100% of the original cost, allowing them to be rebuilt in now locations.
 
-- Start with a single, special sergeant unit
-	- game ends if this unit dies
-- Command sends down 3 clone units
-	- 3 different "classes", each with a unique ability
-		- Sergeant: flair or chem light
-		- Recon: radar for scouting (reveals position and size, but not type)
-		- Medic: healing circle, but cannot use weapon while healing is active
-		- Grenadier: can throw grenades
-		- Engineer: Flame Thrower?, can build structures: (light source, auto turret, blockade)
-		- flame thrower?
-- End of game: command sends a pick up pod that only the special unit can get on. Clones are left to die.
+As you fight to survive you must rely on Command for important resouces such as cloneing chambers (increase your numbers), orbital strikes (powerful aoe), and field kits (upgrades, building supplies).
+The environment contains multiple hints that forshadow Command's sinster and hidden adjenda. Can Command be trusted?
+
+Survive long enough (20 minutes?) and Command will send a pickup pod with only one seat. Only you can escape. You must leave your clones behind. If clone attempts to board they will be vaporized.
+The choice is yours. End the game but sacrifice your clones, or fight on and try and find another way out. This choice will not be explict to the player.
+
+Fighting on means no more help from command. Exploring enough will eventually result in the discovery of a number of Man-made tunnels from which the aliens are being spawned. Destroying these
+will allow you respite, and end the game. The true reasons for these tunnel will not be fully revealed. The horrible truth will only be hinted at ...
+
+The Horrible Truth:
+The crash was not an accident, it was intentional.
+Command uses this location to field test it's sergeants. Only Sergeants that follow orders blindly, survive efficiently, and sacrifice clones for the greater good are deemed worthy.
+The war against ______ is the result of mistreated clones and sergeants who rose up to stand againt Command's brutal treatment of it's soldiers.
