@@ -1,6 +1,4 @@
 ﻿
-
-
 Chem Lights:
 Required to see your surroundings
 Why would you NOT use a chem light as soon as the cooldown is finished?
@@ -49,13 +47,22 @@ Possible arrival solution:
 
 
 Story
-- Start with a single, special unit (commander)
+Congratulations soldier, you have just been promoted to sergeant. You are now to entrusted to lead a fireteam. We will be sending you to ___ to help
+put a stop to the _____ rebellion.
+
+While in-transit to the mission location your ship crashes on an alien location. Command indicates there are multiple alien hostiles in your proximity. You will need to survive until
+extraction resources can be mustered, it will be a while. Command is able to send you certain drops at your request. The first available drop is contains 3 "clone" soldiers.
+
+As you fight to survive you must rely on Command for important resouces such as cloneing chambers (increase your numbers), orbital strikes (powerful aoe), field kits (upgrades).
+
+- Start with a single, special sergeant unit
 	- game ends if this unit dies
 - Command sends down 3 clone units
-	- 3 different "classes"
-		- Commander: flair
-		- Recon: radar for scouting
-		- Medic: healing circle cannot use weapon while healing is active
-		- Grenadier: throw grenades
+	- 3 different "classes", each with a unique ability
+		- Sergeant: flair or chem light
+		- Recon: radar for scouting (reveals position and size, but not type)
+		- Medic: healing circle, but cannot use weapon while healing is active
+		- Grenadier: can throw grenades
+		- Engineer: Flame Thrower?, can build structures: (light source, auto turret, blockade)
 		- flame thrower?
 - End of game: command sends a pick up pod that only the special unit can get on. Clones are left to die.
